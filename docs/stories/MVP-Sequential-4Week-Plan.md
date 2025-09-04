@@ -2,7 +2,7 @@
 # Helios Career Operations System - 4 Week Timeline
 
 ## Plan Overview
-- **Methodology**: MVP-Sequential Hybrid following BMAD principles
+- **Methodology**: MVP-Sequential Hybrid following [BMAD](https://github.com/bmad-code-org/BMAD-METHOD) principles
 - **Timeline**: 4 weeks (28 days)
 - **Developer**: Solo development approach
 - **Goal**: Working end-to-end career operations system prototype
@@ -11,7 +11,7 @@
 - ✅ Working user journey: Upload → Analyze → Generate Documents
 - ✅ 5 agents operational (simplified versions)
 - ✅ >90% test coverage maintained
-- ✅ BMAD methodology compliance
+- ✅ [BMAD](https://github.com/bmad-code-org/BMAD-METHOD) methodology compliance
 - ✅ Ready for user testing
 
 ---
@@ -33,7 +33,7 @@
 - [ ] Write initial unit tests
 
 **Evening Tasks**
-- [ ] Update BMAD agent configuration in `bmad-core/agents/orchestrator.yaml`
+- [ ] Update [BMAD](https://github.com/bmad-code-org/BMAD-METHOD) agent configuration in `bmad-core/agents/orchestrator.yaml`
 - [ ] Document API schema in OpenAPI format
 
 **Quality Gate**: Health check working, basic session CRUD operations tested

@@ -4,7 +4,7 @@ This file provides guidance to Claude Code (claude.ai/code) when working with th
 
 ## Project Overview
 
-**Helios Career Operations System** is an AI-powered career intelligence platform built using BMAD (Behavioral Model Analysis and Design) methodology. The system transforms job searching through multiple specialized AI agents working in concert to provide intelligent career guidance, document optimization, and market analysis.
+**Helios Career Operations System** is an AI-powered career intelligence platform built using [BMAD (Behavioral Model Analysis and Design)](https://github.com/bmad-code-org/BMAD-METHOD) methodology. The system transforms job searching through multiple specialized AI agents working in concert to provide intelligent career guidance, document optimization, and market analysis.
 
 ## Architecture
 
@@ -16,7 +16,7 @@ The system follows a **microservices architecture with AI agent orchestration**:
 5. **ARCHITECT** - Document generation with ATS compliance
 6. **EDITOR** - Granular text optimization
 
-## Project Structure (BMAD Standard)
+## Project Structure ([BMAD Standard](https://github.com/bmad-code-org/BMAD-METHOD))
 
 ```
 helios-career-operations-system/
@@ -87,7 +87,7 @@ pytest
 python -m src.resume_extractor.main /path/to/resume/directory
 ```
 
-### BMAD Agent Development
+### [BMAD](https://github.com/bmad-code-org/BMAD-METHOD) Agent Development
 ```bash
 # Check BMAD configuration
 cat bmad-core/core-config.yaml
@@ -113,7 +113,7 @@ ls docs/02-architecture/
 
 ## Key Design Patterns
 
-- **BMAD Methodology** - Behavioral Model Analysis and Design
+- **[BMAD Methodology](https://github.com/bmad-code-org/BMAD-METHOD)** - Behavioral Model Analysis and Design
 - **Microservices Architecture** - Independent, scalable services
 - **Agent Orchestration** - HELIOS coordinates specialized agents
 - **Pipeline Architecture** - Sequential data processing stages
@@ -144,15 +144,15 @@ The Profile Ingestor produces a Master Career Database JSON with:
 
 - Story 1.1 is fully implemented and tested - serves as foundation for other services
 - All agent knowledge documents available in `knowledge-base/agent-knowledge/`
-- BMAD methodology followed throughout - proper documentation structure
+- [BMAD methodology](https://github.com/bmad-code-org/BMAD-METHOD) followed throughout - proper documentation structure
 - System designed for 10,000+ users with microservices scalability
 - Logging outputs to service-specific logs with centralized monitoring
 
-## BMAD Agent Instructions
+## [BMAD](https://github.com/bmad-code-org/BMAD-METHOD) Agent Instructions
 
 When working on this project:
 1. Check `bmad-core/core-config.yaml` for current agent status
 2. Reference agent knowledge documents in `knowledge-base/agent-knowledge/`
-3. Follow BMAD documentation structure in `docs/`
+3. Follow [BMAD](https://github.com/bmad-code-org/BMAD-METHOD) documentation structure in `docs/`
 4. Implement new services in `services/` following Story 1.1 pattern
 5. Maintain test coverage >95% for all services

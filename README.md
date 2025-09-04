@@ -4,7 +4,7 @@
 [![CodeQL](https://github.com/fabiendostie/helios-career-operations-system/workflows/CodeQL/badge.svg)](https://github.com/fabiendostie/helios-career-operations-system/actions)
 [![Python](https://img.shields.io/badge/Python-3.13-blue?logo=python&logoColor=white)](https://python.org)
 [![FastAPI](https://img.shields.io/badge/FastAPI-0.115-009688?logo=fastapi&logoColor=white)](https://fastapi.tiangolo.com)
-[![BMAD](https://img.shields.io/badge/BMAD-Methodology-purple)](https://github.com/fabiendostie/helios-career-operations-system)
+[![BMAD](https://img.shields.io/badge/BMAD-Methodology-purple)](https://github.com/bmad-code-org/BMAD-METHOD)
 [![License](https://img.shields.io/badge/License-MIT-green.svg)](LICENSE)
 
 > **Transform your career trajectory with AI-powered intelligence**  
@@ -149,7 +149,7 @@ scripts\docs.bat --serve           # Windows
 - 🌐 **[Live API Docs](https://fabiendostie.github.io/helios-career-operations-system/)** - Auto-generated from code
 - 📖 **[Project Docs](docs/)** - Architecture, requirements, and guides
 - 🔗 **[Interactive API](http://localhost:8000/docs)** - Swagger UI (when running locally)
-- 📋 **[BMAD Methodology](docs/03-design/BMAD-Analysis.md)** - Development approach
+- 📋 **[BMAD Methodology](docs/03-design/BMAD-Analysis.md)** - Development approach ([BMAD Method](https://github.com/bmad-code-org/BMAD-METHOD))
 
 ---
 
@@ -190,13 +190,15 @@ scripts\docs.bat --serve           # Windows
 
 ## 🏛️ BMAD Methodology
 
-This project follows **Behavioral Model Analysis and Design (BMAD)** methodology for systematic development:
+This project follows **[Behavioral Model Analysis and Design (BMAD)](https://github.com/bmad-code-org/BMAD-METHOD)** methodology for systematic development:
 
 - 📋 **Epic Breakdown**: Clear user story structure
 - 🎯 **Quality Gates**: 85%+ test success rate requirement  
 - 📊 **Progress Tracking**: Transparent development metrics
 - 🔄 **Iterative Development**: Continuous improvement cycles
 - 📚 **Documentation-First**: Comprehensive architectural records
+
+> **Attribution**: BMAD (Behavioral Model Analysis and Design) methodology developed by [BMAD Code Organization](https://github.com/bmad-code-org/BMAD-METHOD)
 
 ---
 
@@ -239,8 +241,8 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 ## 🙏 Acknowledgments
 
 - **Anthropic Claude** - AI-powered development acceleration
-- **BMAD Methodology** - Systematic development approach
-- **FastAPI Community** - Excellent async framework
+- **[BMAD Methodology](https://github.com/bmad-code-org/BMAD-METHOD)** - Systematic development approach
+- **FastAPI Community** - Excellent async framework  
 - **spaCy Team** - Outstanding NLP capabilities
 
 ---

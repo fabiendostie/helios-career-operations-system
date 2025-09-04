@@ -196,7 +196,7 @@ class StoryDocGenerator:
         html_content += f"""
     <div class="metadata">
         <h3>📊 Project Information</h3>
-        <p><strong>Methodology:</strong> BMAD (Behavioral Model Analysis and Design)</p>
+        <p><strong>Methodology:</strong> <a href="https://github.com/bmad-code-org/BMAD-METHOD">BMAD (Behavioral Model Analysis and Design)</a></p>
         <p><strong>Architecture:</strong> Microservices with AI Agent Orchestration</p>
         <p><strong>Technology Stack:</strong> Python 3.13, FastAPI, spaCy, PostgreSQL</p>
         <p><strong>Generated:</strong> {datetime.now().strftime('%Y-%m-%d %H:%M:%S UTC')}</p>
@@ -216,7 +216,7 @@ class StoryDocGenerator:
     
     <footer>
         <p>🤖 Generated automatically • HELIOS Career Operations System</p>
-        <p>Powered by BMAD Methodology • <a href="https://claude.ai/code">Claude Code</a></p>
+        <p>Powered by <a href="https://github.com/bmad-code-org/BMAD-METHOD">BMAD Methodology</a> • <a href="https://claude.ai/code">Claude Code</a></p>
     </footer>
 </body>
 </html>
