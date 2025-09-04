@@ -1,0 +1,63 @@
+MARIE DUBOIS
+Développeuse Web Full-Stack
+
+INFORMATIONS DE CONTACT
+Email: marie.dubois@email.fr
+Téléphone: +33 1 23 45 67 89
+Localisation: Paris, France
+LinkedIn: linkedin.com/in/mariedubois
+
+RÉSUMÉ PROFESSIONNEL
+Développeuse web expérimentée avec 7 ans d'expérience dans la création d'applications web modernes et responsives. Expertise en JavaScript, React, Node.js et technologies cloud. Passionnée par l'innovation et les nouvelles technologies.
+
+EXPÉRIENCE PROFESSIONNELLE
+
+Développeuse Senior Full-Stack | TechnoSolutions SA | 2020 - Présent
+• Développement d'applications web complexes pour clients enterprise
+• Architecture et implémentation de microservices avec Node.js et Docker
+• Encadrement d'équipe de 5 développeurs junior
+• Amélioration des performances applicatives de 45%
+• Technologies : React, Node.js, TypeScript, AWS, PostgreSQL
+
+Développeuse Frontend | DigitalCraft SARL | 2018 - 2020
+• Création d'interfaces utilisateur modernes et intuitives
+• Intégration d'APIs RESTful et GraphQL
+• Optimisation SEO et accessibilité web (WCAG 2.1)
+• Collaboration étroite avec les équipes UX/UI
+• Technologies : Vue.js, JavaScript, SASS, Webpack
+
+Développeuse Junior | StartupTech | 2017 - 2018
+• Développement de fonctionnalités frontend en JavaScript vanilla
+• Maintenance et débuggage d'applications existantes
+• Participation active aux revues de code
+• Technologies : HTML5, CSS3, JavaScript, PHP, MySQL
+
+COMPÉTENCES TECHNIQUES
+Langages de programmation : JavaScript, TypeScript, Python, PHP
+Frameworks Frontend : React, Vue.js, Angular, Svelte
+Backend : Node.js, Express, Django, Laravel
+Bases de données : PostgreSQL, MongoDB, MySQL, Redis
+Cloud et DevOps : AWS, Docker, Kubernetes, CI/CD
+Outils : Git, Webpack, Jest, Cypress
+
+FORMATION
+Master en Informatique - Spécialisation Développement Web
+Université Pierre et Marie Curie | 2017
+
+Licence en Informatique
+Université Paris-Sud | 2015
+
+CERTIFICATIONS
+• AWS Certified Developer Associate
+• Certification React Developer (Meta)
+• Certification Agile/Scrum Master
+
+PROJETS NOTABLES
+• Plateforme e-commerce B2B avec 50K+ utilisateurs actifs
+• Application mobile hybride avec React Native
+• Système de gestion documentaire pour administration publique
+
+LANGUES
+• Français : Langue maternelle
+• Anglais : Courant (C1)
+• Espagnol : Intermédiaire (B2)

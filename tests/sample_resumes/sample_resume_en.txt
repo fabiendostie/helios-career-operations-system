@@ -1,0 +1,31 @@
+John Smith
+Senior Software Engineer
+Email: john.smith@email.com
+Phone: (555) 123-4567
+
+EXPERIENCE
+
+Google Inc. | Senior Software Engineer | 2020-2023
+- Led development of cloud-native applications using Python and JavaScript
+- Implemented microservices architecture serving 1M+ daily users
+- Mentored junior developers and conducted code reviews
+- Technologies: Python, Docker, Kubernetes, AWS, React
+
+Microsoft Corporation | Software Engineer | 2018-2020
+- Developed web applications using .NET and C#
+- Collaborated with cross-functional teams on product features
+- Improved application performance by 30%
+- Technologies: C#, .NET, SQL Server, Azure
+
+EDUCATION
+
+Bachelor of Science in Computer Science
+University of California, Berkeley | 2014-2018
+GPA: 3.8/4.0
+
+SKILLS
+
+Programming Languages: Python, JavaScript, C#, Java, SQL
+Frameworks: React, .NET, Django, Express.js
+Cloud Platforms: AWS, Azure, Google Cloud
+Tools: Docker, Kubernetes, Git, Jenkins, Terraform

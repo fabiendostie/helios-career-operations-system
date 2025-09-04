@@ -1,0 +1,51 @@
+{
+  "name": "helios-career-operations-system",
+  "version": "1.0.0",
+  "description": "AI-powered Career Operations System with specialized agent orchestration",
+  "main": "index.js",
+  "scripts": {
+    "install:bmad": "npm install && python -m pip install -r requirements.txt && python -m pip install -r services/profile-ingestor/requirements.txt",
+    "setup:env": "python -m venv venv && call venv\\Scripts\\activate && npm run install:bmad",
+    "setup:models": "python -m spacy download en_core_web_sm && python -m spacy download fr_core_news_sm",
+    "test:all": "cd services/profile-ingestor && python -m pytest",
+    "test:profile-ingestor": "cd services/profile-ingestor && python -m pytest tests/",
+    "start:profile-ingestor": "cd services/profile-ingestor && python -m src.resume_extractor.main",
+    "dev:setup": "npm run setup:env && npm run setup:models",
+    "bmad:status": "python scripts/setup/bmad_status.py",
+    "bmad:init": "python scripts/setup/bmad_init.py",
+    "docs:serve": "cd docs && python -m http.server 8080",
+    "lint:python": "cd services/profile-ingestor && python -m ruff check .",
+    "format:python": "cd services/profile-ingestor && python -m black ."
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/your-org/helios-career-operations-system.git"
+  },
+  "keywords": [
+    "ai",
+    "career",
+    "resume",
+    "nlp",
+    "bmad",
+    "agents",
+    "microservices"
+  ],
+  "author": "Helios Development Team",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/your-org/helios-career-operations-system/issues"
+  },
+  "homepage": "https://github.com/your-org/helios-career-operations-system#readme",
+  "devDependencies": {
+    "@types/node": "^20.0.0",
+    "typescript": "^5.0.0"
+  },
+  "dependencies": {
+    "axios": "^1.6.0",
+    "express": "^4.18.0"
+  },
+  "engines": {
+    "node": ">=18.0.0",
+    "python": ">=3.11.0"
+  }
+}

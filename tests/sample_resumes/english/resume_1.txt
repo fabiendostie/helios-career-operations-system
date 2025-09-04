@@ -1,0 +1,39 @@
+JOHN DOE
+Software Engineer
+
+CONTACT INFORMATION
+Email: john.doe@email.com
+Phone: (555) 123-4567
+Location: Seattle, WA
+
+PROFESSIONAL SUMMARY
+Experienced software engineer with 5+ years developing scalable web applications using Python, JavaScript, and cloud technologies. Proven track record of leading development teams and delivering high-quality software solutions.
+
+WORK EXPERIENCE
+
+Senior Software Engineer | TechCorp Inc. | 2021 - Present
+• Led development of microservices architecture serving 10M+ daily users
+• Implemented CI/CD pipelines reducing deployment time by 60%
+• Mentored 3 junior developers and conducted code reviews
+• Technologies: Python, Django, React, AWS, Docker
+
+Software Engineer | StartupCo | 2019 - 2021  
+• Developed REST APIs and database schemas for e-commerce platform
+• Optimized database queries improving application performance by 40%
+• Collaborated with cross-functional teams using Agile methodology
+• Technologies: Python, Flask, PostgreSQL, Redis
+
+TECHNICAL SKILLS
+Programming Languages: Python, JavaScript, TypeScript, SQL
+Frameworks: Django, Flask, React, Node.js
+Databases: PostgreSQL, MySQL, Redis, MongoDB
+Cloud & DevOps: AWS, Docker, Kubernetes, Jenkins
+Tools: Git, JIRA, Confluence
+
+EDUCATION
+Bachelor of Science in Computer Science
+University of Washington | 2019
+
+CERTIFICATIONS
+• AWS Certified Solutions Architect
+• Certified Scrum Master (CSM)

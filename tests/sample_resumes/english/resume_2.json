@@ -1,0 +1,54 @@
+{
+  "personal_info": {
+    "name": "Sarah Smith",
+    "email": "sarah.smith@email.com",
+    "phone": "(555) 987-6543",
+    "location": "San Francisco, CA",
+    "linkedin": "linkedin.com/in/sarahsmith"
+  },
+  "professional_summary": "Full-stack developer with 4 years of experience building responsive web applications and mobile solutions. Expertise in React, Node.js, and cloud deployment.",
+  "work_experience": [
+    {
+      "company": "InnovaTech Solutions",
+      "position": "Full Stack Developer",
+      "duration": "2022 - Present",
+      "responsibilities": [
+        "Developed customer-facing web applications using React and Node.js",
+        "Implemented real-time features using WebSocket connections",
+        "Deployed applications to AWS using Infrastructure as Code"
+      ],
+      "technologies": ["React", "Node.js", "AWS", "MongoDB"]
+    },
+    {
+      "company": "Digital Agency Pro",
+      "position": "Frontend Developer",
+      "duration": "2020 - 2022",
+      "responsibilities": [
+        "Created responsive websites for 20+ client projects",
+        "Implemented SEO best practices increasing organic traffic by 35%",
+        "Collaborated with design team to translate mockups to code"
+      ],
+      "technologies": ["HTML", "CSS", "JavaScript", "jQuery", "WordPress"]
+    }
+  ],
+  "technical_skills": {
+    "frontend": ["React", "Vue.js", "HTML5", "CSS3", "JavaScript", "TypeScript"],
+    "backend": ["Node.js", "Express.js", "Python", "Django"],
+    "databases": ["MongoDB", "PostgreSQL", "MySQL"],
+    "tools": ["Git", "Docker", "AWS", "Heroku", "Figma"]
+  },
+  "education": {
+    "degree": "Bachelor of Arts in Computer Science",
+    "institution": "UC Berkeley",
+    "graduation_year": "2020",
+    "gpa": "3.8"
+  },
+  "projects": [
+    {
+      "name": "Task Management App",
+      "description": "Full-stack application for team task management with real-time collaboration",
+      "technologies": ["React", "Node.js", "Socket.io", "MongoDB"],
+      "url": "https://github.com/sarahsmith/task-manager"
+    }
+  ]
+}

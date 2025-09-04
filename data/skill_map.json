@@ -1,0 +1,150 @@
+{
+  "skill_mappings": {
+    "Project Management": [
+      "Gestion de projet",
+      "Chef de projet",
+      "Project Manager",
+      "PM",
+      "Gestionnaire de projet",
+      "gestion de projets",
+      "agile",
+      "scrum",
+      "kanban",
+      "waterfall"
+    ],
+    "Software Development": [
+      "Développement logiciel",
+      "Software Engineering",
+      "Ingénierie logicielle",
+      "Développement",
+      "Dev",
+      "Programming",
+      "Programmation"
+    ],
+    "Data Analysis": [
+      "Analyse de données",
+      "Data Analytics",
+      "Analyse des données",
+      "Business Analytics",
+      "Analytique",
+      "data science",
+      "science des données",
+      "big data",
+      "données massives"
+    ],
+    "Machine Learning": [
+      "Apprentissage automatique",
+      "ML",
+      "Deep Learning",
+      "Apprentissage profond",
+      "IA/ML",
+      "machine learning",
+      "artificial intelligence",
+      "ai",
+      "intelligence artificielle",
+      "ia"
+    ],
+    "Python": [
+      "python",
+      "py",
+      "python3",
+      "python programming",
+      "python development",
+      "programmation python",
+      "développement python"
+    ],
+    "JavaScript": [
+      "javascript",
+      "js",
+      "ecmascript",
+      "node.js",
+      "nodejs",
+      "programmation javascript"
+    ],
+    "React": [
+      "react",
+      "reactjs",
+      "react.js",
+      "react framework",
+      "framework react"
+    ],
+    "SQL": [
+      "sql",
+      "structured query language",
+      "database querying",
+      "mysql",
+      "postgresql",
+      "langage de requête structuré",
+      "requêtes de base de données"
+    ],
+    "Git": [
+      "git",
+      "version control",
+      "source control",
+      "github",
+      "gitlab",
+      "contrôle de version",
+      "gestion de versions"
+    ],
+    "Docker": [
+      "docker",
+      "containerization",
+      "containers",
+      "docker compose",
+      "conteneurisation",
+      "conteneurs"
+    ],
+    "AWS": [
+      "aws",
+      "amazon web services",
+      "cloud computing",
+      "ec2",
+      "s3",
+      "informatique en nuage",
+      "services cloud amazon"
+    ],
+    "Communication": [
+      "communication",
+      "presentation",
+      "public speaking",
+      "writing",
+      "présentation",
+      "prise de parole en public",
+      "rédaction"
+    ],
+    "Leadership": [
+      "leadership",
+      "team management",
+      "people management",
+      "mentoring",
+      "gestion d'équipe",
+      "encadrement",
+      "mentorat",
+      "direction"
+    ]
+  },
+  "categories": {
+    "Technical Skills": [
+      "Programming Languages",
+      "Langages de programmation",
+      "Frameworks",
+      "Databases",
+      "Bases de données",
+      "Cloud Computing",
+      "Informatique en nuage"
+    ],
+    "Soft Skills": [
+      "Leadership",
+      "Communication",
+      "Teamwork",
+      "Travail d'équipe",
+      "Problem Solving",
+      "Résolution de problèmes"
+    ]
+  },
+  "proficiency_indicators": {
+    "expert": ["Expert", "Advanced", "Avancé", "Maîtrise", "Senior", "Lead"],
+    "intermediate": ["Intermediate", "Intermédiaire", "Competent", "Compétent", "Experienced"],
+    "beginner": ["Beginner", "Débutant", "Basic", "Base", "Notions", "Junior"]
+  }
+}
