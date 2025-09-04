@@ -37,9 +37,9 @@ jobs:
           cd services/profile-ingestor && pip install -r requirements.txt
           cd ../orchestrator && pip install -r requirements.txt
 
-      - name: Generate API Documentation
+      - name: Generate Comprehensive Documentation
         run: |
-          python scripts/generate_docs.py
+          python scripts/generate_all_docs.py
 
       - name: Setup Pages
         if: github.ref == 'refs/heads/main'
@@ -49,7 +49,7 @@ jobs:
         if: github.ref == 'refs/heads/main'
         uses: actions/upload-pages-artifact@v3
         with:
-          path: docs/api
+          path: docs
 
   deploy:
     if: github.ref == 'refs/heads/main'
