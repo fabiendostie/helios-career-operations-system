@@ -68,12 +68,18 @@ coverage.xml
 ehthumbs.db
 Thumbs.db
 
-# Logs
-logs/
-*.log
+# Node.js
+node_modules/
+package-lock.json
 npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
+lerna-debug.log*
+.pnpm-debug.log*
+
+# Logs
+logs/
+*.log
 
 # Databases
 *.db
