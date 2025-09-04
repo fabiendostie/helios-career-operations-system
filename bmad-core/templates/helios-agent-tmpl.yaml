@@ -1,0 +1,76 @@
+# BMAD Agent Template for Helios Career Operations System
+# Use this template to create new agent configurations
+
+agent_id: "{AGENT_NAME}"
+version: "1.0.0"
+status: "pending"  # pending | in_progress | completed
+
+metadata:
+  name: "{Agent Display Name}"
+  description: "{Agent role and primary responsibility}"
+  story: "{Story Number (e.g., 2.1)}"
+  epic: "{Epic Name}"
+  priority: "high"  # high | medium | low
+  
+capabilities:
+  - "{Primary capability}"
+  - "{Secondary capability}"
+  - "{Additional capabilities...}"
+
+integration:
+  service_location: "services/{agent-name}/"
+  api_endpoint: "/api/v1/{endpoint}"
+  health_check: "/health"
+  
+  dependencies:
+    - "{Required service 1}"
+    - "{Required service 2}"
+    
+  input_formats:
+    - "{Expected input type 1}"
+    - "{Expected input type 2}"
+    
+  output_format:
+    type: "json"  # json | text | binary
+    schema: "{output_schema_name}"
+    
+commands:
+  - command: "/{primary_command}"
+    description: "{Command description}"
+    parameters:
+      - name: "{param_name}"
+        type: "string"  # string | number | array | object
+        required: true  # true | false
+        default: "{default_value}"
+        
+knowledge_base:
+  location: "knowledge-base/agent-knowledge/{agent-name}/"
+  documents:
+    - "{knowledge_doc_1}.md"
+    - "{knowledge_doc_2}.md"
+    
+dependencies:
+  python_version: ">=3.11"
+  packages:
+    - "{required_package}>=x.x.x"
+    
+  external_services:
+    - name: "{service_name}"
+      endpoint: "{service_endpoint}"
+      auth: "required"  # required | optional | none
+
+performance:
+  max_concurrent_requests: 10
+  response_time_target: "2s"
+  memory_usage_limit: "512MB"
+  
+monitoring:
+  logs: "services/{agent-name}/logs/"
+  metrics:
+    - "{metric_name_1}"
+    - "{metric_name_2}"
+    
+testing:
+  unit_tests: "services/{agent-name}/tests/"
+  integration_tests: "tests/integration/test_{agent-name}.py"
+  coverage_target: "95%"

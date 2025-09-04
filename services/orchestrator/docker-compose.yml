@@ -1,0 +1,45 @@
+# HELIOS Orchestrator Service - Local Development Environment
+version: '3.8'
+
+services:
+  orchestrator:
+    build: .
+    ports:
+      - "8000:8000"
+    environment:
+      - DEBUG=true
+      - LOG_LEVEL=DEBUG
+      - DATABASE_URL=sqlite+aiosqlite:///./data/sessions.db
+      - PROFILE_INGESTOR_URL=http://profile-ingestor:8001
+    volumes:
+      # Mount source code for development
+      - ./src:/app/src
+      # Persistent database storage
+      - ./data:/app/data
+    networks:
+      - helios-network
+    depends_on:
+      - profile-ingestor
+    restart: unless-stopped
+
+  profile-ingestor:
+    build: ../profile-ingestor
+    ports:
+      - "8001:8001"
+    environment:
+      - DEBUG=true
+      - LOG_LEVEL=DEBUG
+    volumes:
+      - ../profile-ingestor/src:/app/src
+      - ./uploads:/app/uploads
+    networks:
+      - helios-network
+    restart: unless-stopped
+
+networks:
+  helios-network:
+    driver: bridge
+
+volumes:
+  orchestrator-data:
+    driver: local

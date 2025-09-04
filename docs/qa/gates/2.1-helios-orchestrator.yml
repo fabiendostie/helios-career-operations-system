@@ -1,0 +1,42 @@
+schema: 1
+story: "2.1"
+story_title: "HELIOS Orchestrator Service"
+gate: FAIL
+status_reason: "Critical test failures (22/75 failed) indicating implementation gaps in core functionality, validation logic, and integration points."
+reviewer: "Quinn (Test Architect)"
+updated: "2025-01-04T15:30:00Z"
+
+waiver: { active: false }
+
+top_issues:
+  - id: "TEST-001"
+    severity: high
+    finding: "22 out of 75 tests failing (29% failure rate) across core components"
+    suggested_action: "Fix failing tests before proceeding to production - particularly validation, API endpoints, and integration tests"
+  - id: "REQ-001" 
+    severity: high
+    finding: "Command validation logic broken - empty session IDs accepted, state transitions failing"
+    suggested_action: "Review and fix Pydantic validation models in CommandRequest and session state management"
+  - id: "ARCH-001"
+    severity: high
+    finding: "API endpoint routing issues - root endpoint returning 404, command routing failures"
+    suggested_action: "Fix FastAPI router configuration and endpoint definitions"
+  - id: "REL-001"
+    severity: medium
+    finding: "Integration test failures suggest Profile Ingestor communication issues"
+    suggested_action: "Debug async client integration and error handling with Profile Ingestor service"
+  - id: "TEST-002"
+    severity: medium
+    finding: "Performance tests failing on concurrent session handling requirement (AC #3)"
+    suggested_action: "Fix async session management to handle 100+ concurrent sessions as required"
+
+risk_summary:
+  totals: { critical: 0, high: 3, medium: 2, low: 0 }
+  recommendations:
+    must_fix: 
+      - "Fix command validation and Pydantic models"
+      - "Resolve API routing and endpoint configuration"
+      - "Address core test failures before deployment"
+    monitor: 
+      - "Integration test stability with Profile Ingestor"
+      - "Performance under concurrent load"

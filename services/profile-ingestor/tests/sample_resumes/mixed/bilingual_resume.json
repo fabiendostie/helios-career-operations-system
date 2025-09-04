@@ -1,0 +1,93 @@
+{
+  "personal_info": {
+    "name": "Sophie Chen-Laurent",
+    "email": "sophie.chen.laurent@email.com",
+    "phone": "+1 (514) 123-4567",
+    "location": "Montréal, QC, Canada",
+    "linkedin": "linkedin.com/in/sophiechenlaurent"
+  },
+  "objective_en": "Bilingual software architect with 8+ years developing enterprise solutions. Seeking to leverage expertise in cloud architecture and team leadership in a senior technical role.",
+  "objectif_fr": "Architecte logiciel bilingue avec plus de 8 ans d'expérience dans le développement de solutions enterprise. Cherche à utiliser mon expertise en architecture cloud et leadership d'équipe dans un poste technique senior.",
+  "work_experience": [
+    {
+      "position_en": "Principal Software Architect",
+      "position_fr": "Architecte Logiciel Principal", 
+      "company": "TechGlobal Inc.",
+      "location": "Montréal, QC",
+      "duration": "2020 - Present",
+      "responsibilities_en": [
+        "Lead architecture decisions for microservices platform serving 2M+ users",
+        "Mentored team of 12 developers across multiple time zones",
+        "Designed cloud-native solutions reducing infrastructure costs by 40%"
+      ],
+      "responsabilites_fr": [
+        "Direction des décisions architecturales pour plateforme microservices servant 2M+ utilisateurs",
+        "Encadrement d'équipe de 12 développeurs dans plusieurs fuseaux horaires",
+        "Conception de solutions cloud-native réduisant les coûts d'infrastructure de 40%"
+      ],
+      "technologies": ["Java", "Spring Boot", "AWS", "Kubernetes", "PostgreSQL"]
+    },
+    {
+      "position_en": "Senior Developer",
+      "position_fr": "Développeur Senior",
+      "company": "Innovation Labs",
+      "location": "Toronto, ON", 
+      "duration": "2017 - 2020",
+      "responsibilities_en": [
+        "Developed REST APIs and frontend applications for financial services",
+        "Implemented security measures achieving SOC 2 compliance",
+        "Led migration from monolithic to microservices architecture"
+      ],
+      "responsabilites_fr": [
+        "Développement d'APIs REST et applications frontend pour services financiers", 
+        "Implémentation de mesures de sécurité atteignant conformité SOC 2",
+        "Direction de migration d'architecture monolithique vers microservices"
+      ],
+      "technologies": ["C#", ".NET Core", "React", "Azure", "SQL Server"]
+    }
+  ],
+  "technical_skills": {
+    "programming_languages": ["Java", "C#", "Python", "JavaScript", "TypeScript"],
+    "frameworks": ["Spring Boot", ".NET Core", "React", "Angular", "Node.js"],
+    "cloud_platforms": ["AWS", "Azure", "Google Cloud"],
+    "databases": ["PostgreSQL", "SQL Server", "MongoDB", "Redis"],
+    "tools": ["Docker", "Kubernetes", "Jenkins", "Git", "JIRA"]
+  },
+  "education": [
+    {
+      "degree_en": "Master of Computer Science",
+      "diplome_fr": "Maîtrise en Informatique",
+      "institution": "McGill University",
+      "location": "Montréal, QC",
+      "year": 2017,
+      "specialization_en": "Software Engineering",
+      "specialisation_fr": "Génie Logiciel"
+    },
+    {
+      "degree_en": "Bachelor of Software Engineering",
+      "diplome_fr": "Baccalauréat en Génie Logiciel", 
+      "institution": "École de Technologie Supérieure",
+      "location": "Montréal, QC",
+      "year": 2015
+    }
+  ],
+  "certifications": [
+    "AWS Certified Solutions Architect - Professional",
+    "Microsoft Azure Architect Expert",
+    "Certified Kubernetes Application Developer"
+  ],
+  "languages": {
+    "français": "Langue maternelle",
+    "english": "Native proficiency",
+    "mandarin": "Conversational"
+  },
+  "projects": [
+    {
+      "name": "E-commerce Platform Modernization", 
+      "description_en": "Led complete rewrite of legacy e-commerce system using microservices architecture",
+      "description_fr": "Direction de la réécriture complète d'un système e-commerce legacy utilisant architecture microservices",
+      "impact": "Improved system performance by 60% and reduced downtime by 80%",
+      "technologies": ["Java", "Spring Cloud", "AWS", "Docker", "Kubernetes"]
+    }
+  ]
+}

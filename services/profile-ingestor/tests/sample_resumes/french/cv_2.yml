@@ -1,0 +1,124 @@
+informations_personnelles:
+  nom: "Pierre Martin"
+  email: "pierre.martin@email.fr" 
+  telephone: "+33 6 12 34 56 78"
+  adresse: "Lyon, France"
+  linkedin: "linkedin.com/in/pierremartin"
+  github: "github.com/pmartin-dev"
+
+titre_poste: "Ingénieur DevOps et Cloud"
+
+resume_professionnel: |
+  Ingénieur DevOps passionné avec 5 ans d'expérience dans l'automatisation, 
+  l'intégration continue et le déploiement cloud. Expert en conteneurisation 
+  et orchestration avec Docker et Kubernetes. Forte expertise en AWS et Azure.
+
+experience_professionnelle:
+  - poste: "Ingénieur DevOps Senior"
+    entreprise: "CloudTech Solutions"
+    duree: "2021 - Présent"
+    localisation: "Lyon, France"
+    missions:
+      - "Migration de l'infrastructure vers AWS avec Terraform"
+      - "Implémentation de pipelines CI/CD avec GitLab CI et Jenkins"
+      - "Automatisation du déploiement avec Ansible et Docker"
+      - "Monitoring et alerting avec Prometheus et Grafana"
+    technologies:
+      - "AWS"
+      - "Terraform" 
+      - "Docker"
+      - "Kubernetes"
+      - "Jenkins"
+      - "Ansible"
+
+  - poste: "Administrateur Système"
+    entreprise: "TechServices SARL"
+    duree: "2019 - 2021"
+    missions:
+      - "Administration de serveurs Linux (Ubuntu, CentOS)"
+      - "Mise en place de solutions de sauvegarde automatisées"
+      - "Gestion de la sécurité et des accès utilisateurs"
+      - "Support technique niveau 3"
+    technologies:
+      - "Linux"
+      - "Bash"
+      - "Python"
+      - "MySQL"
+      - "Apache"
+
+competences_techniques:
+  cloud:
+    - "AWS (EC2, S3, RDS, Lambda, CloudFormation)"
+    - "Azure (VM, Storage, Functions)"
+    - "Google Cloud Platform (GCE, GKE)"
+  
+  conteneurisation:
+    - "Docker"
+    - "Kubernetes" 
+    - "Docker Compose"
+    - "Helm"
+  
+  ci_cd:
+    - "GitLab CI/CD"
+    - "Jenkins"
+    - "GitHub Actions"
+    - "Azure DevOps"
+  
+  infrastructure_as_code:
+    - "Terraform"
+    - "Ansible"
+    - "CloudFormation"
+    - "Pulumi"
+  
+  monitoring:
+    - "Prometheus"
+    - "Grafana"
+    - "ELK Stack"
+    - "Datadog"
+  
+  programmation:
+    - "Python"
+    - "Bash"
+    - "Go"
+    - "YAML"
+    - "JSON"
+
+formation:
+  - diplome: "Master en Informatique - Systèmes et Réseaux"
+    etablissement: "École Centrale de Lyon"
+    annee: 2019
+    mention: "Bien"
+  
+  - diplome: "Licence en Informatique"
+    etablissement: "Université Claude Bernard Lyon 1"
+    annee: 2017
+
+certifications:
+  - nom: "AWS Certified Solutions Architect - Professional"
+    date_obtention: "2022"
+  - nom: "Certified Kubernetes Administrator (CKA)"
+    date_obtention: "2021"
+  - nom: "HashiCorp Certified: Terraform Associate"
+    date_obtention: "2021"
+  - nom: "Docker Certified Associate"
+    date_obtention: "2020"
+
+projets_personnels:
+  - nom: "Infrastructure de blog personnel"
+    description: "Déploiement automatisé d'un blog avec Terraform, Docker et AWS"
+    technologies: ["Terraform", "Docker", "AWS", "Nginx"]
+    url: "github.com/pmartin-dev/blog-infrastructure"
+  
+  - nom: "Pipeline CI/CD pour applications microservices"
+    description: "Template de pipeline automatisé pour déploiement Kubernetes"
+    technologies: ["GitLab CI", "Kubernetes", "Helm", "Docker"]
+
+langues:
+  francais: "Langue maternelle"
+  anglais: "Courant (C1)"
+  allemand: "Notions (A2)"
+
+centres_interet:
+  - "Open Source (contributeur sur plusieurs projets GitHub)"
+  - "Veille technologique (blogs, conférences)"
+  - "Randonnée et photographie"

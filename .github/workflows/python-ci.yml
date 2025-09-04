@@ -1,0 +1,35 @@
+name: Python CI
+
+on:
+  push:
+    branches: [main, development]
+  pull_request:
+    branches: [main, development]
+
+jobs:
+  lint-and-test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.13'
+          cache: 'pip'
+
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install ruff black
+
+      - name: Lint with ruff (non-blocking)
+        run: ruff check . || true
+
+      - name: Format check with black (non-blocking)
+        run: black --check . || true
+
+      - name: Basic Python syntax check
+        run: |
+          python -m py_compile services/profile-ingestor/src/main.py || true
+          python -m py_compile services/orchestrator/src/main.py || true

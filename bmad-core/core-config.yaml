@@ -1,0 +1,93 @@
+# BMAD Core Configuration
+# Helios Career Operations System
+
+# Core BMAD Settings (Official Format)
+markdownExplorer: true
+slashPrefix: "Helios"
+
+# Quality Assurance Configuration
+qa:
+  qaLocation: "docs/qa"
+
+# Product Requirements Document
+prd:
+  prdFile: "docs/PRD.md"
+  prdVersion: "v1"
+  prdSharded: true
+  prdShardedLocation: "docs/01-requirements"
+  epicFilePattern: "epic-{n}*.md"
+
+# Architecture Configuration
+architecture:
+  architectureFile: "docs/architecture.md"
+  architectureVersion: "v1"
+  architectureSharded: true
+  architectureShardedLocation: "docs/02-architecture"
+
+# Development Configuration
+development:
+  customTechnicalDocuments: null
+  devLoadAlwaysFiles:
+    - "docs/02-architecture/coding-standards.md"
+    - "docs/02-architecture/tech-stack.md"
+    - "docs/02-architecture/source-tree.md"
+  devDebugLog: ".ai/debug-log.md"
+  devStoryLocation: "docs/stories"
+
+# Helios-Specific Agent Configuration
+project:
+  name: "Helios Career Operations System"
+  version: "1.0.0"
+  methodology: "BMAD Brownfield"
+  description: "AI-powered Career Operations System with specialized agent orchestration"
+  
+agents:
+  orchestrator: 
+    name: "HELIOS"
+    role: "Main orchestrator maintaining session state"
+    location: "services/orchestrator/"
+    status: "pending"
+    
+  profile_ingestor:
+    name: "PROFILE_INGESTOR" 
+    role: "Deep conversational profiling using psychological frameworks"
+    location: "services/profile-ingestor/"
+    status: "completed"
+    implementation: "Story 1.1 - Resume data extraction and consolidation"
+    
+  strategist:
+    name: "STRATEGIST"
+    role: "Career path generation using skill adjacency modeling"
+    location: "services/strategist/"
+    status: "pending"
+    
+  analyst:
+    name: "ANALYST" 
+    role: "Market correlation & resume optimization (6-step pipeline)"
+    location: "services/analyst/"
+    status: "pending"
+    
+  architect:
+    name: "ARCHITECT"
+    role: "Document generation with ATS compliance"
+    location: "services/architect/"
+    status: "pending"
+    
+  editor:
+    name: "EDITOR"
+    role: "Granular text optimization"
+    location: "services/editor/"
+    status: "pending"
+
+# Story Management
+stories:
+  completed:
+    - "1.1-data-acquisition-service"
+  pending:
+    - "2.1-orchestrator-service"
+    - "2.2-strategist-service" 
+    - "2.3-analyst-service"
+    - "2.4-architect-service"
+    - "2.5-editor-service"
+    - "3.1-integration-testing"
+    - "3.2-deployment-pipeline"
