@@ -127,6 +127,30 @@ open http://localhost:8000/docs
 - **Command Processing**: `POST /commands/{command}`
 - **Interactive Docs**: `/docs` (Swagger UI)
 
+### 📚 Documentation
+
+[![Documentation](https://img.shields.io/badge/docs-pydoc-blue?logo=python)](https://fabiendostie.github.io/helios-career-operations-system/)
+[![API Reference](https://img.shields.io/badge/API-Reference-green?logo=swagger)](http://localhost:8000/docs)
+
+**Automated Documentation Generation**
+
+```bash
+# Generate documentation locally
+python scripts/generate_docs.py
+
+# Generate and serve documentation
+./scripts/docs.sh --serve          # Unix/Mac
+scripts\docs.bat --serve           # Windows
+
+# Visit: http://localhost:8080
+```
+
+**Available Documentation:**
+- 🌐 **[Live API Docs](https://fabiendostie.github.io/helios-career-operations-system/)** - Auto-generated from code
+- 📖 **[Project Docs](docs/)** - Architecture, requirements, and guides
+- 🔗 **[Interactive API](http://localhost:8000/docs)** - Swagger UI (when running locally)
+- 📋 **[BMAD Methodology](docs/03-design/BMAD-Analysis.md)** - Development approach
+
 ---
 
 ## 🎯 Features In Detail
