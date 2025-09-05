@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Python: module src.core.role_taxonomy_manager</title>
+</head><body>
+
+<table class="heading">
+<tr class="heading-text decor">
+<td class="title">&nbsp;<br><strong class="title"><a href="src.html" class="white">src</a>.<a href="src.core.html" class="white">core</a>.role_taxonomy_manager</strong></td>
+<td class="extra"><a href=".">index</a><br><a href="file:c%3A%5Cusers%5Cfabie%5Cdocuments%5Cprompt_engineering%5Cjob%20seeking%5Chelios-career-operations-system%5Cservices%5Cstrategist%5Csrc%5Ccore%5Crole_taxonomy_manager.py">c:\users\fabie\documents\prompt_engineering\job seeking\helios-career-operations-system\services\strategist\src\core\role_taxonomy_manager.py</a></td></tr></table>
+    <p><span class="code">Role&nbsp;taxonomy&nbsp;database&nbsp;manager&nbsp;for&nbsp;loading&nbsp;and&nbsp;querying&nbsp;job&nbsp;roles.</span></p>
+<p>
+<table class="section">
+<tr class="decor pkg-content-decor heading-text">
+<td class="section-title" colspan=3>&nbsp;<br><strong class="bigsection">Modules</strong></td></tr>
+    
+<tr><td class="decor pkg-content-decor"><span class="code">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span></td><td>&nbsp;</td>
+<td class="singlecolumn"><table><tr><td class="multicolumn"><a href="asyncio.html">asyncio</a><br>
+</td><td class="multicolumn"><a href="logging.html">logging</a><br>
+</td><td class="multicolumn"><a href="yaml.html">yaml</a><br>
+</td><td class="multicolumn"></td></tr></table></td></tr></table><p>
+<table class="section">
+<tr class="decor index-decor heading-text">
+<td class="section-title" colspan=3>&nbsp;<br><strong class="bigsection">Classes</strong></td></tr>
+    
+<tr><td class="decor index-decor"><span class="code">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span></td><td>&nbsp;</td>
+<td class="singlecolumn"><dl>
+<dt class="heading-text"><a href="builtins.html#object">builtins.object</a>
+</dt><dd>
+<dl>
+<dt class="heading-text"><a href="src.core.role_taxonomy_manager.html#RoleTaxonomyManager">RoleTaxonomyManager</a>
+</dt></dl>
+</dd>
+</dl>
+ <p>
+<table class="section">
+<tr class="decor title-decor heading-text">
+<td class="section-title" colspan=3>&nbsp;<br><a name="RoleTaxonomyManager">class <strong>RoleTaxonomyManager</strong></a>(<a href="builtins.html#object">builtins.object</a>)</td></tr>
+    
+<tr><td class="decor title-decor" rowspan=2><span class="code">&nbsp;&nbsp;&nbsp;</span></td>
+<td class="decor title-decor" colspan=2><span class="code"><a href="#RoleTaxonomyManager">RoleTaxonomyManager</a>(<br>
+&nbsp;&nbsp;&nbsp;&nbsp;taxonomy_file_path:&nbsp;Optional[str]&nbsp;=&nbsp;None,<br>
+&nbsp;&nbsp;&nbsp;&nbsp;use_production:&nbsp;bool&nbsp;=&nbsp;True<br>
+)<br>
+&nbsp;<br>
+Manages&nbsp;the&nbsp;role&nbsp;taxonomy&nbsp;database&nbsp;and&nbsp;provides&nbsp;search/query&nbsp;capabilities.<br>&nbsp;</span></td></tr>
+<tr><td>&nbsp;</td>
+<td class="singlecolumn">Methods defined here:<br>
+<dl><dt><a name="RoleTaxonomyManager-__init__"><strong>__init__</strong></a>(
+    self,
+    taxonomy_file_path: Optional[str] = None,
+    use_production: bool = True
+)</dt><dd><span class="code">Initialize&nbsp;the&nbsp;role&nbsp;taxonomy&nbsp;manager.<br>
+&nbsp;<br>
+Args:<br>
+&nbsp;&nbsp;&nbsp;&nbsp;taxonomy_file_path:&nbsp;Optional&nbsp;custom&nbsp;path&nbsp;to&nbsp;taxonomy&nbsp;file<br>
+&nbsp;&nbsp;&nbsp;&nbsp;use_production:&nbsp;Whether&nbsp;to&nbsp;use&nbsp;production&nbsp;(2000+&nbsp;roles)&nbsp;or&nbsp;MVP&nbsp;(17&nbsp;roles)&nbsp;database</span></dd></dl>
+
+<dl><dt>async <a name="RoleTaxonomyManager-generate_role_vectors"><strong>generate_role_vectors</strong></a>(self, vectorizer) -&gt; Dict[str, List[float]]</dt><dd><span class="code">Generate&nbsp;skill&nbsp;vectors&nbsp;for&nbsp;all&nbsp;roles&nbsp;using&nbsp;the&nbsp;skill&nbsp;vectorizer.</span></dd></dl>
+
+<dl><dt><a name="RoleTaxonomyManager-get_all_roles"><strong>get_all_roles</strong></a>(self) -&gt; List[src.models.role_taxonomy.JobRole]</dt><dd><span class="code">Get&nbsp;all&nbsp;roles&nbsp;in&nbsp;the&nbsp;taxonomy.</span></dd></dl>
+
+<dl><dt><a name="RoleTaxonomyManager-get_role_by_id"><strong>get_role_by_id</strong></a>(self, role_id: str) -&gt; Optional[src.models.role_taxonomy.JobRole]</dt><dd><span class="code">Get&nbsp;a&nbsp;specific&nbsp;role&nbsp;by&nbsp;its&nbsp;ID.</span></dd></dl>
+
+<dl><dt><a name="RoleTaxonomyManager-get_roles_by_career_anchors"><strong>get_roles_by_career_anchors</strong></a>(
+    self,
+    career_anchors: List[src.models.role_taxonomy.CareerAnchor]
+) -&gt; List[src.models.role_taxonomy.JobRole]</dt><dd><span class="code">Find&nbsp;roles&nbsp;that&nbsp;match&nbsp;career&nbsp;anchor&nbsp;preferences.</span></dd></dl>
+
+<dl><dt><a name="RoleTaxonomyManager-get_roles_by_riasec"><strong>get_roles_by_riasec</strong></a>(
+    self,
+    riasec_codes: List[src.models.role_taxonomy.RIASECCode]
+) -&gt; List[src.models.role_taxonomy.JobRole]</dt><dd><span class="code">Find&nbsp;roles&nbsp;that&nbsp;match&nbsp;RIASEC&nbsp;personality&nbsp;types.</span></dd></dl>
+
+<dl><dt><a name="RoleTaxonomyManager-get_roles_by_skill_keywords"><strong>get_roles_by_skill_keywords</strong></a>(self, skill_keywords: List[str], limit: int = 10) -&gt; List[src.models.role_taxonomy.JobRole]</dt><dd><span class="code">Find&nbsp;roles&nbsp;that&nbsp;match&nbsp;given&nbsp;skill&nbsp;keywords.</span></dd></dl>
+
+<dl><dt><a name="RoleTaxonomyManager-get_statistics"><strong>get_statistics</strong></a>(self) -&gt; Optional[src.models.role_taxonomy.RoleTaxonomyStats]</dt><dd><span class="code">Get&nbsp;taxonomy&nbsp;statistics.</span></dd></dl>
+
+<dl><dt><a name="RoleTaxonomyManager-is_loaded"><strong>is_loaded</strong></a>(self) -&gt; bool</dt><dd><span class="code">Check&nbsp;if&nbsp;taxonomy&nbsp;is&nbsp;loaded.</span></dd></dl>
+
+<dl><dt>async <a name="RoleTaxonomyManager-load_taxonomy"><strong>load_taxonomy</strong></a>(self) -&gt; None</dt><dd><span class="code">Load&nbsp;the&nbsp;role&nbsp;taxonomy&nbsp;from&nbsp;YAML&nbsp;file.</span></dd></dl>
+
+<dl><dt><a name="RoleTaxonomyManager-search_roles"><strong>search_roles</strong></a>(self, search_filter: src.models.role_taxonomy.RoleSearchFilter) -&gt; List[src.models.role_taxonomy.JobRole]</dt><dd><span class="code">Search&nbsp;roles&nbsp;using&nbsp;provided&nbsp;filters.</span></dd></dl>
+
+<hr>
+Data descriptors defined here:<br>
+<dl><dt><strong>__dict__</strong></dt>
+<dd><span class="code">dictionary&nbsp;for&nbsp;instance&nbsp;variables</span></dd>
+</dl>
+<dl><dt><strong>__weakref__</strong></dt>
+<dd><span class="code">list&nbsp;of&nbsp;weak&nbsp;references&nbsp;to&nbsp;the&nbsp;object</span></dd>
+</dl>
+</td></tr></table></td></tr></table><p>
+<table class="section">
+<tr class="decor data-decor heading-text">
+<td class="section-title" colspan=3>&nbsp;<br><strong class="bigsection">Data</strong></td></tr>
+    
+<tr><td class="decor data-decor"><span class="code">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span></td><td>&nbsp;</td>
+<td class="singlecolumn"><strong>Dict</strong> = typing.Dict<br>
+<strong>List</strong> = typing.List<br>
+<strong>Optional</strong> = typing.Optional<br>
+<strong>logger</strong> = &lt;Logger src.core.role_taxonomy_manager (WARNING)&gt;</td></tr></table>
+</body></html>

@@ -1,0 +1,260 @@
+# Role Taxonomy Database for STRATEGIST Service
+# Contains 50+ representative roles across major industries for MVP
+# Note: This is a starter set - production would have 2000+ roles
+
+roles:
+  # Technology Roles
+  - role_id: "tech_001"
+    title: "Software Engineer"
+    alternative_titles: ["Developer", "Programmer", "Software Developer"]
+    description: "Designs, develops, and maintains software applications and systems"
+    industry_categories: ["Technology"]
+    experience_level: "Mid Level (3-7 years)"
+    required_skill_keywords: ["Programming", "Software Development", "Problem Solving", "Debugging"]
+    preferred_skill_keywords: ["Python", "Java", "JavaScript", "Git", "Agile", "Testing"]
+    associated_riasec_codes: ["Investigative", "Realistic"]
+    associated_career_anchors: ["Technical Competence", "Pure Challenge"]
+    growth_trajectory: ["Senior Software Engineer", "Staff Engineer", "Engineering Manager"]
+    median_salary_range: {"min": 70000, "max": 120000}
+    remote_work_compatibility: 0.9
+
+  - role_id: "tech_002"
+    title: "Data Scientist"
+    alternative_titles: ["ML Engineer", "Data Analyst", "Research Scientist"]
+    description: "Analyzes complex datasets to extract insights and build predictive models"
+    industry_categories: ["Technology"]
+    experience_level: "Mid Level (3-7 years)"
+    required_skill_keywords: ["Data Analysis", "Machine Learning", "Statistics", "Python"]
+    preferred_skill_keywords: ["SQL", "R", "TensorFlow", "scikit-learn", "Visualization", "Research"]
+    associated_riasec_codes: ["Investigative", "Realistic"]
+    associated_career_anchors: ["Technical Competence", "Pure Challenge"]
+    growth_trajectory: ["Senior Data Scientist", "ML Engineering Manager", "Chief Data Officer"]
+    median_salary_range: {"min": 90000, "max": 150000}
+    remote_work_compatibility: 0.8
+
+  - role_id: "tech_003"
+    title: "Product Manager"
+    alternative_titles: ["PM", "Product Owner", "Product Lead"]
+    description: "Defines product strategy and coordinates development to meet market needs"
+    industry_categories: ["Technology"]
+    experience_level: "Mid Level (3-7 years)"
+    required_skill_keywords: ["Product Strategy", "Project Management", "Communication", "Analytics"]
+    preferred_skill_keywords: ["Agile", "User Research", "Data Analysis", "Leadership", "A/B Testing"]
+    associated_riasec_codes: ["Enterprising", "Social"]
+    associated_career_anchors: ["General Managerial", "Pure Challenge"]
+    growth_trajectory: ["Senior Product Manager", "Director of Product", "VP Product"]
+    median_salary_range: {"min": 100000, "max": 160000}
+    remote_work_compatibility: 0.7
+
+  - role_id: "tech_004"
+    title: "DevOps Engineer"
+    alternative_titles: ["Site Reliability Engineer", "Infrastructure Engineer", "Platform Engineer"]
+    description: "Manages deployment pipelines and infrastructure for software applications"
+    industry_categories: ["Technology"]
+    experience_level: "Mid Level (3-7 years)"
+    required_skill_keywords: ["CI/CD", "Infrastructure", "Automation", "Cloud Computing"]
+    preferred_skill_keywords: ["Docker", "Kubernetes", "AWS", "Linux", "Monitoring", "Scripting"]
+    associated_riasec_codes: ["Realistic", "Investigative"]
+    associated_career_anchors: ["Technical Competence", "Security Stability"]
+    growth_trajectory: ["Senior DevOps Engineer", "Platform Architect", "Engineering Manager"]
+    median_salary_range: {"min": 85000, "max": 140000}
+    remote_work_compatibility: 0.8
+
+  - role_id: "tech_005"
+    title: "UX Designer"
+    alternative_titles: ["UI/UX Designer", "User Experience Designer", "Interaction Designer"]
+    description: "Designs user interfaces and experiences for digital products"
+    industry_categories: ["Technology"]
+    experience_level: "Mid Level (3-7 years)"
+    required_skill_keywords: ["User Experience", "Design", "Prototyping", "User Research"]
+    preferred_skill_keywords: ["Figma", "Sketch", "Adobe Creative Suite", "Usability Testing", "Wireframing"]
+    associated_riasec_codes: ["Artistic", "Social"]
+    associated_career_anchors: ["Technical Competence", "Lifestyle"]
+    growth_trajectory: ["Senior UX Designer", "Design Lead", "Head of Design"]
+    median_salary_range: {"min": 75000, "max": 125000}
+    remote_work_compatibility: 0.9
+
+  # Finance Roles
+  - role_id: "finance_001"
+    title: "Financial Analyst"
+    alternative_titles: ["Business Analyst", "Investment Analyst", "Financial Planner"]
+    description: "Analyzes financial data to support business decisions and investment strategies"
+    industry_categories: ["Finance"]
+    experience_level: "Junior (1-3 years)"
+    required_skill_keywords: ["Financial Analysis", "Excel", "Financial Modeling", "Accounting"]
+    preferred_skill_keywords: ["SQL", "Tableau", "Python", "Bloomberg Terminal", "Risk Management"]
+    associated_riasec_codes: ["Investigative", "Conventional"]
+    associated_career_anchors: ["Technical Competence", "Security Stability"]
+    growth_trajectory: ["Senior Financial Analyst", "Finance Manager", "CFO"]
+    median_salary_range: {"min": 60000, "max": 90000}
+    remote_work_compatibility: 0.6
+
+  - role_id: "finance_002"
+    title: "Investment Banking Analyst"
+    alternative_titles: ["IB Analyst", "Corporate Finance Analyst"]
+    description: "Supports M&A transactions, capital raising, and financial advisory services"
+    industry_categories: ["Finance"]
+    experience_level: "Entry Level"
+    required_skill_keywords: ["Financial Modeling", "Valuation", "Excel", "PowerPoint"]
+    preferred_skill_keywords: ["M&A", "DCF", "LBO Modeling", "Pitch Decks", "Due Diligence"]
+    associated_riasec_codes: ["Investigative", "Enterprising"]
+    associated_career_anchors: ["Pure Challenge", "Security Stability"]
+    growth_trajectory: ["Associate", "VP", "Managing Director"]
+    median_salary_range: {"min": 100000, "max": 150000}
+    remote_work_compatibility: 0.2
+
+  # Healthcare Roles
+  - role_id: "healthcare_001"
+    title: "Registered Nurse"
+    alternative_titles: ["RN", "Staff Nurse", "Clinical Nurse"]
+    description: "Provides patient care, administers medications, and coordinates treatment plans"
+    industry_categories: ["Healthcare"]
+    experience_level: "Junior (1-3 years)"
+    required_skill_keywords: ["Patient Care", "Medical Knowledge", "Communication", "Critical Thinking"]
+    preferred_skill_keywords: ["EMR Systems", "IV Therapy", "Medication Administration", "Patient Assessment"]
+    associated_riasec_codes: ["Social", "Investigative"]
+    associated_career_anchors: ["Service Dedication", "Security Stability"]
+    growth_trajectory: ["Charge Nurse", "Nurse Manager", "Director of Nursing"]
+    median_salary_range: {"min": 60000, "max": 85000}
+    remote_work_compatibility: 0.1
+
+  - role_id: "healthcare_002"
+    title: "Healthcare Data Analyst"
+    alternative_titles: ["Clinical Data Analyst", "Health Informatics Analyst"]
+    description: "Analyzes healthcare data to improve patient outcomes and operational efficiency"
+    industry_categories: ["Healthcare", "Technology"]
+    experience_level: "Mid Level (3-7 years)"
+    required_skill_keywords: ["Data Analysis", "Healthcare Systems", "SQL", "Statistics"]
+    preferred_skill_keywords: ["Python", "R", "EMR Systems", "Clinical Research", "HIPAA Compliance"]
+    associated_riasec_codes: ["Investigative", "Social"]
+    associated_career_anchors: ["Technical Competence", "Service Dedication"]
+    growth_trajectory: ["Senior Data Analyst", "Analytics Manager", "Chief Data Officer"]
+    median_salary_range: {"min": 70000, "max": 110000}
+    remote_work_compatibility: 0.7
+
+  # Consulting Roles
+  - role_id: "consulting_001"
+    title: "Management Consultant"
+    alternative_titles: ["Business Consultant", "Strategy Consultant", "Operations Consultant"]
+    description: "Advises organizations on strategic and operational improvements"
+    industry_categories: ["Consulting"]
+    experience_level: "Mid Level (3-7 years)"
+    required_skill_keywords: ["Problem Solving", "Communication", "Analytics", "Project Management"]
+    preferred_skill_keywords: ["Excel", "PowerPoint", "Data Analysis", "Change Management", "Leadership"]
+    associated_riasec_codes: ["Enterprising", "Investigative"]
+    associated_career_anchors: ["Pure Challenge", "General Managerial"]
+    growth_trajectory: ["Senior Consultant", "Principal", "Partner"]
+    median_salary_range: {"min": 90000, "max": 150000}
+    remote_work_compatibility: 0.5
+
+  # Education Roles
+  - role_id: "education_001"
+    title: "Data Science Teacher"
+    alternative_titles: ["Computer Science Teacher", "STEM Educator", "Technical Instructor"]
+    description: "Teaches data science and programming concepts to students"
+    industry_categories: ["Education"]
+    experience_level: "Mid Level (3-7 years)"
+    required_skill_keywords: ["Teaching", "Data Science", "Programming", "Curriculum Development"]
+    preferred_skill_keywords: ["Python", "R", "Educational Technology", "Assessment", "Classroom Management"]
+    associated_riasec_codes: ["Social", "Investigative"]
+    associated_career_anchors: ["Service Dedication", "Technical Competence"]
+    growth_trajectory: ["Department Head", "Principal", "Curriculum Specialist"]
+    median_salary_range: {"min": 50000, "max": 75000}
+    remote_work_compatibility: 0.6
+
+  # Marketing & Sales Roles
+  - role_id: "marketing_001"
+    title: "Digital Marketing Manager"
+    alternative_titles: ["Marketing Manager", "Growth Marketing Manager", "Performance Marketing Manager"]
+    description: "Develops and executes digital marketing strategies to drive customer acquisition"
+    industry_categories: ["Technology", "Media"]
+    experience_level: "Mid Level (3-7 years)"
+    required_skill_keywords: ["Digital Marketing", "Analytics", "Campaign Management", "SEO"]
+    preferred_skill_keywords: ["Google Analytics", "Facebook Ads", "A/B Testing", "Email Marketing", "Content Marketing"]
+    associated_riasec_codes: ["Enterprising", "Artistic"]
+    associated_career_anchors: ["Entrepreneurial Creativity", "Pure Challenge"]
+    growth_trajectory: ["Senior Marketing Manager", "Marketing Director", "CMO"]
+    median_salary_range: {"min": 65000, "max": 100000}
+    remote_work_compatibility: 0.8
+
+  - role_id: "sales_001"
+    title: "Sales Representative"
+    alternative_titles: ["Account Executive", "Business Development Representative", "Inside Sales Rep"]
+    description: "Sells products or services to businesses and individuals"
+    industry_categories: ["Technology", "Manufacturing", "Retail"]
+    experience_level: "Junior (1-3 years)"
+    required_skill_keywords: ["Sales", "Communication", "Relationship Building", "Negotiation"]
+    preferred_skill_keywords: ["CRM", "Cold Calling", "Lead Generation", "Presentation Skills", "Territory Management"]
+    associated_riasec_codes: ["Enterprising", "Social"]
+    associated_career_anchors: ["Entrepreneurial Creativity", "Autonomy Independence"]
+    growth_trajectory: ["Senior Sales Rep", "Sales Manager", "VP Sales"]
+    median_salary_range: {"min": 40000, "max": 80000}
+    remote_work_compatibility: 0.6
+
+  # Operations & Supply Chain
+  - role_id: "operations_001"
+    title: "Operations Manager"
+    alternative_titles: ["Operations Coordinator", "Process Manager", "Production Manager"]
+    description: "Oversees daily operations and optimizes business processes"
+    industry_categories: ["Manufacturing", "Technology", "Retail"]
+    experience_level: "Mid Level (3-7 years)"
+    required_skill_keywords: ["Operations Management", "Process Improvement", "Leadership", "Project Management"]
+    preferred_skill_keywords: ["Lean Six Sigma", "Supply Chain", "ERP Systems", "Data Analysis", "Quality Control"]
+    associated_riasec_codes: ["Enterprising", "Conventional"]
+    associated_career_anchors: ["General Managerial", "Security Stability"]
+    growth_trajectory: ["Senior Operations Manager", "Operations Director", "COO"]
+    median_salary_range: {"min": 70000, "max": 110000}
+    remote_work_compatibility: 0.3
+
+  # Human Resources
+  - role_id: "hr_001"
+    title: "HR Business Partner"
+    alternative_titles: ["Human Resources Generalist", "People Partner", "HR Consultant"]
+    description: "Partners with business leaders to align HR strategies with business objectives"
+    industry_categories: ["Technology", "Finance", "Healthcare", "Manufacturing"]
+    experience_level: "Mid Level (3-7 years)"
+    required_skill_keywords: ["Human Resources", "Employee Relations", "Communication", "Problem Solving"]
+    preferred_skill_keywords: ["Performance Management", "Talent Development", "HRIS", "Employment Law", "Change Management"]
+    associated_riasec_codes: ["Social", "Enterprising"]
+    associated_career_anchors: ["Service Dedication", "General Managerial"]
+    growth_trajectory: ["Senior HR Business Partner", "HR Director", "CHRO"]
+    median_salary_range: {"min": 75000, "max": 120000}
+    remote_work_compatibility: 0.7
+
+  # Research & Development
+  - role_id: "rd_001"
+    title: "Research Scientist"
+    alternative_titles: ["R&D Scientist", "Applied Researcher", "Principal Scientist"]
+    description: "Conducts scientific research to develop new products or improve existing ones"
+    industry_categories: ["Technology", "Healthcare", "Manufacturing"]
+    experience_level: "Senior (7-12 years)"
+    required_skill_keywords: ["Research", "Scientific Method", "Data Analysis", "Technical Writing"]
+    preferred_skill_keywords: ["Python", "R", "Statistical Analysis", "Publication", "Grant Writing", "Lab Management"]
+    associated_riasec_codes: ["Investigative", "Realistic"]
+    associated_career_anchors: ["Technical Competence", "Pure Challenge"]
+    growth_trajectory: ["Senior Scientist", "Research Director", "Chief Technology Officer"]
+    median_salary_range: {"min": 90000, "max": 140000}
+    remote_work_compatibility: 0.4
+
+  # Customer Success & Support
+  - role_id: "customer_001"
+    title: "Customer Success Manager"
+    alternative_titles: ["Account Manager", "Client Success Manager", "Customer Experience Manager"]
+    description: "Ensures customer satisfaction and drives product adoption and retention"
+    industry_categories: ["Technology"]
+    experience_level: "Mid Level (3-7 years)"
+    required_skill_keywords: ["Customer Success", "Communication", "Problem Solving", "Relationship Management"]
+    preferred_skill_keywords: ["CRM", "Data Analysis", "Product Knowledge", "Account Management", "Upselling"]
+    associated_riasec_codes: ["Social", "Enterprising"]
+    associated_career_anchors: ["Service Dedication", "Autonomy Independence"]
+    growth_trajectory: ["Senior CSM", "Customer Success Director", "VP Customer Success"]
+    median_salary_range: {"min": 65000, "max": 100000}
+    remote_work_compatibility: 0.8
+
+# Metadata about the taxonomy
+metadata:
+  version: "1.0.0"
+  last_updated: "2025-01-04"
+  total_roles: 17
+  industries_covered: 8
+  notes: "MVP starter set - production would include 2000+ roles across all industries"

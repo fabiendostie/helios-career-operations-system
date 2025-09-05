@@ -1,0 +1,189 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Python: module src.core.fit_scorer</title>
+</head><body>
+
+<table class="heading">
+<tr class="heading-text decor">
+<td class="title">&nbsp;<br><strong class="title"><a href="src.html" class="white">src</a>.<a href="src.core.html" class="white">core</a>.fit_scorer</strong></td>
+<td class="extra"><a href=".">index</a><br><a href="file:c%3A%5Cusers%5Cfabie%5Cdocuments%5Cprompt_engineering%5Cjob%20seeking%5Chelios-career-operations-system%5Cservices%5Cstrategist%5Csrc%5Ccore%5Cfit_scorer.py">c:\users\fabie\documents\prompt_engineering\job seeking\helios-career-operations-system\services\strategist\src\core\fit_scorer.py</a></td></tr></table>
+    <p><span class="code">Fit&nbsp;scoring&nbsp;algorithm&nbsp;that&nbsp;combines&nbsp;skill&nbsp;similarity&nbsp;and&nbsp;aspiration&nbsp;alignment.</span></p>
+<p>
+<table class="section">
+<tr class="decor pkg-content-decor heading-text">
+<td class="section-title" colspan=3>&nbsp;<br><strong class="bigsection">Modules</strong></td></tr>
+    
+<tr><td class="decor pkg-content-decor"><span class="code">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span></td><td>&nbsp;</td>
+<td class="singlecolumn"><table><tr><td class="multicolumn"><a href="logging.html">logging</a><br>
+</td><td class="multicolumn"><a href="statistics.html">statistics</a><br>
+</td><td class="multicolumn"></td><td class="multicolumn"></td></tr></table></td></tr></table><p>
+<table class="section">
+<tr class="decor index-decor heading-text">
+<td class="section-title" colspan=3>&nbsp;<br><strong class="bigsection">Classes</strong></td></tr>
+    
+<tr><td class="decor index-decor"><span class="code">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span></td><td>&nbsp;</td>
+<td class="singlecolumn"><dl>
+<dt class="heading-text"><a href="builtins.html#object">builtins.object</a>
+</dt><dd>
+<dl>
+<dt class="heading-text"><a href="src.core.fit_scorer.html#AspirationProfile">AspirationProfile</a>
+</dt><dt class="heading-text"><a href="src.core.fit_scorer.html#FitScoreDetails">FitScoreDetails</a>
+</dt><dt class="heading-text"><a href="src.core.fit_scorer.html#FitScorer">FitScorer</a>
+</dt></dl>
+</dd>
+</dl>
+ <p>
+<table class="section">
+<tr class="decor title-decor heading-text">
+<td class="section-title" colspan=3>&nbsp;<br><a name="AspirationProfile">class <strong>AspirationProfile</strong></a>(<a href="builtins.html#object">builtins.object</a>)</td></tr>
+    
+<tr><td class="decor title-decor" rowspan=2><span class="code">&nbsp;&nbsp;&nbsp;</span></td>
+<td class="decor title-decor" colspan=2><span class="code"><a href="#AspirationProfile">AspirationProfile</a>(<br>
+&nbsp;&nbsp;&nbsp;&nbsp;riasec_codes:&nbsp;List[src.models.role_taxonomy.RIASECCode],<br>
+&nbsp;&nbsp;&nbsp;&nbsp;career_anchors:&nbsp;List[src.models.role_taxonomy.CareerAnchor],<br>
+&nbsp;&nbsp;&nbsp;&nbsp;interests:&nbsp;List[str],<br>
+&nbsp;&nbsp;&nbsp;&nbsp;motivators:&nbsp;List[str],<br>
+&nbsp;&nbsp;&nbsp;&nbsp;confidence_level:&nbsp;float&nbsp;=&nbsp;1.0<br>
+)&nbsp;-&amp;gt;&nbsp;None<br>
+&nbsp;<br>
+User's&nbsp;aspiration&nbsp;profile&nbsp;extracted&nbsp;from&nbsp;Master&nbsp;Career&nbsp;Database.<br>&nbsp;</span></td></tr>
+<tr><td>&nbsp;</td>
+<td class="singlecolumn">Methods defined here:<br>
+<dl><dt><a name="AspirationProfile-__eq__"><strong>__eq__</strong></a>(self, other)</dt><dd><span class="code">Return&nbsp;self==value.</span></dd></dl>
+
+<dl><dt><a name="AspirationProfile-__init__"><strong>__init__</strong></a>(
+    self,
+    riasec_codes: List[src.models.role_taxonomy.RIASECCode],
+    career_anchors: List[src.models.role_taxonomy.CareerAnchor],
+    interests: List[str],
+    motivators: List[str],
+    confidence_level: float = 1.0
+) -&gt; None</dt><dd><span class="code">Initialize&nbsp;self.&nbsp;&nbsp;See&nbsp;help(type(self))&nbsp;for&nbsp;accurate&nbsp;signature.</span></dd></dl>
+
+<dl><dt><a name="AspirationProfile-__replace__"><strong>__replace__</strong></a> = _replace(self, /, **changes)<span class="grey"><span class="heading-text"> from <a href="dataclasses.html">dataclasses</a></span></span></dt></dl>
+
+<dl><dt><a name="AspirationProfile-__repr__"><strong>__repr__</strong></a>(self)</dt><dd><span class="code">Return&nbsp;repr(self).</span></dd></dl>
+
+<hr>
+Data descriptors defined here:<br>
+<dl><dt><strong>__dict__</strong></dt>
+<dd><span class="code">dictionary&nbsp;for&nbsp;instance&nbsp;variables</span></dd>
+</dl>
+<dl><dt><strong>__weakref__</strong></dt>
+<dd><span class="code">list&nbsp;of&nbsp;weak&nbsp;references&nbsp;to&nbsp;the&nbsp;object</span></dd>
+</dl>
+<hr>
+Data and other attributes defined here:<br>
+<dl><dt><strong>__annotations__</strong> = {'career_anchors': typing.List[src.models.role_taxonomy.CareerAnchor], 'confidence_level': &lt;class 'float'&gt;, 'interests': typing.List[str], 'motivators': typing.List[str], 'riasec_codes': typing.List[src.models.role_taxonomy.RIASECCode]}</dl>
+
+<dl><dt><strong>__dataclass_fields__</strong> = {'career_anchors': Field(name='career_anchors',type=typing.List[src...appingproxy({}),kw_only=False,_field_type=_FIELD), 'confidence_level': Field(name='confidence_level',type=&lt;class 'float...appingproxy({}),kw_only=False,_field_type=_FIELD), 'interests': Field(name='interests',type=typing.List[str],def...appingproxy({}),kw_only=False,_field_type=_FIELD), 'motivators': Field(name='motivators',type=typing.List[str],de...appingproxy({}),kw_only=False,_field_type=_FIELD), 'riasec_codes': Field(name='riasec_codes',type=typing.List[src.m...appingproxy({}),kw_only=False,_field_type=_FIELD)}</dl>
+
+<dl><dt><strong>__dataclass_params__</strong> = _DataclassParams(init=True,repr=True,eq=True,ord...rue,kw_only=False,slots=False,weakref_slot=False)</dl>
+
+<dl><dt><strong>__hash__</strong> = None</dl>
+
+<dl><dt><strong>__match_args__</strong> = ('riasec_codes', 'career_anchors', 'interests', 'motivators', 'confidence_level')</dl>
+
+<dl><dt><strong>confidence_level</strong> = 1.0</dl>
+
+</td></tr></table> <p>
+<table class="section">
+<tr class="decor title-decor heading-text">
+<td class="section-title" colspan=3>&nbsp;<br><a name="FitScoreDetails">class <strong>FitScoreDetails</strong></a>(<a href="builtins.html#object">builtins.object</a>)</td></tr>
+    
+<tr><td class="decor title-decor" rowspan=2><span class="code">&nbsp;&nbsp;&nbsp;</span></td>
+<td class="decor title-decor" colspan=2><span class="code"><a href="#FitScoreDetails">FitScoreDetails</a>(<br>
+&nbsp;&nbsp;&nbsp;&nbsp;skill_match_score:&nbsp;float,<br>
+&nbsp;&nbsp;&nbsp;&nbsp;aspiration_alignment_score:&nbsp;float,<br>
+&nbsp;&nbsp;&nbsp;&nbsp;weighted_fit_score:&nbsp;float,<br>
+&nbsp;&nbsp;&nbsp;&nbsp;skill_overlap_count:&nbsp;int,<br>
+&nbsp;&nbsp;&nbsp;&nbsp;riasec_matches:&nbsp;List[str],<br>
+&nbsp;&nbsp;&nbsp;&nbsp;career_anchor_matches:&nbsp;List[str],<br>
+&nbsp;&nbsp;&nbsp;&nbsp;explanation:&nbsp;str<br>
+)&nbsp;-&amp;gt;&nbsp;None<br>
+&nbsp;<br>
+Detailed&nbsp;breakdown&nbsp;of&nbsp;fit&nbsp;score&nbsp;calculation.<br>&nbsp;</span></td></tr>
+<tr><td>&nbsp;</td>
+<td class="singlecolumn">Methods defined here:<br>
+<dl><dt><a name="FitScoreDetails-__eq__"><strong>__eq__</strong></a>(self, other)</dt><dd><span class="code">Return&nbsp;self==value.</span></dd></dl>
+
+<dl><dt><a name="FitScoreDetails-__init__"><strong>__init__</strong></a>(
+    self,
+    skill_match_score: float,
+    aspiration_alignment_score: float,
+    weighted_fit_score: float,
+    skill_overlap_count: int,
+    riasec_matches: List[str],
+    career_anchor_matches: List[str],
+    explanation: str
+) -&gt; None</dt><dd><span class="code">Initialize&nbsp;self.&nbsp;&nbsp;See&nbsp;help(type(self))&nbsp;for&nbsp;accurate&nbsp;signature.</span></dd></dl>
+
+<dl><dt><a name="FitScoreDetails-__replace__"><strong>__replace__</strong></a> = _replace(self, /, **changes)<span class="grey"><span class="heading-text"> from <a href="dataclasses.html">dataclasses</a></span></span></dt></dl>
+
+<dl><dt><a name="FitScoreDetails-__repr__"><strong>__repr__</strong></a>(self)</dt><dd><span class="code">Return&nbsp;repr(self).</span></dd></dl>
+
+<hr>
+Data descriptors defined here:<br>
+<dl><dt><strong>__dict__</strong></dt>
+<dd><span class="code">dictionary&nbsp;for&nbsp;instance&nbsp;variables</span></dd>
+</dl>
+<dl><dt><strong>__weakref__</strong></dt>
+<dd><span class="code">list&nbsp;of&nbsp;weak&nbsp;references&nbsp;to&nbsp;the&nbsp;object</span></dd>
+</dl>
+<hr>
+Data and other attributes defined here:<br>
+<dl><dt><strong>__annotations__</strong> = {'aspiration_alignment_score': &lt;class 'float'&gt;, 'career_anchor_matches': typing.List[str], 'explanation': &lt;class 'str'&gt;, 'riasec_matches': typing.List[str], 'skill_match_score': &lt;class 'float'&gt;, 'skill_overlap_count': &lt;class 'int'&gt;, 'weighted_fit_score': &lt;class 'float'&gt;}</dl>
+
+<dl><dt><strong>__dataclass_fields__</strong> = {'aspiration_alignment_score': Field(name='aspiration_alignment_score',type=&lt;cl...appingproxy({}),kw_only=False,_field_type=_FIELD), 'career_anchor_matches': Field(name='career_anchor_matches',type=typing.L...appingproxy({}),kw_only=False,_field_type=_FIELD), 'explanation': Field(name='explanation',type=&lt;class 'str'&gt;,defa...appingproxy({}),kw_only=False,_field_type=_FIELD), 'riasec_matches': Field(name='riasec_matches',type=typing.List[str...appingproxy({}),kw_only=False,_field_type=_FIELD), 'skill_match_score': Field(name='skill_match_score',type=&lt;class 'floa...appingproxy({}),kw_only=False,_field_type=_FIELD), 'skill_overlap_count': Field(name='skill_overlap_count',type=&lt;class 'in...appingproxy({}),kw_only=False,_field_type=_FIELD), 'weighted_fit_score': Field(name='weighted_fit_score',type=&lt;class 'flo...appingproxy({}),kw_only=False,_field_type=_FIELD)}</dl>
+
+<dl><dt><strong>__dataclass_params__</strong> = _DataclassParams(init=True,repr=True,eq=True,ord...rue,kw_only=False,slots=False,weakref_slot=False)</dl>
+
+<dl><dt><strong>__hash__</strong> = None</dl>
+
+<dl><dt><strong>__match_args__</strong> = ('skill_match_score', 'aspiration_alignment_score', 'weighted_fit_score', 'skill_overlap_count', 'riasec_matches', 'career_anchor_matches', 'explanation')</dl>
+
+</td></tr></table> <p>
+<table class="section">
+<tr class="decor title-decor heading-text">
+<td class="section-title" colspan=3>&nbsp;<br><a name="FitScorer">class <strong>FitScorer</strong></a>(<a href="builtins.html#object">builtins.object</a>)</td></tr>
+    
+<tr><td class="decor title-decor" rowspan=2><span class="code">&nbsp;&nbsp;&nbsp;</span></td>
+<td class="decor title-decor" colspan=2><span class="code"><a href="#FitScorer">FitScorer</a>(config:&nbsp;Optional[src.core.config.StrategistConfig]&nbsp;=&nbsp;None)<br>
+&nbsp;<br>
+Calculates&nbsp;fit&nbsp;scores&nbsp;between&nbsp;candidate&nbsp;profiles&nbsp;and&nbsp;job&nbsp;roles.<br>&nbsp;</span></td></tr>
+<tr><td>&nbsp;</td>
+<td class="singlecolumn">Methods defined here:<br>
+<dl><dt><a name="FitScorer-__init__"><strong>__init__</strong></a>(self, config: Optional[src.core.config.StrategistConfig] = None)</dt><dd><span class="code">Initialize&nbsp;fit&nbsp;scorer&nbsp;with&nbsp;configuration.</span></dd></dl>
+
+<dl><dt><a name="FitScorer-calculate_fit_score"><strong>calculate_fit_score</strong></a>(
+    self,
+    candidate_profile: src.models.skill_vector.CandidateProfile,
+    role: src.models.role_taxonomy.JobRole,
+    role_vector: List[float],
+    aspiration_profile: src.core.fit_scorer.AspirationProfile
+) -&gt; src.core.fit_scorer.FitScoreDetails</dt><dd><span class="code">Calculate&nbsp;comprehensive&nbsp;fit&nbsp;score&nbsp;between&nbsp;candidate&nbsp;and&nbsp;role.</span></dd></dl>
+
+<dl><dt><a name="FitScorer-extract_aspiration_profile"><strong>extract_aspiration_profile</strong></a>(self, master_career_data: Dict[str, Any]) -&gt; src.core.fit_scorer.AspirationProfile</dt><dd><span class="code">Extract&nbsp;aspiration&nbsp;profile&nbsp;from&nbsp;Master&nbsp;Career&nbsp;Database.</span></dd></dl>
+
+<hr>
+Data descriptors defined here:<br>
+<dl><dt><strong>__dict__</strong></dt>
+<dd><span class="code">dictionary&nbsp;for&nbsp;instance&nbsp;variables</span></dd>
+</dl>
+<dl><dt><strong>__weakref__</strong></dt>
+<dd><span class="code">list&nbsp;of&nbsp;weak&nbsp;references&nbsp;to&nbsp;the&nbsp;object</span></dd>
+</dl>
+</td></tr></table></td></tr></table><p>
+<table class="section">
+<tr class="decor data-decor heading-text">
+<td class="section-title" colspan=3>&nbsp;<br><strong class="bigsection">Data</strong></td></tr>
+    
+<tr><td class="decor data-decor"><span class="code">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span></td><td>&nbsp;</td>
+<td class="singlecolumn"><strong>Dict</strong> = typing.Dict<br>
+<strong>List</strong> = typing.List<br>
+<strong>Optional</strong> = typing.Optional<br>
+<strong>Tuple</strong> = typing.Tuple<br>
+<strong>logger</strong> = &lt;Logger src.core.fit_scorer (WARNING)&gt;</td></tr></table>
+</body></html>

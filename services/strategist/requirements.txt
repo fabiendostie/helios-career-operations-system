@@ -1,0 +1,27 @@
+# Web Framework
+fastapi==0.110.0
+uvicorn[standard]==0.27.1
+pydantic==2.6.1
+
+# HTTP Client for service integration
+aiohttp==3.9.3
+
+# AI/ML Libraries for skill vectorization
+sentence-transformers==2.7.0
+numpy==1.26.4
+scikit-learn==1.4.1.post1
+
+# Data processing
+pyyaml==6.0.1
+
+# Development & Testing
+pytest==8.0.2
+pytest-asyncio==0.23.5
+pytest-cov==4.1.0
+httpx==0.27.0  # For testing FastAPI endpoints
+
+# Logging
+structlog==24.1.0
+
+# Caching for distributed deployments
+redis==5.0.1

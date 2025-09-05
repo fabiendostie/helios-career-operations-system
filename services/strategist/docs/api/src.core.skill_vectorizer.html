@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Python: module src.core.skill_vectorizer</title>
+</head><body>
+
+<table class="heading">
+<tr class="heading-text decor">
+<td class="title">&nbsp;<br><strong class="title"><a href="src.html" class="white">src</a>.<a href="src.core.html" class="white">core</a>.skill_vectorizer</strong></td>
+<td class="extra"><a href=".">index</a><br><a href="file:c%3A%5Cusers%5Cfabie%5Cdocuments%5Cprompt_engineering%5Cjob%20seeking%5Chelios-career-operations-system%5Cservices%5Cstrategist%5Csrc%5Ccore%5Cskill_vectorizer.py">c:\users\fabie\documents\prompt_engineering\job seeking\helios-career-operations-system\services\strategist\src\core\skill_vectorizer.py</a></td></tr></table>
+    <p><span class="code">Skill&nbsp;vectorization&nbsp;using&nbsp;sentence&nbsp;transformers&nbsp;for&nbsp;embedding&nbsp;generation.</span></p>
+<p>
+<table class="section">
+<tr class="decor pkg-content-decor heading-text">
+<td class="section-title" colspan=3>&nbsp;<br><strong class="bigsection">Modules</strong></td></tr>
+    
+<tr><td class="decor pkg-content-decor"><span class="code">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span></td><td>&nbsp;</td>
+<td class="singlecolumn"><table><tr><td class="multicolumn"><a href="logging.html">logging</a><br>
+</td><td class="multicolumn"><a href="numpy.html">numpy</a><br>
+</td><td class="multicolumn"><a href="re.html">re</a><br>
+</td><td class="multicolumn"><a href="time.html">time</a><br>
+</td></tr></table></td></tr></table><p>
+<table class="section">
+<tr class="decor index-decor heading-text">
+<td class="section-title" colspan=3>&nbsp;<br><strong class="bigsection">Classes</strong></td></tr>
+    
+<tr><td class="decor index-decor"><span class="code">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span></td><td>&nbsp;</td>
+<td class="singlecolumn"><dl>
+<dt class="heading-text"><a href="builtins.html#object">builtins.object</a>
+</dt><dd>
+<dl>
+<dt class="heading-text"><a href="src.core.skill_vectorizer.html#SkillVectorizer">SkillVectorizer</a>
+</dt></dl>
+</dd>
+</dl>
+ <p>
+<table class="section">
+<tr class="decor title-decor heading-text">
+<td class="section-title" colspan=3>&nbsp;<br><a name="SkillVectorizer">class <strong>SkillVectorizer</strong></a>(<a href="builtins.html#object">builtins.object</a>)</td></tr>
+    
+<tr><td class="decor title-decor" rowspan=2><span class="code">&nbsp;&nbsp;&nbsp;</span></td>
+<td class="decor title-decor" colspan=2><span class="code"><a href="#SkillVectorizer">SkillVectorizer</a>(model_name:&nbsp;str&nbsp;=&nbsp;'all-MiniLM-L6-v2',&nbsp;enable_redis:&nbsp;bool&nbsp;=&nbsp;True)<br>
+&nbsp;<br>
+Handles&nbsp;skill&nbsp;text&nbsp;to&nbsp;vector&nbsp;conversion&nbsp;using&nbsp;sentence&nbsp;transformers.<br>&nbsp;</span></td></tr>
+<tr><td>&nbsp;</td>
+<td class="singlecolumn">Methods defined here:<br>
+<dl><dt><a name="SkillVectorizer-__init__"><strong>__init__</strong></a>(self, model_name: str = 'all-MiniLM-L6-v2', enable_redis: bool = True)</dt><dd><span class="code">Initialize&nbsp;vectorizer&nbsp;with&nbsp;specified&nbsp;model.<br>
+&nbsp;<br>
+Args:<br>
+&nbsp;&nbsp;&nbsp;&nbsp;model_name:&nbsp;Name&nbsp;of&nbsp;the&nbsp;sentence&nbsp;transformer&nbsp;model&nbsp;to&nbsp;use<br>
+&nbsp;&nbsp;&nbsp;&nbsp;enable_redis:&nbsp;Whether&nbsp;to&nbsp;enable&nbsp;Redis&nbsp;caching&nbsp;for&nbsp;distributed&nbsp;deployments</span></dd></dl>
+
+<dl><dt><a name="SkillVectorizer-calculate_similarity"><strong>calculate_similarity</strong></a>(self, vector1: List[float], vector2: List[float]) -&gt; float</dt><dd><span class="code">Calculate&nbsp;cosine&nbsp;similarity&nbsp;between&nbsp;two&nbsp;vectors.</span></dd></dl>
+
+<dl><dt>async <a name="SkillVectorizer-find_similar_skills"><strong>find_similar_skills</strong></a>(
+    self,
+    query_vector: List[float],
+    skill_database: List[src.models.skill_vector.SkillVector],
+    top_k: int = 10
+) -&gt; List[src.models.skill_vector.VectorSearchResult]</dt><dd><span class="code">Find&nbsp;most&nbsp;similar&nbsp;skills&nbsp;to&nbsp;a&nbsp;query&nbsp;vector.</span></dd></dl>
+
+<dl><dt>async <a name="SkillVectorizer-generate_candidate_vector"><strong>generate_candidate_vector</strong></a>(self, master_career_data: Dict[str, Any]) -&gt; src.models.skill_vector.CandidateProfile</dt><dd><span class="code">Generate&nbsp;aggregated&nbsp;candidate&nbsp;vector&nbsp;from&nbsp;Master&nbsp;Career&nbsp;Database.</span></dd></dl>
+
+<dl><dt>async <a name="SkillVectorizer-generate_skill_embeddings"><strong>generate_skill_embeddings</strong></a>(self, skills: List[str]) -&gt; List[src.models.skill_vector.SkillEmbedding]</dt><dd><span class="code">Generate&nbsp;embeddings&nbsp;for&nbsp;a&nbsp;list&nbsp;of&nbsp;skills.</span></dd></dl>
+
+<dl><dt><a name="SkillVectorizer-get_cache_stats"><strong>get_cache_stats</strong></a>(self) -&gt; Dict[str, Any]</dt><dd><span class="code">Get&nbsp;caching&nbsp;statistics.</span></dd></dl>
+
+<dl><dt>async <a name="SkillVectorizer-initialize"><strong>initialize</strong></a>(self) -&gt; None</dt><dd><span class="code">Async&nbsp;initialization&nbsp;of&nbsp;the&nbsp;sentence&nbsp;transformer&nbsp;model.</span></dd></dl>
+
+<hr>
+Data descriptors defined here:<br>
+<dl><dt><strong>__dict__</strong></dt>
+<dd><span class="code">dictionary&nbsp;for&nbsp;instance&nbsp;variables</span></dd>
+</dl>
+<dl><dt><strong>__weakref__</strong></dt>
+<dd><span class="code">list&nbsp;of&nbsp;weak&nbsp;references&nbsp;to&nbsp;the&nbsp;object</span></dd>
+</dl>
+</td></tr></table></td></tr></table><p>
+<table class="section">
+<tr class="decor data-decor heading-text">
+<td class="section-title" colspan=3>&nbsp;<br><strong class="bigsection">Data</strong></td></tr>
+    
+<tr><td class="decor data-decor"><span class="code">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span></td><td>&nbsp;</td>
+<td class="singlecolumn"><strong>CACHE_AVAILABLE</strong> = True<br>
+<strong>DEPENDENCIES_AVAILABLE</strong> = True<br>
+<strong>Dict</strong> = typing.Dict<br>
+<strong>List</strong> = typing.List<br>
+<strong>Optional</strong> = typing.Optional<br>
+<strong>Tuple</strong> = typing.Tuple<br>
+<strong>logger</strong> = &lt;Logger src.core.skill_vectorizer (WARNING)&gt;</td></tr></table>
+</body></html>

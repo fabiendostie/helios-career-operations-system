@@ -1,0 +1,36 @@
+{
+  "total_roles": 1820,
+  "industries": {
+    "Technology": 200,
+    "Finance": 200,
+    "Healthcare": 200,
+    "Marketing": 190,
+    "Education": 190,
+    "Manufacturing": 200,
+    "Consulting": 150,
+    "Legal": 170,
+    "Sales": 160,
+    "Human Resources": 160
+  },
+  "experience_levels": {
+    "Entry Level": 276,
+    "Mid Level (3-7 years)": 659,
+    "Senior (7-12 years)": 598,
+    "Junior (1-3 years)": 270,
+    "Executive (12+ years)": 17
+  },
+  "riasec_distribution": {
+    "Investigative": 927,
+    "Realistic": 180,
+    "Enterprising": 964,
+    "Social": 846,
+    "Conventional": 519,
+    "Artistic": 204
+  },
+  "salary_statistics": {
+    "min": 48000,
+    "max": 312500,
+    "average": 109321
+  },
+  "unique_skills": 47
+}
