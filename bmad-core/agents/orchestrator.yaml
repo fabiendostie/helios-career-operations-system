@@ -1,0 +1,164 @@
+# BMAD Agent Configuration
+# HELIOS Orchestrator Agent (Story 2.1 - SKELETON REQUIRING REMEDIATION)
+
+agent_id: "ORCHESTRATOR"
+version: "1.0.0"
+status: "skeleton"  # ACCURATE STATUS - NOT OPERATIONAL
+
+metadata:
+  name: "HELIOS Orchestrator"
+  description: "Main orchestrator maintaining session state and coordinating all agents"
+  story: "2.1"
+  epic: "Epic 2: Intelligence"
+  priority: "high"
+  last_updated: "2025-09-06"
+  actual_functionality: "ZERO - Cannot import due to missing dependencies"
+
+capabilities:
+  - "Session state management across all agents"
+  - "Agent coordination and workflow orchestration"
+  - "Command processing and validation"
+  - "Database integration with PostgreSQL/SQLite"
+  - "RESTful API endpoints for service communication"
+  - "Structured logging and monitoring"
+
+integration:
+  service_location: "services/orchestrator/"
+  api_endpoint: "/api/v1/orchestrate"
+  health_check: "/health"
+  
+  dependencies:
+    - "PROFILE_INGESTOR"
+    - "STRATEGIST" 
+    - "ANALYST"
+    - "ARCHITECT"
+    - "EDITOR"
+    
+  input_formats:
+    - "session_commands"
+    - "agent_responses"
+    
+  output_format:
+    type: "json"
+    schema: "orchestration_response"
+
+commands:
+  - command: "/session/start"
+    description: "Initialize new user session"
+    parameters:
+      - name: "user_id"
+        type: "string"
+        required: true
+      - name: "session_config"
+        type: "object"
+        required: false
+        
+  - command: "/agent/coordinate"
+    description: "Coordinate workflow between agents"
+    parameters:
+      - name: "workflow_type"
+        type: "string"
+        required: true
+      - name: "agent_sequence"
+        type: "array"
+        required: true
+
+knowledge_base:
+  location: "knowledge-base/agent-knowledge/orchestrator/"
+  documents:
+    - "session-management.md"
+    - "agent-coordination.md"
+    - "workflow-patterns.md"
+
+# CRITICAL: ACCURATE DEPENDENCY STATUS
+dependencies:
+  python_version: ">=3.11"
+  packages:
+    - "fastapi>=0.104.1"           # MISSING - Core web framework
+    - "sqlalchemy>=2.0.0"         # MISSING - Database ORM
+    - "pydantic-settings>=2.0.0"  # MISSING - Configuration management
+    - "aiohttp>=3.8.0"            # MISSING - HTTP client for inter-service communication
+    - "pythonjsonlogger>=2.0.0"   # MISSING - Structured logging
+    - "uvicorn>=0.24.0"           # MISSING - ASGI server
+    - "asyncpg>=0.29.0"           # MISSING - PostgreSQL async driver
+    - "redis>=5.0.0"              # MISSING - Session caching
+  
+  external_services:
+    - name: "postgresql"
+      endpoint: "postgresql://localhost:5432/helios"
+      auth: "required"
+    - name: "redis"
+      endpoint: "redis://localhost:6379/0"
+      auth: "optional"
+
+performance:
+  max_concurrent_sessions: 100
+  response_time_target: "500ms"
+  memory_usage_limit: "1GB"
+  session_timeout: "24h"
+
+monitoring:
+  logs: "services/orchestrator/logs/"
+  metrics:
+    - "active_sessions_total"
+    - "agent_coordination_time_seconds"
+    - "session_duration_seconds"
+    - "error_rate_per_endpoint"
+
+# MANDATORY VERIFICATION REQUIREMENTS
+verification:
+  status: "not_verified"
+  last_verification_date: null
+  verification_results_file: null
+  
+  # Current blocking issues (ACCURATE)
+  blocking_issues:
+    - "Cannot import main module - missing fastapi"
+    - "Cannot import database components - missing sqlalchemy"
+    - "Cannot import configuration - missing pydantic-settings"
+    - "Cannot import HTTP client - missing aiohttp"
+    - "Cannot import logging - missing pythonjsonlogger"
+    - "Cannot start service - missing uvicorn"
+  
+  required_stages:
+    - "stage_1_dependency_validation"
+    - "stage_2_import_verification"
+    - "stage_3_service_startup"
+    - "stage_4_test_execution"
+    - "stage_5_functional_verification"
+  
+  verify_commands:
+    full_verification: "python bmad-core/scripts/verify-agent.py ORCHESTRATOR"
+    dependencies_only: "python bmad-core/scripts/verify-dependencies.py ORCHESTRATOR"
+  
+  status_change_rules:
+    pending_to_in_progress: 
+      verification_required: false
+    in_progress_to_completed:
+      verification_required: true
+      min_pass_rate: 80
+      all_dependencies_required: true
+      blocking_issues_allowed: 0
+
+testing:
+  unit_tests: "services/orchestrator/tests/"
+  integration_tests: "tests/integration/test_orchestrator.py"
+  coverage_target: "85%"
+  
+  # Current test status (ACCURATE)
+  current_status: "Cannot execute - dependency failures prevent test imports"
+  test_count_estimate: 25
+  min_pass_rate: 80
+  execution_timeout: 120
+  dependencies_must_be_satisfied: true
+
+# REMEDIATION PLAN
+remediation:
+  priority: "HIGH"
+  estimated_effort: "2-4 hours"
+  steps:
+    1: "Install all missing dependencies via pip"
+    2: "Verify all imports work correctly"
+    3: "Run verification script and achieve 100% dependency satisfaction"
+    4: "Execute test suite and achieve 80%+ pass rate"
+    5: "Update status to 'completed' only after verification passes"

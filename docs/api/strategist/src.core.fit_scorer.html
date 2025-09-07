@@ -1,0 +1,81 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+<html><head><title>Python: module src.core.fit_scorer</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+</head><body bgcolor="#f0f0f8">
+
+<table width="100%" cellspacing=0 cellpadding=2 border=0 summary="heading">
+<tr bgcolor="#7799ee">
+<td valign=bottom>&nbsp;<br>
+<font color="#ffffff" face="helvetica, arial">&nbsp;<br><big><big><strong>src.core.fit_scorer</strong></big></big></font></td>
+<td align=right valign=bottom
+><font color="#ffffff" face="helvetica, arial">C:\Users\fabie\Documents\Prompt_Engineering\job seeking\helios-career-operations-system\services\strategist\src\core\fit_scorer.py</font></td></tr></table>
+
+    <p><tt>Fit scoring algorithm that combines skill similarity and aspiration alignment.</tt></p>
+
+<p>
+<table width="100%" cellspacing=0 cellpadding=2 border=0 summary="section">
+<tr bgcolor="#ffc8d8">
+<td colspan=3 valign=bottom>&nbsp;<br>
+<font color="#000000" face="helvetica, arial"><a name="Classes">Classes</a></font></td></tr>
+
+<tr><td bgcolor="#ffc8d8"><tt>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</tt></td><td>&nbsp;</td>
+<td width="100%"><dl>
+<dt><font face="helvetica, arial"><strong>FitScoreDetails</strong></font></dt>
+<dd><tt>Detailed breakdown of fit score calculation....</tt></dd></dl></td></tr>
+<tr><td bgcolor="#ffc8d8"><tt>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</tt></td><td>&nbsp;</td>
+<td width="100%"><dl>
+<dt><font face="helvetica, arial"><strong>AspirationProfile</strong></font></dt>
+<dd><tt>User's aspiration profile extracted from Master Career Database....</tt></dd></dl></td></tr>
+<tr><td bgcolor="#ffc8d8"><tt>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</tt></td><td>&nbsp;</td>
+<td width="100%"><dl>
+<dt><font face="helvetica, arial"><strong>FitScorer</strong></font></dt>
+<dd><tt>Calculates fit scores between candidate profiles and job roles....</tt></dd></dl></td></tr></table></p>
+<p>
+<table width="100%" cellspacing=0 cellpadding=2 border=0 summary="section">
+<tr bgcolor="#eeaa77">
+<td colspan=3 valign=bottom>&nbsp;<br>
+<font color="#ffffff" face="helvetica, arial"><a name="Functions">Functions</a></font></td></tr>
+
+<tr><td bgcolor="#eeaa77"><tt>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</tt></td><td>&nbsp;</td>
+<td width="100%"><dl><dt><a name="__init__"><strong>__init__</strong></a>(self, config)</dt>
+<dd><tt>Initialize fit scorer with configuration....</tt></dd></dl></td></tr>
+<tr><td bgcolor="#eeaa77"><tt>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</tt></td><td>&nbsp;</td>
+<td width="100%"><dl><dt><a name="calculate_fit_score"><strong>calculate_fit_score</strong></a>(self, candidate_profile, role, role_vector, aspiration_profile)</dt>
+<dd><tt>Calculate comprehensive fit score between candidate and role....</tt></dd></dl></td></tr>
+<tr><td bgcolor="#eeaa77"><tt>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</tt></td><td>&nbsp;</td>
+<td width="100%"><dl><dt><a name="_calculate_skill_similarity"><strong>_calculate_skill_similarity</strong></a>(self, candidate_vector, role_vector)</dt>
+<dd><tt>Calculate cosine similarity between candidate and role vectors....</tt></dd></dl></td></tr>
+<tr><td bgcolor="#eeaa77"><tt>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</tt></td><td>&nbsp;</td>
+<td width="100%"><dl><dt><a name="_calculate_aspiration_alignment"><strong>_calculate_aspiration_alignment</strong></a>(self, aspiration_profile, role)</dt>
+<dd><tt>Calculate alignment between user aspirations and role characteristics....</tt></dd></dl></td></tr>
+<tr><td bgcolor="#eeaa77"><tt>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</tt></td><td>&nbsp;</td>
+<td width="100%"><dl><dt><a name="_calculate_riasec_alignment"><strong>_calculate_riasec_alignment</strong></a>(self, user_riasec, role_riasec)</dt>
+<dd><tt>Calculate RIASEC personality type alignment....</tt></dd></dl></td></tr>
+<tr><td bgcolor="#eeaa77"><tt>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</tt></td><td>&nbsp;</td>
+<td width="100%"><dl><dt><a name="_calculate_career_anchor_alignment"><strong>_calculate_career_anchor_alignment</strong></a>(self, user_anchors, role_anchors)</dt>
+<dd><tt>Calculate career anchor alignment based on Schein's framework....</tt></dd></dl></td></tr>
+<tr><td bgcolor="#eeaa77"><tt>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</tt></td><td>&nbsp;</td>
+<td width="100%"><dl><dt><a name="_calculate_interest_alignment"><strong>_calculate_interest_alignment</strong></a>(self, user_interests, role)</dt>
+<dd><tt>Calculate alignment between user interests and role characteristics....</tt></dd></dl></td></tr>
+<tr><td bgcolor="#eeaa77"><tt>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</tt></td><td>&nbsp;</td>
+<td width="100%"><dl><dt><a name="_count_skill_overlap"><strong>_count_skill_overlap</strong></a>(self, candidate_skills, role)</dt>
+<dd><tt>Count overlapping skills between candidate and role....</tt></dd></dl></td></tr>
+<tr><td bgcolor="#eeaa77"><tt>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</tt></td><td>&nbsp;</td>
+<td width="100%"><dl><dt><a name="_find_riasec_matches"><strong>_find_riasec_matches</strong></a>(self, user_riasec, role)</dt>
+<dd><tt>Find matching RIASEC codes between user and role....</tt></dd></dl></td></tr>
+<tr><td bgcolor="#eeaa77"><tt>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</tt></td><td>&nbsp;</td>
+<td width="100%"><dl><dt><a name="_find_career_anchor_matches"><strong>_find_career_anchor_matches</strong></a>(self, user_anchors, role)</dt>
+<dd><tt>Find matching career anchors between user and role....</tt></dd></dl></td></tr>
+<tr><td bgcolor="#eeaa77"><tt>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</tt></td><td>&nbsp;</td>
+<td width="100%"><dl><dt><a name="_generate_score_explanation"><strong>_generate_score_explanation</strong></a>(self, skill_score, aspiration_score, weighted_score, candidate_profile, role, aspiration_profile)</dt>
+<dd><tt>Generate human-readable explanation of the fit score....</tt></dd></dl></td></tr>
+<tr><td bgcolor="#eeaa77"><tt>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</tt></td><td>&nbsp;</td>
+<td width="100%"><dl><dt><a name="extract_aspiration_profile"><strong>extract_aspiration_profile</strong></a>(self, master_career_data)</dt>
+<dd><tt>Extract aspiration profile from Master Career Database....</tt></dd></dl></td></tr>
+<tr><td bgcolor="#eeaa77"><tt>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</tt></td><td>&nbsp;</td>
+<td width="100%"><dl><dt><a name="_infer_riasec_codes"><strong>_infer_riasec_codes</strong></a>(self, master_career_data)</dt>
+<dd><tt>Infer RIASEC codes from user's career data and interests....</tt></dd></dl></td></tr>
+<tr><td bgcolor="#eeaa77"><tt>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</tt></td><td>&nbsp;</td>
+<td width="100%"><dl><dt><a name="_infer_career_anchors"><strong>_infer_career_anchors</strong></a>(self, master_career_data)</dt>
+<dd><tt>Infer career anchors from user's motivators and work patterns....</tt></dd></dl></td></tr></table></p>
+</body></html>

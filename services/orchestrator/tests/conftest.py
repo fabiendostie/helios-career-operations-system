@@ -1,7 +1,9 @@
 """Pytest configuration and shared fixtures."""
 
 import pytest
-from unittest.mock import AsyncMock, Mock
+from unittest.mock import AsyncMock, Mock, patch
+import asyncio
+from datetime import datetime
 
 # Try to import FastAPI dependencies, skip if not available (during initial setup)
 try:

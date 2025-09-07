@@ -1,0 +1,198 @@
+# HELIOS Orchestrator Service Deployment
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: helios-orchestrator
+  namespace: helios
+  labels:
+    app.kubernetes.io/name: helios
+    app.kubernetes.io/component: orchestrator
+    app.kubernetes.io/version: "1.0.0"
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      app.kubernetes.io/name: helios-orchestrator
+      app.kubernetes.io/component: orchestrator
+  template:
+    metadata:
+      labels:
+        app.kubernetes.io/name: helios-orchestrator
+        app.kubernetes.io/component: orchestrator
+    spec:
+      securityContext:
+        runAsNonRoot: true
+        runAsUser: 1000
+        runAsGroup: 1000
+        fsGroup: 1000
+      containers:
+      - name: orchestrator
+        image: helios/orchestrator:latest
+        imagePullPolicy: IfNotPresent
+        ports:
+        - containerPort: 8000
+          name: http
+        env:
+        - name: DEBUG
+          value: "false"
+        - name: LOG_LEVEL
+          valueFrom:
+            configMapKeyRef:
+              name: helios-config
+              key: LOG_LEVEL
+        - name: DATABASE_URL
+          value: "postgresql+asyncpg://$(POSTGRES_USER):$(POSTGRES_PASSWORD)@helios-postgres:5432/$(POSTGRES_DB)"
+        - name: REDIS_URL
+          value: "redis://:$(REDIS_PASSWORD)@helios-redis:6379/0"
+        - name: POSTGRES_USER
+          valueFrom:
+            secretKeyRef:
+              name: helios-postgres-secret
+              key: POSTGRES_USER
+        - name: POSTGRES_PASSWORD
+          valueFrom:
+            secretKeyRef:
+              name: helios-postgres-secret
+              key: POSTGRES_PASSWORD
+        - name: POSTGRES_DB
+          valueFrom:
+            configMapKeyRef:
+              name: helios-config
+              key: POSTGRES_DB
+        - name: REDIS_PASSWORD
+          valueFrom:
+            secretKeyRef:
+              name: helios-redis-secret
+              key: REDIS_PASSWORD
+        - name: PROFILE_INGESTOR_URL
+          valueFrom:
+            configMapKeyRef:
+              name: helios-config
+              key: PROFILE_INGESTOR_URL
+        - name: STRATEGIST_URL
+          valueFrom:
+            configMapKeyRef:
+              name: helios-config
+              key: STRATEGIST_URL
+        - name: ANALYST_URL
+          valueFrom:
+            configMapKeyRef:
+              name: helios-config
+              key: ANALYST_URL
+        - name: SESSION_TIMEOUT_MINUTES
+          valueFrom:
+            configMapKeyRef:
+              name: helios-config
+              key: SESSION_TIMEOUT_MINUTES
+        - name: CORS_ORIGINS
+          valueFrom:
+            configMapKeyRef:
+              name: helios-config
+              key: CORS_ORIGINS
+        volumeMounts:
+        - name: data
+          mountPath: /app/data
+        - name: logs
+          mountPath: /app/logs
+        livenessProbe:
+          httpGet:
+            path: /health/live
+            port: 8000
+          initialDelaySeconds: 30
+          periodSeconds: 30
+          timeoutSeconds: 10
+          failureThreshold: 3
+        readinessProbe:
+          httpGet:
+            path: /health/ready
+            port: 8000
+          initialDelaySeconds: 15
+          periodSeconds: 10
+          timeoutSeconds: 5
+          failureThreshold: 3
+        startupProbe:
+          httpGet:
+            path: /health
+            port: 8000
+          initialDelaySeconds: 10
+          periodSeconds: 10
+          timeoutSeconds: 5
+          failureThreshold: 12
+        resources:
+          limits:
+            cpu: "2"
+            memory: "2Gi"
+          requests:
+            cpu: "500m"
+            memory: "1Gi"
+        securityContext:
+          allowPrivilegeEscalation: false
+          capabilities:
+            drop:
+            - ALL
+      volumes:
+      - name: data
+        emptyDir: {}
+      - name: logs
+        emptyDir: {}
+      restartPolicy: Always
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: helios-orchestrator
+  namespace: helios
+  labels:
+    app.kubernetes.io/name: helios
+    app.kubernetes.io/component: orchestrator
+spec:
+  type: ClusterIP
+  selector:
+    app.kubernetes.io/name: helios-orchestrator
+    app.kubernetes.io/component: orchestrator
+  ports:
+  - port: 8000
+    targetPort: 8000
+    name: http
+---
+apiVersion: autoscaling/v2
+kind: HorizontalPodAutoscaler
+metadata:
+  name: helios-orchestrator-hpa
+  namespace: helios
+  labels:
+    app.kubernetes.io/name: helios
+    app.kubernetes.io/component: orchestrator
+spec:
+  scaleTargetRef:
+    apiVersion: apps/v1
+    kind: Deployment
+    name: helios-orchestrator
+  minReplicas: 3
+  maxReplicas: 20
+  metrics:
+  - type: Resource
+    resource:
+      name: cpu
+      target:
+        type: Utilization
+        averageUtilization: 70
+  - type: Resource
+    resource:
+      name: memory
+      target:
+        type: Utilization
+        averageUtilization: 80
+  behavior:
+    scaleUp:
+      stabilizationWindowSeconds: 60
+      policies:
+      - type: Percent
+        value: 50
+        periodSeconds: 60
+    scaleDown:
+      stabilizationWindowSeconds: 300
+      policies:
+      - type: Percent
+        value: 10
+        periodSeconds: 60

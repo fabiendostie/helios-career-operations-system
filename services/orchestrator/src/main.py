@@ -12,7 +12,7 @@ from .core.config import settings
 from .core.database import db_manager
 from .core.background_tasks import background_tasks
 from .integrations.profile_ingestor import close_profile_ingestor_client
-from .api import health, sessions, commands
+from .api import health, sessions, commands, pipeline
 from .utils.logging_config import get_logger, correlation_id_var
 
 
@@ -93,6 +93,7 @@ def create_app() -> FastAPI:
     app.include_router(health.router, prefix="/health", tags=["health"])
     app.include_router(sessions.router, prefix="/sessions", tags=["sessions"])
     app.include_router(commands.router, prefix="/commands", tags=["commands"])
+    app.include_router(pipeline.router, tags=["pipeline"])
     
     # Application lifecycle events
     @app.on_event("startup")

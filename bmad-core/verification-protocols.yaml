@@ -1,0 +1,186 @@
+# BMAD VERIFICATION PROTOCOLS
+# CRITICAL: Mandatory verification gates for all agents
+# NO AGENT can claim completion without passing ALL verification stages
+
+version: "2.0.0"
+enforcement_level: "MANDATORY"
+last_updated: "2025-01-15"
+
+# VERIFICATION STAGES - ALL MUST PASS
+verification_stages:
+  stage_1_dependency_validation:
+    name: "Dependency Validation"
+    description: "Verify all dependencies are installed and importable"
+    mandatory: true
+    failure_action: "BLOCK_STATUS_CHANGE"
+    
+    checks:
+      - name: "python_packages"
+        type: "import_test"
+        command: "python -c 'import {package}'"
+        failure_threshold: 0  # Zero failures allowed
+        
+      - name: "external_models"
+        type: "model_availability" 
+        command: "python -c 'import spacy; spacy.load(\"{model}\")'"
+        failure_threshold: 0
+        
+      - name: "database_connectivity"
+        type: "connection_test"
+        timeout: 10  # seconds
+        failure_threshold: 0
+        
+  stage_2_import_verification:
+    name: "Module Import Verification"
+    description: "Verify all service modules can be imported without errors"
+    mandatory: true
+    failure_action: "BLOCK_STATUS_CHANGE"
+    
+    checks:
+      - name: "main_module_import"
+        command: "cd {service_location} && python -c 'import src.main'"
+        failure_threshold: 0
+        
+      - name: "core_components_import"
+        command: "cd {service_location} && python -c 'from src.components import *'"
+        failure_threshold: 0
+        
+  stage_3_service_startup:
+    name: "Service Startup Verification"
+    description: "Verify service can start and respond to health checks"
+    mandatory: true
+    failure_action: "BLOCK_STATUS_CHANGE"
+    
+    checks:
+      - name: "health_endpoint"
+        type: "http_check"
+        endpoint: "{health_check_url}"
+        expected_status: 200
+        timeout: 30
+        failure_threshold: 0
+        
+      - name: "api_endpoint_basic"
+        type: "http_check" 
+        endpoint: "{api_endpoint}/status"
+        expected_status: [200, 404]  # 404 acceptable if not implemented
+        timeout: 30
+        failure_threshold: 0
+        
+  stage_4_test_execution:
+    name: "Test Suite Execution"
+    description: "Run comprehensive test suite with minimum pass rate"
+    mandatory: true
+    failure_action: "BLOCK_STATUS_CHANGE"
+    
+    checks:
+      - name: "unit_tests"
+        command: "cd {service_location} && python -m pytest tests/ -v --tb=short"
+        min_pass_rate: 80  # 80% minimum pass rate
+        coverage_required: false  # Optional for now
+        
+      - name: "integration_tests"
+        command: "cd {service_location} && python -m pytest tests/integration/ -v"
+        min_pass_rate: 70  # Lower threshold for integration tests
+        optional: true  # Can be skipped if no integration tests exist
+        
+  stage_5_functional_verification:
+    name: "Functional Verification"
+    description: "Verify core functionality works end-to-end"
+    mandatory: true
+    failure_action: "BLOCK_STATUS_CHANGE"
+    
+    checks:
+      - name: "core_functionality"
+        type: "functional_test"
+        description: "Execute primary agent function with sample data"
+        timeout: 60
+        failure_threshold: 0
+        
+# STATUS GATES - Prevent false completion claims
+status_gates:
+  pending_to_in_progress:
+    required_stages: []  # No verification needed to start work
+    auto_transition: true
+    
+  in_progress_to_completed:
+    required_stages: 
+      - "stage_1_dependency_validation"
+      - "stage_2_import_verification"
+      - "stage_3_service_startup"
+      - "stage_4_test_execution"
+      - "stage_5_functional_verification"
+    auto_transition: false  # Manual verification required
+    verification_required: true
+    approver_roles: ["bmad-master", "qa-agent"]
+    
+  completed_rollback_conditions:
+    - "dependency_check_failure"
+    - "import_failure"
+    - "service_startup_failure"
+    - "test_pass_rate_below_threshold"
+    
+# AUTOMATED VERIFICATION COMMANDS
+verification_commands:
+  verify_agent:
+    description: "Run full verification suite for an agent"
+    command: "python bmad-core/scripts/verify-agent.py {agent_id}"
+    
+  verify_dependencies:
+    description: "Check all dependencies for an agent"
+    command: "python bmad-core/scripts/verify-dependencies.py {agent_id}"
+    
+  verify_imports:
+    description: "Test all module imports for an agent"
+    command: "python bmad-core/scripts/verify-imports.py {agent_id}"
+    
+  verify_service:
+    description: "Test service startup and health endpoints"
+    command: "python bmad-core/scripts/verify-service.py {agent_id}"
+    
+  verify_tests:
+    description: "Run test suite with pass rate verification"
+    command: "python bmad-core/scripts/verify-tests.py {agent_id}"
+
+# FAILURE HANDLING
+failure_handling:
+  dependency_failures:
+    action: "Generate pip install command"
+    auto_fix: false
+    escalation: "bmad-master"
+    
+  import_failures:
+    action: "Log detailed error + suggested fixes"
+    auto_fix: false
+    escalation: "development-agent"
+    
+  service_failures:
+    action: "Check logs + port conflicts + configuration"
+    auto_fix: false
+    escalation: "infrastructure-agent"
+    
+  test_failures:
+    action: "Report failing tests + coverage analysis"
+    auto_fix: false
+    escalation: "qa-agent"
+
+# REPORTING
+reporting:
+  verification_log: "bmad-core/logs/verification-{date}.log"
+  status_tracking: "bmad-core/status/agent-verification-status.json"
+  failure_reports: "bmad-core/reports/verification-failures.md"
+  
+# ENFORCEMENT RULES
+enforcement:
+  status_change_validation: true
+  auto_rollback_on_failure: true
+  prevent_false_claims: true
+  require_evidence: true
+  audit_trail: true
+  
+# EXEMPTIONS (Use sparingly!)
+exemptions:
+  emergency_bypass:
+    enabled: false
+    requires_approval: ["bmad-master", "project-owner"]
+    audit_required: true
+    auto_expire: "24h"

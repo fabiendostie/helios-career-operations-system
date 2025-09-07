@@ -1,0 +1,175 @@
+# BMAD Agent Configuration
+# ANALYST Agent (Story 2.3 - SKELETON REQUIRING REMEDIATION)
+
+agent_id: "ANALYST"
+version: "1.0.0"
+status: "skeleton"  # ACCURATE STATUS - NOT OPERATIONAL
+
+metadata:
+  name: "Market Analyst"
+  description: "Market correlation & resume optimization through 6-step analytical pipeline"
+  story: "2.3"
+  epic: "Epic 2: Intelligence"
+  priority: "high"
+  last_updated: "2025-09-06"
+  actual_functionality: "ZERO - Cannot import due to missing analytics dependencies"
+
+capabilities:
+  - "6-step resume optimization pipeline"
+  - "Advanced NLP resume deconstruction with entity recognition"
+  - "Market correlation analysis using TF-IDF vectorization"
+  - "ATS simulation engine with scoring algorithms"
+  - "Skill gap analysis with actionable recommendations"
+  - "Career path inference using market data"
+
+integration:
+  service_location: "services/analyst/"
+  api_endpoint: "/api/v1/analyze"
+  health_check: "/health"
+  
+  dependencies:
+    - "PROFILE_INGESTOR"  # Requires processed resume data
+    - "STRATEGIST"        # May use career strategies for analysis
+    
+  input_formats:
+    - "master_career_database"
+    - "job_market_data"
+    
+  output_format:
+    type: "json"
+    schema: "analysis_report"
+
+commands:
+  - command: "/analyze/resume"
+    description: "Run complete 6-step resume analysis pipeline"
+    parameters:
+      - name: "profile_data"
+        type: "object"
+        required: true
+      - name: "target_roles"
+        type: "array"
+        required: false
+      - name: "analysis_depth"
+        type: "string"
+        default: "comprehensive"
+        
+  - command: "/simulate/ats"
+    description: "Simulate ATS scoring for resume optimization"
+    parameters:
+      - name: "resume_content"
+        type: "string"
+        required: true
+      - name: "job_description"
+        type: "string"
+        required: true
+
+knowledge_base:
+  location: "knowledge-base/agent-knowledge/analyst/"
+  documents:
+    - "6-step-analysis-pipeline.md"
+    - "ats-simulation-algorithms.md"
+    - "market-correlation-methods.md"
+
+# CRITICAL: ACCURATE DEPENDENCY STATUS
+dependencies:
+  python_version: ">=3.11"
+  packages:
+    - "scikit-learn>=1.3.0"           # MISSING - Core ML algorithms
+    - "sentence-transformers>=2.2.2"  # MISSING - NLP embeddings
+    - "fastapi>=0.104.1"              # MISSING - API framework
+    - "pandas>=2.1.0"                 # MISSING - Data analysis
+    - "numpy>=1.24.0"                 # MISSING - Numerical computing
+    - "spacy>=4.0.2"                  # SHOULD BE AVAILABLE - NLP processing
+    - "nltk>=3.8.0"                   # MISSING - Text processing
+    - "matplotlib>=3.7.0"             # MISSING - Visualization
+    - "seaborn>=0.12.0"               # MISSING - Statistical plots
+  
+  models:
+    - "en_core_web_sm"                # Required for NLP processing
+    - "fr_core_news_sm"               # Required for bilingual support
+  
+  external_services:
+    - name: "job_market_api"
+      endpoint: "https://api.example.com/jobs"
+      auth: "required"
+
+performance:
+  max_concurrent_requests: 5   # Analytics processing is intensive
+  response_time_target: "10s"  # Complex 6-step analysis
+  memory_usage_limit: "2GB"    # Large datasets and models
+  analysis_timeout: "60s"
+
+monitoring:
+  logs: "services/analyst/logs/"
+  metrics:
+    - "analyses_completed_total"
+    - "analysis_pipeline_time_seconds"
+    - "ats_simulations_total"
+    - "market_correlation_accuracy"
+
+# MANDATORY VERIFICATION REQUIREMENTS
+verification:
+  status: "not_verified"
+  last_verification_date: null
+  verification_results_file: null
+  
+  # Current blocking issues (ACCURATE)
+  blocking_issues:
+    - "Cannot import main module - missing scikit-learn"
+    - "Cannot import NLP components - missing sentence-transformers"
+    - "Cannot import API framework - missing fastapi"
+    - "Cannot import data analysis - missing pandas, numpy"
+    - "Cannot import text processing - missing nltk"
+    - "Analytics pipeline completely non-functional"
+  
+  required_stages:
+    - "stage_1_dependency_validation"
+    - "stage_2_import_verification"
+    - "stage_3_service_startup"
+    - "stage_4_test_execution"
+    - "stage_5_functional_verification"
+  
+  verify_commands:
+    full_verification: "python bmad-core/scripts/verify-agent.py ANALYST"
+    dependencies_only: "python bmad-core/scripts/verify-dependencies.py ANALYST"
+  
+  status_change_rules:
+    pending_to_in_progress: 
+      verification_required: false
+    in_progress_to_completed:
+      verification_required: true
+      min_pass_rate: 80
+      all_dependencies_required: true
+      blocking_issues_allowed: 0
+
+testing:
+  unit_tests: "services/analyst/tests/"
+  integration_tests: "tests/integration/test_analyst.py"
+  coverage_target: "85%"
+  
+  # Current test status (ACCURATE)
+  current_status: "Cannot execute - analytics dependency failures prevent test imports"
+  test_count_estimate: 52
+  min_pass_rate: 80
+  execution_timeout: 180  # Analytics tests take time
+  dependencies_must_be_satisfied: true
+
+# REMEDIATION PLAN
+remediation:
+  priority: "HIGH"
+  estimated_effort: "3-5 hours"
+  steps:
+    1: "Install analytics dependencies (scikit-learn, pandas, numpy)"
+    2: "Install NLP dependencies (sentence-transformers, nltk)"
+    3: "Install API and visualization dependencies"
+    4: "Verify spaCy models are available"
+    5: "Run verification script and achieve 100% dependency satisfaction"
+    6: "Execute analytics test suite and achieve 80%+ pass rate"
+    7: "Test 6-step analysis pipeline end-to-end"
+    8: "Update status to 'completed' only after verification passes"
+  
+  known_issues:
+    - "11% test failure rate reported in audit"
+    - "spaCy model loading errors in ResumeDeconstructor"
+    - "Async mock issues in integration tests"
+    - "673 code quality violations need fixing"

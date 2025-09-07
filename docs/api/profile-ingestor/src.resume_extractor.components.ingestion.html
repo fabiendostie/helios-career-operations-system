@@ -1,0 +1,328 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Python: module src.resume_extractor.components.ingestion</title>
+</head><body>
+
+<table class="heading">
+<tr class="heading-text decor">
+<td class="title">&nbsp;<br><strong class="title"><a href="src.html" class="white">src</a>.<a href="src.resume_extractor.html" class="white">resume_extractor</a>.<a href="src.resume_extractor.components.html" class="white">components</a>.ingestion</strong></td>
+<td class="extra"><a href=".">index</a><br><a href="file:c%3A%5Cusers%5Cfabie%5Cdocuments%5Cprompt_engineering%5Cjob%20seeking%5Chelios-career-operations-system%5Cservices%5Cprofile-ingestor%5Csrc%5Cresume_extractor%5Ccomponents%5Cingestion.py">c:\users\fabie\documents\prompt_engineering\job seeking\helios-career-operations-system\services\profile-ingestor\src\resume_extractor\components\ingestion.py</a></td></tr></table>
+    <p><span class="code">File&nbsp;ingestion&nbsp;and&nbsp;language&nbsp;detection&nbsp;components.</span></p>
+<p>
+<table class="section">
+<tr class="decor pkg-content-decor heading-text">
+<td class="section-title" colspan=3>&nbsp;<br><strong class="bigsection">Modules</strong></td></tr>
+    
+<tr><td class="decor pkg-content-decor"><span class="code">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span></td><td>&nbsp;</td>
+<td class="singlecolumn"><table><tr><td class="multicolumn"><a href="json.html">json</a><br>
+</td><td class="multicolumn"><a href="logging.html">logging</a><br>
+</td><td class="multicolumn"><a href="mistune.html">mistune</a><br>
+</td><td class="multicolumn"><a href="yaml.html">yaml</a><br>
+</td></tr></table></td></tr></table><p>
+<table class="section">
+<tr class="decor index-decor heading-text">
+<td class="section-title" colspan=3>&nbsp;<br><strong class="bigsection">Classes</strong></td></tr>
+    
+<tr><td class="decor index-decor"><span class="code">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span></td><td>&nbsp;</td>
+<td class="singlecolumn"><dl>
+<dt class="heading-text"><a href="abc.html#ABC">abc.ABC</a>(<a href="builtins.html#object">builtins.object</a>)
+</dt><dd>
+<dl>
+<dt class="heading-text"><a href="src.resume_extractor.components.ingestion.html#FileHandler">FileHandler</a>
+</dt><dd>
+<dl>
+<dt class="heading-text"><a href="src.resume_extractor.components.ingestion.html#DOCXHandler">DOCXHandler</a>
+</dt><dt class="heading-text"><a href="src.resume_extractor.components.ingestion.html#JSONHandler">JSONHandler</a>
+</dt><dt class="heading-text"><a href="src.resume_extractor.components.ingestion.html#MarkdownHandler">MarkdownHandler</a>
+</dt><dt class="heading-text"><a href="src.resume_extractor.components.ingestion.html#PDFHandler">PDFHandler</a>
+</dt><dt class="heading-text"><a href="src.resume_extractor.components.ingestion.html#TextHandler">TextHandler</a>
+</dt><dt class="heading-text"><a href="src.resume_extractor.components.ingestion.html#YAMLHandler">YAMLHandler</a>
+</dt></dl>
+</dd>
+</dl>
+</dd>
+<dt class="heading-text"><a href="builtins.html#object">builtins.object</a>
+</dt><dd>
+<dl>
+<dt class="heading-text"><a href="src.resume_extractor.components.ingestion.html#IngestionEngine">IngestionEngine</a>
+</dt><dt class="heading-text"><a href="src.resume_extractor.components.ingestion.html#LanguageDetector">LanguageDetector</a>
+</dt></dl>
+</dd>
+</dl>
+ <p>
+<table class="section">
+<tr class="decor title-decor heading-text">
+<td class="section-title" colspan=3>&nbsp;<br><a name="DOCXHandler">class <strong>DOCXHandler</strong></a>(<a href="src.resume_extractor.components.ingestion.html#FileHandler">FileHandler</a>)</td></tr>
+    
+<tr><td class="decor title-decor" rowspan=2><span class="code">&nbsp;&nbsp;&nbsp;</span></td>
+<td class="decor title-decor" colspan=2><span class="code">Handle&nbsp;DOCX&nbsp;file&nbsp;text&nbsp;extraction.<br>&nbsp;</span></td></tr>
+<tr><td>&nbsp;</td>
+<td class="singlecolumn"><dl><dt>Method resolution order:</dt>
+<dd><a href="src.resume_extractor.components.ingestion.html#DOCXHandler">DOCXHandler</a></dd>
+<dd><a href="src.resume_extractor.components.ingestion.html#FileHandler">FileHandler</a></dd>
+<dd><a href="abc.html#ABC">abc.ABC</a></dd>
+<dd><a href="builtins.html#object">builtins.object</a></dd>
+</dl>
+<hr>
+Methods defined here:<br>
+<dl><dt><a name="DOCXHandler-extract_text"><strong>extract_text</strong></a>(self, file_path: pathlib._local.Path) -&gt; str</dt><dd><span class="code">Extract&nbsp;text&nbsp;from&nbsp;DOCX&nbsp;using&nbsp;python-docx.</span></dd></dl>
+
+<hr>
+Data and other attributes defined here:<br>
+<dl><dt><strong>__abstractmethods__</strong> = frozenset()</dl>
+
+<hr>
+Data descriptors inherited from <a href="src.resume_extractor.components.ingestion.html#FileHandler">FileHandler</a>:<br>
+<dl><dt><strong>__dict__</strong></dt>
+<dd><span class="code">dictionary&nbsp;for&nbsp;instance&nbsp;variables</span></dd>
+</dl>
+<dl><dt><strong>__weakref__</strong></dt>
+<dd><span class="code">list&nbsp;of&nbsp;weak&nbsp;references&nbsp;to&nbsp;the&nbsp;object</span></dd>
+</dl>
+</td></tr></table> <p>
+<table class="section">
+<tr class="decor title-decor heading-text">
+<td class="section-title" colspan=3>&nbsp;<br><a name="FileHandler">class <strong>FileHandler</strong></a>(<a href="abc.html#ABC">abc.ABC</a>)</td></tr>
+    
+<tr><td class="decor title-decor" rowspan=2><span class="code">&nbsp;&nbsp;&nbsp;</span></td>
+<td class="decor title-decor" colspan=2><span class="code">Abstract&nbsp;base&nbsp;class&nbsp;for&nbsp;file&nbsp;handlers&nbsp;using&nbsp;Strategy&nbsp;pattern.<br>&nbsp;</span></td></tr>
+<tr><td>&nbsp;</td>
+<td class="singlecolumn"><dl><dt>Method resolution order:</dt>
+<dd><a href="src.resume_extractor.components.ingestion.html#FileHandler">FileHandler</a></dd>
+<dd><a href="abc.html#ABC">abc.ABC</a></dd>
+<dd><a href="builtins.html#object">builtins.object</a></dd>
+</dl>
+<hr>
+Methods defined here:<br>
+<dl><dt><a name="FileHandler-extract_text"><strong>extract_text</strong></a>(self, file_path: pathlib._local.Path) -&gt; str</dt><dd><span class="code">Extract&nbsp;text&nbsp;content&nbsp;from&nbsp;file.</span></dd></dl>
+
+<hr>
+Data descriptors defined here:<br>
+<dl><dt><strong>__dict__</strong></dt>
+<dd><span class="code">dictionary&nbsp;for&nbsp;instance&nbsp;variables</span></dd>
+</dl>
+<dl><dt><strong>__weakref__</strong></dt>
+<dd><span class="code">list&nbsp;of&nbsp;weak&nbsp;references&nbsp;to&nbsp;the&nbsp;object</span></dd>
+</dl>
+<hr>
+Data and other attributes defined here:<br>
+<dl><dt><strong>__abstractmethods__</strong> = frozenset({'extract_text'})</dl>
+
+</td></tr></table> <p>
+<table class="section">
+<tr class="decor title-decor heading-text">
+<td class="section-title" colspan=3>&nbsp;<br><a name="IngestionEngine">class <strong>IngestionEngine</strong></a>(<a href="builtins.html#object">builtins.object</a>)</td></tr>
+    
+<tr><td class="decor title-decor" rowspan=2><span class="code">&nbsp;&nbsp;&nbsp;</span></td>
+<td class="decor title-decor" colspan=2><span class="code">Main&nbsp;engine&nbsp;for&nbsp;file&nbsp;ingestion&nbsp;and&nbsp;processing.<br>&nbsp;</span></td></tr>
+<tr><td>&nbsp;</td>
+<td class="singlecolumn">Methods defined here:<br>
+<dl><dt><a name="IngestionEngine-__init__"><strong>__init__</strong></a>(self)</dt><dd><span class="code">Initialize&nbsp;self.&nbsp;&nbsp;See&nbsp;help(type(self))&nbsp;for&nbsp;accurate&nbsp;signature.</span></dd></dl>
+
+<dl><dt><a name="IngestionEngine-ingest_files"><strong>ingest_files</strong></a>(self, directory_path: pathlib._local.Path) -&gt; List[src.resume_extractor.schemas.master_schema.Document]</dt><dd><span class="code">Read&nbsp;all&nbsp;supported&nbsp;files&nbsp;from&nbsp;directory&nbsp;and&nbsp;detect&nbsp;languages.<br>
+&nbsp;<br>
+Args:<br>
+&nbsp;&nbsp;&nbsp;&nbsp;directory_path:&nbsp;Path&nbsp;to&nbsp;directory&nbsp;containing&nbsp;resume&nbsp;files<br>
+&nbsp;<br>
+Returns:<br>
+&nbsp;&nbsp;&nbsp;&nbsp;List&nbsp;of&nbsp;Document&nbsp;objects&nbsp;with&nbsp;content&nbsp;and&nbsp;metadata</span></dd></dl>
+
+<hr>
+Data descriptors defined here:<br>
+<dl><dt><strong>__dict__</strong></dt>
+<dd><span class="code">dictionary&nbsp;for&nbsp;instance&nbsp;variables</span></dd>
+</dl>
+<dl><dt><strong>__weakref__</strong></dt>
+<dd><span class="code">list&nbsp;of&nbsp;weak&nbsp;references&nbsp;to&nbsp;the&nbsp;object</span></dd>
+</dl>
+</td></tr></table> <p>
+<table class="section">
+<tr class="decor title-decor heading-text">
+<td class="section-title" colspan=3>&nbsp;<br><a name="JSONHandler">class <strong>JSONHandler</strong></a>(<a href="src.resume_extractor.components.ingestion.html#FileHandler">FileHandler</a>)</td></tr>
+    
+<tr><td class="decor title-decor" rowspan=2><span class="code">&nbsp;&nbsp;&nbsp;</span></td>
+<td class="decor title-decor" colspan=2><span class="code">Handle&nbsp;JSON&nbsp;file&nbsp;text&nbsp;extraction.<br>&nbsp;</span></td></tr>
+<tr><td>&nbsp;</td>
+<td class="singlecolumn"><dl><dt>Method resolution order:</dt>
+<dd><a href="src.resume_extractor.components.ingestion.html#JSONHandler">JSONHandler</a></dd>
+<dd><a href="src.resume_extractor.components.ingestion.html#FileHandler">FileHandler</a></dd>
+<dd><a href="abc.html#ABC">abc.ABC</a></dd>
+<dd><a href="builtins.html#object">builtins.object</a></dd>
+</dl>
+<hr>
+Methods defined here:<br>
+<dl><dt><a name="JSONHandler-extract_text"><strong>extract_text</strong></a>(self, file_path: pathlib._local.Path) -&gt; str</dt><dd><span class="code">Extract&nbsp;text&nbsp;from&nbsp;JSON&nbsp;file&nbsp;by&nbsp;flattening&nbsp;structure.</span></dd></dl>
+
+<hr>
+Data and other attributes defined here:<br>
+<dl><dt><strong>__abstractmethods__</strong> = frozenset()</dl>
+
+<hr>
+Data descriptors inherited from <a href="src.resume_extractor.components.ingestion.html#FileHandler">FileHandler</a>:<br>
+<dl><dt><strong>__dict__</strong></dt>
+<dd><span class="code">dictionary&nbsp;for&nbsp;instance&nbsp;variables</span></dd>
+</dl>
+<dl><dt><strong>__weakref__</strong></dt>
+<dd><span class="code">list&nbsp;of&nbsp;weak&nbsp;references&nbsp;to&nbsp;the&nbsp;object</span></dd>
+</dl>
+</td></tr></table> <p>
+<table class="section">
+<tr class="decor title-decor heading-text">
+<td class="section-title" colspan=3>&nbsp;<br><a name="LanguageDetector">class <strong>LanguageDetector</strong></a>(<a href="builtins.html#object">builtins.object</a>)</td></tr>
+    
+<tr><td class="decor title-decor" rowspan=2><span class="code">&nbsp;&nbsp;&nbsp;</span></td>
+<td class="decor title-decor" colspan=2><span class="code">Detect&nbsp;language&nbsp;of&nbsp;text&nbsp;content.<br>&nbsp;</span></td></tr>
+<tr><td>&nbsp;</td>
+<td class="singlecolumn">Methods defined here:<br>
+<dl><dt><a name="LanguageDetector-__init__"><strong>__init__</strong></a>(self)</dt><dd><span class="code">Initialize&nbsp;self.&nbsp;&nbsp;See&nbsp;help(type(self))&nbsp;for&nbsp;accurate&nbsp;signature.</span></dd></dl>
+
+<dl><dt><a name="LanguageDetector-detect_language"><strong>detect_language</strong></a>(self, text: str) -&gt; str</dt><dd><span class="code">Detect&nbsp;language&nbsp;of&nbsp;text&nbsp;content.<br>
+&nbsp;<br>
+Args:<br>
+&nbsp;&nbsp;&nbsp;&nbsp;text:&nbsp;Input&nbsp;text&nbsp;to&nbsp;analyze<br>
+&nbsp;<br>
+Returns:<br>
+&nbsp;&nbsp;&nbsp;&nbsp;'en'&nbsp;for&nbsp;English,&nbsp;'fr'&nbsp;for&nbsp;French,&nbsp;'en'&nbsp;as&nbsp;default</span></dd></dl>
+
+<hr>
+Data descriptors defined here:<br>
+<dl><dt><strong>__dict__</strong></dt>
+<dd><span class="code">dictionary&nbsp;for&nbsp;instance&nbsp;variables</span></dd>
+</dl>
+<dl><dt><strong>__weakref__</strong></dt>
+<dd><span class="code">list&nbsp;of&nbsp;weak&nbsp;references&nbsp;to&nbsp;the&nbsp;object</span></dd>
+</dl>
+</td></tr></table> <p>
+<table class="section">
+<tr class="decor title-decor heading-text">
+<td class="section-title" colspan=3>&nbsp;<br><a name="MarkdownHandler">class <strong>MarkdownHandler</strong></a>(<a href="src.resume_extractor.components.ingestion.html#FileHandler">FileHandler</a>)</td></tr>
+    
+<tr><td class="decor title-decor" rowspan=2><span class="code">&nbsp;&nbsp;&nbsp;</span></td>
+<td class="decor title-decor" colspan=2><span class="code">Handle&nbsp;Markdown&nbsp;file&nbsp;text&nbsp;extraction.<br>&nbsp;</span></td></tr>
+<tr><td>&nbsp;</td>
+<td class="singlecolumn"><dl><dt>Method resolution order:</dt>
+<dd><a href="src.resume_extractor.components.ingestion.html#MarkdownHandler">MarkdownHandler</a></dd>
+<dd><a href="src.resume_extractor.components.ingestion.html#FileHandler">FileHandler</a></dd>
+<dd><a href="abc.html#ABC">abc.ABC</a></dd>
+<dd><a href="builtins.html#object">builtins.object</a></dd>
+</dl>
+<hr>
+Methods defined here:<br>
+<dl><dt><a name="MarkdownHandler-__init__"><strong>__init__</strong></a>(self)</dt><dd><span class="code">Initialize&nbsp;self.&nbsp;&nbsp;See&nbsp;help(type(self))&nbsp;for&nbsp;accurate&nbsp;signature.</span></dd></dl>
+
+<dl><dt><a name="MarkdownHandler-extract_text"><strong>extract_text</strong></a>(self, file_path: pathlib._local.Path) -&gt; str</dt><dd><span class="code">Extract&nbsp;text&nbsp;from&nbsp;Markdown&nbsp;using&nbsp;mistune.</span></dd></dl>
+
+<hr>
+Data and other attributes defined here:<br>
+<dl><dt><strong>__abstractmethods__</strong> = frozenset()</dl>
+
+<hr>
+Data descriptors inherited from <a href="src.resume_extractor.components.ingestion.html#FileHandler">FileHandler</a>:<br>
+<dl><dt><strong>__dict__</strong></dt>
+<dd><span class="code">dictionary&nbsp;for&nbsp;instance&nbsp;variables</span></dd>
+</dl>
+<dl><dt><strong>__weakref__</strong></dt>
+<dd><span class="code">list&nbsp;of&nbsp;weak&nbsp;references&nbsp;to&nbsp;the&nbsp;object</span></dd>
+</dl>
+</td></tr></table> <p>
+<table class="section">
+<tr class="decor title-decor heading-text">
+<td class="section-title" colspan=3>&nbsp;<br><a name="PDFHandler">class <strong>PDFHandler</strong></a>(<a href="src.resume_extractor.components.ingestion.html#FileHandler">FileHandler</a>)</td></tr>
+    
+<tr><td class="decor title-decor" rowspan=2><span class="code">&nbsp;&nbsp;&nbsp;</span></td>
+<td class="decor title-decor" colspan=2><span class="code">Handle&nbsp;PDF&nbsp;file&nbsp;text&nbsp;extraction.<br>&nbsp;</span></td></tr>
+<tr><td>&nbsp;</td>
+<td class="singlecolumn"><dl><dt>Method resolution order:</dt>
+<dd><a href="src.resume_extractor.components.ingestion.html#PDFHandler">PDFHandler</a></dd>
+<dd><a href="src.resume_extractor.components.ingestion.html#FileHandler">FileHandler</a></dd>
+<dd><a href="abc.html#ABC">abc.ABC</a></dd>
+<dd><a href="builtins.html#object">builtins.object</a></dd>
+</dl>
+<hr>
+Methods defined here:<br>
+<dl><dt><a name="PDFHandler-extract_text"><strong>extract_text</strong></a>(self, file_path: pathlib._local.Path) -&gt; str</dt><dd><span class="code">Extract&nbsp;text&nbsp;from&nbsp;PDF&nbsp;using&nbsp;pypdf.</span></dd></dl>
+
+<hr>
+Data and other attributes defined here:<br>
+<dl><dt><strong>__abstractmethods__</strong> = frozenset()</dl>
+
+<hr>
+Data descriptors inherited from <a href="src.resume_extractor.components.ingestion.html#FileHandler">FileHandler</a>:<br>
+<dl><dt><strong>__dict__</strong></dt>
+<dd><span class="code">dictionary&nbsp;for&nbsp;instance&nbsp;variables</span></dd>
+</dl>
+<dl><dt><strong>__weakref__</strong></dt>
+<dd><span class="code">list&nbsp;of&nbsp;weak&nbsp;references&nbsp;to&nbsp;the&nbsp;object</span></dd>
+</dl>
+</td></tr></table> <p>
+<table class="section">
+<tr class="decor title-decor heading-text">
+<td class="section-title" colspan=3>&nbsp;<br><a name="TextHandler">class <strong>TextHandler</strong></a>(<a href="src.resume_extractor.components.ingestion.html#FileHandler">FileHandler</a>)</td></tr>
+    
+<tr><td class="decor title-decor" rowspan=2><span class="code">&nbsp;&nbsp;&nbsp;</span></td>
+<td class="decor title-decor" colspan=2><span class="code">Handle&nbsp;plain&nbsp;text&nbsp;file&nbsp;extraction.<br>&nbsp;</span></td></tr>
+<tr><td>&nbsp;</td>
+<td class="singlecolumn"><dl><dt>Method resolution order:</dt>
+<dd><a href="src.resume_extractor.components.ingestion.html#TextHandler">TextHandler</a></dd>
+<dd><a href="src.resume_extractor.components.ingestion.html#FileHandler">FileHandler</a></dd>
+<dd><a href="abc.html#ABC">abc.ABC</a></dd>
+<dd><a href="builtins.html#object">builtins.object</a></dd>
+</dl>
+<hr>
+Methods defined here:<br>
+<dl><dt><a name="TextHandler-extract_text"><strong>extract_text</strong></a>(self, file_path: pathlib._local.Path) -&gt; str</dt><dd><span class="code">Extract&nbsp;text&nbsp;from&nbsp;plain&nbsp;text&nbsp;file.</span></dd></dl>
+
+<hr>
+Data and other attributes defined here:<br>
+<dl><dt><strong>__abstractmethods__</strong> = frozenset()</dl>
+
+<hr>
+Data descriptors inherited from <a href="src.resume_extractor.components.ingestion.html#FileHandler">FileHandler</a>:<br>
+<dl><dt><strong>__dict__</strong></dt>
+<dd><span class="code">dictionary&nbsp;for&nbsp;instance&nbsp;variables</span></dd>
+</dl>
+<dl><dt><strong>__weakref__</strong></dt>
+<dd><span class="code">list&nbsp;of&nbsp;weak&nbsp;references&nbsp;to&nbsp;the&nbsp;object</span></dd>
+</dl>
+</td></tr></table> <p>
+<table class="section">
+<tr class="decor title-decor heading-text">
+<td class="section-title" colspan=3>&nbsp;<br><a name="YAMLHandler">class <strong>YAMLHandler</strong></a>(<a href="src.resume_extractor.components.ingestion.html#FileHandler">FileHandler</a>)</td></tr>
+    
+<tr><td class="decor title-decor" rowspan=2><span class="code">&nbsp;&nbsp;&nbsp;</span></td>
+<td class="decor title-decor" colspan=2><span class="code">Handle&nbsp;YAML&nbsp;file&nbsp;text&nbsp;extraction.<br>&nbsp;</span></td></tr>
+<tr><td>&nbsp;</td>
+<td class="singlecolumn"><dl><dt>Method resolution order:</dt>
+<dd><a href="src.resume_extractor.components.ingestion.html#YAMLHandler">YAMLHandler</a></dd>
+<dd><a href="src.resume_extractor.components.ingestion.html#FileHandler">FileHandler</a></dd>
+<dd><a href="abc.html#ABC">abc.ABC</a></dd>
+<dd><a href="builtins.html#object">builtins.object</a></dd>
+</dl>
+<hr>
+Methods defined here:<br>
+<dl><dt><a name="YAMLHandler-extract_text"><strong>extract_text</strong></a>(self, file_path: pathlib._local.Path) -&gt; str</dt><dd><span class="code">Extract&nbsp;text&nbsp;from&nbsp;YAML&nbsp;file&nbsp;by&nbsp;converting&nbsp;to&nbsp;readable&nbsp;format.</span></dd></dl>
+
+<hr>
+Data and other attributes defined here:<br>
+<dl><dt><strong>__abstractmethods__</strong> = frozenset()</dl>
+
+<hr>
+Data descriptors inherited from <a href="src.resume_extractor.components.ingestion.html#FileHandler">FileHandler</a>:<br>
+<dl><dt><strong>__dict__</strong></dt>
+<dd><span class="code">dictionary&nbsp;for&nbsp;instance&nbsp;variables</span></dd>
+</dl>
+<dl><dt><strong>__weakref__</strong></dt>
+<dd><span class="code">list&nbsp;of&nbsp;weak&nbsp;references&nbsp;to&nbsp;the&nbsp;object</span></dd>
+</dl>
+</td></tr></table></td></tr></table><p>
+<table class="section">
+<tr class="decor data-decor heading-text">
+<td class="section-title" colspan=3>&nbsp;<br><strong class="bigsection">Data</strong></td></tr>
+    
+<tr><td class="decor data-decor"><span class="code">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span></td><td>&nbsp;</td>
+<td class="singlecolumn"><strong>Dict</strong> = typing.Dict<br>
+<strong>List</strong> = typing.List<br>
+<strong>Optional</strong> = typing.Optional</td></tr></table>
+</body></html>

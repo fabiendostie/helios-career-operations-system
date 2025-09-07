@@ -1,0 +1,86 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+<html><head><title>Python: module src.core.career_inferencer</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+</head><body bgcolor="#f0f0f8">
+
+<table width="100%" cellspacing=0 cellpadding=2 border=0 summary="heading">
+<tr bgcolor="#7799ee">
+<td valign=bottom>&nbsp;<br>
+<font color="#ffffff" face="helvetica, arial">&nbsp;<br><big><big><strong>src.core.career_inferencer</strong></big></big></font></td>
+<td align=right valign=bottom
+><font color="#ffffff" face="helvetica, arial">C:\Users\fabie\Documents\Prompt_Engineering\job seeking\helios-career-operations-system\services\analyst\src\core\career_inferencer.py</font></td></tr></table>
+
+    <p><tt>Career path inference engine with horizon modeling and report generation.</tt></p>
+
+<p>
+<table width="100%" cellspacing=0 cellpadding=2 border=0 summary="section">
+<tr bgcolor="#ffc8d8">
+<td colspan=3 valign=bottom>&nbsp;<br>
+<font color="#000000" face="helvetica, arial"><a name="Classes">Classes</a></font></td></tr>
+
+<tr><td bgcolor="#ffc8d8"><tt>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</tt></td><td>&nbsp;</td>
+<td width="100%"><dl>
+<dt><font face="helvetica, arial"><strong>CareerHorizon</strong></font></dt>
+<dd><tt>Career planning horizons....</tt></dd></dl></td></tr>
+<tr><td bgcolor="#ffc8d8"><tt>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</tt></td><td>&nbsp;</td>
+<td width="100%"><dl>
+<dt><font face="helvetica, arial"><strong>PathType</strong></font></dt>
+<dd><tt>Career path types....</tt></dd></dl></td></tr>
+<tr><td bgcolor="#ffc8d8"><tt>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</tt></td><td>&nbsp;</td>
+<td width="100%"><dl>
+<dt><font face="helvetica, arial"><strong>CareerPath</strong></font></dt>
+<dd><tt>Individual career path recommendation....</tt></dd></dl></td></tr>
+<tr><td bgcolor="#ffc8d8"><tt>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</tt></td><td>&nbsp;</td>
+<td width="100%"><dl>
+<dt><font face="helvetica, arial"><strong>CareerAnalysisReport</strong></font></dt>
+<dd><tt>Comprehensive career analysis report....</tt></dd></dl></td></tr>
+<tr><td bgcolor="#ffc8d8"><tt>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</tt></td><td>&nbsp;</td>
+<td width="100%"><dl>
+<dt><font face="helvetica, arial"><strong>CareerInferencer</strong></font></dt>
+<dd><tt>Career path inference engine with comprehensive analysis....</tt></dd></dl></td></tr></table></p>
+<p>
+<table width="100%" cellspacing=0 cellpadding=2 border=0 summary="section">
+<tr bgcolor="#eeaa77">
+<td colspan=3 valign=bottom>&nbsp;<br>
+<font color="#ffffff" face="helvetica, arial"><a name="Functions">Functions</a></font></td></tr>
+
+<tr><td bgcolor="#eeaa77"><tt>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</tt></td><td>&nbsp;</td>
+<td width="100%"><dl><dt><a name="__init__"><strong>__init__</strong></a>(self, path_id, title, path_type, horizon, target_roles, skill_requirements, preparation_timeline, confidence_score, market_opportunity, rationale, action_steps)</dt>
+</dl></td></tr>
+<tr><td bgcolor="#eeaa77"><tt>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</tt></td><td>&nbsp;</td>
+<td width="100%"><dl><dt><a name="__init__"><strong>__init__</strong></a>(self, career_paths, current_positioning, market_readiness, competitive_advantages, development_priorities, timeline_recommendations, executive_summary, processing_metadata)</dt>
+</dl></td></tr>
+<tr><td bgcolor="#eeaa77"><tt>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</tt></td><td>&nbsp;</td>
+<td width="100%"><dl><dt><a name="__init__"><strong>__init__</strong></a>(self)</dt>
+<dd><tt>Initialize career inference engine....</tt></dd></dl></td></tr>
+<tr><td bgcolor="#eeaa77"><tt>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</tt></td><td>&nbsp;</td>
+<td width="100%"><dl><dt><a name="infer_current_level"><strong>infer_current_level</strong></a>(self, resume_deconstruction)</dt>
+<dd><tt>Infer current career level from resume....</tt></dd></dl></td></tr>
+<tr><td bgcolor="#eeaa77"><tt>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</tt></td><td>&nbsp;</td>
+<td width="100%"><dl><dt><a name="generate_lateral_paths"><strong>generate_lateral_paths</strong></a>(self, current_skills, market_analysis, skill_matrix)</dt>
+<dd><tt>Generate lateral career move opportunities....</tt></dd></dl></td></tr>
+<tr><td bgcolor="#eeaa77"><tt>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</tt></td><td>&nbsp;</td>
+<td width="100%"><dl><dt><a name="generate_vertical_paths"><strong>generate_vertical_paths</strong></a>(self, current_level, skill_matrix, market_analysis)</dt>
+<dd><tt>Generate vertical promotion opportunities....</tt></dd></dl></td></tr>
+<tr><td bgcolor="#eeaa77"><tt>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</tt></td><td>&nbsp;</td>
+<td width="100%"><dl><dt><a name="generate_pivot_paths"><strong>generate_pivot_paths</strong></a>(self, skill_matrix, market_analysis)</dt>
+<dd><tt>Generate career pivot opportunities....</tt></dd></dl></td></tr>
+<tr><td bgcolor="#eeaa77"><tt>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</tt></td><td>&nbsp;</td>
+<td width="100%"><dl><dt><a name="generate_specialization_paths"><strong>generate_specialization_paths</strong></a>(self, skill_matrix, market_analysis)</dt>
+<dd><tt>Generate specialization/expertise paths....</tt></dd></dl></td></tr>
+<tr><td bgcolor="#eeaa77"><tt>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</tt></td><td>&nbsp;</td>
+<td width="100%"><dl><dt><a name="assess_current_positioning"><strong>assess_current_positioning</strong></a>(self, resume_deconstruction, skill_matrix, ats_score)</dt>
+<dd><tt>Assess current market positioning....</tt></dd></dl></td></tr>
+<tr><td bgcolor="#eeaa77"><tt>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</tt></td><td>&nbsp;</td>
+<td width="100%"><dl><dt><a name="assess_market_readiness"><strong>assess_market_readiness</strong></a>(self, skill_matrix, ats_score, market_analysis)</dt>
+<dd><tt>Assess readiness for market opportunities....</tt></dd></dl></td></tr>
+<tr><td bgcolor="#eeaa77"><tt>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</tt></td><td>&nbsp;</td>
+<td width="100%"><dl><dt><a name="_classify_readiness"><strong>_classify_readiness</strong></a>(self, score)</dt>
+<dd><tt>Classify market readiness level....</tt></dd></dl></td></tr>
+<tr><td bgcolor="#eeaa77"><tt>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</tt></td><td>&nbsp;</td>
+<td width="100%"><dl><dt><a name="generate_executive_summary"><strong>generate_executive_summary</strong></a>(self, career_paths, current_positioning, market_readiness)</dt>
+<dd><tt>Generate executive summary of career analysis....</tt></dd></dl></td></tr>
+<tr><td bgcolor="#eeaa77"><tt>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</tt></td><td>&nbsp;</td>
+<td width="100%"><dl><dt><a name="infer_career_paths"><strong>infer_career_paths</strong></a>(self, resume_deconstruction, market_analysis, skill_matrix, ats_score)</dt>
+<dd><tt>Generate comprehensive career path analysis and recommendations....</tt></dd></dl></td></tr></table></p>
+</body></html>

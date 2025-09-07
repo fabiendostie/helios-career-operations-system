@@ -49,27 +49,31 @@ class TestPipeline:
         assert self.pipeline.parsing_service is not None
         assert self.pipeline.consolidation_engine is not None
 
-    @patch("resume_extractor.pipeline.ConflictResolverUI")
-    @patch("resume_extractor.pipeline.ElicitationUI")
-    def test_pipeline_run_without_conflicts(
-        self, mock_elicitation, mock_conflict_resolver
-    ):
+    def test_pipeline_run_without_conflicts(self):
         """Test pipeline runs successfully without conflicts."""
         # Mock UI components to avoid interactive prompts
-        mock_elicitation_instance = Mock()
-        mock_elicitation_instance.gather_additional_info.return_value = {
-            "personal_info": {"name": "Test User"},
-            "work_experience": [],
-            "holistic_profile": {},
-        }
-        mock_elicitation.return_value = mock_elicitation_instance
+        with patch("resume_extractor.ui.elicitation.questionary") as mock_questionary, \
+             patch("resume_extractor.ui.conflict_resolver.questionary") as mock_quest_conflict:
+            
+            # Set up mock to skip all interactive parts
+            mock_questionary.confirm.return_value.ask.return_value = False
+            mock_quest_conflict.confirm.return_value.ask.return_value = False
+            
+            # Mock the UI components at the pipeline level
+            mock_elicitation = Mock()
+            mock_elicitation.gather_additional_info.return_value = {
+                "personal_info": {"name": "Test User"},
+                "work_experience": [],
+                "holistic_profile": {},
+            }
+            self.pipeline.elicitation_ui = mock_elicitation
+            
+            mock_resolver = Mock()
+            mock_resolver.resolve_conflicts.return_value = {}
+            self.pipeline.conflict_resolver = mock_resolver
 
-        mock_conflict_resolver_instance = Mock()
-        mock_conflict_resolver_instance.resolve_conflicts.return_value = {}
-        mock_conflict_resolver.return_value = mock_conflict_resolver_instance
-
-        # Run pipeline
-        self.pipeline.run()
+            # Run pipeline
+            self.pipeline.run()
 
         # Check output file was created
         output_path = Path(self.output_file)

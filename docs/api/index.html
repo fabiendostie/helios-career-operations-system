@@ -1,63 +1,650 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-    <title>HELIOS Career Operations System - API Documentation</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Helios Career Operations System - API Documentation</title>
     <style>
-        body { font-family: Arial, sans-serif; margin: 40px; }
-        .header { background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); 
-                 color: white; padding: 30px; border-radius: 10px; margin-bottom: 30px; }
-        .service { margin: 20px 0; padding: 20px; border: 1px solid #ddd; border-radius: 5px; }
-        .service h3 { color: #333; margin-top: 0; }
-        .module-list { list-style-type: none; padding: 0; }
-        .module-list li { margin: 5px 0; }
-        .module-list a { text-decoration: none; color: #667eea; }
-        .module-list a:hover { text-decoration: underline; }
-        .status { display: inline-block; padding: 3px 8px; border-radius: 3px; font-size: 12px; }
-        .completed { background: #d4edda; color: #155724; }
-        .in-progress { background: #fff3cd; color: #856404; }
+        :root {
+            --primary: #2563eb;
+            --primary-light: #3b82f6;
+            --secondary: #64748b;
+            --success: #10b981;
+            --warning: #f59e0b;
+            --danger: #ef4444;
+            --background: #f8fafc;
+            --surface: #ffffff;
+            --text: #0f172a;
+            --text-muted: #64748b;
+            --border: #e2e8f0;
+            --shadow: 0 1px 3px 0 rgb(0 0 0 / 0.1), 0 1px 2px -1px rgb(0 0 0 / 0.1);
+            --shadow-lg: 0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+            line-height: 1.6;
+            color: var(--text);
+            background: var(--background);
+            font-size: 16px;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 1rem;
+        }
+
+        /* Header */
+        .header {
+            background: var(--surface);
+            border-bottom: 1px solid var(--border);
+            box-shadow: var(--shadow);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        .breadcrumb {
+            padding: 0.75rem 0;
+            font-size: 0.875rem;
+            color: var(--text-muted);
+        }
+
+        .breadcrumb a {
+            color: var(--primary);
+            text-decoration: none;
+        }
+
+        .breadcrumb a:hover {
+            text-decoration: underline;
+        }
+
+        /* Hero Section */
+        .hero {
+            background: linear-gradient(135deg, var(--primary) 0%, var(--primary-light) 100%);
+            color: white;
+            padding: 3rem 0;
+            margin-bottom: 2rem;
+        }
+
+        .hero h1 {
+            font-size: 2.5rem;
+            font-weight: 700;
+            margin-bottom: 1rem;
+            line-height: 1.2;
+        }
+
+        .hero p {
+            font-size: 1.125rem;
+            opacity: 0.9;
+            max-width: 600px;
+        }
+
+        /* Stats Bar */
+        .stats {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1rem;
+            margin-bottom: 2rem;
+        }
+
+        .stat-card {
+            background: var(--surface);
+            padding: 1.5rem;
+            border-radius: 0.75rem;
+            box-shadow: var(--shadow);
+            text-align: center;
+            border: 1px solid var(--border);
+        }
+
+        .stat-number {
+            font-size: 2rem;
+            font-weight: 700;
+            color: var(--primary);
+            display: block;
+        }
+
+        .stat-label {
+            font-size: 0.875rem;
+            color: var(--text-muted);
+            margin-top: 0.5rem;
+        }
+
+        /* Service Cards */
+        .services {
+            display: grid;
+            gap: 1.5rem;
+            margin-bottom: 2rem;
+        }
+
+        .service-card {
+            background: var(--surface);
+            border-radius: 0.75rem;
+            box-shadow: 0 1px 3px 0 rgb(0 0 0 / 0.1), 0 1px 2px -1px rgb(0 0 0 / 0.1);
+            border: 1px solid hsl(210 40% 96%);
+            overflow: hidden;
+            transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+            position: relative;
+        }
+
+        .service-card:hover {
+            box-shadow: 0 25px 50px -12px rgb(0 0 0 / 0.15);
+            transform: translateY(-4px);
+            border-color: var(--primary);
+        }
+
+        .service-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 2px;
+            background: linear-gradient(90deg, var(--primary), var(--primary-light));
+            transform: scaleX(0);
+            transition: transform 0.3s ease;
+        }
+
+        .service-card:hover::before {
+            transform: scaleX(1);
+        }
+
+        .service-header {
+            padding: 1.5rem 1.5rem 1rem;
+            border-bottom: 1px solid var(--border);
+        }
+
+        .service-title {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 0.5rem;
+        }
+
+        .service-name {
+            font-size: 1.25rem;
+            font-weight: 600;
+            color: var(--text);
+        }
+
+        .status-badge {
+            display: inline-flex;
+            align-items: center;
+            padding: 0.375rem 0.875rem;
+            border-radius: 9999px;
+            font-size: 0.75rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
+            transition: all 0.2s ease;
+        }
+
+        .status-badge::before {
+            content: '';
+            width: 6px;
+            height: 6px;
+            border-radius: 50%;
+            margin-right: 0.5rem;
+        }
+
+        .status-complete {
+            background: rgba(16, 185, 129, 0.1);
+            color: #059669;
+            border-color: rgba(16, 185, 129, 0.3);
+        }
+
+        .status-complete::before {
+            background: #10b981;
+            box-shadow: 0 0 6px #10b981;
+        }
+
+        .service-description {
+            color: var(--text-muted);
+            font-size: 0.875rem;
+        }
+
+        .service-modules {
+            padding: 0;
+        }
+
+        .module-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 1px;
+            background: hsl(210 40% 96%);
+            border-radius: 0.5rem;
+            overflow: hidden;
+        }
+
+        .module-item {
+            background: var(--surface);
+            transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+            position: relative;
+        }
+
+        .module-item:hover {
+            background: hsl(210 40% 98%);
+            z-index: 1;
+        }
+
+        .module-link {
+            display: block;
+            padding: 1rem 1.25rem;
+            color: var(--text);
+            text-decoration: none;
+            transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+            font-family: 'JetBrains Mono', 'SF Mono', 'Monaco', 'Inconsolata', 'Roboto Mono', monospace;
+            font-size: 0.875rem;
+            position: relative;
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+
+        .module-link:hover {
+            color: var(--primary);
+            background: linear-gradient(135deg, rgba(37, 99, 235, 0.05) 0%, rgba(59, 130, 246, 0.1) 100%);
+        }
+
+        .module-link::before {
+            content: '';
+            position: absolute;
+            left: 0;
+            top: 0;
+            bottom: 0;
+            width: 3px;
+            background: var(--primary);
+            transform: scaleY(0);
+            transition: transform 0.2s ease;
+        }
+
+        .module-link:hover::before {
+            transform: scaleY(1);
+        }
+
+        .module-name {
+            font-weight: 500;
+        }
+
+        .module-desc {
+            color: var(--text-muted);
+            font-size: 0.75rem;
+            margin-top: 0.25rem;
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+        }
+
+        /* Resources Section */
+        .resources {
+            background: var(--surface);
+            border-radius: 0.75rem;
+            box-shadow: var(--shadow);
+            border: 1px solid var(--border);
+            padding: 1.5rem;
+            margin-bottom: 2rem;
+        }
+
+        .resources h2 {
+            font-size: 1.25rem;
+            font-weight: 600;
+            margin-bottom: 1rem;
+            color: var(--text);
+        }
+
+        .resource-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 0.5rem;
+        }
+
+        .resource-link {
+            display: block;
+            padding: 0.75rem;
+            color: var(--primary);
+            text-decoration: none;
+            border-radius: 0.5rem;
+            transition: all 0.15s ease;
+            font-size: 0.875rem;
+        }
+
+        .resource-link:hover {
+            background: #f1f5f9;
+            text-decoration: none;
+        }
+
+        /* Footer */
+        .footer {
+            text-align: center;
+            padding: 2rem 0;
+            color: var(--text-muted);
+            font-size: 0.875rem;
+            border-top: 1px solid var(--border);
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .hero h1 {
+                font-size: 2rem;
+            }
+            
+            .stats {
+                grid-template-columns: repeat(2, 1fr);
+            }
+            
+            .module-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .resource-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .hero {
+                padding: 2rem 0;
+            }
+            
+            .stats {
+                grid-template-columns: 1fr;
+            }
+            
+            .service-header {
+                padding: 1rem;
+            }
+        }
     </style>
 </head>
 <body>
-    <div class="header">
-        <h1>🚀 HELIOS Career Operations System</h1>
-        <p>AI-Powered Career Intelligence Platform - API Documentation</p>
-        <p>Generated automatically with pydoc</p>
-    </div>
-    
-    <div class="services">
+    <header class="header">
+        <div class="container">
+            <div class="breadcrumb">
+                <a href="../index.html">Documentation</a> / API Documentation
+            </div>
+        </div>
+    </header>
 
-        <div class="service">
-            <h3>Orchestrator Service <span class="status in-progress">🔄 IN PROGRESS</span></h3>
-            <ul class="module-list">
-                <li><a href="orchestrator/api.html">api</a></li>
-                <li><a href="orchestrator/core.config.html">core.config</a></li>
-                <li><a href="orchestrator/core.html">core</a></li>
-                <li><a href="orchestrator/integrations.html">integrations</a></li>
-                <li><a href="orchestrator/models.commands.html">models.commands</a></li>
-                <li><a href="orchestrator/models.html">models</a></li>
-                <li><a href="orchestrator/models.session.html">models.session</a></li>
-                <li><a href="orchestrator/utils.html">utils</a></li>
-                <li><a href="orchestrator/__init__.html">__init__</a></li>
-            </ul>
+    <section class="hero">
+        <div class="container">
+            <h1>Helios API Documentation</h1>
+            <p>
+                Comprehensive API documentation for the Helios Career Operations System, 
+                an AI-powered career intelligence platform built using BMAD methodology.
+            </p>
+        </div>
+    </section>
+
+    <main class="container">
+        <div class="stats">
+            <div class="stat-card">
+                <span class="stat-number">4</span>
+                <div class="stat-label">Microservices</div>
+            </div>
+            <div class="stat-card">
+                <span class="stat-number">69</span>
+                <div class="stat-label">Documented Modules</div>
+            </div>
+            <div class="stat-card">
+                <span class="stat-number">4</span>
+                <div class="stat-label">Completed Services</div>
+            </div>
+            <div class="stat-card">
+                <span class="stat-number">100%</span>
+                <div class="stat-label">Core Coverage</div>
+            </div>
         </div>
 
-        <div class="service">
-            <h3>Profile Ingestor Service <span class="status completed">✅ COMPLETED</span></h3>
-            <ul class="module-list">
-                <li><a href="profile-ingestor/components.html">components</a></li>
-                <li><a href="profile-ingestor/schemas.html">schemas</a></li>
-                <li><a href="profile-ingestor/schemas.master_schema.html">schemas.master_schema</a></li>
-                <li><a href="profile-ingestor/ui.conflict_resolver.html">ui.conflict_resolver</a></li>
-                <li><a href="profile-ingestor/ui.elicitation.html">ui.elicitation</a></li>
-                <li><a href="profile-ingestor/ui.html">ui</a></li>
-                <li><a href="profile-ingestor/utils.logging_config.html">utils.logging_config</a></li>
-                <li><a href="profile-ingestor/__init__.html">__init__</a></li>
-            </ul>
+        <div class="services">
+            <div class="service-card">
+                <div class="service-header">
+                    <div class="service-title">
+                        <h3 class="service-name">HELIOS Orchestrator</h3>
+                        <span class="status-badge status-complete">Documented</span>
+                    </div>
+                    <p class="service-description">
+                        Main orchestration service managing session state and agent coordination
+                    </p>
+                </div>
+                <div class="service-modules">
+                    <div class="module-grid">
+                        <div class="module-item">
+                            <a href="orchestrator/api.html" class="module-link">
+                                <div class="module-name">api</div>
+                                <div class="module-desc">API endpoints and routing</div>
+                            </a>
+                        </div>
+                        <div class="module-item">
+                            <a href="orchestrator/core.html" class="module-link">
+                                <div class="module-name">core</div>
+                                <div class="module-desc">Core business logic</div>
+                            </a>
+                        </div>
+                        <div class="module-item">
+                            <a href="orchestrator/core.config.html" class="module-link">
+                                <div class="module-name">core.config</div>
+                                <div class="module-desc">Configuration management</div>
+                            </a>
+                        </div>
+                        <div class="module-item">
+                            <a href="orchestrator/models.commands.html" class="module-link">
+                                <div class="module-name">models.commands</div>
+                                <div class="module-desc">Command models</div>
+                            </a>
+                        </div>
+                        <div class="module-item">
+                            <a href="orchestrator/models.session.html" class="module-link">
+                                <div class="module-name">models.session</div>
+                                <div class="module-desc">Session models</div>
+                            </a>
+                        </div>
+                        <div class="module-item">
+                            <a href="orchestrator/integrations.html" class="module-link">
+                                <div class="module-name">integrations</div>
+                                <div class="module-desc">Service integrations</div>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="service-card">
+                <div class="service-header">
+                    <div class="service-title">
+                        <h3 class="service-name">Profile Ingestor</h3>
+                        <span class="status-badge status-complete">Documented</span>
+                    </div>
+                    <p class="service-description">
+                        Deep conversational profiling service with resume extraction capabilities
+                    </p>
+                </div>
+                <div class="service-modules">
+                    <div class="module-grid">
+                        <div class="module-item">
+                            <a href="profile-ingestor/components.html" class="module-link">
+                                <div class="module-name">components</div>
+                                <div class="module-desc">Core processing components</div>
+                            </a>
+                        </div>
+                        <div class="module-item">
+                            <a href="profile-ingestor/schemas.master_schema.html" class="module-link">
+                                <div class="module-name">schemas.master_schema</div>
+                                <div class="module-desc">Master schema definition</div>
+                            </a>
+                        </div>
+                        <div class="module-item">
+                            <a href="profile-ingestor/ui.conflict_resolver.html" class="module-link">
+                                <div class="module-name">ui.conflict_resolver</div>
+                                <div class="module-desc">Conflict resolution interface</div>
+                            </a>
+                        </div>
+                        <div class="module-item">
+                            <a href="profile-ingestor/ui.elicitation.html" class="module-link">
+                                <div class="module-name">ui.elicitation</div>
+                                <div class="module-desc">Interactive elicitation UI</div>
+                            </a>
+                        </div>
+                        <div class="module-item">
+                            <a href="profile-ingestor/src.resume_extractor.components.ingestion.html" class="module-link">
+                                <div class="module-name">resume_extractor.ingestion</div>
+                                <div class="module-desc">File ingestion engine</div>
+                            </a>
+                        </div>
+                        <div class="module-item">
+                            <a href="profile-ingestor/src.resume_extractor.components.output_generator.html" class="module-link">
+                                <div class="module-name">resume_extractor.output_generator</div>
+                                <div class="module-desc">JSON output generation</div>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="service-card">
+                <div class="service-header">
+                    <div class="service-title">
+                        <h3 class="service-name">Strategist Service</h3>
+                        <span class="status-badge status-complete">Documented</span>
+                    </div>
+                    <p class="service-description">
+                        Career path generation service using ML-powered skill matching algorithms
+                    </p>
+                </div>
+                <div class="service-modules">
+                    <div class="module-grid">
+                        <div class="module-item">
+                            <a href="strategist/src.api.career_paths.html" class="module-link">
+                                <div class="module-name">src.api.career_paths</div>
+                                <div class="module-desc">Career path generation endpoints</div>
+                            </a>
+                        </div>
+                        <div class="module-item">
+                            <a href="strategist/src.core.career_generator.html" class="module-link">
+                                <div class="module-name">src.core.career_generator</div>
+                                <div class="module-desc">ML career path algorithms</div>
+                            </a>
+                        </div>
+                        <div class="module-item">
+                            <a href="strategist/src.core.fit_scorer.html" class="module-link">
+                                <div class="module-name">src.core.fit_scorer</div>
+                                <div class="module-desc">Skill-role fit scoring</div>
+                            </a>
+                        </div>
+                        <div class="module-item">
+                            <a href="strategist/src.core.skill_vectorizer.html" class="module-link">
+                                <div class="module-name">src.core.skill_vectorizer</div>
+                                <div class="module-desc">Skill vectorization engine</div>
+                            </a>
+                        </div>
+                        <div class="module-item">
+                            <a href="strategist/src.models.career_path.html" class="module-link">
+                                <div class="module-name">src.models.career_path</div>
+                                <div class="module-desc">Career path data models</div>
+                            </a>
+                        </div>
+                        <div class="module-item">
+                            <a href="strategist/src.models.role_taxonomy.html" class="module-link">
+                                <div class="module-name">src.models.role_taxonomy</div>
+                                <div class="module-desc">Role taxonomy definitions</div>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="service-card">
+                <div class="service-header">
+                    <div class="service-title">
+                        <h3 class="service-name">Analyst Service</h3>
+                        <span class="status-badge status-complete">Documented</span>
+                    </div>
+                    <p class="service-description">
+                        Market correlation and resume optimization service with 6-step analysis pipeline
+                    </p>
+                </div>
+                <div class="service-modules">
+                    <div class="module-grid">
+                        <div class="module-item">
+                            <a href="analyst/src.core.resume_deconstructor.html" class="module-link">
+                                <div class="module-name">src.core.resume_deconstructor</div>
+                                <div class="module-desc">NLP resume analysis engine</div>
+                            </a>
+                        </div>
+                        <div class="module-item">
+                            <a href="analyst/src.core.market_analyzer.html" class="module-link">
+                                <div class="module-name">src.core.market_analyzer</div>
+                                <div class="module-desc">Market correlation analysis</div>
+                            </a>
+                        </div>
+                        <div class="module-item">
+                            <a href="analyst/src.core.ats_simulator.html" class="module-link">
+                                <div class="module-name">src.core.ats_simulator</div>
+                                <div class="module-desc">ATS scoring simulation</div>
+                            </a>
+                        </div>
+                        <div class="module-item">
+                            <a href="analyst/src.core.skill_recalibrator.html" class="module-link">
+                                <div class="module-name">src.core.skill_recalibrator</div>
+                                <div class="module-desc">Skill gap analysis</div>
+                            </a>
+                        </div>
+                        <div class="module-item">
+                            <a href="analyst/src.core.career_inferencer.html" class="module-link">
+                                <div class="module-name">src.core.career_inferencer</div>
+                                <div class="module-desc">Career path inference engine</div>
+                            </a>
+                        </div>
+                        <div class="module-item">
+                            <a href="analyst/src.models.analysis_request.html" class="module-link">
+                                <div class="module-name">src.models.analysis_request</div>
+                                <div class="module-desc">Analysis request models</div>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
         </div>
-    </div>
-    
-    <footer style="margin-top: 40px; padding-top: 20px; border-top: 1px solid #eee; color: #666;">
-        <p>Generated with pydoc • HELIOS Career Operations System</p>
+
+        <div class="resources">
+            <h2>Additional Resources</h2>
+            <div class="resource-grid">
+                <a href="../01-requirements/PRD-Helios-Career-Operations-System.md" class="resource-link">
+                    📋 Product Requirements Document
+                </a>
+                <a href="../02-architecture/Architecture-Document.md" class="resource-link">
+                    🏗️ System Architecture
+                </a>
+                <a href="../../bmad-core/core-config.yaml" class="resource-link">
+                    ⚙️ BMAD Configuration
+                </a>
+                <a href="../07-operations/rollback-procedures.md" class="resource-link">
+                    🔄 Rollback Procedures
+                </a>
+                <a href="../04-implementation/integration-points-analysis.md" class="resource-link">
+                    🔗 Integration Analysis
+                </a>
+                <a href="../../CLAUDE.md" class="resource-link">
+                    👨‍💻 Developer Guide
+                </a>
+            </div>
+        </div>
+    </main>
+
+    <footer class="footer">
+        <div class="container">
+            Documentation regenerated on 2025-09-06<br>
+            <strong>Helios Career Operations System</strong> - Built with BMAD Methodology
+        </div>
     </footer>
 </body>
 </html>

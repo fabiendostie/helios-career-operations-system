@@ -1,0 +1,351 @@
+# HELIOS Career Operations System - Production Docker Compose
+# BMAD Phase 3 Priority 3.3 - Docker Containerization
+# Production-ready configuration with health checks, monitoring, and scaling
+
+version: '3.8'
+
+services:
+  # PostgreSQL Database - Primary data store
+  postgres:
+    image: postgres:15-alpine
+    container_name: helios-postgres
+    environment:
+      POSTGRES_DB: helios_career_db
+      POSTGRES_USER: helios_user
+      POSTGRES_PASSWORD_FILE: /run/secrets/postgres_password
+    secrets:
+      - postgres_password
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+      - ./infrastructure/docker/postgres/init.sql:/docker-entrypoint-initdb.d/init.sql:ro
+    networks:
+      - helios-backend
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U helios_user -d helios_career_db"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 40s
+    deploy:
+      resources:
+        limits:
+          memory: 512M
+        reservations:
+          memory: 256M
+
+  # Redis Cache - Session state and ML model caching
+  redis:
+    image: redis:7-alpine
+    container_name: helios-redis
+    command: redis-server --requirepass-file /run/secrets/redis_password --maxmemory 256mb --maxmemory-policy allkeys-lru
+    secrets:
+      - redis_password
+    volumes:
+      - redis_data:/data
+    networks:
+      - helios-backend
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "redis-cli", "--no-auth-warning", "-a", "$(cat /run/secrets/redis_password)", "ping"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 20s
+    deploy:
+      resources:
+        limits:
+          memory: 256M
+        reservations:
+          memory: 128M
+
+  # Profile Ingestor Service - Story 1.1 (COMPLETED)
+  profile-ingestor:
+    build:
+      context: ./services/profile-ingestor
+      dockerfile: Dockerfile
+    container_name: helios-profile-ingestor
+    environment:
+      - PROFILE_INGESTOR_HOST=0.0.0.0
+      - PROFILE_INGESTOR_PORT=8001
+      - LOG_LEVEL=INFO
+      - PYTHONPATH=/app
+    volumes:
+      - ./uploads:/app/uploads:rw
+      - ./output:/app/output:rw
+      - profile_logs:/app/logs
+    networks:
+      - helios-backend
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8001/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 45s
+    deploy:
+      replicas: 2
+      resources:
+        limits:
+          memory: 512M
+          cpus: '0.5'
+        reservations:
+          memory: 256M
+          cpus: '0.25'
+
+  # HELIOS Orchestrator Service - Story 2.1
+  orchestrator:
+    build:
+      context: ./services/orchestrator
+      dockerfile: Dockerfile
+    container_name: helios-orchestrator
+    environment:
+      - DEBUG=false
+      - LOG_LEVEL=INFO
+      - DATABASE_URL=postgresql+asyncpg://helios_user:${POSTGRES_PASSWORD}@postgres:5432/helios_career_db
+      - REDIS_URL=redis://:${REDIS_PASSWORD}@redis:6379/0
+      - PROFILE_INGESTOR_URL=http://profile-ingestor:8001
+      - STRATEGIST_URL=http://strategist:8002
+      - ANALYST_URL=http://analyst:8003
+      - SESSION_TIMEOUT_MINUTES=30
+      - CORS_ORIGINS=https://helios.yourdomain.com
+    depends_on:
+      postgres:
+        condition: service_healthy
+      redis:
+        condition: service_healthy
+      profile-ingestor:
+        condition: service_healthy
+    networks:
+      - helios-backend
+      - helios-frontend
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "python", "-c", "import requests; requests.get('http://localhost:8000/health/ready')"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 60s
+    deploy:
+      replicas: 3
+      resources:
+        limits:
+          memory: 1G
+          cpus: '1.0'
+        reservations:
+          memory: 512M
+          cpus: '0.5'
+
+  # Strategist Service - Story 2.2 (Career Path Generation)
+  strategist:
+    build:
+      context: ./services/strategist
+      dockerfile: Dockerfile
+    container_name: helios-strategist
+    environment:
+      - STRATEGIST_HOST=0.0.0.0
+      - STRATEGIST_PORT=8002
+      - LOG_LEVEL=INFO
+      - REDIS_URL=redis://:${REDIS_PASSWORD}@redis:6379/1
+      - MODEL_CACHE_SIZE=512MB
+      - ENABLE_GPU=false
+    depends_on:
+      redis:
+        condition: service_healthy
+    volumes:
+      - ml_models:/app/models:rw
+      - strategist_logs:/app/logs
+    networks:
+      - helios-backend
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "python", "-c", "import requests; requests.get('http://localhost:8002/health')"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 90s  # ML model loading takes time
+    deploy:
+      replicas: 2
+      resources:
+        limits:
+          memory: 3G  # ML models require significant memory
+          cpus: '2.0'
+        reservations:
+          memory: 2G
+          cpus: '1.0'
+
+  # Analyst Service - Story 2.3 (Market Analysis)
+  analyst:
+    build:
+      context: ./services/analyst
+      dockerfile: Dockerfile
+    container_name: helios-analyst
+    environment:
+      - ANALYST_HOST=0.0.0.0
+      - ANALYST_PORT=8003
+      - LOG_LEVEL=INFO
+      - DATABASE_URL=postgresql+asyncpg://helios_user:${POSTGRES_PASSWORD}@postgres:5432/helios_career_db
+      - REDIS_URL=redis://:${REDIS_PASSWORD}@redis:6379/2
+    depends_on:
+      postgres:
+        condition: service_healthy
+      redis:
+        condition: service_healthy
+    volumes:
+      - market_data:/app/data:rw
+      - analyst_logs:/app/logs
+    networks:
+      - helios-backend
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8003/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 60s
+    deploy:
+      replicas: 2
+      resources:
+        limits:
+          memory: 2G
+          cpus: '1.5'
+        reservations:
+          memory: 1G
+          cpus: '0.75'
+
+  # NGINX Load Balancer & Reverse Proxy
+  nginx:
+    image: nginx:1.25-alpine
+    container_name: helios-nginx
+    ports:
+      - "80:80"
+      - "443:443"
+    volumes:
+      - ./infrastructure/docker/nginx/nginx.conf:/etc/nginx/nginx.conf:ro
+      - ./infrastructure/docker/nginx/ssl:/etc/nginx/ssl:ro
+      - ./infrastructure/docker/nginx/html:/var/www/html:ro
+    depends_on:
+      - orchestrator
+    networks:
+      - helios-frontend
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+    deploy:
+      resources:
+        limits:
+          memory: 128M
+          cpus: '0.5'
+        reservations:
+          memory: 64M
+          cpus: '0.1'
+
+  # Prometheus Monitoring
+  prometheus:
+    image: prom/prometheus:v2.45.0
+    container_name: helios-prometheus
+    command:
+      - '--config.file=/etc/prometheus/prometheus.yml'
+      - '--storage.tsdb.path=/prometheus'
+      - '--web.console.libraries=/etc/prometheus/console_libraries'
+      - '--web.console.templates=/etc/prometheus/consoles'
+      - '--web.enable-lifecycle'
+      - '--storage.tsdb.retention.time=30d'
+    ports:
+      - "9090:9090"
+    volumes:
+      - ./infrastructure/docker/prometheus/prometheus.yml:/etc/prometheus/prometheus.yml:ro
+      - prometheus_data:/prometheus
+    networks:
+      - helios-backend
+      - helios-monitoring
+    restart: unless-stopped
+    deploy:
+      resources:
+        limits:
+          memory: 512M
+          cpus: '0.5'
+        reservations:
+          memory: 256M
+          cpus: '0.25'
+
+  # Grafana Dashboards
+  grafana:
+    image: grafana/grafana:10.0.0
+    container_name: helios-grafana
+    environment:
+      - GF_SECURITY_ADMIN_PASSWORD_FILE=/run/secrets/grafana_admin_password
+    ports:
+      - "3000:3000"
+    volumes:
+      - grafana_data:/var/lib/grafana
+      - ./infrastructure/docker/grafana/provisioning:/etc/grafana/provisioning:ro
+    secrets:
+      - grafana_admin_password
+    networks:
+      - helios-monitoring
+    restart: unless-stopped
+    depends_on:
+      - prometheus
+    deploy:
+      resources:
+        limits:
+          memory: 256M
+          cpus: '0.5'
+        reservations:
+          memory: 128M
+          cpus: '0.25'
+
+# Network Configuration
+networks:
+  helios-frontend:
+    driver: bridge
+    name: helios-frontend
+  helios-backend:
+    driver: bridge
+    name: helios-backend
+  helios-monitoring:
+    driver: bridge
+    name: helios-monitoring
+
+# Persistent Volume Configuration
+volumes:
+  postgres_data:
+    driver: local
+    name: helios-postgres-data
+  redis_data:
+    driver: local
+    name: helios-redis-data
+  ml_models:
+    driver: local
+    name: helios-ml-models
+  market_data:
+    driver: local
+    name: helios-market-data
+  profile_logs:
+    driver: local
+    name: helios-profile-logs
+  strategist_logs:
+    driver: local
+    name: helios-strategist-logs
+  analyst_logs:
+    driver: local
+    name: helios-analyst-logs
+  prometheus_data:
+    driver: local
+    name: helios-prometheus-data
+  grafana_data:
+    driver: local
+    name: helios-grafana-data
+
+# Security: Docker Secrets Management
+secrets:
+  postgres_password:
+    file: ./infrastructure/docker/secrets/postgres_password.txt
+  redis_password:
+    file: ./infrastructure/docker/secrets/redis_password.txt
+  grafana_admin_password:
+    file: ./infrastructure/docker/secrets/grafana_admin_password.txt

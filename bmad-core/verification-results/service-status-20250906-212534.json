@@ -1,0 +1,24 @@
+{
+  "verification_date": "2025-09-06T21:25:34.627399",
+  "total_services": 1,
+  "services": {
+    "strategist": {
+      "service": "strategist",
+      "path": "services/strategist/",
+      "verification_date": "2025-09-06T21:25:27.593459",
+      "import_test": {
+        "success": false,
+        "message": "Import failed: Traceback (most recent call last):\n  File \"<string>\", line 1, in <module>\n    import sys; import src.main; print('\\u2705 Import successful'); print('Available modules:', [m for m in dir(src.main) if not m.startswith('_')])\n                                 ~~~~~^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"C:\\Users\\fabie\\AppData\\Local\\Programs\\Python\\Python313\\Lib\\encodings\\cp1252.py\", line 19, in encode\n    return codecs.charmap_encode(input,self.errors,encoding_table)[0]\n           ~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\nUnicodeEncodeError: 'charmap' codec can't encode character '\\u2705' in position 0: character maps to <undefined>\n",
+        "modules_info": []
+      },
+      "fastapi_test": {},
+      "ml_models_test": {},
+      "tests_execution": {},
+      "overall_status": "failed",
+      "functional_score": 0
+    }
+  },
+  "summary": {
+    "failed": 1
+  }
+}

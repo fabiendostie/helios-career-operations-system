@@ -1,0 +1,191 @@
+# Analyst Service Deployment for HELIOS
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: market-data-pvc
+  namespace: helios
+  labels:
+    app.kubernetes.io/name: helios
+    app.kubernetes.io/component: analyst
+spec:
+  accessModes:
+    - ReadWriteMany
+  resources:
+    requests:
+      storage: 3Gi  # For market data and analysis cache
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: helios-analyst
+  namespace: helios
+  labels:
+    app.kubernetes.io/name: helios
+    app.kubernetes.io/component: analyst
+    app.kubernetes.io/version: "1.0.0"
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app.kubernetes.io/name: helios-analyst
+      app.kubernetes.io/component: analyst
+  template:
+    metadata:
+      labels:
+        app.kubernetes.io/name: helios-analyst
+        app.kubernetes.io/component: analyst
+    spec:
+      securityContext:
+        runAsNonRoot: true
+        runAsUser: 1000
+        runAsGroup: 1000
+        fsGroup: 1000
+      containers:
+      - name: analyst
+        image: helios/analyst:latest
+        imagePullPolicy: IfNotPresent
+        ports:
+        - containerPort: 8003
+          name: http
+        env:
+        - name: ANALYST_HOST
+          value: "0.0.0.0"
+        - name: ANALYST_PORT
+          value: "8003"
+        - name: LOG_LEVEL
+          valueFrom:
+            configMapKeyRef:
+              name: helios-config
+              key: LOG_LEVEL
+        - name: DATABASE_URL
+          value: "postgresql+asyncpg://$(POSTGRES_USER):$(POSTGRES_PASSWORD)@helios-postgres:5432/$(POSTGRES_DB)"
+        - name: REDIS_URL
+          value: "redis://:$(REDIS_PASSWORD)@helios-redis:6379/2"
+        - name: POSTGRES_USER
+          valueFrom:
+            secretKeyRef:
+              name: helios-postgres-secret
+              key: POSTGRES_USER
+        - name: POSTGRES_PASSWORD
+          valueFrom:
+            secretKeyRef:
+              name: helios-postgres-secret
+              key: POSTGRES_PASSWORD
+        - name: POSTGRES_DB
+          valueFrom:
+            configMapKeyRef:
+              name: helios-config
+              key: POSTGRES_DB
+        - name: REDIS_PASSWORD
+          valueFrom:
+            secretKeyRef:
+              name: helios-redis-secret
+              key: REDIS_PASSWORD
+        volumeMounts:
+        - name: market-data
+          mountPath: /app/data
+        - name: logs
+          mountPath: /app/logs
+        livenessProbe:
+          httpGet:
+            path: /health
+            port: 8003
+          initialDelaySeconds: 45  # spaCy model loading time
+          periodSeconds: 30
+          timeoutSeconds: 10
+          failureThreshold: 3
+        readinessProbe:
+          httpGet:
+            path: /health/ready
+            port: 8003
+          initialDelaySeconds: 20
+          periodSeconds: 10
+          timeoutSeconds: 5
+          failureThreshold: 3
+        startupProbe:
+          httpGet:
+            path: /health
+            port: 8003
+          initialDelaySeconds: 15
+          periodSeconds: 10
+          timeoutSeconds: 10
+          failureThreshold: 15  # Allow time for NLP model loading
+        resources:
+          limits:
+            cpu: "3"
+            memory: "3Gi"  # NLP models + analytics processing
+          requests:
+            cpu: "750m"
+            memory: "1.5Gi"
+        securityContext:
+          allowPrivilegeEscalation: false
+          capabilities:
+            drop:
+            - ALL
+      volumes:
+      - name: market-data
+        persistentVolumeClaim:
+          claimName: market-data-pvc
+      - name: logs
+        emptyDir: {}
+      restartPolicy: Always
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: helios-analyst
+  namespace: helios
+  labels:
+    app.kubernetes.io/name: helios
+    app.kubernetes.io/component: analyst
+spec:
+  type: ClusterIP
+  selector:
+    app.kubernetes.io/name: helios-analyst
+    app.kubernetes.io/component: analyst
+  ports:
+  - port: 8003
+    targetPort: 8003
+    name: http
+---
+apiVersion: autoscaling/v2
+kind: HorizontalPodAutoscaler
+metadata:
+  name: helios-analyst-hpa
+  namespace: helios
+  labels:
+    app.kubernetes.io/name: helios
+    app.kubernetes.io/component: analyst
+spec:
+  scaleTargetRef:
+    apiVersion: apps/v1
+    kind: Deployment
+    name: helios-analyst
+  minReplicas: 2
+  maxReplicas: 10
+  metrics:
+  - type: Resource
+    resource:
+      name: cpu
+      target:
+        type: Utilization
+        averageUtilization: 75
+  - type: Resource
+    resource:
+      name: memory
+      target:
+        type: Utilization
+        averageUtilization: 80
+  behavior:
+    scaleUp:
+      stabilizationWindowSeconds: 90
+      policies:
+      - type: Percent
+        value: 30
+        periodSeconds: 90
+    scaleDown:
+      stabilizationWindowSeconds: 300
+      policies:
+      - type: Percent
+        value: 15
+        periodSeconds: 120

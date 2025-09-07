@@ -1,0 +1,28 @@
+version: '3.8'
+
+services:
+  analyst:
+    build: .
+    ports:
+      - "8003:8003"
+    environment:
+      - ANALYST_DEBUG=true
+      - ANALYST_LOG_LEVEL=DEBUG
+      - ANALYST_ORCHESTRATOR_URL=http://orchestrator:8001
+    volumes:
+      - ./src:/app/src
+    depends_on:
+      - redis
+    networks:
+      - helios-network
+
+  redis:
+    image: redis:7-alpine
+    ports:
+      - "6379:6379"
+    networks:
+      - helios-network
+
+networks:
+  helios-network:
+    external: true

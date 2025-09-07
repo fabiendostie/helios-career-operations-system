@@ -1,0 +1,173 @@
+# BMAD Agent Configuration
+# STRATEGIST Agent (Story 2.2 - SKELETON REQUIRING REMEDIATION)
+
+agent_id: "STRATEGIST"
+version: "1.0.0"
+status: "skeleton"  # ACCURATE STATUS - NOT OPERATIONAL
+
+metadata:
+  name: "Career Strategist"
+  description: "Career path generation using skill adjacency modeling and ML algorithms"
+  story: "2.2"
+  epic: "Epic 2: Intelligence"
+  priority: "high"
+  last_updated: "2025-09-06"
+  actual_functionality: "ZERO - Cannot import due to missing ML dependencies"
+
+capabilities:
+  - "Career path generation using transformer models"
+  - "Skill adjacency modeling with vector embeddings"
+  - "Role taxonomy management and hierarchical analysis"
+  - "Multi-dimensional fit scoring algorithms"
+  - "Redis caching for ML model performance"
+  - "Advanced ML pipeline with sentence-transformers"
+
+integration:
+  service_location: "services/strategist/"
+  api_endpoint: "/api/v1/strategy"
+  health_check: "/health"
+  
+  dependencies:
+    - "PROFILE_INGESTOR"  # Requires career profile data
+    
+  input_formats:
+    - "master_career_database"
+    - "career_objectives"
+    
+  output_format:
+    type: "json"
+    schema: "career_strategy_response"
+
+commands:
+  - command: "/generate/career-path"
+    description: "Generate optimal career paths based on profile analysis"
+    parameters:
+      - name: "profile_data"
+        type: "object"
+        required: true
+      - name: "target_roles"
+        type: "array"
+        required: false
+      - name: "time_horizon"
+        type: "string"
+        default: "3-years"
+        
+  - command: "/analyze/skill-gaps"
+    description: "Identify skill gaps for target career paths"
+    parameters:
+      - name: "current_profile"
+        type: "object"
+        required: true
+      - name: "target_role"
+        type: "string"
+        required: true
+
+knowledge_base:
+  location: "knowledge-base/agent-knowledge/strategist/"
+  documents:
+    - "ml-career-modeling.md"
+    - "skill-adjacency-algorithms.md"
+    - "role-taxonomy-management.md"
+
+# CRITICAL: ACCURATE DEPENDENCY STATUS
+dependencies:
+  python_version: ">=3.11"
+  packages:
+    - "sentence-transformers>=2.2.2"  # MISSING - Core ML embeddings (2.8GB download)
+    - "fastapi>=0.104.1"              # MISSING - API framework
+    - "httpx>=0.25.0"                 # MISSING - Async HTTP client
+    - "aiohttp>=3.8.0"                # MISSING - Service communication
+    - "redis>=5.0.0"                  # MISSING - ML caching layer
+    - "pytest-asyncio>=0.21.0"        # MISSING - Async testing framework
+    - "scikit-learn>=1.3.0"           # MISSING - ML algorithms
+    - "numpy>=1.24.0"                 # MISSING - Numerical computing
+    - "pandas>=2.1.0"                 # MISSING - Data manipulation
+  
+  models:
+    - "all-MiniLM-L6-v2"              # MISSING - Sentence transformer model (2.8GB)
+    - "all-mpnet-base-v2"             # MISSING - Advanced embedding model
+  
+  external_services:
+    - name: "redis"
+      endpoint: "redis://localhost:6379/1"
+      auth: "optional"
+
+performance:
+  max_concurrent_requests: 10  # Limited by ML processing
+  response_time_target: "5s"   # ML inference takes time
+  memory_usage_limit: "4GB"    # Large ML models
+  model_cache_size: "2GB"
+
+monitoring:
+  logs: "services/strategist/logs/"
+  metrics:
+    - "career_paths_generated_total"
+    - "ml_inference_time_seconds"
+    - "skill_gap_analyses_total"
+    - "model_cache_hits_ratio"
+
+# MANDATORY VERIFICATION REQUIREMENTS
+verification:
+  status: "not_verified"
+  last_verification_date: null
+  verification_results_file: null
+  
+  # Current blocking issues (ACCURATE)
+  blocking_issues:
+    - "Cannot import main module - missing sentence-transformers"
+    - "Cannot import FastAPI components - missing fastapi"
+    - "Cannot import HTTP clients - missing httpx, aiohttp"
+    - "Cannot import caching - missing redis"
+    - "Cannot run async tests - missing pytest-asyncio"
+    - "ML models not downloaded - requires 2.8GB+ storage"
+  
+  required_stages:
+    - "stage_1_dependency_validation"
+    - "stage_2_import_verification"
+    - "stage_3_service_startup"
+    - "stage_4_test_execution"
+    - "stage_5_functional_verification"
+  
+  verify_commands:
+    full_verification: "python bmad-core/scripts/verify-agent.py STRATEGIST"
+    dependencies_only: "python bmad-core/scripts/verify-dependencies.py STRATEGIST"
+  
+  status_change_rules:
+    pending_to_in_progress: 
+      verification_required: false
+    in_progress_to_completed:
+      verification_required: true
+      min_pass_rate: 80
+      all_dependencies_required: true
+      blocking_issues_allowed: 0
+
+testing:
+  unit_tests: "services/strategist/tests/"
+  integration_tests: "tests/integration/test_strategist.py"
+  coverage_target: "85%"
+  
+  # Current test status (ACCURATE)
+  current_status: "Cannot execute - ML dependency failures prevent test imports"
+  test_count_estimate: 45
+  min_pass_rate: 80
+  execution_timeout: 300  # ML tests take longer
+  dependencies_must_be_satisfied: true
+
+# REMEDIATION PLAN
+remediation:
+  priority: "HIGH"
+  estimated_effort: "4-6 hours"  # Includes large model downloads
+  storage_required: "3GB+"
+  steps:
+    1: "Install ML dependencies (sentence-transformers, scikit-learn, etc.)"
+    2: "Download transformer models (2.8GB+ - requires good internet)"
+    3: "Install FastAPI and async dependencies"
+    4: "Verify Redis connectivity for caching"
+    5: "Run verification script and achieve 100% dependency satisfaction"
+    6: "Execute ML test suite and achieve 80%+ pass rate"
+    7: "Update status to 'completed' only after verification passes"
+  
+  special_notes:
+    - "Requires substantial disk space for ML models"
+    - "Initial model download may take 30+ minutes"
+    - "Redis server must be running for caching tests"

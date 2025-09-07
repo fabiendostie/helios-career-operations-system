@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Python: module src.resume_extractor.components.output_generator</title>
+</head><body>
+
+<table class="heading">
+<tr class="heading-text decor">
+<td class="title">&nbsp;<br><strong class="title"><a href="src.html" class="white">src</a>.<a href="src.resume_extractor.html" class="white">resume_extractor</a>.<a href="src.resume_extractor.components.html" class="white">components</a>.output_generator</strong></td>
+<td class="extra"><a href=".">index</a><br><a href="file:c%3A%5Cusers%5Cfabie%5Cdocuments%5Cprompt_engineering%5Cjob%20seeking%5Chelios-career-operations-system%5Cservices%5Cprofile-ingestor%5Csrc%5Cresume_extractor%5Ccomponents%5Coutput_generator.py">c:\users\fabie\documents\prompt_engineering\job seeking\helios-career-operations-system\services\profile-ingestor\src\resume_extractor\components\output_generator.py</a></td></tr></table>
+    <p><span class="code">Output&nbsp;generation&nbsp;module&nbsp;for&nbsp;final&nbsp;JSON&nbsp;database&nbsp;creation.</span></p>
+<p>
+<table class="section">
+<tr class="decor pkg-content-decor heading-text">
+<td class="section-title" colspan=3>&nbsp;<br><strong class="bigsection">Modules</strong></td></tr>
+    
+<tr><td class="decor pkg-content-decor"><span class="code">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span></td><td>&nbsp;</td>
+<td class="singlecolumn"><table><tr><td class="multicolumn"><a href="json.html">json</a><br>
+</td><td class="multicolumn"><a href="logging.html">logging</a><br>
+</td><td class="multicolumn"><a href="re.html">re</a><br>
+</td><td class="multicolumn"></td></tr></table></td></tr></table><p>
+<table class="section">
+<tr class="decor index-decor heading-text">
+<td class="section-title" colspan=3>&nbsp;<br><strong class="bigsection">Classes</strong></td></tr>
+    
+<tr><td class="decor index-decor"><span class="code">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span></td><td>&nbsp;</td>
+<td class="singlecolumn"><dl>
+<dt class="heading-text"><a href="builtins.html#object">builtins.object</a>
+</dt><dd>
+<dl>
+<dt class="heading-text"><a href="src.resume_extractor.components.output_generator.html#OutputGenerator">OutputGenerator</a>
+</dt></dl>
+</dd>
+</dl>
+ <p>
+<table class="section">
+<tr class="decor title-decor heading-text">
+<td class="section-title" colspan=3>&nbsp;<br><a name="OutputGenerator">class <strong>OutputGenerator</strong></a>(<a href="builtins.html#object">builtins.object</a>)</td></tr>
+    
+<tr><td class="decor title-decor" rowspan=2><span class="code">&nbsp;&nbsp;&nbsp;</span></td>
+<td class="decor title-decor" colspan=2><span class="code"><a href="#OutputGenerator">OutputGenerator</a>(output_dir:&nbsp;pathlib._local.Path&nbsp;=&nbsp;None)<br>
+&nbsp;<br>
+Generates&nbsp;the&nbsp;final&nbsp;JSON&nbsp;output&nbsp;from&nbsp;consolidated&nbsp;data.<br>&nbsp;</span></td></tr>
+<tr><td>&nbsp;</td>
+<td class="singlecolumn">Methods defined here:<br>
+<dl><dt><a name="OutputGenerator-__init__"><strong>__init__</strong></a>(self, output_dir: pathlib._local.Path = None)</dt><dd><span class="code">Initialize&nbsp;output&nbsp;generator.<br>
+&nbsp;<br>
+Args:<br>
+&nbsp;&nbsp;&nbsp;&nbsp;output_dir:&nbsp;Directory&nbsp;for&nbsp;output&nbsp;files.&nbsp;Defaults&nbsp;to&nbsp;'output'</span></dd></dl>
+
+<dl><dt><a name="OutputGenerator-generate_json"><strong>generate_json</strong></a>(self, consolidated_data: Dict[str, Any]) -&gt; pathlib._local.Path</dt><dd><span class="code">Generate&nbsp;and&nbsp;save&nbsp;the&nbsp;final&nbsp;JSON&nbsp;output.<br>
+&nbsp;<br>
+Args:<br>
+&nbsp;&nbsp;&nbsp;&nbsp;consolidated_data:&nbsp;Consolidated&nbsp;data&nbsp;from&nbsp;ConsolidationEngine<br>
+&nbsp;<br>
+Returns:<br>
+&nbsp;&nbsp;&nbsp;&nbsp;Path&nbsp;to&nbsp;the&nbsp;generated&nbsp;JSON&nbsp;file<br>
+&nbsp;<br>
+Raises:<br>
+&nbsp;&nbsp;&nbsp;&nbsp;ValidationError:&nbsp;If&nbsp;data&nbsp;doesn't&nbsp;match&nbsp;schema<br>
+&nbsp;&nbsp;&nbsp;&nbsp;IOError:&nbsp;If&nbsp;file&nbsp;writing&nbsp;fails</span></dd></dl>
+
+<hr>
+Data descriptors defined here:<br>
+<dl><dt><strong>__dict__</strong></dt>
+<dd><span class="code">dictionary&nbsp;for&nbsp;instance&nbsp;variables</span></dd>
+</dl>
+<dl><dt><strong>__weakref__</strong></dt>
+<dd><span class="code">list&nbsp;of&nbsp;weak&nbsp;references&nbsp;to&nbsp;the&nbsp;object</span></dd>
+</dl>
+</td></tr></table></td></tr></table><p>
+<table class="section">
+<tr class="decor data-decor heading-text">
+<td class="section-title" colspan=3>&nbsp;<br><strong class="bigsection">Data</strong></td></tr>
+    
+<tr><td class="decor data-decor"><span class="code">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span></td><td>&nbsp;</td>
+<td class="singlecolumn"><strong>Dict</strong> = typing.Dict<br>
+<strong>List</strong> = typing.List<br>
+<strong>MASTER_SCHEMA</strong> = {'$schema': 'http://json-schema.org/draft-07/schema#', 'properties': {'_metadata': {'properties': {'generated_at': {'type': 'string'}, 'source_files': {'items': {'type': 'string'}, 'type': 'array'}, 'statistics': {'type': 'object'}, 'version': {'type': 'string'}}, 'type': 'object'}, 'holistic_profile': {'properties': {'core_motivators': {'items': {'type': 'string'}, 'type': 'array'}, 'personal_qualities': {'items': {'properties': {...}, 'type': 'object'}, 'type': 'array'}, 'professional_aspirations': {'properties': {'industries_of_interest': {...}, 'target_roles': {...}, 'technologies_to_learn': {...}}, 'type': 'object'}, 'transversal_projects': {'items': {'properties': {...}, 'type': 'object'}, 'type': 'array'}}, 'type': 'object'}, 'projects': {'items': {'properties': {'description': {'type': 'string'}, 'name': {'type': 'string'}, 'outcomes': {'items': {...}, 'type': 'array'}, 'technologies': {'items': {...}, 'type': 'array'}}, 'required': ['name', 'description'], 'type': 'object'}, 'type': 'array'}, 'skills_inventory': {'additionalProperties': {'items': {'properties': {'evidence_pointers': {...}, 'skill': {...}}, 'required': ['skill'], 'type': 'object'}, 'type': 'array'}, 'type': 'object'}, 'strategic_metadata': {'properties': {'core_competencies': {'items': {'type': 'string'}, 'type': 'array'}, 'job_title_variations': {'items': {'type': 'string'}, 'type': 'array'}, 'top_anchor_accomplishments': {'items': {'type': 'string'}, 'type': 'array'}}, 'type': 'object'}, 'work_experience': {'items': {'properties': {'accomplishments': {'items': {...}, 'type': 'array'}, 'company': {'type': 'string'}, 'dates': {'type': 'string'}, 'description': {'type': 'string'}, 'role': {'type': 'string'}}, 'required': ['role', 'company', 'dates', 'description'], 'type': 'object'}, 'type': 'array'}}, 'required': ['work_experience', 'skills_inventory', 'holistic_profile'], 'type': 'object'}<br>
+<strong>Optional</strong> = typing.Optional</td></tr></table>
+</body></html>

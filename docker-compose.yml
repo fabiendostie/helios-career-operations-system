@@ -1,0 +1,210 @@
+# HELIOS Career Operations System - Development Environment
+# Simplified configuration for local development and testing
+
+version: '3.8'
+
+services:
+  # PostgreSQL Database
+  postgres:
+    image: postgres:15-alpine
+    container_name: helios-dev-postgres
+    environment:
+      POSTGRES_DB: helios_dev
+      POSTGRES_USER: helios_dev
+      POSTGRES_PASSWORD: helios_dev_password
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_dev_data:/var/lib/postgresql/data
+    networks:
+      - helios-dev
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U helios_dev -d helios_dev"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+
+  # Redis Cache
+  redis:
+    image: redis:7-alpine
+    container_name: helios-dev-redis
+    ports:
+      - "6379:6379"
+    volumes:
+      - redis_dev_data:/data
+    networks:
+      - helios-dev
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+
+  # Profile Ingestor Service
+  profile-ingestor:
+    build:
+      context: ./services/profile-ingestor
+      dockerfile: Dockerfile
+    container_name: helios-dev-profile-ingestor
+    environment:
+      - PROFILE_INGESTOR_HOST=0.0.0.0
+      - PROFILE_INGESTOR_PORT=8001
+      - LOG_LEVEL=DEBUG
+    ports:
+      - "8001:8001"
+    volumes:
+      # Development: mount source for hot reload
+      - ./services/profile-ingestor/src:/app/src:ro
+      - ./uploads:/app/uploads:rw
+      - ./output:/app/output:rw
+    networks:
+      - helios-dev
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8001/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 30s
+
+  # HELIOS Orchestrator Service
+  orchestrator:
+    build:
+      context: ./services/orchestrator
+      dockerfile: Dockerfile
+    container_name: helios-dev-orchestrator
+    environment:
+      - DEBUG=true
+      - LOG_LEVEL=DEBUG
+      - DATABASE_URL=postgresql+asyncpg://helios_dev:helios_dev_password@postgres:5432/helios_dev
+      - REDIS_URL=redis://redis:6379/0
+      - PROFILE_INGESTOR_URL=http://profile-ingestor:8001
+      - STRATEGIST_URL=http://strategist:8002
+      - ANALYST_URL=http://analyst:8003
+      - SESSION_TIMEOUT_MINUTES=60
+      - CORS_ORIGINS=http://localhost:3000,http://localhost:8080
+    ports:
+      - "8000:8000"
+    volumes:
+      # Development: mount source for hot reload
+      - ./services/orchestrator/src:/app/src:ro
+      - ./data:/app/data:rw
+    depends_on:
+      postgres:
+        condition: service_healthy
+      redis:
+        condition: service_healthy
+    networks:
+      - helios-dev
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "python", "-c", "import requests; requests.get('http://localhost:8000/health/ready')"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 45s
+
+  # Strategist Service
+  strategist:
+    build:
+      context: ./services/strategist
+      dockerfile: Dockerfile
+    container_name: helios-dev-strategist
+    environment:
+      - STRATEGIST_HOST=0.0.0.0
+      - STRATEGIST_PORT=8002
+      - LOG_LEVEL=DEBUG
+      - REDIS_URL=redis://redis:6379/1
+      - MODEL_CACHE_SIZE=256MB
+    ports:
+      - "8002:8002"
+    volumes:
+      # Development: mount source for hot reload
+      - ./services/strategist/src:/app/src:ro
+      - ./ml_models_dev:/app/models:rw
+    depends_on:
+      redis:
+        condition: service_healthy
+    networks:
+      - helios-dev
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "python", "-c", "import requests; requests.get('http://localhost:8002/health')"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 60s
+
+  # Analyst Service
+  analyst:
+    build:
+      context: ./services/analyst
+      dockerfile: Dockerfile
+    container_name: helios-dev-analyst
+    environment:
+      - ANALYST_HOST=0.0.0.0
+      - ANALYST_PORT=8003
+      - LOG_LEVEL=DEBUG
+      - DATABASE_URL=postgresql+asyncpg://helios_dev:helios_dev_password@postgres:5432/helios_dev
+      - REDIS_URL=redis://redis:6379/2
+    ports:
+      - "8003:8003"
+    volumes:
+      # Development: mount source for hot reload
+      - ./services/analyst/src:/app/src:ro
+      - ./market_data_dev:/app/data:rw
+    depends_on:
+      postgres:
+        condition: service_healthy
+      redis:
+        condition: service_healthy
+    networks:
+      - helios-dev
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8003/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 45s
+
+  # Development Tools: Adminer for database management
+  adminer:
+    image: adminer:4.8.1
+    container_name: helios-dev-adminer
+    ports:
+      - "8080:8080"
+    networks:
+      - helios-dev
+    restart: unless-stopped
+    depends_on:
+      - postgres
+
+  # Development Tools: Redis Commander for cache management
+  redis-commander:
+    image: rediscommander/redis-commander:latest
+    container_name: helios-dev-redis-commander
+    environment:
+      - REDIS_HOSTS=local:redis:6379
+    ports:
+      - "8081:8081"
+    networks:
+      - helios-dev
+    restart: unless-stopped
+    depends_on:
+      - redis
+
+networks:
+  helios-dev:
+    driver: bridge
+    name: helios-dev-network
+
+volumes:
+  postgres_dev_data:
+    driver: local
+    name: helios-dev-postgres-data
+  redis_dev_data:
+    driver: local
+    name: helios-dev-redis-data

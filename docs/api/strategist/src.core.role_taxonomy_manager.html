@@ -1,0 +1,68 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+<html><head><title>Python: module src.core.role_taxonomy_manager</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+</head><body bgcolor="#f0f0f8">
+
+<table width="100%" cellspacing=0 cellpadding=2 border=0 summary="heading">
+<tr bgcolor="#7799ee">
+<td valign=bottom>&nbsp;<br>
+<font color="#ffffff" face="helvetica, arial">&nbsp;<br><big><big><strong>src.core.role_taxonomy_manager</strong></big></big></font></td>
+<td align=right valign=bottom
+><font color="#ffffff" face="helvetica, arial">C:\Users\fabie\Documents\Prompt_Engineering\job seeking\helios-career-operations-system\services\strategist\src\core\role_taxonomy_manager.py</font></td></tr></table>
+
+    <p><tt>Role taxonomy database manager for loading and querying job roles.</tt></p>
+
+<p>
+<table width="100%" cellspacing=0 cellpadding=2 border=0 summary="section">
+<tr bgcolor="#ffc8d8">
+<td colspan=3 valign=bottom>&nbsp;<br>
+<font color="#000000" face="helvetica, arial"><a name="Classes">Classes</a></font></td></tr>
+
+<tr><td bgcolor="#ffc8d8"><tt>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</tt></td><td>&nbsp;</td>
+<td width="100%"><dl>
+<dt><font face="helvetica, arial"><strong>RoleTaxonomyManager</strong></font></dt>
+<dd><tt>Manages the role taxonomy database and provides search/query capabilities....</tt></dd></dl></td></tr></table></p>
+<p>
+<table width="100%" cellspacing=0 cellpadding=2 border=0 summary="section">
+<tr bgcolor="#eeaa77">
+<td colspan=3 valign=bottom>&nbsp;<br>
+<font color="#ffffff" face="helvetica, arial"><a name="Functions">Functions</a></font></td></tr>
+
+<tr><td bgcolor="#eeaa77"><tt>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</tt></td><td>&nbsp;</td>
+<td width="100%"><dl><dt><a name="__init__"><strong>__init__</strong></a>(self, taxonomy_file_path, use_production)</dt>
+<dd><tt>Initialize the role taxonomy manager.
+        
+        Args:
+            taxonomy_file_path: Optional custom path to taxonomy file
+            use_production: Whether to use production (2000+ roles) o...</tt></dd></dl></td></tr>
+<tr><td bgcolor="#eeaa77"><tt>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</tt></td><td>&nbsp;</td>
+<td width="100%"><dl><dt><a name="_generate_stats"><strong>_generate_stats</strong></a>(self)</dt>
+<dd><tt>Generate statistics about the loaded taxonomy....</tt></dd></dl></td></tr>
+<tr><td bgcolor="#eeaa77"><tt>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</tt></td><td>&nbsp;</td>
+<td width="100%"><dl><dt><a name="get_role_by_id"><strong>get_role_by_id</strong></a>(self, role_id)</dt>
+<dd><tt>Get a specific role by its ID....</tt></dd></dl></td></tr>
+<tr><td bgcolor="#eeaa77"><tt>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</tt></td><td>&nbsp;</td>
+<td width="100%"><dl><dt><a name="get_all_roles"><strong>get_all_roles</strong></a>(self)</dt>
+<dd><tt>Get all roles in the taxonomy....</tt></dd></dl></td></tr>
+<tr><td bgcolor="#eeaa77"><tt>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</tt></td><td>&nbsp;</td>
+<td width="100%"><dl><dt><a name="search_roles"><strong>search_roles</strong></a>(self, search_filter)</dt>
+<dd><tt>Search roles using provided filters....</tt></dd></dl></td></tr>
+<tr><td bgcolor="#eeaa77"><tt>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</tt></td><td>&nbsp;</td>
+<td width="100%"><dl><dt><a name="_role_matches_filter"><strong>_role_matches_filter</strong></a>(self, role, search_filter)</dt>
+<dd><tt>Check if a role matches the search filter criteria....</tt></dd></dl></td></tr>
+<tr><td bgcolor="#eeaa77"><tt>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</tt></td><td>&nbsp;</td>
+<td width="100%"><dl><dt><a name="get_roles_by_skill_keywords"><strong>get_roles_by_skill_keywords</strong></a>(self, skill_keywords, limit)</dt>
+<dd><tt>Find roles that match given skill keywords....</tt></dd></dl></td></tr>
+<tr><td bgcolor="#eeaa77"><tt>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</tt></td><td>&nbsp;</td>
+<td width="100%"><dl><dt><a name="get_roles_by_riasec"><strong>get_roles_by_riasec</strong></a>(self, riasec_codes)</dt>
+<dd><tt>Find roles that match RIASEC personality types....</tt></dd></dl></td></tr>
+<tr><td bgcolor="#eeaa77"><tt>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</tt></td><td>&nbsp;</td>
+<td width="100%"><dl><dt><a name="get_roles_by_career_anchors"><strong>get_roles_by_career_anchors</strong></a>(self, career_anchors)</dt>
+<dd><tt>Find roles that match career anchor preferences....</tt></dd></dl></td></tr>
+<tr><td bgcolor="#eeaa77"><tt>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</tt></td><td>&nbsp;</td>
+<td width="100%"><dl><dt><a name="get_statistics"><strong>get_statistics</strong></a>(self)</dt>
+<dd><tt>Get taxonomy statistics....</tt></dd></dl></td></tr>
+<tr><td bgcolor="#eeaa77"><tt>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</tt></td><td>&nbsp;</td>
+<td width="100%"><dl><dt><a name="is_loaded"><strong>is_loaded</strong></a>(self)</dt>
+<dd><tt>Check if taxonomy is loaded....</tt></dd></dl></td></tr></table></p>
+</body></html>

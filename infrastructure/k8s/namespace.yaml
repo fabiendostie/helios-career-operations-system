@@ -1,0 +1,44 @@
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: helios
+  labels:
+    name: helios
+    app.kubernetes.io/name: helios
+    app.kubernetes.io/component: namespace
+    app.kubernetes.io/version: "1.0.0"
+    app.kubernetes.io/managed-by: kubernetes
+---
+apiVersion: v1
+kind: LimitRange
+metadata:
+  name: helios-limits
+  namespace: helios
+spec:
+  limits:
+  - type: Container
+    default:
+      cpu: "1"
+      memory: "1Gi"
+    defaultRequest:
+      cpu: "100m" 
+      memory: "128Mi"
+  - type: PersistentVolumeClaim
+    max:
+      storage: "10Gi"
+---
+apiVersion: v1
+kind: ResourceQuota
+metadata:
+  name: helios-quota
+  namespace: helios
+spec:
+  hard:
+    requests.cpu: "10"
+    requests.memory: "20Gi"
+    limits.cpu: "20"
+    limits.memory: "40Gi"
+    persistentvolumeclaims: "10"
+    services: "20"
+    secrets: "10"
+    configmaps: "10"

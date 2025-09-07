@@ -1,0 +1,279 @@
+{
+  "work_experience": [
+    {
+      "role": "Senior Software Engineer",
+      "company": "TechCorp Inc",
+      "dates": "2020-2023",
+      "description": "Led development of scalable web applications",
+      "accomplishments": [
+        {
+          "original": "Implemented microservices architecture resulting in 40% performance improvement",
+          "deconstructed": {
+            "action": "Implemented",
+            "challenge": "Implemented microservices architecture resulting in",
+            "outcome": "40% performance improvement"
+          },
+          "metrics": {
+            "percentage": [
+              "40"
+            ],
+            "number": [
+              "40"
+            ]
+          },
+          "associated_skills": [],
+          "impact_score": 3.0
+        },
+        {
+          "original": "Led team of 5 developers to deliver projects 2 weeks early",
+          "deconstructed": {
+            "action": "Led",
+            "challenge": "Led team of 5 developers to deliver projects 2 weeks early",
+            "outcome": ""
+          },
+          "metrics": {
+            "number": [
+              "5",
+              "2"
+            ],
+            "time_period": [
+              [
+                "2",
+                "weeks"
+              ]
+            ]
+          },
+          "associated_skills": [],
+          "impact_score": 2.0
+        },
+        {
+          "original": "Reduced bug reports by 60% through improved testing practices",
+          "deconstructed": {
+            "action": "Improved",
+            "challenge": "Reduced bug reports by 60% through improved testing practices",
+            "outcome": ""
+          },
+          "metrics": {
+            "percentage": [
+              "60"
+            ],
+            "number": [
+              "60"
+            ]
+          },
+          "associated_skills": [],
+          "impact_score": 4.0
+        }
+      ]
+    },
+    {
+      "role": "Software Developer",
+      "company": "StartupXYZ",
+      "dates": "2018-2020",
+      "description": "Developed full-stack applications using Python and React",
+      "accomplishments": [
+        {
+          "original": "Built REST API serving 10,000+ requests per minute",
+          "deconstructed": {
+            "action": "Built",
+            "challenge": "Built REST API serving 10,000+ requests per minute",
+            "outcome": ""
+          },
+          "metrics": {
+            "number": [
+              "10,000"
+            ]
+          },
+          "associated_skills": [
+            "API",
+            "REST"
+          ],
+          "impact_score": 1.0
+        },
+        {
+          "original": "Automated deployment pipeline reducing release time by 75%",
+          "deconstructed": {
+            "action": "",
+            "challenge": "Automated deployment pipeline reducing release time by 75%",
+            "outcome": ""
+          },
+          "metrics": {
+            "percentage": [
+              "75"
+            ],
+            "number": [
+              "75"
+            ]
+          },
+          "associated_skills": [],
+          "impact_score": 3.0
+        }
+      ]
+    }
+  ],
+  "projects": [
+    {
+      "name": "E-commerce Platform",
+      "description": "Built scalable e-commerce solution",
+      "technologies": [
+        "Python",
+        "Django",
+        "PostgreSQL",
+        "Redis"
+      ],
+      "outcomes": [
+        "Handles 100k+ daily users",
+        "99.9% uptime"
+      ]
+    }
+  ],
+  "skills_inventory": {
+    "technical": [
+      {
+        "skill": "Python",
+        "evidence_pointers": [
+          "Work experience at StartupXYZ",
+          "Project: E-commerce Platform"
+        ]
+      },
+      {
+        "skill": "JavaScript",
+        "evidence_pointers": []
+      },
+      {
+        "skill": "Docker",
+        "evidence_pointers": []
+      },
+      {
+        "skill": "AWS",
+        "evidence_pointers": []
+      }
+    ],
+    "soft": [
+      {
+        "skill": "Leadership",
+        "evidence_pointers": []
+      },
+      {
+        "skill": "Communication",
+        "evidence_pointers": []
+      },
+      {
+        "skill": "Problem Solving",
+        "evidence_pointers": []
+      }
+    ],
+    "languages": [
+      {
+        "skill": "English",
+        "evidence_pointers": []
+      },
+      {
+        "skill": "French",
+        "evidence_pointers": []
+      }
+    ],
+    "tools": [
+      {
+        "skill": "Git",
+        "evidence_pointers": []
+      },
+      {
+        "skill": "Jenkins",
+        "evidence_pointers": []
+      },
+      {
+        "skill": "PostgreSQL",
+        "evidence_pointers": [
+          "Project: E-commerce Platform"
+        ]
+      }
+    ]
+  },
+  "strategic_metadata": {
+    "job_title_variations": [
+      "Lead Software Engineer",
+      "Senior Software Engineer",
+      "Principal Software Engineer",
+      "Senior Software Developer",
+      "Software Engineer",
+      "Software Developer"
+    ],
+    "top_anchor_accomplishments": [
+      "Reduced bug reports by 60% through improved testing practices",
+      "Implemented microservices architecture resulting in 40% performance improvement",
+      "Automated deployment pipeline reducing release time by 75%",
+      "Led team of 5 developers to deliver projects 2 weeks early",
+      "Built REST API serving 10,000+ requests per minute"
+    ],
+    "core_competencies": [
+      "Python",
+      "JavaScript",
+      "Docker",
+      "AWS",
+      "Leadership",
+      "Communication",
+      "Problem Solving",
+      "English",
+      "French",
+      "Git"
+    ]
+  },
+  "holistic_profile": {
+    "transversal_projects": [
+      {
+        "name": "Open Source Contributions",
+        "description": "Active contributor to various open source projects",
+        "skills_demonstrated": [
+          "Python",
+          "Git",
+          "Collaboration"
+        ],
+        "link": "https://github.com/user"
+      }
+    ],
+    "professional_aspirations": {
+      "target_roles": [
+        "Tech Lead",
+        "Engineering Manager"
+      ],
+      "industries_of_interest": [
+        "Fintech",
+        "Healthcare"
+      ],
+      "technologies_to_learn": [
+        "Kubernetes",
+        "GraphQL"
+      ]
+    },
+    "core_motivators": [
+      "Innovation",
+      "Team Growth",
+      "Technical Excellence"
+    ],
+    "personal_qualities": [
+      {
+        "trait": "Analytical",
+        "evidence": "Consistently break down complex problems"
+      }
+    ]
+  },
+  "_metadata": {
+    "generated_at": "2023-01-01T12:00:00",
+    "version": "1.0",
+    "source_files": [
+      "resume.pdf",
+      "cv.docx"
+    ],
+    "statistics": {
+      "total_work_experiences": 2,
+      "total_projects": 1,
+      "total_skills": 12,
+      "processing_metadata": {
+        "files_processed": 2,
+        "conflicts_resolved": 3,
+        "total_processing_time": 45.2
+      }
+    }
+  }
+}

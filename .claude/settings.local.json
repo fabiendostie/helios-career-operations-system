@@ -7,7 +7,12 @@
       "Bash(pytest:*)",
       "Bash(ruff check:*)",
       "Bash(black:*)",
-      "Bash(rm:*)"
+      "Bash(rm:*)",
+      "Bash(pip install:*)",
+      "WebSearch",
+      "WebFetch(domain:21st.dev)",
+      "mcp__21dev__21st_magic_component_refiner",
+      "Bash(find:*)"
     ],
     "deny": [],
     "ask": []

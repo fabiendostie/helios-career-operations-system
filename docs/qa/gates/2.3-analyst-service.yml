@@ -1,0 +1,37 @@
+schema: 1
+story: "2.3"
+story_title: "ANALYST Agent Service"
+gate: CONCERNS
+status_reason: "Service implementation complete but significant test failures and code quality issues require attention before production deployment."
+reviewer: "Quinn (Test Architect)"
+updated: "2025-01-15T18:30:00Z"
+
+waiver: { active: false }
+
+top_issues:
+  - id: "TEST-001"
+    severity: high
+    finding: "11% test failure rate (6 errors, 5 failures out of 52 tests) with critical NLP component failures"
+    suggested_action: "Fix spaCy model loading errors in ResumeDeconstructor and mock integration issues"
+  - id: "QUAL-001"
+    severity: medium
+    finding: "673 code quality violations including unused imports, line length, and whitespace issues"
+    suggested_action: "Run 'ruff check --fix' to automatically resolve formatting issues"
+  - id: "DEP-001"
+    severity: medium
+    finding: "Missing curl dependency in Dockerfile prevents health check functionality"
+    suggested_action: "Add curl to system dependencies in Dockerfile line 6"
+  - id: "ARCH-001"
+    severity: medium
+    finding: "Deprecated datetime.utcnow() usage in multiple components"
+    suggested_action: "Replace with datetime.now(datetime.UTC) for timezone-aware datetime handling"
+  - id: "TEST-002"
+    severity: medium
+    finding: "Integration tests failing due to aiohttp session mock issues"
+    suggested_action: "Improve async mock handling in orchestrator integration tests"
+
+risk_summary:
+  totals: { critical: 0, high: 1, medium: 4, low: 0 }
+  recommendations:
+    must_fix: ["Fix test failures before production deployment"]
+    monitor: ["Code quality violations can be addressed iteratively"]

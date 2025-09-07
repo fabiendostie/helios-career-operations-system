@@ -70,7 +70,44 @@ monitoring:
     - "{metric_name_1}"
     - "{metric_name_2}"
     
+# MANDATORY VERIFICATION REQUIREMENTS
+verification:
+  status: "not_verified"  # not_verified | verification_failed | verified
+  last_verification_date: null
+  verification_results_file: null
+  
+  # Required verification stages (ALL MUST PASS)
+  required_stages:
+    - "stage_1_dependency_validation" 
+    - "stage_2_import_verification"
+    - "stage_3_service_startup"
+    - "stage_4_test_execution" 
+    - "stage_5_functional_verification"
+  
+  # Blocking issues that prevent completion
+  blocking_issues: []
+  
+  # Verification commands
+  verify_commands:
+    full_verification: "python bmad-core/scripts/verify-agent.py {agent_id}"
+    dependencies_only: "python bmad-core/scripts/verify-dependencies.py {agent_id}"
+  
+  # Status change rules
+  status_change_rules:
+    pending_to_in_progress: 
+      verification_required: false
+    in_progress_to_completed:
+      verification_required: true
+      min_pass_rate: 80
+      all_dependencies_required: true
+      blocking_issues_allowed: 0
+
 testing:
   unit_tests: "services/{agent-name}/tests/"
   integration_tests: "tests/integration/test_{agent-name}.py"
   coverage_target: "95%"
+  
+  # Test execution requirements
+  min_pass_rate: 80  # Minimum 80% pass rate required
+  execution_timeout: 120  # seconds
+  dependencies_must_be_satisfied: true

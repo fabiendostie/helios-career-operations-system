@@ -32,11 +32,13 @@ class TestOrchestratorIntegration:
         """Test successful service registration."""
         mock_response = AsyncMock()
         mock_response.status = 200
-        mock_response.__aenter__.return_value = mock_response
-        mock_response.__aexit__.return_value = None
+        mock_response.text = AsyncMock(return_value='{"status": "registered"}')
         
-        client.session = AsyncMock()
-        client.session.post.return_value = mock_response
+        # Mock the context manager protocol
+        mock_session = AsyncMock()
+        mock_session.post.return_value.__aenter__.return_value = mock_response
+        mock_session.post.return_value.__aexit__.return_value = None
+        client.session = mock_session
         
         result = await client.register_with_orchestrator()
         assert result == True
@@ -61,11 +63,13 @@ class TestOrchestratorIntegration:
         """Test successful heartbeat sending."""
         mock_response = AsyncMock()
         mock_response.status = 200
-        mock_response.__aenter__.return_value = mock_response
-        mock_response.__aexit__.return_value = None
+        mock_response.json = AsyncMock(return_value={"status": "received"})
         
-        client.session = AsyncMock()
-        client.session.post.return_value = mock_response
+        # Mock the context manager protocol
+        mock_session = AsyncMock()
+        mock_session.post.return_value.__aenter__.return_value = mock_response
+        mock_session.post.return_value.__aexit__.return_value = None
+        client.session = mock_session
         
         result = await client.send_heartbeat()
         assert result == True

@@ -799,7 +799,7 @@ class TestConsolidationEngineEdgeCases(unittest.TestCase):
         mapper = SkillMapper("nonexistent/path.json")
         
         # Should return original skill when map is empty
-        result = mapper.normalize_skill("Python")
+        result = mapper._find_canonical_skill("Python")
         self.assertEqual(result, "Python")
     
     def test_consolidate_skills_empty_list(self):

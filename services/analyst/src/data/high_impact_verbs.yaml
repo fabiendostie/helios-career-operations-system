@@ -1,0 +1,133 @@
+high_impact_verbs:
+  technical:
+    - architected
+    - engineered
+    - deployed
+    - refactored
+    - automated
+    - implemented
+    - developed
+    - designed
+    - optimized
+    - scaled
+    - integrated
+    - configured
+    - migrated
+    - modernized
+    - streamlined
+
+  management:
+    - orchestrated
+    - governed
+    - mentored
+    - piloted
+    - led
+    - managed
+    - coordinated
+    - supervised
+    - directed
+    - overseen
+    - facilitated
+    - delegated
+    - motivated
+    - empowered
+    - guided
+
+  growth_sales:
+    - accelerated
+    - evangelized
+    - penetrated
+    - negotiated
+    - captured
+    - drove
+    - increased
+    - expanded
+    - grew
+    - boosted
+    - maximized
+    - generated
+    - converted
+    - acquired
+    - delivered
+
+  analysis:
+    - synthesized
+    - modeled
+    - forecasted
+    - quantified
+    - inferred
+    - analyzed
+    - evaluated
+    - assessed
+    - measured
+    - tracked
+    - investigated
+    - researched
+    - interpreted
+    - validated
+    - benchmarked
+
+  process_improvement:
+    - transformed
+    - revolutionized
+    - enhanced
+    - improved
+    - restructured
+    - reorganized
+    - standardized
+    - systematized
+    - consolidated
+    - centralized
+    - eliminated
+    - reduced
+    - minimized
+    - expedited
+    - accelerated
+
+  communication:
+    - communicated
+    - presented
+    - demonstrated
+    - articulated
+    - conveyed
+    - influenced
+    - persuaded
+    - collaborated
+    - partnered
+    - liaised
+    - consulted
+    - advised
+    - recommended
+    - proposed
+    - advocated
+
+weak_verbs_to_avoid:
+  - helped
+  - worked
+  - did
+  - made
+  - got
+  - went
+  - used
+  - tried
+  - handled
+  - dealt
+  - responsible
+  - duties
+  - tasks
+  - involved
+  - participated
+
+verb_scoring_weights:
+  high_impact: 1.0
+  medium_impact: 0.6
+  low_impact: 0.3
+  weak_verbs: 0.0
+
+quantification_patterns:
+  percentage: "\\d+\\.?\\d*%"
+  currency: "\\$[\\d,]+"
+  numbers_with_units: "\\d+\\s*(seconds?|minutes?|hours?|days?|weeks?|months?|years?|K|M|B|thousand|million|billion)"
+  time_periods: "\\d+\\s*(week|month|year|day)s?"
+  metrics: "\\d+x|\\d+\\.\\d+x"
+  ranges: "\\d+-\\d+"
