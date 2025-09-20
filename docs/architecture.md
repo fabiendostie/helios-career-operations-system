@@ -302,7 +302,141 @@ services:
 
 ---
 
-## 5. Performance Architecture
+## 5. Resilience & Error Handling Architecture
+
+### 5.1 Circuit Breaker Patterns
+
+The Helios system implements comprehensive circuit breaker patterns to handle external service failures gracefully.
+
+#### 5.1.1 External Service Circuit Breakers
+```python
+# Circuit Breaker Configuration
+CIRCUIT_BREAKERS = {
+    'openai_api': {
+        'failure_threshold': 3,      # failures before opening
+        'recovery_timeout': 60,      # seconds before retry attempt
+        'timeout': 30,               # request timeout
+        'fallback': 'use_cached_templates'
+    },
+    'anthropic_api': {
+        'failure_threshold': 3,
+        'recovery_timeout': 60, 
+        'timeout': 30,
+        'fallback': 'queue_for_later_processing'
+    },
+    'vector_database': {
+        'failure_threshold': 5,
+        'recovery_timeout': 30,
+        'timeout': 15,
+        'fallback': 'use_sql_similarity_search'
+    },
+    'spacy_models': {
+        'failure_threshold': 2,
+        'recovery_timeout': 45,
+        'timeout': 10,
+        'fallback': 'use_basic_text_processing'
+    }
+}
+```
+
+#### 5.1.2 Retry Policies
+```yaml
+retry_strategies:
+  exponential_backoff:
+    initial_delay: 1s
+    multiplier: 2
+    max_delay: 30s
+    max_retries: 3
+    jitter: true
+    
+  linear_backoff:
+    delay: 2s
+    max_retries: 5
+    
+  immediate_retry:
+    max_retries: 1
+    use_cases: ["network_timeout", "connection_reset"]
+```
+
+#### 5.1.3 Graceful Degradation Strategies
+| Service | Primary Function | Degraded Mode | Fallback Action |
+|---------|------------------|---------------|-----------------|
+| Strategist | ML career path generation | Rule-based paths | Return cached/template paths |
+| Analyst | 6-step NLP pipeline | Basic analysis | Simple keyword matching |
+| Architect | AI document generation | Template-based | Use predefined templates |
+| Editor | AI text optimization | Pattern-based | Apply preset transformations |
+| Orchestrator | Agent coordination | Direct routing | Route to available services only |
+
+#### 5.1.4 Health Check & Recovery
+```yaml
+health_checks:
+  frequency: 30s
+  timeout: 5s
+  endpoints:
+    - /health/basic      # Service alive
+    - /health/ready      # Dependencies available
+    - /health/models     # ML models loaded
+    
+recovery_actions:
+  service_restart:
+    max_attempts: 3
+    backoff: exponential
+  
+  model_reload:
+    triggers: ["memory_error", "model_corruption"]
+    timeout: 300s
+  
+  cache_clear:
+    triggers: ["memory_pressure", "stale_data"]
+```
+
+### 5.2 Fault Tolerance Mechanisms
+
+#### 5.2.1 Service Mesh Resilience (Istio)
+```yaml
+istio_policies:
+  retry_policy:
+    attempts: 3
+    per_try_timeout: 10s
+    retry_on: "gateway-error,connect-failure,refused-stream"
+  
+  circuit_breaker:
+    max_connections: 100
+    max_pending_requests: 10
+    max_requests_per_connection: 2
+    consecutive_errors: 3
+  
+  timeout: 30s
+  
+  outlier_detection:
+    consecutive_errors: 5
+    interval: 30s
+    base_ejection_time: 30s
+```
+
+#### 5.2.2 Database Resilience
+```yaml
+database_resilience:
+  postgresql:
+    connection_pooling: true
+    max_connections: 100
+    connection_timeout: 30s
+    statement_timeout: 30s
+    
+  redis:
+    cluster_mode: true
+    sentinel_enabled: true
+    failover_timeout: 5s
+    
+  vector_db:
+    replication_factor: 3
+    consistency_level: "eventual"
+    backup_strategy: "continuous"
+```
+
+---
+
+## 6. Performance Architecture
 
 ### 5.1 Performance Targets
 | Component | Target Latency | Throughput | Availability |

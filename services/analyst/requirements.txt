@@ -29,3 +29,10 @@ pytest-cov==4.1.0
 pytest-mock==3.12.0
 black==23.11.0
 ruff==0.1.6
+
+# BMAD Core Utils for date/time
+aiohttp>=3.9.1
+pytz>=2023.3
+
+# Shared services
+../shared  # Local path to shared LLM client

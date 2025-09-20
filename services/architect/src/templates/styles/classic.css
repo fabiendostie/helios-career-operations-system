@@ -1,0 +1,207 @@
+/* ATS-Compliant CSS for Classic Resume Template */
+/* Follows 2025 ATS standards: single-column, standard fonts, no graphics */
+
+/* Base Document Styling */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Arial', 'Calibri', 'Helvetica', sans-serif; /* Standard fonts only */
+    font-size: 11pt; /* ATS-safe font size */
+    line-height: 1.4;
+    color: #000000; /* High contrast for parsing */
+    background: #ffffff;
+    max-width: 8.5in; /* Standard letter width */
+    margin: 0 auto;
+    padding: 0.75in; /* Professional margins */
+}
+
+/* Single-column layout (critical for ATS) */
+.container {
+    display: block; /* No flexbox/grid - linear flow only */
+    width: 100%;
+}
+
+/* Impact Summary Section (T-shaped top bar) */
+.impact-summary {
+    border-bottom: 1pt solid #000000; /* Simple line separator */
+    margin-bottom: 16pt;
+    padding-bottom: 12pt;
+}
+
+.impact-summary h1 {
+    font-size: 16pt;
+    font-weight: bold;
+    color: #000000;
+    text-align: center;
+    margin-bottom: 6pt;
+    /* No text-transform or fancy styling */
+}
+
+.contact-info {
+    text-align: center;
+    font-size: 10pt;
+    margin-bottom: 8pt;
+}
+
+.contact-info span {
+    margin: 0 8pt; /* Simple spacing */
+}
+
+.summary {
+    font-size: 11pt;
+    margin: 8pt 0;
+    text-align: justify;
+    /* Dense paragraph for impact summary */
+}
+
+.core-skills {
+    font-size: 10pt;
+    margin-top: 8pt;
+}
+
+/* Experience Log Section (T-shaped vertical bar) */
+.experience-log {
+    margin: 16pt 0;
+}
+
+.experience-log h2 {
+    font-size: 14pt;
+    font-weight: bold;
+    color: #000000;
+    border-bottom: 1pt solid #000000;
+    padding-bottom: 4pt;
+    margin-bottom: 12pt;
+    /* Standard section header - ATS recognizable */
+}
+
+.job-entry {
+    margin-bottom: 16pt;
+    page-break-inside: avoid; /* Keep job entries together */
+}
+
+.job-header {
+    margin-bottom: 4pt;
+}
+
+.job-header h3 {
+    font-size: 12pt;
+    font-weight: bold;
+    color: #000000;
+    display: inline;
+}
+
+.company {
+    font-size: 11pt;
+    font-weight: normal;
+    margin-left: 8pt;
+}
+
+.duration {
+    font-size: 10pt;
+    float: right; /* Right-align dates */
+    color: #333333;
+}
+
+/* Accomplishment bullets */
+.accomplishments {
+    margin: 6pt 0 6pt 20pt; /* Standard bullet indentation */
+    padding: 0;
+}
+
+.accomplishments li {
+    margin-bottom: 3pt;
+    font-size: 11pt;
+    line-height: 1.3;
+    list-style-type: disc; /* Standard bullets */
+}
+
+.skills-used {
+    font-size: 9pt;
+    color: #666666;
+    margin-top: 4pt;
+    font-style: italic;
+}
+
+/* Education Section */
+.education {
+    margin-top: 16pt;
+}
+
+.education h2 {
+    font-size: 14pt;
+    font-weight: bold;
+    border-bottom: 1pt solid #000000;
+    padding-bottom: 4pt;
+    margin-bottom: 8pt;
+}
+
+.education-entry {
+    margin-bottom: 6pt;
+    font-size: 11pt;
+}
+
+/* Technical Skills Section */
+.technical-skills {
+    margin-top: 16pt;
+}
+
+.technical-skills h2 {
+    font-size: 14pt;
+    font-weight: bold;
+    border-bottom: 1pt solid #000000;
+    padding-bottom: 4pt;
+    margin-bottom: 8pt;
+}
+
+.skill-category {
+    margin-bottom: 6pt;
+    font-size: 11pt;
+}
+
+/* Certifications Section */
+.certifications {
+    margin-top: 16pt;
+}
+
+.certifications h2 {
+    font-size: 14pt;
+    font-weight: bold;
+    border-bottom: 1pt solid #000000;
+    padding-bottom: 4pt;
+    margin-bottom: 8pt;
+}
+
+.certification-entry {
+    margin-bottom: 6pt;
+    font-size: 11pt;
+}
+
+/* Print/PDF Optimization */
+@media print {
+    body {
+        padding: 0.5in; /* Reduced margins for print */
+    }
+    
+    .job-entry {
+        page-break-inside: avoid;
+    }
+    
+    h1, h2, h3 {
+        page-break-after: avoid;
+    }
+}
+
+/* ATS-Critical: No complex layouts */
+/* AVOID: flexbox, grid, absolute positioning, transforms */
+/* AVOID: background images, complex borders, custom fonts */
+/* AVOID: multi-column layouts, text rotation, overlays */
+
+/* WeasyPrint specific optimizations */
+@page {
+    size: letter;
+    margin: 0.75in;
+}

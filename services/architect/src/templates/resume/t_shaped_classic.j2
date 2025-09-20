@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{ candidate_name }} - Resume</title>
+    <link rel="stylesheet" href="../styles/classic.css">
+</head>
+<body>
+    <!-- T-Shaped Top Bar: Impact Summary -->
+    <section class="impact-summary">
+        <h1>{{ candidate_name }}</h1>
+        
+        <div class="contact-info">
+            <span>{{ email }}</span>
+            {% if phone %} | <span>{{ phone }}</span>{% endif %}
+            {% if location %} | <span>{{ location }}</span>{% endif %}
+            {% if linkedin %} | <span>{{ linkedin }}</span>{% endif %}
+        </div>
+        
+        <!-- Dynamic Impact Summary using T-shaped formula -->
+        <p class="summary">
+            {{ adjective }} {{ target_role_title }} with {{ years_experience }} years of experience 
+            specializing in {{ core_competency_1 }}, {{ core_competency_2 }}, and {{ core_technology }}. 
+            Proven ability to {{ top_quantified_achievement }} by leveraging expertise in {{ skill_area }}.
+        </p>
+        
+        <!-- Core Skills (Top 8 keywords for ATS) -->
+        <div class="core-skills">
+            <strong>Core Competencies:</strong>
+            {% for skill in core_skills[:8] %}
+                {{ skill }}{% if not loop.last %} • {% endif %}
+            {% endfor %}
+        </div>
+    </section>
+
+    <!-- T-Shaped Vertical Bar: Experience Log -->
+    <section class="experience-log">
+        <h2>Professional Experience</h2>
+        
+        {% for job in work_experience %}
+        <div class="job-entry">
+            <div class="job-header">
+                <h3>{{ job.role_title | default('Professional') }}</h3>
+                <span class="company">{{ job.company_name | default('Company') }}</span>
+                <span class="duration">{{ job.start_date | format_duration(job.end_date) }}</span>
+            </div>
+            
+            <ul class="accomplishments">
+                {% for accomplishment in job.accomplishments %}
+                <li>{{ accomplishment }}</li>
+                {% endfor %}
+            </ul>
+            
+            <!-- Skills used in this role for context -->
+            {% if job.skills_used %}
+            <div class="skills-used">
+                <em>Technologies:</em> {{ job.skills_used | join_with_comma }}
+            </div>
+            {% endif %}
+        </div>
+        {% endfor %}
+    </section>
+
+    <!-- Additional Standard Sections -->
+    {% if education %}
+    <section class="education">
+        <h2>Education</h2>
+        {% for edu in education %}
+        <div class="education-entry">
+            <strong>{{ edu.degree | default('Degree') }}</strong>
+            {% if edu.institution %} - {{ edu.institution }}{% endif %}
+            {% if edu.year %} ({{ edu.year }}){% endif %}
+            {% if edu.gpa and edu.gpa >= 3.5 %} - GPA: {{ edu.gpa }}{% endif %}
+        </div>
+        {% endfor %}
+    </section>
+    {% endif %}
+    
+    {% if technical_skills %}
+    <section class="technical-skills">
+        <h2>Technical Skills</h2>
+        {% for category, skills in technical_skills.items() %}
+        <div class="skill-category">
+            <strong>{{ category | capitalize_first }}:</strong> {{ skills | join_with_comma }}
+        </div>
+        {% endfor %}
+    </section>
+    {% endif %}
+    
+    {% if career_data.certifications %}
+    <section class="certifications">
+        <h2>Certifications</h2>
+        {% for cert in career_data.certifications %}
+        <div class="certification-entry">
+            <strong>{{ cert.name }}</strong>
+            {% if cert.issuer %} - {{ cert.issuer }}{% endif %}
+            {% if cert.year %} ({{ cert.year }}){% endif %}
+        </div>
+        {% endfor %}
+    </section>
+    {% endif %}
+</body>
+</html>

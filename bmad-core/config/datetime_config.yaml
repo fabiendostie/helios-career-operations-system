@@ -1,0 +1,54 @@
+# BMAD Core Date/Time Configuration
+# Helios Career Operations System
+
+# Timezone Configuration
+timezone:
+  primary: "America/Montreal"
+  display_name: "Montreal, Quebec, Canada" 
+  abbreviation_preference: "EDT/EST"
+
+# Document Generation Standards
+documentation:
+  default_format: "full"  # full, date, iso, filename, pydoc
+  include_timezone: true
+  include_location: true
+  location_text: "Montreal, Quebec, Canada"
+  
+# Internet Time Sources (in priority order)
+time_sources:
+  primary:
+    - name: "WorldTimeAPI Montreal"
+      url: "http://worldtimeapi.org/api/timezone/America/Montreal" 
+      timeout: 5
+  fallback:
+    - name: "WorldTimeAPI UTC"
+      url: "http://worldtimeapi.org/api/timezone/UTC"
+      timeout: 5
+    - name: "HTTP Date Header"
+      url: "http://www.google.com"
+      timeout: 3
+
+# System-wide Standards
+standards:
+  log_format: "%Y-%m-%d %H:%M:%S.%f %Z"
+  filename_format: "%Y%m%d_%H%M%S"  
+  report_format: "full_with_location"
+  audit_format: "[%Y-%m-%d %H:%M:%S %Z] AUDIT:"
+  
+# Service-specific overrides  
+services:
+  profile-ingestor:
+    output_timestamp_format: "full"
+    backup_timestamp_format: "filename"
+  orchestrator:
+    session_timestamp_format: "iso"
+    log_timestamp_format: "full"
+  strategist:
+    career_path_timestamp: "full" 
+  analyst:
+    analysis_timestamp: "full"
+  architect:
+    document_generation_timestamp: "full"
+    ats_validation_timestamp: "full"
+  editor:
+    edit_timestamp: "full"

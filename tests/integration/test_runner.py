@@ -7,14 +7,11 @@ Docker Compose environment management and reporting.
 """
 
 import argparse
-import asyncio
 import os
 import subprocess
 import sys
 import time
-import yaml
 from pathlib import Path
-from typing import Dict, List, Optional
 
 
 class HeliosTestRunner:
@@ -38,7 +35,7 @@ class HeliosTestRunner:
 
         print("✓ Environment setup complete")
 
-    def start_services(self, services: Optional[List[str]] = None):
+    def start_services(self, services: list[str] | None = None):
         """Start Docker Compose services for testing."""
         print("Starting test services...")
 
@@ -59,14 +56,27 @@ class HeliosTestRunner:
         print("Waiting for services to become healthy...")
 
         start_time = time.time()
-        services = ["postgres-test", "redis-test", "orchestrator-test",
-                   "profile-ingestor-test", "strategist-test", "analyst-test"]
+        services = [
+            "postgres-test",
+            "redis-test",
+            "orchestrator-test",
+            "profile-ingestor-test",
+            "strategist-test",
+            "analyst-test",
+        ]
 
         while time.time() - start_time < timeout:
             all_healthy = True
 
             for service in services:
-                cmd = ["docker-compose", "-f", str(self.compose_file), "ps", "-q", service]
+                cmd = [
+                    "docker-compose",
+                    "-f",
+                    str(self.compose_file),
+                    "ps",
+                    "-q",
+                    service,
+                ]
                 result = subprocess.run(cmd, capture_output=True, text=True)
 
                 if not result.stdout.strip():
@@ -75,8 +85,16 @@ class HeliosTestRunner:
 
                 # Check health status
                 container_id = result.stdout.strip()
-                health_cmd = ["docker", "inspect", "--format", "{{.State.Health.Status}}", container_id]
-                health_result = subprocess.run(health_cmd, capture_output=True, text=True)
+                health_cmd = [
+                    "docker",
+                    "inspect",
+                    "--format",
+                    "{{.State.Health.Status}}",
+                    container_id,
+                ]
+                health_result = subprocess.run(
+                    health_cmd, capture_output=True, text=True
+                )
 
                 if health_result.returncode == 0:
                     health_status = health_result.stdout.strip()
@@ -85,8 +103,16 @@ class HeliosTestRunner:
                         break
                 else:
                     # Service might not have health check, check if running
-                    status_cmd = ["docker", "inspect", "--format", "{{.State.Status}}", container_id]
-                    status_result = subprocess.run(status_cmd, capture_output=True, text=True)
+                    status_cmd = [
+                        "docker",
+                        "inspect",
+                        "--format",
+                        "{{.State.Status}}",
+                        container_id,
+                    ]
+                    status_result = subprocess.run(
+                        status_cmd, capture_output=True, text=True
+                    )
                     if status_result.stdout.strip() != "running":
                         all_healthy = False
                         break
@@ -101,13 +127,18 @@ class HeliosTestRunner:
         print("✗ Timeout waiting for services to become healthy")
         return False
 
-    def run_tests(self, test_type: str = "all", markers: Optional[List[str]] = None) -> bool:
+    def run_tests(
+        self, test_type: str = "all", markers: list[str] | None = None
+    ) -> bool:
         """Run integration tests."""
         print(f"Running {test_type} tests...")
 
         # Base pytest command
         cmd = [
-            "python", "-m", "pytest", "tests/integration/",
+            "python",
+            "-m",
+            "pytest",
+            "tests/integration/",
             "--verbose",
             "--tb=short",
             f"--junit-xml={self.reports_dir}/test-results.xml",
@@ -116,7 +147,7 @@ class HeliosTestRunner:
             "--cov=services",
             f"--cov-report=html:{self.reports_dir}/coverage",
             "--cov-report=term",
-            "--durations=10"
+            "--durations=10",
         ]
 
         # Add test type specific options
@@ -140,7 +171,9 @@ class HeliosTestRunner:
 
         # Run tests
         try:
-            result = subprocess.run(cmd, cwd=self.project_root, timeout=1800)  # 30 minute timeout
+            result = subprocess.run(
+                cmd, cwd=self.project_root, timeout=1800
+            )  # 30 minute timeout
             success = result.returncode == 0
 
             if success:
@@ -196,7 +229,9 @@ class HeliosTestRunner:
             # Coverage summary
             if (self.reports_dir / "coverage").exists():
                 f.write("## Coverage Report\n\n")
-                f.write("- Coverage HTML: [coverage/index.html](coverage/index.html)\n\n")
+                f.write(
+                    "- Coverage HTML: [coverage/index.html](coverage/index.html)\n\n"
+                )
 
             # Service status
             f.write("## Service Status\n\n")
@@ -217,34 +252,36 @@ def main():
 
     parser.add_argument(
         "--type",
-        choices=["all", "smoke", "performance", "error_handling", "data_validation", "fast", "integration"],
+        choices=[
+            "all",
+            "smoke",
+            "performance",
+            "error_handling",
+            "data_validation",
+            "fast",
+            "integration",
+        ],
         default="all",
-        help="Type of tests to run"
+        help="Type of tests to run",
     )
 
     parser.add_argument(
-        "--markers",
-        nargs="*",
-        help="Additional pytest markers to apply"
+        "--markers", nargs="*", help="Additional pytest markers to apply"
     )
 
     parser.add_argument(
         "--no-cleanup",
         action="store_true",
-        help="Skip cleanup after tests (useful for debugging)"
+        help="Skip cleanup after tests (useful for debugging)",
     )
 
     parser.add_argument(
         "--services-only",
         action="store_true",
-        help="Only start services, don't run tests"
+        help="Only start services, don't run tests",
     )
 
-    parser.add_argument(
-        "--stop-only",
-        action="store_true",
-        help="Only stop services"
-    )
+    parser.add_argument("--stop-only", action="store_true", help="Only stop services")
 
     args = parser.parse_args()
 

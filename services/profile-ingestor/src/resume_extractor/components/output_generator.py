@@ -6,10 +6,21 @@ from pathlib import Path
 from typing import Dict, Any, List, Optional
 from datetime import datetime
 import re
+import sys
+import os
 
 from jsonschema import validate, ValidationError
 from rich.console import Console
 from rich.panel import Panel
+
+# Add bmad-core to path for internet datetime utility
+sys.path.append(os.path.join(os.path.dirname(__file__), '..', '..', '..', '..', '..', 'bmad-core'))
+try:
+    from utils.internet_datetime import get_current_datetime_sync, get_current_date_sync, format_date_for_filename_sync
+    INTERNET_TIME_AVAILABLE = True
+except ImportError:
+    INTERNET_TIME_AVAILABLE = False
+    logging.warning("Internet time utilities not available, falling back to system time")
 
 from ..schemas.master_schema import MASTER_SCHEMA
 
@@ -554,8 +565,14 @@ class OutputGenerator:
         Returns:
             Data with metadata added
         """
+        # Use internet time if available, fallback to system time
+        if INTERNET_TIME_AVAILABLE:
+            current_dt = get_current_datetime_sync()
+        else:
+            current_dt = datetime.now()
+            
         metadata = {
-            "generated_at": datetime.now().isoformat(),
+            "generated_at": current_dt.isoformat(),
             "version": "1.0",
             "source_files": original_data.get("source_files", []),
             "statistics": {
@@ -577,7 +594,11 @@ class OutputGenerator:
         Args:
             data: Data to backup
         """
-        timestamp = datetime.now().timestamp()
+        # Use internet time for backup timestamp  
+        if INTERNET_TIME_AVAILABLE:
+            timestamp = get_current_datetime_sync().timestamp()
+        else:
+            timestamp = datetime.now().timestamp()
         backup_path = self.output_dir / f".backup_{timestamp}.json"
 
         try:
@@ -607,8 +628,11 @@ class OutputGenerator:
         Raises:
             IOError: If file writing fails
         """
-        # Generate filename with timestamp
-        timestamp = datetime.now().strftime("%Y%m%d_%H%M%S")
+        # Generate filename with internet-based timestamp
+        if INTERNET_TIME_AVAILABLE:
+            timestamp = format_date_for_filename_sync()
+        else:
+            timestamp = datetime.now().strftime("%Y%m%d_%H%M%S")
         filename = f"master_career_database_{timestamp}.json"
         output_path = self.output_dir / filename
 

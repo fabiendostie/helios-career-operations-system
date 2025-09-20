@@ -1,0 +1,4 @@
+# BMAD Core Utils Dependencies
+aiohttp>=3.9.1
+asyncio-compat>=0.1.0
+pytz>=2023.3

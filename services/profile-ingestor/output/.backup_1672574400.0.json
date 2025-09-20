@@ -192,12 +192,12 @@
   },
   "strategic_metadata": {
     "job_title_variations": [
-      "Lead Software Engineer",
+      "Software Developer",
       "Senior Software Engineer",
       "Principal Software Engineer",
-      "Senior Software Developer",
       "Software Engineer",
-      "Software Developer"
+      "Lead Software Engineer",
+      "Senior Software Developer"
     ],
     "top_anchor_accomplishments": [
       "Reduced bug reports by 60% through improved testing practices",

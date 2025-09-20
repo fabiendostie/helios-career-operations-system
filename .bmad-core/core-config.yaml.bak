@@ -1,0 +1,22 @@
+markdownExploder: true
+qa:
+  qaLocation: docs/qa
+prd:
+  prdFile: docs/PRD.md
+  prdVersion: v1
+  prdSharded: true
+  prdShardedLocation: docs/01-requirements
+  epicFilePattern: epic-{n}*.md
+architecture:
+  architectureFile: docs/architecture.md
+  architectureVersion: v1
+  architectureSharded: true
+  architectureShardedLocation: docs/02-architecture
+customTechnicalDocuments: null
+devLoadAlwaysFiles:
+  - docs/02-architecture/coding-standards.md
+  - docs/02-architecture/tech-stack.md
+  - docs/02-architecture/source-tree.md
+devDebugLog: .ai/debug-log.md
+devStoryLocation: docs/stories
+slashPrefix: Helios

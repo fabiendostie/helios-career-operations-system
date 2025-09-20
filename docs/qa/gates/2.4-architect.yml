@@ -1,0 +1,29 @@
+schema: 1
+story: '2.4'
+gate: FAIL
+status_reason: 'Service not yet implemented - pending development.'
+reviewer: 'BMad Master (Architect Review)'
+updated: '2025-09-20T10:00:00Z'
+top_issues:
+  - id: 'REQ-001'
+    severity: high
+    finding: 'Service directory does not exist'
+    suggested_action: 'Implement Architect service following Story 2.4 requirements'
+  - id: 'REQ-002'
+    severity: high
+    finding: 'Document generation logic not implemented'
+    suggested_action: 'Build ATS-compliant document generation system'
+  - id: 'REQ-003'
+    severity: high
+    finding: 'No tests or documentation'
+    suggested_action: 'Create comprehensive test suite and documentation'
+metrics:
+  implementation_status: 'not_started'
+  story_defined: true
+  architecture_planned: true
+planned_features:
+  - 'ATS-compliant resume generation'
+  - 'Tailored cover letter creation'
+  - 'LinkedIn profile optimization'
+  - 'Multiple output formats (MD, PDF, DOCX)'
+waiver: { active: false }

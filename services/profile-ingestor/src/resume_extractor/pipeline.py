@@ -66,8 +66,12 @@ class Pipeline:
             resolved_data = consolidated_data
 
         # Step 5: Interactive Elicitation
-        logger.info("Step 5: Gathering additional information")
-        final_data = self.elicitation_ui.gather_additional_info(resolved_data)
+        logger.info("Step 5: Conducting interactive interview")
+        elicited_info = self.elicitation_ui.conduct_interview(resolved_data)
+        
+        # Merge elicited info into final data
+        final_data = resolved_data.copy()
+        final_data["holistic_profile"] = elicited_info
 
         # Step 6: Generate Master Career Database
         logger.info("Step 6: Generating master database")

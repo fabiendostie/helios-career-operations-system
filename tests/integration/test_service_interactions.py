@@ -5,13 +5,10 @@ This module tests the direct interactions between individual services
 to ensure proper communication, data flow, and error handling.
 """
 
-import asyncio
-import pytest
-import time
-from typing import Dict, Any
+from typing import Any
+
 import aiohttp
-from tests.integration.fixtures.test_resumes import get_software_engineer_resume
-from tests.integration.fixtures.mock_responses import MockResponseGenerator
+import pytest
 
 
 @pytest.mark.asyncio
@@ -39,16 +36,13 @@ class TestOrchestrator:
         assert "dependencies" in ready_data
 
     async def test_session_management(
-        self,
-        http_session: aiohttp.ClientSession,
-        clean_database,
-        clean_redis
+        self, http_session: aiohttp.ClientSession, clean_database, clean_redis
     ):
         """Test session creation, retrieval, and cleanup."""
         # Create session
         create_response = await http_session.post(
             "http://localhost:8000/api/v1/session/start",
-            json={"user_id": "test-session-user"}
+            json={"user_id": "test-session-user"},
         )
         assert create_response.status == 200
         session_data = await create_response.json()
@@ -65,7 +59,7 @@ class TestOrchestrator:
         # Update session
         update_response = await http_session.put(
             f"http://localhost:8000/api/v1/session/{session_id}",
-            json={"workflow_state": "profile_processing"}
+            json={"workflow_state": "profile_processing"},
         )
         assert update_response.status == 200
 
@@ -78,16 +72,15 @@ class TestOrchestrator:
     async def test_orchestrator_command_processing(
         self,
         http_session: aiohttp.ClientSession,
-        orchestrator_commands: Dict[str, Any],
+        orchestrator_commands: dict[str, Any],
         clean_database,
-        clean_redis
+        clean_redis,
     ):
         """Test orchestrator command processing (START, STATUS, HELP)."""
         # START command
         start_cmd = orchestrator_commands["start_session"]
         start_response = await http_session.post(
-            "http://localhost:8000/api/v1/command",
-            json=start_cmd
+            "http://localhost:8000/api/v1/command", json=start_cmd
         )
         assert start_response.status == 200
         start_data = await start_response.json()
@@ -95,13 +88,9 @@ class TestOrchestrator:
         session_id = start_data["session_id"]
 
         # STATUS command
-        status_cmd = {
-            "command": "STATUS",
-            "session_id": session_id
-        }
+        status_cmd = {"command": "STATUS", "session_id": session_id}
         status_response = await http_session.post(
-            "http://localhost:8000/api/v1/command",
-            json=status_cmd
+            "http://localhost:8000/api/v1/command", json=status_cmd
         )
         assert status_response.status == 200
         status_data = await status_response.json()
@@ -110,8 +99,7 @@ class TestOrchestrator:
         # HELP command
         help_cmd = orchestrator_commands["help_request"]
         help_response = await http_session.post(
-            "http://localhost:8000/api/v1/command",
-            json=help_cmd
+            "http://localhost:8000/api/v1/command", json=help_cmd
         )
         assert help_response.status == 200
         help_data = await help_response.json()
@@ -132,9 +120,7 @@ class TestProfileIngestorService:
         assert health_data["status"] == "healthy"
 
     async def test_direct_profile_processing(
-        self,
-        http_session: aiohttp.ClientSession,
-        sample_resume_data: Dict[str, Any]
+        self, http_session: aiohttp.ClientSession, sample_resume_data: dict[str, Any]
     ):
         """Test direct profile processing through profile ingestor."""
         response = await http_session.post(
@@ -144,9 +130,9 @@ class TestProfileIngestorService:
                 "processing_options": {
                     "extract_skills": True,
                     "analyze_experience": True,
-                    "generate_metadata": True
-                }
-            }
+                    "generate_metadata": True,
+                },
+            },
         )
 
         assert response.status == 200
@@ -156,15 +142,13 @@ class TestProfileIngestorService:
         assert "extracted_data" in profile_data
 
     async def test_profile_retrieval(
-        self,
-        http_session: aiohttp.ClientSession,
-        sample_resume_data: Dict[str, Any]
+        self, http_session: aiohttp.ClientSession, sample_resume_data: dict[str, Any]
     ):
         """Test profile data retrieval after processing."""
         # First, create a profile
         create_response = await http_session.post(
             "http://localhost:8001/api/v1/profile/process",
-            json={"resume_data": sample_resume_data}
+            json={"resume_data": sample_resume_data},
         )
         profile_data = await create_response.json()
         profile_id = profile_data["profile_id"]
@@ -180,15 +164,14 @@ class TestProfileIngestorService:
         assert "work_experience" in retrieved_data["data"]
 
     async def test_profile_ingestor_error_handling(
-        self,
-        http_session: aiohttp.ClientSession
+        self, http_session: aiohttp.ClientSession
     ):
         """Test profile ingestor error handling with invalid data."""
         invalid_data = {"invalid": "structure"}
 
         response = await http_session.post(
             "http://localhost:8001/api/v1/profile/process",
-            json={"resume_data": invalid_data}
+            json={"resume_data": invalid_data},
         )
 
         # Should handle gracefully
@@ -213,8 +196,8 @@ class TestStrategistService:
     async def test_career_path_generation(
         self,
         http_session: aiohttp.ClientSession,
-        sample_resume_data: Dict[str, Any],
-        sample_career_goals: Dict[str, Any]
+        sample_resume_data: dict[str, Any],
+        sample_career_goals: dict[str, Any],
     ):
         """Test direct career path generation."""
         response = await http_session.post(
@@ -225,9 +208,9 @@ class TestStrategistService:
                 "options": {
                     "max_paths": 5,
                     "timeline_limit": 36,
-                    "include_salary": True
-                }
-            }
+                    "include_salary": True,
+                },
+            },
         )
 
         assert response.status == 200
@@ -245,17 +228,15 @@ class TestStrategistService:
             assert "required_skills" in path
 
     async def test_skill_analysis(
-        self,
-        http_session: aiohttp.ClientSession,
-        sample_resume_data: Dict[str, Any]
+        self, http_session: aiohttp.ClientSession, sample_resume_data: dict[str, Any]
     ):
         """Test skill gap analysis functionality."""
         response = await http_session.post(
             "http://localhost:8002/api/v1/skills/analyze",
             json={
                 "profile_data": sample_resume_data,
-                "target_role": "Staff Software Engineer"
-            }
+                "target_role": "Staff Software Engineer",
+            },
         )
 
         assert response.status == 200
@@ -279,9 +260,7 @@ class TestAnalystService:
         assert health_data["status"] == "healthy"
 
     async def test_market_analysis(
-        self,
-        http_session: aiohttp.ClientSession,
-        sample_resume_data: Dict[str, Any]
+        self, http_session: aiohttp.ClientSession, sample_resume_data: dict[str, Any]
     ):
         """Test market analysis functionality."""
         response = await http_session.post(
@@ -291,9 +270,9 @@ class TestAnalystService:
                 "analysis_options": {
                     "include_salary_data": True,
                     "geographic_scope": "US",
-                    "industry_focus": "technology"
-                }
-            }
+                    "industry_focus": "technology",
+                },
+            },
         )
 
         assert response.status == 200
@@ -303,9 +282,7 @@ class TestAnalystService:
         assert "demand_score" in market_data["market_analysis"]
 
     async def test_resume_optimization(
-        self,
-        http_session: aiohttp.ClientSession,
-        sample_resume_data: Dict[str, Any]
+        self, http_session: aiohttp.ClientSession, sample_resume_data: dict[str, Any]
     ):
         """Test resume optimization functionality."""
         response = await http_session.post(
@@ -313,8 +290,8 @@ class TestAnalystService:
             json={
                 "profile_data": sample_resume_data,
                 "target_job": "Senior Software Engineer",
-                "optimization_goals": ["ats_compatibility", "keyword_density"]
-            }
+                "optimization_goals": ["ats_compatibility", "keyword_density"],
+            },
         )
 
         assert response.status == 200
@@ -324,9 +301,7 @@ class TestAnalystService:
         assert "keyword_recommendations" in optimization_data
 
     async def test_competitive_analysis(
-        self,
-        http_session: aiohttp.ClientSession,
-        sample_resume_data: Dict[str, Any]
+        self, http_session: aiohttp.ClientSession, sample_resume_data: dict[str, Any]
     ):
         """Test competitive analysis functionality."""
         response = await http_session.post(
@@ -334,8 +309,8 @@ class TestAnalystService:
             json={
                 "profile_data": sample_resume_data,
                 "comparison_criteria": ["experience", "skills", "education"],
-                "market_segment": "senior_engineers"
-            }
+                "market_segment": "senior_engineers",
+            },
         )
 
         assert response.status == 200
@@ -353,25 +328,22 @@ class TestServiceCommunication:
     async def test_orchestrator_to_profile_ingestor(
         self,
         http_session: aiohttp.ClientSession,
-        sample_resume_data: Dict[str, Any],
+        sample_resume_data: dict[str, Any],
         clean_database,
-        clean_redis
+        clean_redis,
     ):
         """Test orchestrator routing to profile ingestor."""
         # Start session
         session_response = await http_session.post(
             "http://localhost:8000/api/v1/session/start",
-            json={"user_id": "comm-test-user"}
+            json={"user_id": "comm-test-user"},
         )
         session_id = (await session_response.json())["session_id"]
 
         # Submit through orchestrator
         response = await http_session.post(
             "http://localhost:8000/api/v1/profile/process",
-            json={
-                "session_id": session_id,
-                "resume_data": sample_resume_data
-            }
+            json={"session_id": session_id, "resume_data": sample_resume_data},
         )
 
         assert response.status == 200
@@ -381,25 +353,22 @@ class TestServiceCommunication:
     async def test_orchestrator_to_strategist(
         self,
         http_session: aiohttp.ClientSession,
-        sample_resume_data: Dict[str, Any],
-        sample_career_goals: Dict[str, Any],
+        sample_resume_data: dict[str, Any],
+        sample_career_goals: dict[str, Any],
         clean_database,
-        clean_redis
+        clean_redis,
     ):
         """Test orchestrator routing to strategist."""
         # Setup session and profile
         session_response = await http_session.post(
             "http://localhost:8000/api/v1/session/start",
-            json={"user_id": "strategist-test-user"}
+            json={"user_id": "strategist-test-user"},
         )
         session_id = (await session_response.json())["session_id"]
 
         profile_response = await http_session.post(
             "http://localhost:8000/api/v1/profile/process",
-            json={
-                "session_id": session_id,
-                "resume_data": sample_resume_data
-            }
+            json={"session_id": session_id, "resume_data": sample_resume_data},
         )
         profile_id = (await profile_response.json())["profile_id"]
 
@@ -409,8 +378,8 @@ class TestServiceCommunication:
             json={
                 "session_id": session_id,
                 "profile_id": profile_id,
-                "career_goals": sample_career_goals
-            }
+                "career_goals": sample_career_goals,
+            },
         )
 
         assert career_response.status == 200
@@ -420,34 +389,28 @@ class TestServiceCommunication:
     async def test_orchestrator_to_analyst(
         self,
         http_session: aiohttp.ClientSession,
-        sample_resume_data: Dict[str, Any],
+        sample_resume_data: dict[str, Any],
         clean_database,
-        clean_redis
+        clean_redis,
     ):
         """Test orchestrator routing to analyst."""
         # Setup session and profile
         session_response = await http_session.post(
             "http://localhost:8000/api/v1/session/start",
-            json={"user_id": "analyst-test-user"}
+            json={"user_id": "analyst-test-user"},
         )
         session_id = (await session_response.json())["session_id"]
 
         profile_response = await http_session.post(
             "http://localhost:8000/api/v1/profile/process",
-            json={
-                "session_id": session_id,
-                "resume_data": sample_resume_data
-            }
+            json={"session_id": session_id, "resume_data": sample_resume_data},
         )
         profile_id = (await profile_response.json())["profile_id"]
 
         # Request market analysis through orchestrator
         analysis_response = await http_session.post(
             "http://localhost:8000/api/v1/analysis/market",
-            json={
-                "session_id": session_id,
-                "profile_id": profile_id
-            }
+            json={"session_id": session_id, "profile_id": profile_id},
         )
 
         assert analysis_response.status == 200
@@ -457,24 +420,21 @@ class TestServiceCommunication:
     async def test_data_consistency_across_services(
         self,
         http_session: aiohttp.ClientSession,
-        sample_resume_data: Dict[str, Any],
+        sample_resume_data: dict[str, Any],
         clean_database,
-        clean_redis
+        clean_redis,
     ):
         """Test data consistency when passed between services."""
         # Create profile
         session_response = await http_session.post(
             "http://localhost:8000/api/v1/session/start",
-            json={"user_id": "consistency-test-user"}
+            json={"user_id": "consistency-test-user"},
         )
         session_id = (await session_response.json())["session_id"]
 
         profile_response = await http_session.post(
             "http://localhost:8000/api/v1/profile/process",
-            json={
-                "session_id": session_id,
-                "resume_data": sample_resume_data
-            }
+            json={"session_id": session_id, "resume_data": sample_resume_data},
         )
         profile_data = await profile_response.json()
         profile_id = profile_data["profile_id"]
@@ -490,8 +450,8 @@ class TestServiceCommunication:
             "http://localhost:8002/api/v1/career-paths/generate",
             json={
                 "profile_data": original_data["data"],
-                "career_goals": {"target_roles": ["Senior Engineer"]}
-            }
+                "career_goals": {"target_roles": ["Senior Engineer"]},
+            },
         )
         career_data = await career_response.json()
 

@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cover Letter - {{ candidate_name }}</title>
+    <link rel="stylesheet" href="../styles/classic.css">
+    <style>
+        /* Cover Letter Specific Styles */
+        .cover-letter {
+            line-height: 1.5; /* Slightly more spacing for readability */
+            font-size: 11pt;
+        }
+        
+        .cover-letter .header h1 {
+            font-size: 14pt;
+            font-weight: bold;
+            text-align: left; /* Left-align for cover letters */
+            margin-bottom: 4pt;
+            border-bottom: none;
+        }
+        
+        .contact {
+            font-size: 10pt;
+            margin-bottom: 16pt;
+        }
+        
+        .date-address {
+            margin: 16pt 0;
+            font-size: 11pt;
+        }
+        
+        .date-address p {
+            margin-bottom: 4pt;
+        }
+        
+        .salutation {
+            margin-bottom: 12pt;
+        }
+        
+        .pain-paragraph, .promise-paragraph, .close-paragraph {
+            margin-bottom: 12pt;
+            text-align: justify;
+        }
+        
+        .signature {
+            margin-top: 20pt;
+        }
+        
+        /* Emphasis for key points */
+        .emphasis {
+            font-weight: bold;
+        }
+        
+        .metric {
+            font-weight: bold;
+            color: #2C5282;
+        }
+    </style>
+</head>
+<body>
+    <div class="cover-letter">
+        <div class="header">
+            <h1>{{ candidate_name }}</h1>
+            <div class="contact">{{ email }}{% if phone %} | {{ phone }}{% endif %}{% if location %} | {{ location }}{% endif %}</div>
+        </div>
+        
+        <div class="date-address">
+            <p>{{ current_date }}</p>
+            {% if company_address %}
+            <p>{{ hiring_manager_name | default("Hiring Manager") }}<br>
+            {{ company_name }}<br>
+            {{ company_address }}</p>
+            {% endif %}
+        </div>
+        
+        <div class="salutation">
+            <p>Dear {{ hiring_manager_name | default("Hiring Manager") }},</p>
+        </div>
+        
+        <!-- Paragraph 1: Hook & Pain Point -->
+        <p class="pain-paragraph">
+            Seeing {{ company_name }}'s {{ company_challenge_context | default("recent growth and market expansion") }}, 
+            I imagine <span class="emphasis">{{ inferred_pain_point | default("scaling operations efficiently while maintaining quality") }}</span> 
+            is a top priority. With the {{ job_requirements.industry | default("technology") }} market evolving rapidly, 
+            {{ specific_challenge_detail | default("implementing robust systems and processes") }} 
+            requires both <span class="emphasis">{{ key_skill_1 | default(core_competency_1) }}</span> expertise and 
+            <span class="emphasis">{{ key_skill_2 | default(core_competency_2) }}</span> experience.
+        </p>
+        
+        <!-- Paragraph 2: Bridge & Promise -->
+        <p class="promise-paragraph">
+            In my previous role at <span class="emphasis">{{ previous_company }}</span>, I 
+            <span class="metric">{{ top_quantified_achievement }}</span>, resulting in 
+            {{ specific_metric | default("measurable improvements in efficiency and performance") }}. 
+            This experience in <span class="emphasis">{{ relevant_skill_area | default(skill_area) }}</span> is directly applicable to 
+            {{ connection_to_pain_point | default("addressing similar operational challenges") }}. 
+            My expertise in <span class="emphasis">{{ core_competency | default(core_competency_1) }}</span> has consistently delivered 
+            {{ success_pattern | default("consistent value delivery") }} for {{ target_audience | default("growing organizations") }}.
+        </p>
+        
+        <!-- Paragraph 3: Close & Call to Action -->
+        <p class="close-paragraph">
+            I am confident that my experience in <span class="emphasis">{{ primary_skill_area | default(skill_area) }}</span> 
+            can deliver similar results for {{ company_name }}. I am eager to discuss how my background in 
+            <span class="emphasis">{{ specialization_area | default(core_competency_1) }}</span> can support your team's goals. 
+            I look forward to hearing from you.
+        </p>
+        
+        <p class="signature">
+            Sincerely,<br><br>
+            {{ candidate_name }}
+        </p>
+    </div>
+</body>
+</html>

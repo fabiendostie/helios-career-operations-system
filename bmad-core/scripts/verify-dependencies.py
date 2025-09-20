@@ -21,7 +21,7 @@ class DependencyVerifier:
         self.agent_config = self.load_agent_config()
         self.results = {
             'agent_id': agent_id,
-            'verification_date': '2025-09-06',
+            'verification_date': datetime.now().strftime('%Y-%m-%d'),
             'dependency_status': {},
             'missing_packages': [],
             'missing_models': [],
@@ -186,7 +186,7 @@ def main():
         results_dir = Path(__file__).parent.parent / "verification-results"
         results_dir.mkdir(exist_ok=True)
         
-        results_file = results_dir / f"{agent_id}-dependencies-2025-09-06.json"
+        results_file = results_dir / f"{agent_id}-dependencies-{datetime.now().strftime('%Y-%m-%d')}.json"
         with open(results_file, 'w') as f:
             json.dump(results, f, indent=2)
         

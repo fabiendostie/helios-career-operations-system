@@ -5,6 +5,17 @@ import logging
 from datetime import datetime
 from typing import Dict, Any, Optional, List
 from uuid import uuid4
+import sys
+import os
+
+# Add bmad-core to path for internet datetime utility
+sys.path.append(os.path.join(os.path.dirname(__file__), '..', '..', '..', '..', 'bmad-core'))
+try:
+    from utils.internet_datetime import get_current_datetime_sync
+    INTERNET_TIME_AVAILABLE = True
+except ImportError:
+    INTERNET_TIME_AVAILABLE = False
+    logging.warning("Internet time utilities not available in ServiceCoordinator, falling back to system time")
 
 from ..models.session import SessionState, CurrentStep
 from ..core.session_manager import SessionManager
@@ -14,6 +25,14 @@ from ..integrations.analyst import AnalystClient
 from .schema_validator import SchemaValidator
 
 logger = logging.getLogger(__name__)
+
+
+def _get_current_timestamp() -> str:
+    """Get current timestamp using internet time or system fallback."""
+    if INTERNET_TIME_AVAILABLE:
+        return get_current_datetime_sync().isoformat()
+    else:
+        return datetime.utcnow().isoformat()
 
 
 class ServiceCoordinationError(Exception):
@@ -114,7 +133,7 @@ class ServiceCoordinator:
             
             pipeline_results = {
                 "session_id": session_id,
-                "timestamp": datetime.utcnow().isoformat(),
+                "timestamp": _get_current_timestamp(),
                 "profile_data": profile_data,
                 "career_strategies": strategy_results,
                 "market_analysis": analysis_results,
@@ -285,7 +304,7 @@ class ServiceCoordinator:
             state=state,
             current_step=step,
             metadata={
-                "last_updated": datetime.utcnow().isoformat(),
+                "last_updated": _get_current_timestamp(),
                 "updated_by": "service_coordinator"
             }
         )
@@ -309,7 +328,7 @@ class ServiceCoordinator:
         updates = SessionUpdate(
             metadata={
                 "pipeline_data": data,
-                "last_updated": datetime.utcnow().isoformat()
+                "last_updated": _get_current_timestamp()
             }
         )
         
@@ -414,5 +433,5 @@ class ServiceCoordinator:
         return {
             "overall_status": overall_status,
             "services": health_results,
-            "timestamp": datetime.utcnow().isoformat()
+            "timestamp": _get_current_timestamp()
         }

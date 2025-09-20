@@ -25,3 +25,10 @@ structlog==24.1.0
 
 # Caching for distributed deployments
 redis==5.0.1
+
+# BMAD Core Utils
+aiohttp>=3.9.1
+pytz>=2023.3
+
+# Shared services
+../shared  # Local path to shared LLM client

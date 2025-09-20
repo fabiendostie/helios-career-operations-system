@@ -4,6 +4,18 @@ import json
 from datetime import datetime, timezone
 from typing import Optional, List, Dict, Any
 from uuid import UUID
+import sys
+import os
+
+# Add bmad-core to path for internet datetime utility
+sys.path.append(os.path.join(os.path.dirname(__file__), '..', '..', '..', '..', 'bmad-core'))
+try:
+    from utils.internet_datetime import get_current_datetime_sync
+    INTERNET_TIME_AVAILABLE = True
+except ImportError:
+    INTERNET_TIME_AVAILABLE = False
+    import logging
+    logging.warning("Internet time utilities not available in Orchestrator, falling back to system time")
 
 from ..models.session import (
     Session, 
@@ -177,9 +189,15 @@ class SessionManager:
             return None
         
         # Add timestamp to command
+        # Use internet time with Montreal timezone for accurate timestamps
+        if INTERNET_TIME_AVAILABLE:
+            current_dt = get_current_datetime_sync()
+        else:
+            current_dt = datetime.now(timezone.utc)
+            
         command_with_timestamp = {
             **command,
-            "executed_at": datetime.now(timezone.utc).isoformat()
+            "executed_at": current_dt.isoformat()
         }
         
         # Update command history

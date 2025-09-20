@@ -346,12 +346,13 @@ class TestOutputGenerator:
         """Test metadata addition."""
         data = {"test": "data"}
 
+        # Mock the internet datetime utility that's actually being used
         with patch(
-            "resume_extractor.components.output_generator.datetime"
-        ) as mock_datetime:
-            mock_datetime.now.return_value.isoformat.return_value = (
-                "2023-01-01T00:00:00"
-            )
+            "resume_extractor.components.output_generator.get_current_datetime_sync"
+        ) as mock_get_current_datetime:
+            from datetime import datetime
+            mock_dt = datetime(2023, 1, 1, 0, 0, 0)
+            mock_get_current_datetime.return_value = mock_dt
 
             result = output_generator._add_metadata(data, sample_consolidated_data)
 
@@ -395,10 +396,11 @@ class TestOutputGenerator:
         """Test JSON file writing."""
         test_data = {"test": "json_write", "numbers": [1, 2, 3]}
 
+        # Mock the internet datetime utility for filename generation
         with patch(
-            "resume_extractor.components.output_generator.datetime"
-        ) as mock_datetime:
-            mock_datetime.now.return_value.strftime.return_value = "20230101_120000"
+            "resume_extractor.components.output_generator.format_date_for_filename_sync"
+        ) as mock_format_date:
+            mock_format_date.return_value = "20230101_120000"
 
             result_path = output_generator._write_json(test_data)
 

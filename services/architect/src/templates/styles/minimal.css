@@ -1,0 +1,101 @@
+/* Ultra-minimal styling for maximum ATS parsing success */
+body {
+    font-family: 'Arial', sans-serif; /* Most universally supported */
+    font-size: 12pt; /* Slightly larger for clarity */
+    line-height: 1.3;
+    color: #000000;
+    background: #ffffff;
+    max-width: 8in;
+    margin: 0 auto;
+    padding: 1in;
+}
+
+/* Minimal section headers */
+h1 {
+    font-size: 16pt;
+    font-weight: bold;
+    text-align: center;
+    margin-bottom: 12pt;
+}
+
+h2 {
+    font-size: 14pt;
+    font-weight: bold;
+    margin: 16pt 0 8pt 0;
+}
+
+h3 {
+    font-size: 12pt;
+    font-weight: bold;
+    margin: 8pt 0 4pt 0;
+}
+
+/* Simple paragraphs */
+p {
+    margin-bottom: 8pt;
+}
+
+/* Basic lists */
+ul {
+    margin: 8pt 0 8pt 20pt;
+}
+
+li {
+    margin-bottom: 4pt;
+}
+
+/* Contact info - simple inline */
+.contact-info {
+    text-align: center;
+    font-size: 11pt;
+    margin-bottom: 12pt;
+}
+
+/* Summary paragraph */
+.summary {
+    margin: 12pt 0;
+    text-align: justify;
+}
+
+/* Simple skills list */
+.core-skills {
+    margin: 8pt 0;
+    font-size: 11pt;
+}
+
+/* Job entries */
+.job-entry {
+    margin-bottom: 16pt;
+}
+
+.job-entry h3 {
+    margin-bottom: 4pt;
+}
+
+.accomplishments {
+    margin: 8pt 0 8pt 24pt;
+}
+
+/* Simple sections */
+.education, .technical-skills, .certifications {
+    margin-top: 16pt;
+}
+
+/* No borders, colors, or styling - pure content focus */
+/* Maximum compatibility with all ATS systems */
+
+/* Print optimization */
+@media print {
+    body {
+        padding: 0.75in;
+    }
+    
+    .job-entry {
+        page-break-inside: avoid;
+    }
+}
+
+@page {
+    size: letter;
+    margin: 0.75in;
+}

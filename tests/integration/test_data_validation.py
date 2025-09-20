@@ -5,15 +5,17 @@ This module tests data validation, transformation, and integrity
 across service boundaries and workflow stages.
 """
 
-import pytest
 import time
-from typing import Dict, Any, List
+from typing import Any
+
 import aiohttp
+import pytest
+
 from tests.integration.fixtures.test_resumes import (
-    get_software_engineer_resume,
     get_data_scientist_resume,
+    get_invalid_resume_data,
     get_product_manager_resume,
-    get_invalid_resume_data
+    get_software_engineer_resume,
 )
 
 
@@ -24,33 +26,27 @@ class TestDataValidation:
     """Test data validation across the complete workflow."""
 
     async def test_valid_profile_data_processing(
-        self,
-        http_session: aiohttp.ClientSession,
-        clean_database,
-        clean_redis
+        self, http_session: aiohttp.ClientSession, clean_database, clean_redis
     ):
         """Test processing of valid profile data through all services."""
         valid_resumes = [
             get_software_engineer_resume(),
             get_data_scientist_resume(),
-            get_product_manager_resume()
+            get_product_manager_resume(),
         ]
 
         for resume_data in valid_resumes:
             # Start session
             session_response = await http_session.post(
                 "http://localhost:8000/api/v1/session/start",
-                json={"user_id": f"validation-user-{int(time.time())}"}
+                json={"user_id": f"validation-user-{int(time.time())}"},
             )
             session_id = (await session_response.json())["session_id"]
 
             # Process profile
             profile_response = await http_session.post(
                 "http://localhost:8000/api/v1/profile/process",
-                json={
-                    "session_id": session_id,
-                    "resume_data": resume_data
-                }
+                json={"session_id": session_id, "resume_data": resume_data},
             )
 
             assert profile_response.status == 200
@@ -74,10 +70,7 @@ class TestDataValidation:
                 assert original_name == extracted_name
 
     async def test_invalid_profile_data_handling(
-        self,
-        http_session: aiohttp.ClientSession,
-        clean_database,
-        clean_redis
+        self, http_session: aiohttp.ClientSession, clean_database, clean_redis
     ):
         """Test handling of invalid profile data."""
         invalid_data_sets = get_invalid_resume_data()
@@ -86,17 +79,14 @@ class TestDataValidation:
             # Start session
             session_response = await http_session.post(
                 "http://localhost:8000/api/v1/session/start",
-                json={"user_id": f"invalid-user-{int(time.time())}"}
+                json={"user_id": f"invalid-user-{int(time.time())}"},
             )
             session_id = (await session_response.json())["session_id"]
 
             # Submit invalid data
             profile_response = await http_session.post(
                 "http://localhost:8000/api/v1/profile/process",
-                json={
-                    "session_id": session_id,
-                    "resume_data": invalid_data
-                }
+                json={"session_id": session_id, "resume_data": invalid_data},
             )
 
             # Should handle gracefully with error status
@@ -111,24 +101,21 @@ class TestDataValidation:
     async def test_data_schema_validation(
         self,
         http_session: aiohttp.ClientSession,
-        sample_resume_data: Dict[str, Any],
+        sample_resume_data: dict[str, Any],
         clean_database,
-        clean_redis
+        clean_redis,
     ):
         """Test that data maintains correct schema through transformations."""
         # Start session and process profile
         session_response = await http_session.post(
             "http://localhost:8000/api/v1/session/start",
-            json={"user_id": "schema-test-user"}
+            json={"user_id": "schema-test-user"},
         )
         session_id = (await session_response.json())["session_id"]
 
         profile_response = await http_session.post(
             "http://localhost:8000/api/v1/profile/process",
-            json={
-                "session_id": session_id,
-                "resume_data": sample_resume_data
-            }
+            json={"session_id": session_id, "resume_data": sample_resume_data},
         )
 
         assert profile_response.status == 200
@@ -151,8 +138,8 @@ class TestDataValidation:
             json={
                 "session_id": session_id,
                 "profile_id": profile_id,
-                "career_goals": {"target_roles": ["Senior Engineer"]}
-            }
+                "career_goals": {"target_roles": ["Senior Engineer"]},
+            },
         )
 
         assert career_response.status == 200
@@ -162,10 +149,7 @@ class TestDataValidation:
         # Generate market analysis and validate schema
         market_response = await http_session.post(
             "http://localhost:8000/api/v1/analysis/market",
-            json={
-                "session_id": session_id,
-                "profile_id": profile_id
-            }
+            json={"session_id": session_id, "profile_id": profile_id},
         )
 
         assert market_response.status == 200
@@ -175,25 +159,22 @@ class TestDataValidation:
     async def test_data_integrity_across_services(
         self,
         http_session: aiohttp.ClientSession,
-        sample_resume_data: Dict[str, Any],
+        sample_resume_data: dict[str, Any],
         clean_database,
-        clean_redis
+        clean_redis,
     ):
         """Test data integrity is maintained across service calls."""
         # Process profile and track data at each stage
         session_response = await http_session.post(
             "http://localhost:8000/api/v1/session/start",
-            json={"user_id": "integrity-test-user"}
+            json={"user_id": "integrity-test-user"},
         )
         session_id = (await session_response.json())["session_id"]
 
         # Stage 1: Profile processing
         profile_response = await http_session.post(
             "http://localhost:8000/api/v1/profile/process",
-            json={
-                "session_id": session_id,
-                "resume_data": sample_resume_data
-            }
+            json={"session_id": session_id, "resume_data": sample_resume_data},
         )
         profile_data = await profile_response.json()
         profile_id = profile_data["profile_id"]
@@ -201,7 +182,9 @@ class TestDataValidation:
         # Verify core data preservation
         original_name = sample_resume_data["personal_info"]["name"]
         original_email = sample_resume_data["personal_info"]["email"]
-        original_skills = sample_resume_data["skills_inventory"]["programming_languages"]
+        original_skills = sample_resume_data["skills_inventory"][
+            "programming_languages"
+        ]
 
         # Get processed profile
         processed_profile = await http_session.get(
@@ -214,9 +197,13 @@ class TestDataValidation:
         assert processed_data["data"]["personal_info"]["email"] == original_email
 
         # Skills should be preserved (possibly enhanced)
-        processed_skills = processed_data["data"]["skills_inventory"]["programming_languages"]
+        processed_skills = processed_data["data"]["skills_inventory"][
+            "programming_languages"
+        ]
         for skill in original_skills:
-            assert skill in processed_skills, f"Original skill '{skill}' was lost during processing"
+            assert (
+                skill in processed_skills
+            ), f"Original skill '{skill}' was lost during processing"
 
         # Stage 2: Career path generation
         career_response = await http_session.post(
@@ -224,8 +211,8 @@ class TestDataValidation:
             json={
                 "session_id": session_id,
                 "profile_id": profile_id,
-                "career_goals": {"target_roles": ["Senior Software Engineer"]}
-            }
+                "career_goals": {"target_roles": ["Senior Software Engineer"]},
+            },
         )
         career_data = await career_response.json()
 
@@ -241,17 +228,18 @@ class TestDataValidation:
         # Stage 3: Market analysis
         market_response = await http_session.post(
             "http://localhost:8000/api/v1/analysis/market",
-            json={
-                "session_id": session_id,
-                "profile_id": profile_id
-            }
+            json={"session_id": session_id, "profile_id": profile_id},
         )
         market_data = await market_response.json()
 
         # Verify market analysis is relevant to profile
         if "recommended_skills" in market_data.get("market_analysis", {}):
-            recommended_skills = set(market_data["market_analysis"]["recommended_skills"])
-            assert len(recommended_skills) > 0, "No recommended skills in market analysis"
+            recommended_skills = set(
+                market_data["market_analysis"]["recommended_skills"]
+            )
+            assert (
+                len(recommended_skills) > 0
+            ), "No recommended skills in market analysis"
 
         # Verify resume optimization references original data
         if "resume_optimization" in market_data:
@@ -259,10 +247,7 @@ class TestDataValidation:
             assert ats_score > 0, "ATS score should be positive"
 
     async def test_concurrent_data_processing(
-        self,
-        http_session: aiohttp.ClientSession,
-        clean_database,
-        clean_redis
+        self, http_session: aiohttp.ClientSession, clean_database, clean_redis
     ):
         """Test data integrity with concurrent requests."""
         import asyncio
@@ -276,7 +261,7 @@ class TestDataValidation:
             # Create session
             session_response = await http_session.post(
                 "http://localhost:8000/api/v1/session/start",
-                json={"user_id": f"concurrent-user-{user_id}"}
+                json={"user_id": f"concurrent-user-{user_id}"},
             )
             session_data = await session_response.json()
             session_id = session_data["session_id"]
@@ -284,10 +269,7 @@ class TestDataValidation:
             # Process profile
             profile_response = await http_session.post(
                 "http://localhost:8000/api/v1/profile/process",
-                json={
-                    "session_id": session_id,
-                    "resume_data": resume_data
-                }
+                json={"session_id": session_id, "resume_data": resume_data},
             )
 
             assert profile_response.status == 200
@@ -296,7 +278,9 @@ class TestDataValidation:
             # Verify user-specific data wasn't mixed up
             if "extracted_data" in profile_data:
                 extracted_name = profile_data["extracted_data"]["personal_info"]["name"]
-                assert extracted_name == f"Test User {user_id}", f"Data mixing detected for user {user_id}"
+                assert (
+                    extracted_name == f"Test User {user_id}"
+                ), f"Data mixing detected for user {user_id}"
 
             return profile_data
 
@@ -307,9 +291,11 @@ class TestDataValidation:
 
         # Verify all succeeded and data wasn't mixed
         successful_results = [r for r in results if not isinstance(r, Exception)]
-        assert len(successful_results) == concurrent_users, "Some concurrent requests failed"
+        assert (
+            len(successful_results) == concurrent_users
+        ), "Some concurrent requests failed"
 
-    def _validate_profile_schema(self, profile_data: Dict[str, Any]):
+    def _validate_profile_schema(self, profile_data: dict[str, Any]):
         """Validate profile data schema."""
         assert "profile_id" in profile_data
         assert "data" in profile_data
@@ -338,7 +324,7 @@ class TestDataValidation:
         for skill_category in skills.values():
             assert isinstance(skill_category, list)
 
-    def _validate_career_paths_schema(self, career_data: Dict[str, Any]):
+    def _validate_career_paths_schema(self, career_data: dict[str, Any]):
         """Validate career paths data schema."""
         assert "status" in career_data
         assert "career_paths" in career_data
@@ -356,7 +342,7 @@ class TestDataValidation:
             assert isinstance(path["timeline_months"], int)
             assert 0 <= path["probability"] <= 1
 
-    def _validate_market_analysis_schema(self, market_data: Dict[str, Any]):
+    def _validate_market_analysis_schema(self, market_data: dict[str, Any]):
         """Validate market analysis data schema."""
         assert "status" in market_data
 
@@ -382,24 +368,21 @@ class TestDataTransformations:
     async def test_profile_to_career_data_transformation(
         self,
         http_session: aiohttp.ClientSession,
-        sample_resume_data: Dict[str, Any],
+        sample_resume_data: dict[str, Any],
         clean_database,
-        clean_redis
+        clean_redis,
     ):
         """Test data transformation from profile to career analysis."""
         # Create profile
         session_response = await http_session.post(
             "http://localhost:8000/api/v1/session/start",
-            json={"user_id": "transform-test-user"}
+            json={"user_id": "transform-test-user"},
         )
         session_id = (await session_response.json())["session_id"]
 
         profile_response = await http_session.post(
             "http://localhost:8000/api/v1/profile/process",
-            json={
-                "session_id": session_id,
-                "resume_data": sample_resume_data
-            }
+            json={"session_id": session_id, "resume_data": sample_resume_data},
         )
         profile_data = await profile_response.json()
         profile_id = profile_data["profile_id"]
@@ -416,8 +399,8 @@ class TestDataTransformations:
             json={
                 "session_id": session_id,
                 "profile_id": profile_id,
-                "career_goals": {"target_roles": ["Senior Software Engineer"]}
-            }
+                "career_goals": {"target_roles": ["Senior Software Engineer"]},
+            },
         )
         career_data = await career_response.json()
 
@@ -433,7 +416,9 @@ class TestDataTransformations:
 
             # More experienced candidates should have shorter timelines to senior roles
             if total_experience_years >= 5:
-                assert timeline_months <= 24, "Experienced candidates should have shorter progression timelines"
+                assert (
+                    timeline_months <= 24
+                ), "Experienced candidates should have shorter progression timelines"
 
             # Required skills should build on existing skills
             existing_skills = set()
@@ -443,29 +428,28 @@ class TestDataTransformations:
 
             required_skills = set(path.get("required_skills", []))
             # Some overlap expected but not required (could be growth areas)
-            assert len(required_skills) > 0, "Career path should specify required skills"
+            assert (
+                len(required_skills) > 0
+            ), "Career path should specify required skills"
 
     async def test_profile_to_market_data_transformation(
         self,
         http_session: aiohttp.ClientSession,
-        sample_resume_data: Dict[str, Any],
+        sample_resume_data: dict[str, Any],
         clean_database,
-        clean_redis
+        clean_redis,
     ):
         """Test data transformation from profile to market analysis."""
         # Create and process profile
         session_response = await http_session.post(
             "http://localhost:8000/api/v1/session/start",
-            json={"user_id": "market-transform-user"}
+            json={"user_id": "market-transform-user"},
         )
         session_id = (await session_response.json())["session_id"]
 
         profile_response = await http_session.post(
             "http://localhost:8000/api/v1/profile/process",
-            json={
-                "session_id": session_id,
-                "resume_data": sample_resume_data
-            }
+            json={"session_id": session_id, "resume_data": sample_resume_data},
         )
         profile_data = await profile_response.json()
         profile_id = profile_data["profile_id"]
@@ -473,10 +457,7 @@ class TestDataTransformations:
         # Generate market analysis
         market_response = await http_session.post(
             "http://localhost:8000/api/v1/analysis/market",
-            json={
-                "session_id": session_id,
-                "profile_id": profile_id
-            }
+            json={"session_id": session_id, "profile_id": profile_id},
         )
         market_data = await market_response.json()
 
@@ -486,12 +467,22 @@ class TestDataTransformations:
 
             # Demand score should be reasonable for software engineers
             demand_score = analysis.get("demand_score", 0)
-            assert 0.5 <= demand_score <= 1.0, "Software engineers should have good market demand"
+            assert (
+                0.5 <= demand_score <= 1.0
+            ), "Software engineers should have good market demand"
 
             # Recommended skills should be relevant
             if "recommended_skills" in analysis:
                 recommended = analysis["recommended_skills"]
-                tech_skills = {"Python", "JavaScript", "Java", "AWS", "Docker", "Kubernetes", "React"}
+                tech_skills = {
+                    "Python",
+                    "JavaScript",
+                    "Java",
+                    "AWS",
+                    "Docker",
+                    "Kubernetes",
+                    "React",
+                }
                 recommended_set = set(recommended)
 
                 # Should recommend at least some tech skills
@@ -508,4 +499,6 @@ class TestDataTransformations:
 
             # Should have specific suggestions
             improvements = optimization.get("suggested_improvements", [])
-            assert len(improvements) > 0, "Should provide specific improvement suggestions"
+            assert (
+                len(improvements) > 0
+            ), "Should provide specific improvement suggestions"

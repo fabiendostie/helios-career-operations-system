@@ -1,0 +1,279 @@
+{
+  "test_timestamp": "2025-09-07T03:23:15.280306",
+  "overall_success_rate": 100.0,
+  "total_tests": 12,
+  "successful_tests": 12,
+  "detailed_results": {
+    "industry_research": {
+      "Technology": {
+        "success": true,
+        "response_time": 1.2960286140441895,
+        "data_quality": true,
+        "trending_skills_count": 4,
+        "keywords_count": 3,
+        "confidence_score": 0.8,
+        "emphasis_areas": [
+          "technical_skills",
+          "system_impact",
+          "innovation",
+          "scalability"
+        ],
+        "sample_data": {
+          "trending_skills": [
+            "Python",
+            "AWS",
+            "DevOps"
+          ],
+          "keywords": [
+            "scalability",
+            "automation",
+            "innovation"
+          ]
+        }
+      },
+      "Finance": {
+        "success": true,
+        "response_time": 1.2993905544281006,
+        "data_quality": true,
+        "trending_skills_count": 3,
+        "keywords_count": 3,
+        "confidence_score": 0.8,
+        "emphasis_areas": [
+          "risk_management",
+          "compliance",
+          "revenue_impact",
+          "analysis"
+        ],
+        "sample_data": {
+          "trending_skills": [
+            "Communication",
+            "Leadership",
+            "Problem-solving"
+          ],
+          "keywords": [
+            "impact",
+            "performance",
+            "results"
+          ]
+        }
+      },
+      "Healthcare": {
+        "success": true,
+        "response_time": 1.3065941333770752,
+        "data_quality": true,
+        "trending_skills_count": 3,
+        "keywords_count": 3,
+        "confidence_score": 0.8,
+        "emphasis_areas": [
+          "patient_outcomes",
+          "quality_improvement",
+          "safety",
+          "compliance"
+        ],
+        "sample_data": {
+          "trending_skills": [
+            "Communication",
+            "Leadership",
+            "Problem-solving"
+          ],
+          "keywords": [
+            "impact",
+            "performance",
+            "results"
+          ]
+        }
+      },
+      "Marketing": {
+        "success": true,
+        "response_time": 1.306413173675537,
+        "data_quality": true,
+        "trending_skills_count": 3,
+        "keywords_count": 3,
+        "confidence_score": 0.8,
+        "emphasis_areas": [
+          "performance",
+          "leadership",
+          "results",
+          "improvement"
+        ],
+        "sample_data": {
+          "trending_skills": [
+            "Communication",
+            "Leadership",
+            "Problem-solving"
+          ],
+          "keywords": [
+            "impact",
+            "performance",
+            "results"
+          ]
+        }
+      }
+    },
+    "ats_compliance": {
+      "success": true,
+      "response_time": 0.544928789138794,
+      "data_structure_valid": true,
+      "requirements_complete": true,
+      "vendor_count": 5,
+      "confidence_score": 0.9,
+      "requirements_summary": {
+        "single_column": true,
+        "standard_fonts": [
+          "Arial",
+          "Calibri",
+          "Helvetica",
+          "Times New Roman"
+        ],
+        "no_graphics": true
+      }
+    },
+    "company_intelligence": {
+      "Microsoft": {
+        "success": true,
+        "response_time": 0.7644438743591309,
+        "data_quality": true,
+        "news_items": 12,
+        "challenges_identified": 12,
+        "pain_points_found": 2,
+        "confidence_score": 0.7,
+        "sample_insights": {
+          "challenges": [
+            "Scaling operations",
+            "Talent acquisition"
+          ],
+          "pain_points": [
+            "scaling operations efficiently",
+            "talent acquisition and retention"
+          ]
+        }
+      },
+      "Apple": {
+        "success": true,
+        "response_time": 0.7590231895446777,
+        "data_quality": true,
+        "news_items": 12,
+        "challenges_identified": 12,
+        "pain_points_found": 2,
+        "confidence_score": 0.7,
+        "sample_insights": {
+          "challenges": [
+            "Scaling operations",
+            "Talent acquisition"
+          ],
+          "pain_points": [
+            "scaling operations efficiently",
+            "talent acquisition and retention"
+          ]
+        }
+      },
+      "Google": {
+        "success": true,
+        "response_time": 0.7617745399475098,
+        "data_quality": true,
+        "news_items": 12,
+        "challenges_identified": 12,
+        "pain_points_found": 2,
+        "confidence_score": 0.7,
+        "sample_insights": {
+          "challenges": [
+            "Scaling operations",
+            "Talent acquisition"
+          ],
+          "pain_points": [
+            "scaling operations efficiently",
+            "talent acquisition and retention"
+          ]
+        }
+      },
+      "Tesla": {
+        "success": true,
+        "response_time": 0.7648372650146484,
+        "data_quality": true,
+        "news_items": 12,
+        "challenges_identified": 12,
+        "pain_points_found": 2,
+        "confidence_score": 0.7,
+        "sample_insights": {
+          "challenges": [
+            "Scaling operations",
+            "Talent acquisition"
+          ],
+          "pain_points": [
+            "scaling operations efficiently",
+            "talent acquisition and retention"
+          ]
+        }
+      }
+    },
+    "dynamic_customization": {
+      "Technology_senior": {
+        "success": true,
+        "response_time": 0.5742371082305908,
+        "research_enhanced": true,
+        "dynamic_fields_present": true,
+        "emphasis_areas_count": 3,
+        "trending_skills_count": 0,
+        "customization_sample": {
+          "emphasis_areas": [
+            "technical_skills",
+            "system_impact",
+            "innovation"
+          ],
+          "terminology_style": "technical",
+          "trending_skills": []
+        }
+      },
+      "Finance_executive": {
+        "success": true,
+        "response_time": 0.2179102897644043,
+        "research_enhanced": true,
+        "dynamic_fields_present": true,
+        "emphasis_areas_count": 3,
+        "trending_skills_count": 0,
+        "customization_sample": {
+          "emphasis_areas": [
+            "risk_management",
+            "compliance",
+            "revenue_impact"
+          ],
+          "terminology_style": "business",
+          "trending_skills": []
+        }
+      },
+      "Healthcare_mid": {
+        "success": true,
+        "response_time": 0.21815037727355957,
+        "research_enhanced": true,
+        "dynamic_fields_present": true,
+        "emphasis_areas_count": 0,
+        "trending_skills_count": 0,
+        "customization_sample": {
+          "emphasis_areas": [],
+          "terminology_style": "professional",
+          "trending_skills": []
+        }
+      }
+    },
+    "data_freshness": {
+      "cache_working": true,
+      "first_request_time": 1.311553716659546,
+      "second_request_time": 1.3022148609161377,
+      "performance_gain_percent": 0.7120452349594759,
+      "data_consistency": true
+    }
+  },
+  "performance_metrics": {
+    "sequential_time": 3.9187464714050293,
+    "concurrent_time": 1.3094401359558105,
+    "concurrency_improvement": 66.5852296005686,
+    "concurrent_success_rate": 100.0,
+    "average_request_time": 0.4364800453186035
+  },
+  "validation_status": {
+    "live_data_gathering": true,
+    "performance_optimization": true,
+    "real_time_capabilities": true,
+    "data_freshness": true
+  }
+}

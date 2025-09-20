@@ -1,0 +1,46 @@
+- [x] Define the audit scope.
+- [x] SAST Recon on `.bmad-core/agents/bmad-master.md`
+- [x] SAST Recon on `.bmad-core/agents/dev.md`
+- [x] SAST Recon on `.bmad-core/core-config.yaml`
+- [x] SAST Recon on `.bmad-core/data/bmad-kb.md`
+- [x] SAST Recon on `.bmad-core/install-manifest.yaml`
+- [x] SAST Recon on `.bmad-core/tasks/validate-next-story.md`
+- [x] SAST Recon on `.bmad-core/user-guide.md`
+- [x] SAST Recon on `.bmad-core/workflows/brownfield-fullstack.yaml`
+- [x] SAST Recon on `.bmad-core/workflows/brownfield-service.yaml`
+- [x] SAST Recon on `.bmad-core/workflows/brownfield-ui.yaml`
+- [x] SAST Recon on `.bmad-core/workflows/greenfield-fullstack.yaml`
+- [x] SAST Recon on `.bmad-core/workflows/greenfield-service.yaml`
+- [x] SAST Recon on `.bmad-core/workflows/greenfield-ui.yaml`
+- [x] SAST Recon on `.bmad-core/working-in-the-brownfield.md`
+- [x] SAST Recon on `.claude/commands/BMad/agents/bmad-master.md`
+- [x] SAST Recon on `.claude/commands/BMad/agents/dev.md`
+- [x] SAST Recon on `.claude/commands/BMad/tasks/validate-next-story.md`
+- [x] SAST Recon on `.github/workflows/ci.yaml`
+  - [ ] Investigate data flow from `POSTGRES_PASSWORD` on line 282.
+- [x] SAST Recon on `.gitignore`
+- [x] SAST Recon on `.pre-commit-config.yaml`
+- [x] SAST Recon on `CONTRIBUTING.md`
+- [x] SAST Recon on `README.md`
+- [x] SAST Recon on `bmad-core/core-config.yaml`
+- [x] SAST Recon on `bmad-core/scripts/verify-dependencies.py`
+  - [ ] Investigate data flow from `agent_id` on line 178.
+  - [ ] Investigate data flow from `package_name` on line 89.
+  - [ ] Investigate data flow from `model` on line 102.
+- [x] SAST Recon on `docs/02-architecture/coding-standards.md`
+- [x] SAST Recon on `docs/architecture.md`
+  - [ ] Investigate data flow from `OPENAI_API_KEY` on line 431.
+- [x] SAST Recon on `docs/qa/gates/2.1-helios-orchestrator.yml`
+- [x] SAST Recon on `docs/stories/2.1.helios-orchestrator.md`
+- [x] SAST Recon on `docs/stories/2.2.strategist-service.md`
+- [x] SAST Recon on `docs/stories/2.3.analyst-service.md`
+- [x] SAST Recon on `pyproject.toml`
+- [ ] SAST Recon on `services/analyst/requirements.txt`
+- [ ] SAST Recon on `services/orchestrator/src/core/service_coordinator.py`
+- [ ] SAST Recon on `services/orchestrator/src/core/session_manager.py`
+- [ ] SAST Recon on `services/profile-ingestor/src/resume_extractor/components/output_generator.py`
+- [ ] SAST Recon on `services/profile-ingestor/src/resume_extractor/pipeline.py`
+- [ ] SAST Recon on `services/profile-ingestor/tests/test_output_generator.py`
+- [ ] SAST Recon on `services/profile-ingestor/tests/test_pipeline.py`
+- [ ] SAST Recon on `services/strategist/requirements.txt`
+- [ ] Conduct the final review of all findings as per your **Minimizing False Positives** operating principle and generate the final report.

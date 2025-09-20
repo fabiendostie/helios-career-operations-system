@@ -1,0 +1,71 @@
+version: '3.8'
+
+services:
+  architect:
+    build:
+      context: .
+      dockerfile: Dockerfile
+      target: development
+    ports:
+      - "8004:8004"
+    environment:
+      - DEBUG=true
+      - HOST=0.0.0.0
+      - PORT=8004
+      - ORCHESTRATOR_URL=http://orchestrator:8001
+      - ANALYST_URL=http://analyst:8003
+      - STRATEGIST_URL=http://strategist:8002
+      - LOG_LEVEL=DEBUG
+    volumes:
+      - .:/app
+      - /app/__pycache__
+    networks:
+      - helios-network
+    depends_on:
+      - orchestrator
+      - analyst
+      - strategist
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "python", "-c", "import requests; requests.get('http://localhost:8004/health')"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 10s
+
+  # External service dependencies (would be defined in main docker-compose)
+  orchestrator:
+    image: helios/orchestrator:latest
+    ports:
+      - "8001:8001"
+    networks:
+      - helios-network
+    profiles:
+      - full-stack
+
+  analyst:
+    image: helios/analyst:latest
+    ports:
+      - "8003:8003"
+    networks:
+      - helios-network
+    profiles:
+      - full-stack
+
+  strategist:
+    image: helios/strategist:latest
+    ports:
+      - "8002:8002"
+    networks:
+      - helios-network
+    profiles:
+      - full-stack
+
+networks:
+  helios-network:
+    external: true
+    name: helios-network
+
+volumes:
+  architect_data:
+    driver: local

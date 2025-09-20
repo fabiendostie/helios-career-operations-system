@@ -1,0 +1,28 @@
+schema: 1
+story: '2.2'
+gate: CONCERNS
+status_reason: 'ML-powered service requires 2.8GB model download before full operation.'
+reviewer: 'BMad Master (Architect Review)'
+updated: '2025-09-20T10:00:00Z'
+top_issues:
+  - id: 'ML-001'
+    severity: high
+    finding: 'Sentence-transformers model (2.8GB) not downloaded'
+    suggested_action: 'Download all-MiniLM-L6-v2 model before deployment'
+  - id: 'TEST-002'
+    severity: medium
+    finding: 'ML model tests cannot run without models'
+    suggested_action: 'Download models and verify embedding generation'
+  - id: 'PERF-001'
+    severity: low
+    finding: 'Model loading time not benchmarked'
+    suggested_action: 'Test cold start performance with full model'
+metrics:
+  ml_model_size_gb: 2.8
+  architecture_quality: 'good'
+  ml_integration: 'designed'
+quality_highlights:
+  - 'Skill vectorization architecture complete'
+  - 'Career path generation logic implemented'
+  - 'Fit scoring algorithm designed'
+waiver: { active: false }

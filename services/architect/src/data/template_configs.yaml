@@ -1,0 +1,185 @@
+# Template Configuration for ARCHITECT Service
+# Defines available templates and their customization options
+
+templates:
+  t_shaped_classic:
+    name: "T-Shaped Classic"
+    description: "Traditional professional resume with T-shaped architecture"
+    category: "resume"
+    target_industries: ["Technology", "Finance", "Consulting", "Healthcare", "Manufacturing"]
+    ats_optimization: "high"
+    visual_complexity: "low"
+    customizable_fields:
+      - adjective: ["Experienced", "Results-driven", "Strategic", "Innovative", "Accomplished"]
+      - core_competencies_count: 3
+      - skills_display_limit: 8
+      - accomplishment_bullet_style: "quantified"
+    suitability:
+      experience_levels: ["Entry", "Mid", "Senior", "Executive"]
+      role_types: ["Technical", "Management", "Individual Contributor"]
+    
+  t_shaped_modern:
+    name: "T-Shaped Modern"
+    description: "Contemporary design with subtle visual enhancements"
+    category: "resume"
+    target_industries: ["Startups", "Creative", "Marketing", "Design", "Technology"]
+    ats_optimization: "high"
+    visual_complexity: "medium"
+    customizable_fields:
+      - adjective: ["Innovative", "Creative", "Dynamic", "Forward-thinking", "Agile"]
+      - core_competencies_count: 3
+      - skills_display_limit: 8
+      - accomplishment_bullet_style: "impact_focused"
+    visual_elements:
+      - header_accent_color: "#2C5282"
+      - section_dividers: true
+      - skills_grouping: "visual"
+      - tech_tags: true
+    suitability:
+      experience_levels: ["Mid", "Senior", "Executive"]
+      role_types: ["Technical", "Creative", "Leadership"]
+      
+  t_shaped_minimal:
+    name: "T-Shaped Minimal"
+    description: "Ultra-minimal design for maximum ATS compatibility"
+    category: "resume"
+    target_industries: ["All Industries"]
+    ats_optimization: "maximum"
+    visual_complexity: "minimal"
+    customizable_fields:
+      - adjective: ["Professional", "Experienced", "Dedicated", "Skilled", "Qualified"]
+      - core_competencies_count: 3
+      - skills_display_limit: 8
+      - accomplishment_bullet_style: "straightforward"
+    features:
+      - no_colors: true
+      - no_graphics: true
+      - simple_formatting: true
+      - maximum_parsability: true
+    suitability:
+      experience_levels: ["All Levels"]
+      role_types: ["All Roles"]
+      special_use: ["ATS-first applications", "Conservative industries", "Government positions"]
+      
+  pain_promise_cover_letter:
+    name: "Pain & Promise Cover Letter"
+    description: "Persuasive three-paragraph cover letter model"
+    category: "cover_letter"
+    target_industries: ["All Industries"]
+    ats_optimization: "high"
+    customization_variables:
+      - company_research_fields: ["recent_news", "challenges", "goals", "industry_trends"]
+      - achievement_selection: "most_relevant_to_role"
+      - tone_options: ["professional", "enthusiastic", "analytical", "consultative"]
+      - pain_point_categories: ["operational", "technical", "strategic", "competitive"]
+    structure:
+      paragraph_1: "Hook & Pain Point identification"
+      paragraph_2: "Bridge & Promise with quantified proof"
+      paragraph_3: "Close & Call to Action"
+    suitability:
+      experience_levels: ["Mid", "Senior", "Executive"]
+      application_types: ["Targeted applications", "Career transitions", "Leadership roles"]
+
+# Industry-specific customizations
+industry_customizations:
+  technology:
+    emphasis: ["technical_skills", "system_impact", "scalability_metrics", "innovation"]
+    terminology: "technical"
+    achievement_format: "metric_driven"
+    preferred_adjectives: ["Innovative", "Results-driven", "Technical", "Strategic"]
+    key_skills_focus: ["programming", "architecture", "leadership", "problem_solving"]
+    
+  finance:
+    emphasis: ["regulatory_compliance", "risk_management", "revenue_impact", "analysis"]
+    terminology: "business"
+    achievement_format: "financial_impact"
+    preferred_adjectives: ["Analytical", "Strategic", "Results-driven", "Experienced"]
+    key_skills_focus: ["analysis", "compliance", "risk_management", "reporting"]
+    
+  consulting:
+    emphasis: ["client_impact", "problem_solving", "methodology", "leadership"]
+    terminology: "strategic"
+    achievement_format: "client_outcomes"
+    preferred_adjectives: ["Strategic", "Analytical", "Client-focused", "Results-driven"]
+    key_skills_focus: ["consulting", "analysis", "client_management", "strategy"]
+    
+  healthcare:
+    emphasis: ["patient_outcomes", "compliance", "quality_improvement", "safety"]
+    terminology: "clinical"
+    achievement_format: "outcome_focused"
+    preferred_adjectives: ["Dedicated", "Experienced", "Quality-focused", "Compassionate"]
+    key_skills_focus: ["clinical", "compliance", "quality", "leadership"]
+    
+  marketing:
+    emphasis: ["campaign_results", "brand_impact", "customer_engagement", "roi"]
+    terminology: "creative"
+    achievement_format: "engagement_metrics"
+    preferred_adjectives: ["Creative", "Strategic", "Data-driven", "Innovative"]
+    key_skills_focus: ["marketing", "analytics", "creativity", "strategy"]
+    
+  manufacturing:
+    emphasis: ["operational_efficiency", "quality_control", "safety", "cost_reduction"]
+    terminology: "operational"
+    achievement_format: "efficiency_metrics"
+    preferred_adjectives: ["Experienced", "Results-driven", "Safety-focused", "Efficient"]
+    key_skills_focus: ["operations", "quality", "safety", "efficiency"]
+
+# Experience level adjustments
+experience_level_adjustments:
+  entry:
+    focus: ["education", "internships", "projects", "potential"]
+    achievement_emphasis: "learning_and_growth"
+    adjective_preference: ["Motivated", "Dedicated", "Eager", "Skilled"]
+    summary_length: "concise"
+    
+  mid:
+    focus: ["accomplishments", "skill_development", "increasing_responsibility"]
+    achievement_emphasis: "project_impact"
+    adjective_preference: ["Experienced", "Results-driven", "Skilled", "Professional"]
+    summary_length: "standard"
+    
+  senior:
+    focus: ["leadership", "strategic_impact", "mentoring", "complex_projects"]
+    achievement_emphasis: "organizational_impact"
+    adjective_preference: ["Strategic", "Experienced", "Leadership-focused", "Accomplished"]
+    summary_length: "comprehensive"
+    
+  executive:
+    focus: ["vision", "transformation", "organizational_leadership", "strategic_results"]
+    achievement_emphasis: "business_transformation"
+    adjective_preference: ["Visionary", "Strategic", "Transformational", "Executive"]
+    summary_length: "executive_brief"
+
+# ATS optimization rules by template
+ats_optimization_rules:
+  high:
+    - single_column_layout: true
+    - standard_fonts_only: true
+    - semantic_headings: true
+    - keyword_optimization: true
+    - no_graphics: true
+    - parseable_formatting: true
+    
+  maximum:
+    - ultra_simple_formatting: true
+    - no_colors: true
+    - no_styling_effects: true
+    - plain_text_focus: true
+    - maximum_compatibility: true
+
+# Performance targets by template complexity
+performance_targets:
+  minimal:
+    render_time_target: "< 5 seconds"
+    memory_usage_target: "< 50MB"
+    pdf_generation_target: "< 8 seconds"
+    
+  medium:
+    render_time_target: "< 10 seconds"
+    memory_usage_target: "< 100MB"  
+    pdf_generation_target: "< 15 seconds"
+    
+  high:
+    render_time_target: "< 20 seconds"
+    memory_usage_target: "< 200MB"
+    pdf_generation_target: "< 25 seconds"

@@ -61,15 +61,19 @@ class TestPipeline:
             
             # Mock the UI components at the pipeline level
             mock_elicitation = Mock()
-            mock_elicitation.gather_additional_info.return_value = {
+            mock_elicitation.conduct_interview.return_value = {
                 "personal_info": {"name": "Test User"},
-                "work_experience": [],
-                "holistic_profile": {},
+                "aspirations": [],
+                "motivators": [],
             }
             self.pipeline.elicitation_ui = mock_elicitation
             
             mock_resolver = Mock()
-            mock_resolver.resolve_conflicts.return_value = {}
+            mock_resolver.resolve_conflicts_legacy.return_value = {
+                "work_experience": [],
+                "skills_inventory": {},
+                "strategic_metadata": {},
+            }
             self.pipeline.conflict_resolver = mock_resolver
 
             # Run pipeline

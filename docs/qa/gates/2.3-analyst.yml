@@ -1,0 +1,29 @@
+schema: 1
+story: '2.3'
+gate: CONCERNS
+status_reason: 'Six-step pipeline requires NLP model downloads for full functionality.'
+reviewer: 'BMad Master (Architect Review)'
+updated: '2025-09-20T10:00:00Z'
+top_issues:
+  - id: 'NLP-001'
+    severity: high
+    finding: 'spaCy models (en_core_web_sm) not downloaded'
+    suggested_action: 'Download spaCy models before deployment'
+  - id: 'ML-002'
+    severity: high
+    finding: 'Sentence-transformers models not downloaded'
+    suggested_action: 'Download embedding models for similarity analysis'
+  - id: 'TEST-003'
+    severity: medium
+    finding: '6-step pipeline not fully tested without models'
+    suggested_action: 'Run end-to-end pipeline tests after model installation'
+metrics:
+  pipeline_steps: 6
+  architecture_quality: 'excellent'
+  nlp_integration: 'designed'
+quality_highlights:
+  - 'Comprehensive 6-step analysis pipeline'
+  - 'ATS optimization logic implemented'
+  - 'Market correlation algorithms designed'
+  - 'Skill gap analysis framework complete'
+waiver: { active: false }

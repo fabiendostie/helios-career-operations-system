@@ -6,11 +6,11 @@ profile ingestion, career path generation, and market analysis.
 """
 
 import asyncio
-import json
-import pytest
 import time
-from typing import Dict, Any
+from typing import Any
+
 import aiohttp
+import pytest
 
 
 @pytest.mark.asyncio
@@ -21,11 +21,11 @@ class TestEndToEndWorkflow:
     async def test_complete_workflow_happy_path(
         self,
         http_session: aiohttp.ClientSession,
-        sample_resume_data: Dict[str, Any],
-        sample_career_goals: Dict[str, Any],
+        sample_resume_data: dict[str, Any],
+        sample_career_goals: dict[str, Any],
         clean_database,
         clean_redis,
-        performance_thresholds: Dict[str, float]
+        performance_thresholds: dict[str, float],
     ):
         """Test complete happy path workflow with real services."""
         workflow_start_time = time.time()
@@ -68,23 +68,26 @@ class TestEndToEndWorkflow:
 
         # Verify data integrity across services
         await self._verify_data_integrity(
-            http_session, session_id, profile_id,
-            sample_resume_data, career_paths_response, market_analysis_response
+            http_session,
+            session_id,
+            profile_id,
+            sample_resume_data,
+            career_paths_response,
+            market_analysis_response,
         )
 
     async def test_workflow_with_orchestrator_commands(
         self,
         http_session: aiohttp.ClientSession,
-        orchestrator_commands: Dict[str, Any],
+        orchestrator_commands: dict[str, Any],
         clean_database,
-        clean_redis
+        clean_redis,
     ):
         """Test orchestrator command handling (START, STATUS, HELP)."""
         # Test START command
         start_cmd = orchestrator_commands["start_session"]
         start_response = await http_session.post(
-            "http://localhost:8000/api/v1/command",
-            json=start_cmd
+            "http://localhost:8000/api/v1/command", json=start_cmd
         )
         assert start_response.status == 200
         start_data = await start_response.json()
@@ -95,8 +98,7 @@ class TestEndToEndWorkflow:
         status_cmd = orchestrator_commands["status_check"]
         status_cmd["session_id"] = session_id
         status_response = await http_session.post(
-            "http://localhost:8000/api/v1/command",
-            json=status_cmd
+            "http://localhost:8000/api/v1/command", json=status_cmd
         )
         assert status_response.status == 200
         status_data = await status_response.json()
@@ -106,8 +108,7 @@ class TestEndToEndWorkflow:
         # Test HELP command
         help_cmd = orchestrator_commands["help_request"]
         help_response = await http_session.post(
-            "http://localhost:8000/api/v1/command",
-            json=help_cmd
+            "http://localhost:8000/api/v1/command", json=help_cmd
         )
         assert help_response.status == 200
         help_data = await help_response.json()
@@ -117,9 +118,9 @@ class TestEndToEndWorkflow:
     async def test_service_communication_flow(
         self,
         http_session: aiohttp.ClientSession,
-        sample_resume_data: Dict[str, Any],
+        sample_resume_data: dict[str, Any],
         clean_database,
-        clean_redis
+        clean_redis,
     ):
         """Test communication flow between all services."""
         # Start session
@@ -129,10 +130,7 @@ class TestEndToEndWorkflow:
         # Test orchestrator -> profile-ingestor communication
         profile_response = await http_session.post(
             "http://localhost:8000/api/v1/profile/process",
-            json={
-                "session_id": session_id,
-                "resume_data": sample_resume_data
-            }
+            json={"session_id": session_id, "resume_data": sample_resume_data},
         )
         assert profile_response.status == 200
         profile_data = await profile_response.json()
@@ -150,27 +148,24 @@ class TestEndToEndWorkflow:
             json={
                 "session_id": session_id,
                 "profile_id": profile_id,
-                "career_goals": {"target_roles": ["Software Engineer"]}
-            }
+                "career_goals": {"target_roles": ["Software Engineer"]},
+            },
         )
         assert strategist_response.status == 200
 
         # Test orchestrator -> analyst communication
         analyst_response = await http_session.post(
             "http://localhost:8000/api/v1/analysis/market",
-            json={
-                "session_id": session_id,
-                "profile_id": profile_id
-            }
+            json={"session_id": session_id, "profile_id": profile_id},
         )
         assert analyst_response.status == 200
 
     async def test_data_flow_validation(
         self,
         http_session: aiohttp.ClientSession,
-        sample_resume_data: Dict[str, Any],
+        sample_resume_data: dict[str, Any],
         clean_database,
-        clean_redis
+        clean_redis,
     ):
         """Test data consistency across service boundaries."""
         # Create profile and track data transformations
@@ -207,7 +202,9 @@ class TestEndToEndWorkflow:
             assert "probability" in path
 
         # Generate market analysis and verify data integration
-        market_response = await self._analyze_market(http_session, session_id, profile_id)
+        market_response = await self._analyze_market(
+            http_session, session_id, profile_id
+        )
 
         # Verify analyst integrated both profile and career data
         assert "market_analysis" in market_response
@@ -215,14 +212,16 @@ class TestEndToEndWorkflow:
         assert market_response["resume_optimization"]["ats_score"] > 0
 
     # Helper methods
-    async def _start_session(self, http_session: aiohttp.ClientSession) -> Dict[str, Any]:
+    async def _start_session(
+        self, http_session: aiohttp.ClientSession
+    ) -> dict[str, Any]:
         """Start a new session with the orchestrator."""
         response = await http_session.post(
             "http://localhost:8000/api/v1/session/start",
             json={
                 "user_id": f"test-user-{int(time.time())}",
-                "config": {"timeout_minutes": 60}
-            }
+                "config": {"timeout_minutes": 60},
+            },
         )
         assert response.status == 200
         return await response.json()
@@ -231,15 +230,12 @@ class TestEndToEndWorkflow:
         self,
         http_session: aiohttp.ClientSession,
         session_id: str,
-        resume_data: Dict[str, Any]
-    ) -> Dict[str, Any]:
+        resume_data: dict[str, Any],
+    ) -> dict[str, Any]:
         """Submit profile data through orchestrator."""
         response = await http_session.post(
             "http://localhost:8000/api/v1/profile/process",
-            json={
-                "session_id": session_id,
-                "resume_data": resume_data
-            }
+            json={"session_id": session_id, "resume_data": resume_data},
         )
         assert response.status == 200
         return await response.json()
@@ -249,42 +245,34 @@ class TestEndToEndWorkflow:
         http_session: aiohttp.ClientSession,
         session_id: str,
         profile_id: str,
-        career_goals: Dict[str, Any]
-    ) -> Dict[str, Any]:
+        career_goals: dict[str, Any],
+    ) -> dict[str, Any]:
         """Generate career paths through orchestrator."""
         response = await http_session.post(
             "http://localhost:8000/api/v1/career-paths/generate",
             json={
                 "session_id": session_id,
                 "profile_id": profile_id,
-                "career_goals": career_goals
-            }
+                "career_goals": career_goals,
+            },
         )
         assert response.status == 200
         return await response.json()
 
     async def _analyze_market(
-        self,
-        http_session: aiohttp.ClientSession,
-        session_id: str,
-        profile_id: str
-    ) -> Dict[str, Any]:
+        self, http_session: aiohttp.ClientSession, session_id: str, profile_id: str
+    ) -> dict[str, Any]:
         """Analyze market through orchestrator."""
         response = await http_session.post(
             "http://localhost:8000/api/v1/analysis/market",
-            json={
-                "session_id": session_id,
-                "profile_id": profile_id
-            }
+            json={"session_id": session_id, "profile_id": profile_id},
         )
         assert response.status == 200
         return await response.json()
 
     async def _get_session_status(
-        self,
-        http_session: aiohttp.ClientSession,
-        session_id: str
-    ) -> Dict[str, Any]:
+        self, http_session: aiohttp.ClientSession, session_id: str
+    ) -> dict[str, Any]:
         """Get session status from orchestrator."""
         response = await http_session.get(
             f"http://localhost:8000/api/v1/session/{session_id}/status"
@@ -297,13 +285,15 @@ class TestEndToEndWorkflow:
         http_session: aiohttp.ClientSession,
         session_id: str,
         profile_id: str,
-        original_data: Dict[str, Any],
-        career_data: Dict[str, Any],
-        market_data: Dict[str, Any]
+        original_data: dict[str, Any],
+        career_data: dict[str, Any],
+        market_data: dict[str, Any],
     ):
         """Verify data integrity across all services."""
         # Verify original skills are preserved and enhanced
-        original_skills = set(original_data["skills_inventory"]["programming_languages"])
+        original_skills = set(
+            original_data["skills_inventory"]["programming_languages"]
+        )
 
         # Check career paths reference relevant skills
         career_skills = set()
@@ -312,7 +302,9 @@ class TestEndToEndWorkflow:
 
         # Should have some overlap with original skills
         skill_overlap = original_skills.intersection(career_skills)
-        assert len(skill_overlap) > 0, "No skill overlap between profile and career paths"
+        assert (
+            len(skill_overlap) > 0
+        ), "No skill overlap between profile and career paths"
 
         # Verify market analysis is relevant to profile
         recommended_skills = set(market_data["market_analysis"]["recommended_skills"])
@@ -331,15 +323,12 @@ class TestErrorHandlingWorkflows:
     """Test error handling across the complete workflow."""
 
     async def test_profile_ingestor_error_handling(
-        self,
-        http_session: aiohttp.ClientSession,
-        clean_database,
-        clean_redis
+        self, http_session: aiohttp.ClientSession, clean_database, clean_redis
     ):
         """Test error handling when profile ingestor fails."""
         session_response = await http_session.post(
             "http://localhost:8000/api/v1/session/start",
-            json={"user_id": "test-error-user"}
+            json={"user_id": "test-error-user"},
         )
         session_id = (await session_response.json())["session_id"]
 
@@ -347,10 +336,7 @@ class TestErrorHandlingWorkflows:
         invalid_data = {"invalid": "data structure"}
         response = await http_session.post(
             "http://localhost:8000/api/v1/profile/process",
-            json={
-                "session_id": session_id,
-                "resume_data": invalid_data
-            }
+            json={"session_id": session_id, "resume_data": invalid_data},
         )
 
         # Should handle error gracefully
@@ -359,10 +345,7 @@ class TestErrorHandlingWorkflows:
         assert "error" in error_data or "detail" in error_data
 
     async def test_service_unavailable_handling(
-        self,
-        http_session: aiohttp.ClientSession,
-        clean_database,
-        clean_redis
+        self, http_session: aiohttp.ClientSession, clean_database, clean_redis
     ):
         """Test handling when downstream services are unavailable."""
         # This test would require temporarily stopping services
@@ -370,7 +353,7 @@ class TestErrorHandlingWorkflows:
 
         session_response = await http_session.post(
             "http://localhost:8000/api/v1/session/start",
-            json={"user_id": "test-timeout-user"}
+            json={"user_id": "test-timeout-user"},
         )
         session_id = (await session_response.json())["session_id"]
 
@@ -381,24 +364,21 @@ class TestErrorHandlingWorkflows:
                 json={
                     "session_id": session_id,
                     "profile_id": "non-existent",
-                    "career_goals": {}
+                    "career_goals": {},
                 },
-                timeout=aiohttp.ClientTimeout(total=1)
+                timeout=aiohttp.ClientTimeout(total=1),
             )
-        except asyncio.TimeoutError:
+        except TimeoutError:
             # Expected for this test case
             pass
 
     async def test_data_validation_errors(
-        self,
-        http_session: aiohttp.ClientSession,
-        clean_database,
-        clean_redis
+        self, http_session: aiohttp.ClientSession, clean_database, clean_redis
     ):
         """Test data validation error handling."""
         session_response = await http_session.post(
             "http://localhost:8000/api/v1/session/start",
-            json={"user_id": "test-validation-user"}
+            json={"user_id": "test-validation-user"},
         )
         session_id = (await session_response.json())["session_id"]
 
@@ -410,16 +390,16 @@ class TestErrorHandlingWorkflows:
 
         response = await http_session.post(
             "http://localhost:8000/api/v1/profile/process",
-            json={
-                "session_id": session_id,
-                "resume_data": incomplete_data
-            }
+            json={"session_id": session_id, "resume_data": incomplete_data},
         )
 
         # Should return validation error
         assert response.status in [400, 422]
         error_data = await response.json()
-        assert "validation" in str(error_data).lower() or "required" in str(error_data).lower()
+        assert (
+            "validation" in str(error_data).lower()
+            or "required" in str(error_data).lower()
+        )
 
 
 @pytest.mark.asyncio
@@ -431,10 +411,10 @@ class TestPerformanceWorkflows:
     async def test_single_user_performance(
         self,
         http_session: aiohttp.ClientSession,
-        sample_resume_data: Dict[str, Any],
-        performance_thresholds: Dict[str, float],
+        sample_resume_data: dict[str, Any],
+        performance_thresholds: dict[str, float],
         clean_database,
-        clean_redis
+        clean_redis,
     ):
         """Test performance with single user workflow."""
         start_time = time.time()
@@ -443,7 +423,7 @@ class TestPerformanceWorkflows:
         session_start = time.time()
         session_response = await http_session.post(
             "http://localhost:8000/api/v1/session/start",
-            json={"user_id": "perf-test-user"}
+            json={"user_id": "perf-test-user"},
         )
         session_time = time.time() - session_start
         assert session_time < performance_thresholds["orchestrator_response_time"]
@@ -454,10 +434,7 @@ class TestPerformanceWorkflows:
         profile_start = time.time()
         await http_session.post(
             "http://localhost:8000/api/v1/profile/process",
-            json={
-                "session_id": session_id,
-                "resume_data": sample_resume_data
-            }
+            json={"session_id": session_id, "resume_data": sample_resume_data},
         )
         profile_time = time.time() - profile_start
         assert profile_time < performance_thresholds["profile_processing_time"]
@@ -468,10 +445,10 @@ class TestPerformanceWorkflows:
     async def test_concurrent_users_performance(
         self,
         http_session: aiohttp.ClientSession,
-        sample_resume_data: Dict[str, Any],
-        load_test_config: Dict[str, Any],
+        sample_resume_data: dict[str, Any],
+        load_test_config: dict[str, Any],
         clean_database,
-        clean_redis
+        clean_redis,
     ):
         """Test performance with multiple concurrent users."""
         concurrent_users = load_test_config["concurrent_users"]
@@ -481,7 +458,7 @@ class TestPerformanceWorkflows:
             """Simulate a single user workflow."""
             session_response = await http_session.post(
                 "http://localhost:8000/api/v1/session/start",
-                json={"user_id": f"load-test-user-{user_id}"}
+                json={"user_id": f"load-test-user-{user_id}"},
             )
             session_data = await session_response.json()
             session_id = session_data["session_id"]
@@ -489,10 +466,7 @@ class TestPerformanceWorkflows:
             for request_num in range(requests_per_user):
                 await http_session.post(
                     "http://localhost:8000/api/v1/profile/process",
-                    json={
-                        "session_id": session_id,
-                        "resume_data": sample_resume_data
-                    }
+                    json={"session_id": session_id, "resume_data": sample_resume_data},
                 )
 
         # Run concurrent user workflows

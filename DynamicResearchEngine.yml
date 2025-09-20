@@ -1,0 +1,341 @@
+# LLM INSTRUCTIONAL BLUEPRINT: DYNAMIC RESEARCH ENGINE IMPLEMENTATION
+# TARGET MODEL: GPT-4 or equivalent, with advanced code generation capabilities.
+# FORMAT: YAML (YAML Ain't Markup Language) - chosen for structured, hierarchical data representation that is both human-readable and machine-parsable.
+
+system_prompt: |
+  You are a System Architect AI. Your task is to generate a complete, production-ready Python implementation for a Dynamic Research Engine based on the detailed specifications provided in this YAML document. Adhere strictly to the architectural patterns, library choices, function signatures, and data schemas defined herein. The final output should be a series of Python scripts that are modular, well-documented, and ready for deployment. The engine's purpose is to feed a downstream 'architect' module with current, high-quality intelligence on a weekly/monthly basis.
+
+# ===================================================================
+# 1. CORE ARCHITECTURE DEFINITION
+# ===================================================================
+architecture:
+  pattern: "Scheduled Batch Processing"
+  rationale: "Prioritizes simplicity, reliability, and cost-effectiveness over instantaneous real-time processing, aligning with the 'current but not immediate' data freshness requirement. Avoids the complexity of a full event-driven microservices architecture."
+  
+  data_processing_paradigm: "Simplified Kappa Architecture"
+  rationale: "Utilizes a single, unified stream processing pipeline for both new and historical data. This eliminates the dual-maintenance burden and potential for inconsistencies found in Lambda architectures, adhering to the KISS principle."
+
+  data_organization_model: "Medallion Architecture"
+  rationale: "Structures data into Bronze (raw), Silver (cleaned), and Gold (aggregated) layers. This ensures data quality, enables pipeline replayability, and decouples fragile ingestion from robust analysis."
+
+# ===================================================================
+# 2. COMPONENT IMPLEMENTATION SPECIFICATIONS
+# ===================================================================
+components:
+  # -----------------------------------------------------------------
+  # 2.1. WORKFLOW ORCHESTRATION
+  # -----------------------------------------------------------------
+  orchestration:
+    tool: "Prefect"
+    rationale: "Modern, Python-native orchestrator with a simpler, more intuitive API than Airflow. Its concepts of '@task' and '@flow' map directly to Python functions. Provides robust scheduling, automatic retries, and superior observability out-of-the-box, which is critical for managing batch jobs reliably."
+    code_example: |
+      # file: flows/main_flow.py
+      from prefect import flow, task
+      from datetime import timedelta
+      from components.ingestion import run_all_ingestions
+      from components.processing import run_all_processing
+
+      @task(retries=3, retry_delay_seconds=60)
+      def ingest_data_task():
+          """Task to run all ingestion scripts."""
+          run_all_ingestions()
+
+      @task(retries=2, retry_delay_seconds=120)
+      def process_data_task():
+          """Task to run all NLP and transformation scripts."""
+          run_all_processing()
+
+      @flow(name="Dynamic Research Engine Weekly Flow")
+      def research_engine_flow():
+          """Main flow to orchestrate the entire research pipeline."""
+          ingest_task = ingest_data_task.submit()
+          # Process data only after ingestion is complete
+          process_data_task.submit(wait_for=[ingest_task])
+
+      if __name__ == "__main__":
+          research_engine_flow.serve(
+              name="weekly-research-deployment",
+              cron="0 5 * * 1"  # Run every Monday at 5 AM
+          )
+
+  # -----------------------------------------------------------------
+  # 2.2. DATA INGESTION
+  # -----------------------------------------------------------------
+  ingestion:
+    api_ingestion:
+      library: "requests"
+      rationale: "Standard, simple, and robust library for making HTTP requests. Sufficient for all specified API interactions."
+      methodology: "Implement a configurable function that accepts an API endpoint, parameters, and headers. It must handle JSON responses, pagination (by checking for 'next' links or incrementing page numbers), and basic error handling (e.g., HTTP status codes)."
+      code_example: |
+        # file: components/ingestion/api_client.py
+        import requests
+        import time
+
+        def fetch_bls_data(series_ids: list, api_key: str):
+            """Fetches time series data from the BLS API."""
+            headers = {'Content-type': 'application/json'}
+            data = {
+                "seriesid": series_ids,
+                "startyear": "2023", "endyear": "2025",
+                "registrationkey": api_key
+            }
+            response = requests.post('https://api.bls.gov/publicAPI/v2/timeseries/data/', json=data, headers=headers)
+            response.raise_for_status()  # Raise an exception for bad status codes
+            return response.json()
+
+    web_scraping:
+      library: "Playwright"
+      rationale: "Superior for dynamic, JavaScript-heavy websites. It automates a real browser, ensuring all content is rendered before extraction. This is more reliable than Scrapy for sites that load data via AJAX or require user interaction, avoiding the need for complex Scrapy+Splash integrations."
+      methodology: "Use the synchronous API for simplicity in a batch context. Launch a headless Chromium browser. Navigate to the target URL using `page.goto()`. Wait for a specific selector or network idle state to ensure the page is fully loaded. Extract the full page content using `page.content()` for subsequent parsing."
+      code_example: |
+        # file: components/ingestion/scraper.py
+        from playwright.sync_api import sync_playwright
+        import pandas as pd
+
+        def scrape_dynamic_page(url: str) -> str:
+            """Scrapes the full HTML content of a JavaScript-rendered page."""
+            with sync_playwright() as p:
+                browser = p.chromium.launch(headless=True)
+                page = browser.new_page()
+                try:
+                    page.goto(url, wait_until="networkidle", timeout=60000)
+                    content = page.content()
+                finally:
+                    browser.close()
+            return content
+
+  # -----------------------------------------------------------------
+  # 2.3. DATA PROCESSING (NLP)
+  # -----------------------------------------------------------------
+  processing:
+    nlp_pipeline:
+      - library: "spaCy"
+        task: "Named Entity Recognition (NER)"
+        rationale: "Production-grade, fast, and highly efficient for extracting structured entities (people, organizations, products, skills) from unstructured text. Its pre-trained models are excellent for general-purpose entity extraction."
+        model: "en_core_web_lg" # Use the large model for better accuracy.
+        code_example: |
+          # file: components/processing/ner_extractor.py
+          import spacy
+
+          nlp = spacy.load("en_core_web_lg")
+
+          def extract_entities(text: str) -> dict:
+              """Extracts named entities from text."""
+              doc = nlp(text)
+              entities = {
+                  "PERSON":, "ORG":, "PRODUCT":, "GPE": # Geopolitical Entity
+              }
+              for ent in doc.ents:
+                  if ent.label_ in entities:
+                      entities[ent.label_].append(ent.text)
+              return entities
+
+      - library: "Hugging Face Transformers"
+        task: "Summarization & Classification"
+        rationale: "Provides access to a vast hub of state-of-the-art models for abstractive summarization and zero-shot classification, allowing for flexible and powerful text analysis without needing custom-trained models."
+        model_summarization: "facebook/bart-large-cnn"
+        model_classification: "facebook/bart-large-mnli"
+        code_example: |
+          # file: components/processing/text_analyzer.py
+          from transformers import pipeline
+
+          # Initialize pipelines once to be reused
+          summarizer = pipeline("summarization", model="facebook/bart-large-cnn")
+          classifier = pipeline("zero-shot-classification", model="facebook/bart-large-mnli")
+
+          def summarize_text(text: str) -> str:
+              """Generates an abstractive summary of the text."""
+              summary = summarizer(text, max_length=150, min_length=30, do_sample=False)
+              return summary['summary_text']
+
+          def classify_text(text: str, labels: list) -> dict:
+              """Classifies text against a dynamic list of labels."""
+              result = classifier(text, candidate_labels=labels)
+              return dict(zip(result['labels'], result['scores']))
+
+  # -----------------------------------------------------------------
+  # 2.4. DATA STORAGE
+  # -----------------------------------------------------------------
+  storage:
+    bronze_layer:
+      format: "Raw files (HTML, JSON)"
+      location: "Local filesystem or cloud storage (e.g., S3 bucket named 'research-bronze')"
+      rationale: "Immutable, append-only storage of source data for auditability and pipeline replayability."
+    silver_layer:
+      format: "Parquet files or structured database tables"
+      location: "Local filesystem or cloud storage (e.g., S3 bucket named 'research-silver')"
+      rationale: "Stores cleaned, parsed, and structured data. Parquet is optimal for columnar storage and efficient querying."
+    gold_layer:
+      database: "PostgreSQL"
+      rationale: "A robust, open-source relational database. Ideal for storing the final, aggregated, and analysis-ready data. It provides strong querying capabilities (SQL) for the downstream 'architect' module."
+      code_example: |
+        # file: components/storage/db_loader.py
+        import pandas as pd
+        from sqlalchemy import create_engine
+
+        def load_to_gold(dataframe: pd.DataFrame, table_name: str, db_connection_string: str):
+            """Loads a pandas DataFrame into a PostgreSQL table."""
+            engine = create_engine(db_connection_string)
+            dataframe.to_sql(
+                table_name,
+                engine,
+                if_exists='append', # Append new data on each run
+                index=False
+            )
+
+# ===================================================================
+# 3. RESEARCH DOMAIN SPECIFICATIONS
+# ===================================================================
+research_domains:
+  - domain_name: "Industry Trends Research"
+    objective: "Identify and summarize macro-level industry trends, particularly in technology, HR, and AI."
+    data_sources:
+      - name: "McKinsey Digital"
+        url: "https://www.mckinsey.com/capabilities/mckinsey-digital/our-insights"
+      - name: "Gartner HR Insights"
+        url: "https://www.gartner.com/en/human-resources/insights" [1]
+      - name: "Google AI Research"
+        url: "https://ai.google/research/" [2]
+      - name: "Meta AI Research"
+        url: "https://ai.meta.com/" [3]
+    ingestion_method: "web_scraping_playwright"
+    processing_logic:
+      classification_labels:
+      ner_entities:
+      summarization_focus: "Extract key findings, strategic recommendations, and data-driven predictions from reports and articles."
+    gold_layer_schema:
+      table_name: "industry_trends"
+      columns:
+        - { name: "publication_date", type: "DATE" }
+        - { name: "source_name", type: "VARCHAR(100)" }
+        - { name: "article_title", type: "TEXT" }
+        - { name: "summary", type: "TEXT" }
+        - { name: "primary_category", type: "VARCHAR(100)" }
+        - { name: "mentioned_orgs", type: "TEXT" } # Array of strings
+        - { name: "source_url", type: "TEXT", primary_key: true }
+
+  - domain_name: "ATS Algorithm Updates"
+    objective: "Track new features and algorithmic changes in major Applicant Tracking Systems."
+    data_sources:
+      - name: "Greenhouse Blog"
+        url: "https://www.greenhouse.com/blog" [4]
+      - name: "Lever Blog"
+        url: "https://www.lever.co/blog" [5, 6]
+      - name: "iCIMS Newsroom"
+        url: "https://www.icims.com/company/corporate-newsroom/" [7, 8]
+      - name: "Bullhorn Blog"
+        url: "https://www.bullhorn.com/blog/" [9, 10, 11, 12, 13]
+    ingestion_method: "web_scraping_playwright"
+    processing_logic:
+      classification_labels:
+      ner_entities: # e.g., "Real Talent", "CLEAR"
+      summarization_focus: "Detail the new functionality, its intended impact on the hiring process, and any mentioned technologies (e.g., AI, semantic search, candidate scoring)." [14]
+    gold_layer_schema:
+      table_name: "ats_updates"
+      columns:
+        - { name: "announcement_date", type: "DATE" }
+        - { name: "vendor_name", type: "VARCHAR(100)" }
+        - { name: "feature_name", type: "VARCHAR(255)" }
+        - { name: "summary", type: "TEXT" }
+        - { name: "category", type: "VARCHAR(100)" }
+        - { name: "source_url", type: "TEXT", primary_key: true }
+
+  - domain_name: "Resume Format Evolution"
+    objective: "Identify current best practices and trends in resume formatting for both ATS and human reviewers."
+    data_sources:
+      - name: "Novoresume Blog"
+        url: "https://novoresume.com/career-blog/" [15, 16]
+      - name: "ResumeBuilder Career Center"
+        url: "https://www.resumebuilder.com/career-center/" [17]
+      - name: "Jobscan Blog"
+        url: "https://www.jobscan.co/blog/"
+      - name: "CandyCV Blog"
+        url: "https://www.candycv.com/how-to/" [18]
+    ingestion_method: "web_scraping_playwright"
+    processing_logic:
+      classification_labels:
+      ner_entities: # Not primary focus
+      summarization_focus: "Extract actionable advice on resume structure (chronological, hybrid), ATS keyword usage, design elements (fonts, layout), and quantifiable achievements (e.g., 'Verb + Metric + Outcome' formula)." [14]
+    gold_layer_schema:
+      table_name: "resume_trends"
+      columns:
+        - { name: "trend_id", type: "SERIAL", primary_key: true }
+        - { name: "publication_date", type: "DATE" }
+        - { name: "source_name", type: "VARCHAR(100)" }
+        - { name: "trend_summary", type: "TEXT" }
+        - { name: "category", type: "VARCHAR(100)" }
+        - { name: "is_ats_focused", type: "BOOLEAN" }
+        - { name: "source_url", type: "TEXT" }
+
+  - domain_name: "Hiring Manager Preferences"
+    objective: "Analyze sentiment and discussion topics from recruiting forums to understand the 'ground truth' of hiring manager preferences."
+    data_sources:
+      - name: "Reddit r/recruiting"
+        url: "https://www.reddit.com/r/recruiting/" [19, 20]
+      - name: "Reddit r/recruitinghell"
+        url: "https://www.reddit.com/r/recruitinghell/" [21]
+      - name: "RecruitingBlogs Forum"
+        url: "https://recruitingblogs.com/forum/"
+    ingestion_method: "web_scraping_playwright"
+    processing_logic:
+      # Custom sentiment analysis step required here
+      sentiment_analysis:
+        library: "Hugging Face Transformers"
+        model: "cardiffnlp/twitter-roberta-base-sentiment-latest"
+        method: "Analyze sentiment of individual comments and posts. Aggregate sentiment scores by topic."
+        labels: ["positive", "neutral", "negative"]
+      topic_modeling:
+        library: "scikit-learn"
+        method: "Use Latent Dirichlet Allocation (LDA) on post/comment text to identify recurring topics."
+        topics_to_identify:
+    gold_layer_schema:
+      table_name: "hiring_manager_sentiment"
+      columns:
+        - { name: "topic", type: "VARCHAR(255)" }
+        - { name: "month", type: "DATE" }
+        - { name: "avg_sentiment_score", type: "FLOAT" } # e.g., -1.0 to 1.0
+        - { name: "discussion_volume", type: "INTEGER" } # Number of posts/comments
+        - { name: "key_quotes", type: "TEXT" }
+
+  - domain_name: "Job Market Analysis"
+    objective: "Track key macroeconomic indicators of the job market."
+    data_sources:
+      - name: "U.S. Bureau of Labor Statistics API"
+        url: "https://api.bls.gov/publicAPI/v2/timeseries/data/"
+        series_ids: # Unemployment Rate, Job Openings
+    ingestion_method: "api_requests"
+    processing_logic:
+      classification_labels:
+      ner_entities:
+      summarization_focus: "No summarization needed. Process time-series data directly."
+      transformation_logic: "Parse JSON response, extract period, value, and series ID. Format into a structured time-series table."
+    gold_layer_schema:
+      table_name: "job_market_indicators"
+      columns:
+        - { name: "indicator_name", type: "VARCHAR(255)" }
+        - { name: "period", type: "DATE" }
+        - { name: "value", type: "FLOAT" }
+        - { name: "series_id", type: "VARCHAR(50)" }
+
+  - domain_name: "Skills Demand Changes"
+    objective: "Identify trending and in-demand skills from job platforms and educational course catalogs."
+    data_sources:
+      - name: "LinkedIn Economic Graph API"
+        url: "https://learn.microsoft.com/en-us/linkedin/marketing/integrations/ads/advertising-targeting/audience-insights-api" [22, 23] # Note: Requires special access
+      - name: "Coursera Course Catalog (Scraped)"
+        url: "https://www.coursera.org/" [24, 25]
+      - name: "Udemy for Business Reports (Scraped)"
+        url: "https://business.udemy.com/resources/" [26]
+    ingestion_method: "api_requests (for LinkedIn), web_scraping_playwright (for others)"
+    processing_logic:
+      classification_labels:
+      ner_entities:
+      summarization_focus: "Extract lists of fastest-growing skills, top skills by job title, and trending course enrollments."
+    gold_layer_schema:
+      table_name: "skills_demand"
+      columns:
+        - { name: "skill_name", type: "VARCHAR(255)" }
+        - { name: "month", type: "DATE" }
+        - { name: "demand_score", type: "FLOAT" } # A calculated metric based on frequency/growth
+        - { name: "source_platform", type: "VARCHAR(100)" }
+        - { name: "skill_category", type: "VARCHAR(100)" }
