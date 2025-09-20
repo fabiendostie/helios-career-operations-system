@@ -82,12 +82,21 @@ graph TD
 
 ### 🏆 Quality Metrics
 
-- **Overall Test Coverage**: 99%+ across active services
+- **Test Coverage**: 85% minimum required, 99%+ achieved across active services
+- **Test Pass Rate**: 85% minimum required, 99%+ achieved across active services
 - **Service Availability**: 100% (4/4 core services operational)
 - **Code Quality**: Ruff + Black enforced via pre-commit
 - **Security**: CodeQL analysis + Bandit scanning
 - **Performance**: <2s response time target (100+ concurrent sessions)
 - **ML Model Status**: ✅ Sentence-transformers & spaCy models loaded
+
+#### 📋 Quality Standards
+
+All services and contributions must meet the following requirements:
+- **Minimum Test Coverage**: 85%
+- **Minimum Test Pass Rate**: 85%
+- **Code Quality**: All linting checks must pass
+- **Security**: No high-severity vulnerabilities
 
 ---
 
@@ -238,7 +247,7 @@ This project follows **[Behavioral Model Analysis and Design (BMAD)](https://git
 1. **Fork** the repository
 2. **Create** a feature branch (`git checkout -b feat/amazing-feature`)
 3. **Commit** using conventional commits (`feat:`, `fix:`, `docs:`)
-4. **Test** your changes (`pytest` with 85%+ pass rate)
+4. **Test** your changes (`pytest` with 85%+ coverage and pass rate)
 5. **Push** to your branch (`git push origin feat/amazing-feature`)
 6. **Open** a Pull Request
 

@@ -1,35 +1,108 @@
-# Pre-commit hooks configuration
-# Updated for 2025-09
+# Pre-commit configuration for Helios Career Operations System
+# This ensures code quality and consistency across all Python services
 
 repos:
-  # Basic file checks
+  # Pre-commit hooks for general file management
   - repo: https://github.com/pre-commit/pre-commit-hooks
     rev: v5.0.0
     hooks:
       - id: trailing-whitespace
+        description: Trim trailing whitespace
       - id: end-of-file-fixer
+        description: Ensure files end with newline
       - id: check-yaml
-      - id: check-added-large-files
+        description: Check YAML syntax
       - id: check-json
+        description: Check JSON syntax
+      - id: check-toml
+        description: Check TOML syntax
       - id: check-merge-conflict
+        description: Check for merge conflict markers
+      - id: check-added-large-files
+        description: Prevent large files from being committed
+        args: ['--maxkb=1000']
+      - id: mixed-line-ending
+        description: Ensure consistent line endings
+        args: ['--fix=lf']
       - id: detect-private-key
+        description: Detect private keys
 
-  # Python formatting - Black
+  # Python code formatting with Black
   - repo: https://github.com/psf/black
     rev: 24.10.0
     hooks:
       - id: black
+        description: Format Python code with Black
+        language_version: python3
+        files: \.py$
+        args: [--line-length=88, --target-version=py313]
 
-  # Python linting - Ruff
+  # Import sorting with isort (compatible with Black)
+  - repo: https://github.com/pycqa/isort
+    rev: 6.0.1
+    hooks:
+      - id: isort
+        description: Sort Python imports
+        args: [--profile=black, --line-length=88]
+        files: \.py$
+
+  # Python linting with flake8
+  - repo: https://github.com/pycqa/flake8
+    rev: 7.3.0
+    hooks:
+      - id: flake8
+        description: Lint Python code with flake8
+        files: \.py$
+        args:
+          - --max-line-length=88
+          - --extend-ignore=E203,W503,E501
+          - --max-complexity=10
+          - --exclude=venv,__pycache__,.git,.pytest_cache,build,dist
+
+  # Additional Python linting with Ruff (faster alternative)
   - repo: https://github.com/astral-sh/ruff-pre-commit
     rev: v0.8.0
     hooks:
       - id: ruff
+        description: Fast Python linting with Ruff
         args: ['--fix', '--exit-zero']
+
+  # Security linting for Python
+  - repo: https://github.com/pycqa/bandit
+    rev: 1.8.0
+    hooks:
+      - id: bandit
+        description: Security linting for Python
+        args: ['-r', '-f', 'json']
+        files: \.py$
+        exclude: ^tests/
 
   # Conventional commits
   - repo: https://github.com/compilerla/conventional-pre-commit
     rev: v3.9.0
     hooks:
       - id: conventional-pre-commit
+        description: Enforce conventional commit messages
         stages: [commit-msg]
+
+# Configuration for specific file types
+exclude: |
+  (?x)^(
+    \.bmad-core/.*\.bak$|
+    \.git/|
+    \.pytest_cache/|
+    __pycache__/|
+    venv/|
+    \.venv/|
+    build/|
+    dist/|
+    \.backup_.*\.json$|
+    .*\.log$
+  )$
+
+# Fail fast - stop on first failure
+fail_fast: false
+
+# Default language version
+default_language_version:
+  python: python3.13

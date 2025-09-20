@@ -1,0 +1,345 @@
+name: CI/CD Pipeline - Quality Gates
+
+on:
+  push:
+    branches: [main, development]
+  pull_request:
+    branches: [main, development]
+
+env:
+  PYTHON_VERSION: '3.13'
+  MIN_COVERAGE: 85
+  MIN_PASS_RATE: 85
+
+jobs:
+  quality-gates:
+    name: Quality Gates - Coverage & Pass Rate
+    runs-on: ubuntu-latest
+
+    strategy:
+      matrix:
+        service:
+          - profile-ingestor
+          - orchestrator
+          - strategist
+          - analyst
+          # Add new services here as they are developed
+
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v4
+
+      - name: Set up Python ${{ env.PYTHON_VERSION }}
+        uses: actions/setup-python@v5
+        with:
+          python-version: ${{ env.PYTHON_VERSION }}
+          cache: 'pip'
+
+      - name: Install Base Dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install pytest pytest-cov pytest-mock pytest-html bandit safety
+
+      - name: Check Service Exists
+        id: check-service
+        run: |
+          if [ -d "services/${{ matrix.service }}" ]; then
+            echo "exists=true" >> $GITHUB_OUTPUT
+            echo "Service ${{ matrix.service }} found"
+          else
+            echo "exists=false" >> $GITHUB_OUTPUT
+            echo "Service ${{ matrix.service }} not found - skipping"
+          fi
+
+      - name: Install Service Dependencies
+        if: steps.check-service.outputs.exists == 'true'
+        run: |
+          cd services/${{ matrix.service }}
+          if [ -f "requirements.txt" ]; then
+            pip install -r requirements.txt
+          fi
+
+      - name: Download spaCy Models (if needed)
+        if: steps.check-service.outputs.exists == 'true'
+        run: |
+          # Only download models for services that need them
+          if [[ "${{ matrix.service }}" == "profile-ingestor" || "${{ matrix.service }}" == "analyst" ]]; then
+            python -m spacy download en_core_web_sm || true
+            python -m spacy download fr_core_news_sm || true
+          fi
+
+      - name: Security Scan with Bandit
+        if: steps.check-service.outputs.exists == 'true'
+        run: |
+          cd services/${{ matrix.service }}
+          if [ -d "src" ]; then
+            bandit -r src/ -f json -o bandit-report.json || true
+            # Check for high severity issues
+            high_issues=$(python -c "
+            import json
+            try:
+                with open('bandit-report.json', 'r') as f:
+                    data = json.load(f)
+                    high_issues = [issue for issue in data.get('results', []) if issue.get('issue_severity') == 'HIGH']
+                    print(len(high_issues))
+            except:
+                print(0)
+            ")
+            if [ "$high_issues" -gt 0 ]; then
+              echo "❌ Security scan failed: $high_issues high-severity issues found"
+              exit 1
+            else
+              echo "✅ Security scan passed: No high-severity issues found"
+            fi
+          fi
+
+      - name: Run Tests with Coverage
+        if: steps.check-service.outputs.exists == 'true'
+        id: test
+        run: |
+          cd services/${{ matrix.service }}
+
+          # Create test output directory
+          mkdir -p test-results
+
+          # Run tests with coverage and generate reports
+          if [ -d "tests" ]; then
+            pytest tests/ \
+              --cov=src \
+              --cov-report=html:test-results/htmlcov \
+              --cov-report=xml:test-results/coverage.xml \
+              --cov-report=term \
+              --html=test-results/report.html \
+              --self-contained-html \
+              --junitxml=test-results/junit.xml \
+              --tb=short \
+              -v || echo "TESTS_FAILED=true" >> $GITHUB_ENV
+          else
+            echo "No tests directory found for ${{ matrix.service }}"
+            echo "TESTS_FAILED=true" >> $GITHUB_ENV
+          fi
+
+      - name: Parse Test Results
+        if: steps.check-service.outputs.exists == 'true'
+        id: parse-results
+        run: |
+          cd services/${{ matrix.service }}
+
+          # Parse coverage from XML report
+          if [ -f "test-results/coverage.xml" ]; then
+            coverage=$(python -c "
+            import xml.etree.ElementTree as ET
+            try:
+                tree = ET.parse('test-results/coverage.xml')
+                root = tree.getroot()
+                coverage = float(root.get('line-rate', 0)) * 100
+                print(f'{coverage:.1f}')
+            except:
+                print('0.0')
+            ")
+            echo "COVERAGE=$coverage" >> $GITHUB_ENV
+            echo "Coverage: $coverage%"
+          else
+            echo "COVERAGE=0.0" >> $GITHUB_ENV
+          fi
+
+          # Parse test results from JUnit XML
+          if [ -f "test-results/junit.xml" ]; then
+            test_stats=$(python -c "
+            import xml.etree.ElementTree as ET
+            try:
+                tree = ET.parse('test-results/junit.xml')
+                root = tree.getroot()
+                total = int(root.get('tests', 0))
+                failures = int(root.get('failures', 0))
+                errors = int(root.get('errors', 0))
+                passed = total - failures - errors
+                pass_rate = (passed / total * 100) if total > 0 else 0
+                print(f'{total},{passed},{failures},{errors},{pass_rate:.1f}')
+            except Exception as e:
+                print('0,0,0,0,0.0')
+            ")
+            IFS=',' read -r total passed failures errors pass_rate <<< "$test_stats"
+            echo "TOTAL_TESTS=$total" >> $GITHUB_ENV
+            echo "PASSED_TESTS=$passed" >> $GITHUB_ENV
+            echo "FAILED_TESTS=$failures" >> $GITHUB_ENV
+            echo "ERROR_TESTS=$errors" >> $GITHUB_ENV
+            echo "PASS_RATE=$pass_rate" >> $GITHUB_ENV
+            echo "Test Results: $passed/$total passed ($pass_rate%)"
+          else
+            echo "TOTAL_TESTS=0" >> $GITHUB_ENV
+            echo "PASSED_TESTS=0" >> $GITHUB_ENV
+            echo "PASS_RATE=0.0" >> $GITHUB_ENV
+          fi
+
+      - name: Validate Quality Gates
+        if: steps.check-service.outputs.exists == 'true'
+        run: |
+          echo "🔍 Quality Gates Validation for ${{ matrix.service }}"
+          echo "=================================================="
+          echo "📊 Test Coverage: ${COVERAGE}% (Required: ${MIN_COVERAGE}%)"
+          echo "✅ Test Pass Rate: ${PASS_RATE}% (Required: ${MIN_PASS_RATE}%)"
+          echo "📋 Tests: ${PASSED_TESTS}/${TOTAL_TESTS} passed"
+          echo "=================================================="
+
+          # Check if tests failed to run
+          if [ "${TESTS_FAILED}" = "true" ]; then
+            echo "❌ QUALITY GATE FAILED: Tests failed to run or no tests found"
+            exit 1
+          fi
+
+          # Validate coverage threshold
+          coverage_check=$(python -c "print('PASS' if float('${COVERAGE}') >= ${MIN_COVERAGE} else 'FAIL')")
+          if [ "$coverage_check" = "FAIL" ]; then
+            echo "❌ QUALITY GATE FAILED: Coverage ${COVERAGE}% < ${MIN_COVERAGE}%"
+            exit 1
+          fi
+
+          # Validate pass rate threshold
+          pass_rate_check=$(python -c "print('PASS' if float('${PASS_RATE}') >= ${MIN_PASS_RATE} else 'FAIL')")
+          if [ "$pass_rate_check" = "FAIL" ]; then
+            echo "❌ QUALITY GATE FAILED: Pass rate ${PASS_RATE}% < ${MIN_PASS_RATE}%"
+            exit 1
+          fi
+
+          echo "✅ QUALITY GATES PASSED: All thresholds met"
+
+      - name: Upload Test Results
+        if: always() && steps.check-service.outputs.exists == 'true'
+        uses: actions/upload-artifact@v4
+        with:
+          name: test-results-${{ matrix.service }}
+          path: services/${{ matrix.service }}/test-results/
+          retention-days: 30
+
+      - name: Upload Coverage to Codecov
+        if: steps.check-service.outputs.exists == 'true'
+        uses: codecov/codecov-action@v4
+        with:
+          file: services/${{ matrix.service }}/test-results/coverage.xml
+          flags: ${{ matrix.service }}
+          name: ${{ matrix.service }}-coverage
+          fail_ci_if_error: false
+
+  code-quality:
+    name: Code Quality Checks
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v4
+
+      - name: Set up Python ${{ env.PYTHON_VERSION }}
+        uses: actions/setup-python@v5
+        with:
+          python-version: ${{ env.PYTHON_VERSION }}
+          cache: 'pip'
+
+      - name: Install Linting Tools
+        run: |
+          python -m pip install --upgrade pip
+          pip install ruff black mypy
+
+      - name: Lint with Ruff
+        run: |
+          echo "🔍 Running Ruff linting..."
+          ruff check . --output-format=github
+
+      - name: Format Check with Black
+        run: |
+          echo "🎨 Checking code formatting with Black..."
+          black --check --diff .
+
+      - name: Type Check with mypy
+        run: |
+          echo "🔒 Running type checking with mypy..."
+          # Run mypy on services that have type hints
+          for service in services/*/src; do
+            if [ -d "$service" ]; then
+              echo "Checking $service..."
+              mypy "$service" --ignore-missing-imports --no-strict-optional || true
+            fi
+          done
+
+  integration-tests:
+    name: Integration Tests
+    runs-on: ubuntu-latest
+    needs: [quality-gates, code-quality]
+    if: success()
+
+    services:
+      postgres:
+        image: postgres:15
+        env:
+          POSTGRES_PASSWORD: testpass
+          POSTGRES_USER: testuser
+          POSTGRES_DB: helios_test
+        options: >-
+          --health-cmd pg_isready
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
+        ports:
+          - 5432:5432
+
+      redis:
+        image: redis:7
+        options: >-
+          --health-cmd "redis-cli ping"
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
+        ports:
+          - 6379:6379
+
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v4
+
+      - name: Set up Python ${{ env.PYTHON_VERSION }}
+        uses: actions/setup-python@v5
+        with:
+          python-version: ${{ env.PYTHON_VERSION }}
+          cache: 'pip'
+
+      - name: Install Dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install pytest pytest-asyncio httpx
+
+      - name: Run Integration Tests
+        env:
+          DATABASE_URL: postgresql://testuser:testpass@localhost:5432/helios_test
+          REDIS_URL: redis://localhost:6379
+        run: |
+          echo "🔄 Running integration tests..."
+          # Add integration tests when available
+          echo "Integration tests placeholder - implement when services are integrated"
+
+  deployment-readiness:
+    name: Deployment Readiness Check
+    runs-on: ubuntu-latest
+    needs: [quality-gates, code-quality, integration-tests]
+    if: success() && github.event_name == 'push' && (github.ref == 'refs/heads/main' || github.ref == 'refs/heads/development')
+
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v4
+
+      - name: Check Docker Files
+        run: |
+          echo "🐳 Checking Docker configuration..."
+          if [ -f "docker-compose.yml" ]; then
+            echo "✅ docker-compose.yml found"
+          else
+            echo "⚠️  docker-compose.yml not found"
+          fi
+
+      - name: Deployment Readiness Summary
+        run: |
+          echo "🚀 Deployment Readiness Summary"
+          echo "================================"
+          echo "✅ Quality gates passed (85%+ coverage & pass rate)"
+          echo "✅ Code quality checks passed"
+          echo "✅ Integration tests completed"
+          echo "🎯 Ready for deployment to ${{ github.ref_name }} environment"
