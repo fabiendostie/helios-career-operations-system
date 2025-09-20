@@ -95,3 +95,10 @@ temp/
 /models/saved/
 *.pkl
 *.joblib
+
+# AI Models (large files)
+/services/strategist/models/
+/services/*/models/
+*.bin
+*.safetensors
+*.onnx
