@@ -1,11 +1,16 @@
 """Tests for version control functionality."""
 
-import pytest
 from datetime import datetime
-from unittest.mock import Mock, patch
 
+import pytest
 from src.core.version_control import VersionController
-from src.models.version_control import Version, VersionHistory, ChangeLog, DiffOperation, TextDiff
+from src.models.version_control import (
+    ChangeLog,
+    DiffOperation,
+    TextDiff,
+    Version,
+    VersionHistory,
+)
 
 
 class TestVersionController:
@@ -24,9 +29,9 @@ class TestVersionController:
     def test_controller_initialization(self, controller):
         """Test that version controller initializes correctly."""
         assert controller is not None
-        assert hasattr(controller, 'create_version')
-        assert hasattr(controller, 'get_version_history')
-        assert hasattr(controller, 'compare_versions')
+        assert hasattr(controller, "create_version")
+        assert hasattr(controller, "get_version_history")
+        assert hasattr(controller, "compare_versions")
 
     def test_create_initial_version(self, controller, sample_session_id):
         """Test creating the initial version."""
@@ -36,7 +41,7 @@ class TestVersionController:
             session_id=sample_session_id,
             text=text,
             edit_type="initial",
-            comment="Initial version"
+            comment="Initial version",
         )
 
         assert isinstance(version, Version)
@@ -52,9 +57,7 @@ class TestVersionController:
         # Create initial version
         initial_text = "This is the initial text."
         version1 = controller.create_version(
-            session_id=sample_session_id,
-            text=initial_text,
-            edit_type="initial"
+            session_id=sample_session_id, text=initial_text, edit_type="initial"
         )
 
         # Create second version
@@ -63,7 +66,7 @@ class TestVersionController:
             session_id=sample_session_id,
             text=edited_text,
             edit_type="grammar",
-            comment="Grammar corrections"
+            comment="Grammar corrections",
         )
 
         assert version2.version_number == 2
@@ -74,18 +77,11 @@ class TestVersionController:
     def test_get_version_history(self, controller, sample_session_id):
         """Test retrieving version history."""
         # Create multiple versions
-        texts = [
-            "Initial text.",
-            "First edit.",
-            "Second edit.",
-            "Final edit."
-        ]
+        texts = ["Initial text.", "First edit.", "Second edit.", "Final edit."]
 
         for i, text in enumerate(texts):
             controller.create_version(
-                session_id=sample_session_id,
-                text=text,
-                edit_type=f"edit_{i}"
+                session_id=sample_session_id, text=text, edit_type=f"edit_{i}"
             )
 
         history = controller.get_version_history(sample_session_id)
@@ -108,7 +104,7 @@ class TestVersionController:
         comparison = controller.compare_versions(
             session_id=sample_session_id,
             version_a_id=version1.version_id,
-            version_b_id=version2.version_id
+            version_b_id=version2.version_id,
         )
 
         assert comparison.version_a_id == version1.version_id
@@ -153,9 +149,7 @@ class TestVersionController:
 
         for i in range(max_versions + 3):
             controller.create_version(
-                session_id=sample_session_id,
-                text=f"Version {i} text",
-                edit_type="edit"
+                session_id=sample_session_id, text=f"Version {i} text", edit_type="edit"
             )
 
         history = controller.get_version_history(sample_session_id)
@@ -173,7 +167,7 @@ class TestVersionController:
             session_id=sample_session_id,
             version_from=version1.version_number,
             version_to=version2.version_number,
-            editor_type="grammar_checker"
+            editor_type="grammar_checker",
         )
 
         assert isinstance(change_log, ChangeLog)
@@ -188,9 +182,7 @@ class TestVersionController:
         # Create multiple versions
         for i in range(3):
             controller.create_version(
-                session_id=sample_session_id,
-                text=f"Version {i + 1}",
-                edit_type="edit"
+                session_id=sample_session_id, text=f"Version {i + 1}", edit_type="edit"
             )
 
         current = controller.get_current_version(sample_session_id)
@@ -211,7 +203,7 @@ class TestVersionController:
         reverted = controller.revert_to_version(
             session_id=sample_session_id,
             target_version_id=versions[1].version_id,
-            comment="Reverted to version 2"
+            comment="Reverted to version 2",
         )
 
         assert reverted.text == "Version 2"
@@ -227,7 +219,7 @@ class TestVersionController:
             text=text,
             edit_type="grammar",
             comment="Test comment",
-            author="test_user"
+            author="test_user",
         )
 
         assert version.word_count == len(text.split())
@@ -241,7 +233,7 @@ class TestVersionController:
         """Test similarity score calculation."""
         text1 = "The quick brown fox"
         text2 = "The quick brown fox"  # Identical
-        text3 = "A slow red cat"       # Very different
+        text3 = "A slow red cat"  # Very different
 
         # Identical texts should have similarity of 1.0
         sim1 = controller.calculate_similarity(text1, text2)
@@ -271,7 +263,6 @@ class TestVersionController:
         """Test handling of concurrent version creation."""
         # This test simulates race conditions
         import threading
-        import time
 
         results = []
 
@@ -280,7 +271,7 @@ class TestVersionController:
                 version = controller.create_version(
                     session_id=sample_session_id,
                     text=f"Worker {worker_id} text",
-                    edit_type="concurrent"
+                    edit_type="concurrent",
                 )
                 results.append(version)
             except Exception as e:

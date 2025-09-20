@@ -2,19 +2,22 @@
 
 import logging
 import time
-from typing import List, Optional
 
-from fastapi import APIRouter, HTTPException, Depends
+from fastapi import APIRouter, HTTPException
 from pydantic import BaseModel
 
 from ..core.text_optimizer import TextOptimizer
 from ..core.version_control import VersionController
 from ..models.edit_request import (
-    EditRequest, EditResponse, EditBatch, EditBatchResponse,
-    EditSuggestion, EditType
+    EditBatch,
+    EditBatchResponse,
+    EditRequest,
+    EditResponse,
+    EditSuggestion,
+    EditType,
 )
 from ..models.text_analysis import TextAnalysis
-from ..models.version_control import VersionHistory, VersionComparison
+from ..models.version_control import VersionComparison, VersionHistory
 
 logger = logging.getLogger(__name__)
 
@@ -27,42 +30,48 @@ version_controller = VersionController()
 
 class AnalyzeRequest(BaseModel):
     """Request for text analysis."""
+
     text: str
     language: str = "en"
 
 
 class SuggestionRequest(BaseModel):
     """Request for edit suggestions without applying them."""
+
     session_id: str
     text: str
     edit_type: EditType = EditType.COMPREHENSIVE
-    industry: Optional[str] = None
-    role: Optional[str] = None
+    industry: str | None = None
+    role: str | None = None
     language: str = "en"
-    tone: Optional[str] = None
+    tone: str | None = None
 
 
 class SuggestionResponse(BaseModel):
     """Response with suggestions and analysis."""
-    suggestions: List[EditSuggestion]
+
+    suggestions: list[EditSuggestion]
     analysis: TextAnalysis
 
 
 class ApplySuggestionsRequest(BaseModel):
     """Request to apply specific suggestions."""
+
     session_id: str
     text: str
-    suggestion_ids: List[int]
+    suggestion_ids: list[int]
 
 
 class RevertRequest(BaseModel):
     """Request to revert to a previous version."""
+
     target_version_id: str
-    comment: Optional[str] = None
+    comment: str | None = None
 
 
 class MetricsResponse(BaseModel):
     """Service metrics response."""
+
     total_edits: int
     average_processing_time: float
     success_rate: float
@@ -74,7 +83,7 @@ _metrics = {
     "total_edits": 0,
     "total_processing_time": 0.0,
     "successful_edits": 0,
-    "failed_edits": 0
+    "failed_edits": 0,
 }
 
 
@@ -127,7 +136,7 @@ async def edit_batch(request: EditBatch) -> EditBatchResponse:
                     text=text,
                     edit_type=request.edit_type,
                     industry=request.industry,
-                    role=request.role
+                    role=request.role,
                 )
 
                 result = text_optimizer.optimize_text(edit_request)
@@ -138,13 +147,15 @@ async def edit_batch(request: EditBatch) -> EditBatchResponse:
                 logger.error(f"Error editing text {i}: {e}")
                 error_count += 1
                 # Add error result
-                results.append(EditResponse(
-                    session_id=f"{request.session_id}-{i}",
-                    original_text=text,
-                    edited_text=text,  # Return original on error
-                    suggestions=[],
-                    processing_time=0.0
-                ))
+                results.append(
+                    EditResponse(
+                        session_id=f"{request.session_id}-{i}",
+                        original_text=text,
+                        edited_text=text,  # Return original on error
+                        suggestions=[],
+                        processing_time=0.0,
+                    )
+                )
 
         total_processing_time = time.time() - start_time
 
@@ -153,7 +164,7 @@ async def edit_batch(request: EditBatch) -> EditBatchResponse:
             results=results,
             total_processing_time=total_processing_time,
             success_count=success_count,
-            error_count=error_count
+            error_count=error_count,
         )
 
     except Exception as e:
@@ -197,7 +208,7 @@ async def get_suggestions(request: SuggestionRequest) -> SuggestionResponse:
             role=request.role,
             language=request.language,
             tone=request.tone,
-            track_changes=False  # Don't track changes for suggestions
+            track_changes=False,  # Don't track changes for suggestions
         )
 
         # Get optimization result (but don't apply changes)
@@ -206,10 +217,7 @@ async def get_suggestions(request: SuggestionRequest) -> SuggestionResponse:
         # Get analysis
         analysis = text_optimizer.analyze_text(request.text, request.language)
 
-        return SuggestionResponse(
-            suggestions=result.suggestions,
-            analysis=analysis
-        )
+        return SuggestionResponse(suggestions=result.suggestions, analysis=analysis)
 
     except ValueError as e:
         logger.error(f"Validation error in get_suggestions: {e}")
@@ -232,7 +240,7 @@ async def apply_suggestions(request: ApplySuggestionsRequest) -> EditResponse:
         edit_request = EditRequest(
             session_id=request.session_id,
             text=request.text,
-            edit_type=EditType.COMPREHENSIVE
+            edit_type=EditType.COMPREHENSIVE,
         )
 
         result = text_optimizer.optimize_text(edit_request)
@@ -240,7 +248,8 @@ async def apply_suggestions(request: ApplySuggestionsRequest) -> EditResponse:
         # Filter suggestions based on suggestion_ids
         if request.suggestion_ids:
             applied_suggestions = [
-                result.suggestions[i] for i in request.suggestion_ids
+                result.suggestions[i]
+                for i in request.suggestion_ids
                 if i < len(result.suggestions)
             ]
             result.suggestions = applied_suggestions
@@ -269,10 +278,14 @@ async def get_version_history(session_id: str) -> VersionHistory:
 
 
 @router.get("/versions/{session_id}/compare", response_model=VersionComparison)
-async def compare_versions(session_id: str, version_a: str, version_b: str) -> VersionComparison:
+async def compare_versions(
+    session_id: str, version_a: str, version_b: str
+) -> VersionComparison:
     """Compare two versions."""
     try:
-        comparison = version_controller.compare_versions(session_id, version_a, version_b)
+        comparison = version_controller.compare_versions(
+            session_id, version_a, version_b
+        )
         return comparison
 
     except ValueError as e:
@@ -300,7 +313,7 @@ async def revert_to_version(session_id: str, request: RevertRequest) -> EditResp
             suggestions=[],
             version_id=reverted_version.version_id,
             version_number=reverted_version.version_number,
-            processing_time=0.0
+            processing_time=0.0,
         )
 
     except ValueError as e:
@@ -317,18 +330,14 @@ async def get_metrics() -> MetricsResponse:
     """Get service metrics."""
     try:
         total_requests = _metrics["total_edits"]
-        avg_processing_time = (
-            _metrics["total_processing_time"] / max(1, total_requests)
-        )
-        success_rate = (
-            _metrics["successful_edits"] / max(1, total_requests)
-        ) * 100
+        avg_processing_time = _metrics["total_processing_time"] / max(1, total_requests)
+        success_rate = (_metrics["successful_edits"] / max(1, total_requests)) * 100
 
         return MetricsResponse(
             total_edits=_metrics["total_edits"],
             average_processing_time=avg_processing_time,
             success_rate=success_rate,
-            active_sessions=len(version_controller.versions)
+            active_sessions=len(version_controller.versions),
         )
 
     except Exception as e:

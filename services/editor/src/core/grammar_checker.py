@@ -1,15 +1,14 @@
 """Grammar checking functionality using LanguageTool."""
 
 import logging
-from typing import List, Optional
 
 try:
     import language_tool_python
 except ImportError:
     language_tool_python = None
 
-from .config import settings
 from ..models.text_analysis import GrammarIssue, IssueSeverity
+from .config import settings
 
 logger = logging.getLogger(__name__)
 
@@ -25,23 +24,25 @@ class GrammarChecker:
     def _initialize_tools(self):
         """Initialize LanguageTool instances for different languages."""
         if not language_tool_python:
-            logger.warning("LanguageTool not available. Grammar checking will be limited.")
+            logger.warning(
+                "LanguageTool not available. Grammar checking will be limited."
+            )
             return
 
         try:
             # Initialize English tool
-            self.tools['en'] = language_tool_python.LanguageTool('en-US')
+            self.tools["en"] = language_tool_python.LanguageTool("en-US")
             logger.info("Initialized English LanguageTool")
 
             # Initialize French tool if needed
             if settings.SPACY_MODEL_FR:
-                self.tools['fr'] = language_tool_python.LanguageTool('fr')
+                self.tools["fr"] = language_tool_python.LanguageTool("fr")
                 logger.info("Initialized French LanguageTool")
 
         except Exception as e:
             logger.error(f"Failed to initialize LanguageTool: {e}")
 
-    def check_grammar(self, text: str, language: str = "en") -> List[GrammarIssue]:
+    def check_grammar(self, text: str, language: str = "en") -> list[GrammarIssue]:
         """Check grammar in the given text."""
         if not text or text.strip() == "":
             return []
@@ -56,7 +57,7 @@ class GrammarChecker:
         # Fallback to basic checks
         return self._basic_grammar_check(text)
 
-    def _check_with_languagetool(self, text: str, language: str) -> List[GrammarIssue]:
+    def _check_with_languagetool(self, text: str, language: str) -> list[GrammarIssue]:
         """Check grammar using LanguageTool."""
         try:
             tool = self.tools[language]
@@ -73,7 +74,7 @@ class GrammarChecker:
                     rule_id=match.ruleId,
                     severity=severity,
                     suggestions=match.replacements[:3],  # Limit to top 3 suggestions
-                    category=getattr(match, 'category', 'Grammar')
+                    category=getattr(match, "category", "Grammar"),
                 )
                 issues.append(issue)
 
@@ -83,7 +84,7 @@ class GrammarChecker:
             logger.error(f"Error checking grammar with LanguageTool: {e}")
             return self._basic_grammar_check(text)
 
-    def _basic_grammar_check(self, text: str) -> List[GrammarIssue]:
+    def _basic_grammar_check(self, text: str) -> list[GrammarIssue]:
         """Basic grammar checking without external tools."""
         issues = []
 
@@ -94,14 +95,14 @@ class GrammarChecker:
 
         return issues
 
-    def _check_subject_verb_agreement(self, text: str) -> List[GrammarIssue]:
+    def _check_subject_verb_agreement(self, text: str) -> list[GrammarIssue]:
         """Check for basic subject-verb agreement issues."""
         import re
 
         issues = []
 
         # Pattern for "This are" - should be "This is"
-        pattern = r'\bThis\s+are\b'
+        pattern = r"\bThis\s+are\b"
         for match in re.finditer(pattern, text, re.IGNORECASE):
             issue = GrammarIssue(
                 start_pos=match.start(),
@@ -110,12 +111,12 @@ class GrammarChecker:
                 rule_id="BASIC_SUBJECT_VERB",
                 severity=IssueSeverity.HIGH,
                 suggestions=["This is"],
-                category="Grammar"
+                category="Grammar",
             )
             issues.append(issue)
 
         # Pattern for "These is" - should be "These are"
-        pattern = r'\bThese\s+is\b'
+        pattern = r"\bThese\s+is\b"
         for match in re.finditer(pattern, text, re.IGNORECASE):
             issue = GrammarIssue(
                 start_pos=match.start(),
@@ -124,13 +125,13 @@ class GrammarChecker:
                 rule_id="BASIC_SUBJECT_VERB",
                 severity=IssueSeverity.HIGH,
                 suggestions=["These are"],
-                category="Grammar"
+                category="Grammar",
             )
             issues.append(issue)
 
         return issues
 
-    def _check_common_misspellings(self, text: str) -> List[GrammarIssue]:
+    def _check_common_misspellings(self, text: str) -> list[GrammarIssue]:
         """Check for common misspellings."""
         import re
 
@@ -138,14 +139,14 @@ class GrammarChecker:
 
         # Common misspellings
         misspellings = {
-            r'\bgrammer\b': ("grammar", "Incorrect spelling"),
-            r'\bspeling\b': ("spelling", "Incorrect spelling"),
-            r'\beror\b': ("error", "Incorrect spelling"),
-            r'\beroor\b': ("error", "Incorrect spelling"),
-            r'\berors\b': ("errors", "Incorrect spelling"),
-            r'\bmispelled\b': ("misspelled", "Incorrect spelling"),
-            r'\brecieve\b': ("receive", "Incorrect spelling"),
-            r'\bacheive\b': ("achieve", "Incorrect spelling"),
+            r"\bgrammer\b": ("grammar", "Incorrect spelling"),
+            r"\bspeling\b": ("spelling", "Incorrect spelling"),
+            r"\beror\b": ("error", "Incorrect spelling"),
+            r"\beroor\b": ("error", "Incorrect spelling"),
+            r"\berors\b": ("errors", "Incorrect spelling"),
+            r"\bmispelled\b": ("misspelled", "Incorrect spelling"),
+            r"\brecieve\b": ("receive", "Incorrect spelling"),
+            r"\bacheive\b": ("achieve", "Incorrect spelling"),
         }
 
         for pattern, (correction, message) in misspellings.items():
@@ -166,13 +167,13 @@ class GrammarChecker:
                     rule_id="BASIC_SPELLING",
                     severity=IssueSeverity.MEDIUM,
                     suggestions=[suggestion],
-                    category="Spelling"
+                    category="Spelling",
                 )
                 issues.append(issue)
 
         return issues
 
-    def _check_apostrophes(self, text: str) -> List[GrammarIssue]:
+    def _check_apostrophes(self, text: str) -> list[GrammarIssue]:
         """Check for incorrect apostrophe usage."""
         import re
 
@@ -181,15 +182,15 @@ class GrammarChecker:
         # Check for incorrect possessive apostrophes
         # Pattern for "word's" where it should be "words" (plural, not possessive)
         incorrect_possessives = [
-            r'\bmistake\'s\b',  # "mistake's" in "many mistake's"
-            r'\bsentence\'s\b',  # Similar pattern
+            r"\bmistake\'s\b",  # "mistake's" in "many mistake's"
+            r"\bsentence\'s\b",  # Similar pattern
         ]
 
         for pattern in incorrect_possessives:
             for match in re.finditer(pattern, text, re.IGNORECASE):
                 # Remove apostrophe and 's'
                 word = match.group()[:-2]
-                suggestion = word + 's' if not word.endswith('s') else word
+                suggestion = word + "s" if not word.endswith("s") else word
 
                 issue = GrammarIssue(
                     start_pos=match.start(),
@@ -198,7 +199,7 @@ class GrammarChecker:
                     rule_id="BASIC_APOSTROPHE",
                     severity=IssueSeverity.MEDIUM,
                     suggestions=[suggestion],
-                    category="Punctuation"
+                    category="Punctuation",
                 )
                 issues.append(issue)
 
@@ -207,29 +208,31 @@ class GrammarChecker:
     def _determine_severity(self, match) -> IssueSeverity:
         """Determine severity of a grammar issue."""
         # Map LanguageTool categories to severity levels
-        category = getattr(match, 'category', '').lower()
-        rule_id = getattr(match, 'ruleId', '').lower()
+        category = getattr(match, "category", "").lower()
+        rule_id = getattr(match, "ruleId", "").lower()
 
-        if 'spelling' in category or 'typo' in rule_id:
+        if "spelling" in category or "typo" in rule_id:
             return IssueSeverity.HIGH
 
-        if 'grammar' in category:
+        if "grammar" in category:
             return IssueSeverity.HIGH
 
-        if 'style' in category or 'redundancy' in category:
+        if "style" in category or "redundancy" in category:
             return IssueSeverity.MEDIUM
 
-        if 'punctuation' in category:
+        if "punctuation" in category:
             return IssueSeverity.MEDIUM
 
         # Default to medium severity
         return IssueSeverity.MEDIUM
 
-    def suggest_corrections(self, text: str, issue: GrammarIssue) -> List[str]:
+    def suggest_corrections(self, text: str, issue: GrammarIssue) -> list[str]:
         """Get correction suggestions for a specific issue."""
         return issue.suggestions
 
-    def check_grammar_batch(self, texts: List[str], language: str = "en") -> List[List[GrammarIssue]]:
+    def check_grammar_batch(
+        self, texts: list[str], language: str = "en"
+    ) -> list[list[GrammarIssue]]:
         """Check grammar for multiple texts in batch."""
         results = []
         for text in texts:
@@ -239,10 +242,10 @@ class GrammarChecker:
 
     def __del__(self):
         """Clean up LanguageTool instances."""
-        if hasattr(self, 'tools'):
+        if hasattr(self, "tools"):
             for tool in self.tools.values():
                 try:
-                    if hasattr(tool, 'close'):
+                    if hasattr(tool, "close"):
                         tool.close()
                 except Exception:
                     pass  # Ignore cleanup errors

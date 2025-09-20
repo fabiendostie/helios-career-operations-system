@@ -2,7 +2,7 @@
 
 import logging
 from datetime import datetime
-from typing import Dict, Any
+from typing import Any
 
 from fastapi import APIRouter, HTTPException
 
@@ -12,14 +12,14 @@ router = APIRouter()
 
 
 @router.get("/")
-async def health_check() -> Dict[str, Any]:
+async def health_check() -> dict[str, Any]:
     """Health check endpoint."""
     try:
         return {
             "status": "healthy",
             "service": "editor",
             "version": "1.0.0",
-            "timestamp": datetime.now().isoformat()
+            "timestamp": datetime.now().isoformat(),
         }
     except Exception as e:
         logger.error(f"Health check failed: {e}")
@@ -27,7 +27,7 @@ async def health_check() -> Dict[str, Any]:
 
 
 @router.get("/detailed")
-async def detailed_health_check() -> Dict[str, Any]:
+async def detailed_health_check() -> dict[str, Any]:
     """Detailed health check with component status."""
     try:
         # Check individual components
@@ -36,7 +36,7 @@ async def detailed_health_check() -> Dict[str, Any]:
             "grammar_checker": "healthy",
             "style_analyzer": "healthy",
             "content_enhancer": "healthy",
-            "version_control": "healthy"
+            "version_control": "healthy",
         }
 
         # TODO: Add actual component health checks
@@ -49,7 +49,7 @@ async def detailed_health_check() -> Dict[str, Any]:
             "service": "editor",
             "version": "1.0.0",
             "timestamp": datetime.now().isoformat(),
-            "components": components
+            "components": components,
         }
 
     except Exception as e:

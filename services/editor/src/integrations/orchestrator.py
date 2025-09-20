@@ -1,7 +1,8 @@
 """Integration with the Helios Orchestrator service."""
 
 import logging
-from typing import Dict, Any, Optional
+from typing import Any
+
 import httpx
 
 from ..core.config import settings
@@ -36,16 +37,16 @@ class OrchestratorClient:
                             "version_history": "/versions/{session_id}",
                             "compare_versions": "/versions/{session_id}/compare",
                             "revert": "/versions/{session_id}/revert",
-                            "health": "/health"
+                            "health": "/health",
                         },
                         "capabilities": [
                             "grammar_checking",
                             "style_analysis",
                             "content_enhancement",
                             "version_control",
-                            "collaborative_editing"
-                        ]
-                    }
+                            "collaborative_editing",
+                        ],
+                    },
                 )
                 response.raise_for_status()
                 logger.info("Successfully registered with orchestrator")
@@ -55,22 +56,23 @@ class OrchestratorClient:
             logger.error(f"Failed to register with orchestrator: {e}")
             return False
 
-    async def send_status_update(self, status: str, details: Optional[Dict[str, Any]] = None) -> bool:
+    async def send_status_update(
+        self, status: str, details: dict[str, Any] | None = None
+    ) -> bool:
         """Send status update to orchestrator."""
         try:
             async with httpx.AsyncClient(timeout=self.timeout) as client:
                 payload = {
                     "service_name": "editor",
                     "status": status,
-                    "timestamp": details.get("timestamp") if details else None
+                    "timestamp": details.get("timestamp") if details else None,
                 }
 
                 if details:
                     payload.update(details)
 
                 response = await client.post(
-                    f"{self.base_url}/services/status",
-                    json=payload
+                    f"{self.base_url}/services/status", json=payload
                 )
                 response.raise_for_status()
                 return True
@@ -79,7 +81,7 @@ class OrchestratorClient:
             logger.error(f"Failed to send status update: {e}")
             return False
 
-    async def get_session_context(self, session_id: str) -> Optional[Dict[str, Any]]:
+    async def get_session_context(self, session_id: str) -> dict[str, Any] | None:
         """Get session context from orchestrator."""
         try:
             async with httpx.AsyncClient(timeout=self.timeout) as client:
@@ -93,7 +95,9 @@ class OrchestratorClient:
             logger.error(f"Failed to get session context: {e}")
             return None
 
-    async def notify_edit_completion(self, session_id: str, edit_summary: Dict[str, Any]) -> bool:
+    async def notify_edit_completion(
+        self, session_id: str, edit_summary: dict[str, Any]
+    ) -> bool:
         """Notify orchestrator of completed edit."""
         try:
             async with httpx.AsyncClient(timeout=self.timeout) as client:
@@ -102,8 +106,8 @@ class OrchestratorClient:
                     json={
                         "event_type": "edit_completed",
                         "service": "editor",
-                        "data": edit_summary
-                    }
+                        "data": edit_summary,
+                    },
                 )
                 response.raise_for_status()
                 return True
@@ -112,7 +116,9 @@ class OrchestratorClient:
             logger.error(f"Failed to notify edit completion: {e}")
             return False
 
-    async def request_ai_assistance(self, request_type: str, context: Dict[str, Any]) -> Optional[Dict[str, Any]]:
+    async def request_ai_assistance(
+        self, request_type: str, context: dict[str, Any]
+    ) -> dict[str, Any] | None:
         """Request AI assistance from orchestrator's LLM client."""
         try:
             async with httpx.AsyncClient(timeout=self.timeout) as client:
@@ -121,8 +127,8 @@ class OrchestratorClient:
                     json={
                         "service": "editor",
                         "request_type": request_type,
-                        "context": context
-                    }
+                        "context": context,
+                    },
                 )
                 response.raise_for_status()
                 return response.json()

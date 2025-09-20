@@ -1,8 +1,8 @@
 """Models package for the Editor service."""
 
 from .edit_request import EditRequest, EditResponse, EditType
-from .text_analysis import TextAnalysis, GrammarIssue, StyleIssue
-from .version_control import Version, ChangeLog, DiffOperation
+from .text_analysis import GrammarIssue, StyleIssue, TextAnalysis
+from .version_control import ChangeLog, DiffOperation, Version
 
 __all__ = [
     "EditRequest",

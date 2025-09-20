@@ -2,7 +2,6 @@
 
 from datetime import datetime
 from enum import Enum
-from typing import Dict, List, Optional
 
 from pydantic import BaseModel, Field
 
@@ -33,11 +32,13 @@ class ChangeLog(BaseModel):
     session_id: str = Field(..., description="Session identifier")
     version_from: int = Field(..., description="Source version number")
     version_to: int = Field(..., description="Target version number")
-    changes: List[TextDiff] = Field(..., description="List of changes")
+    changes: list[TextDiff] = Field(..., description="List of changes")
     change_summary: str = Field(..., description="Summary of changes")
     change_count: int = Field(..., description="Total number of changes")
     editor_type: str = Field(..., description="Type of editor that made changes")
-    timestamp: datetime = Field(default_factory=datetime.now, description="Change timestamp")
+    timestamp: datetime = Field(
+        default_factory=datetime.now, description="Change timestamp"
+    )
 
 
 class Version(BaseModel):
@@ -47,37 +48,47 @@ class Version(BaseModel):
     session_id: str = Field(..., description="Session identifier")
     version_number: int = Field(..., description="Version number")
     text: str = Field(..., description="Text content for this version")
-    comment: Optional[str] = Field(None, description="Version comment")
+    comment: str | None = Field(None, description="Version comment")
 
     # Metadata
     author: str = Field(default="system", description="Author of this version")
     edit_type: str = Field(..., description="Type of edit that created this version")
 
     # Quality metrics
-    quality_score: Optional[float] = Field(None, description="Quality score for this version")
+    quality_score: float | None = Field(
+        None, description="Quality score for this version"
+    )
     word_count: int = Field(..., description="Word count")
     character_count: int = Field(..., description="Character count")
 
     # Timestamps
-    created_at: datetime = Field(default_factory=datetime.now, description="Version creation time")
+    created_at: datetime = Field(
+        default_factory=datetime.now, description="Version creation time"
+    )
 
     # Relationships
-    parent_version_id: Optional[str] = Field(None, description="Parent version ID")
-    is_current: bool = Field(default=True, description="Whether this is the current version")
+    parent_version_id: str | None = Field(None, description="Parent version ID")
+    is_current: bool = Field(
+        default=True, description="Whether this is the current version"
+    )
 
 
 class VersionHistory(BaseModel):
     """Complete version history for a text."""
 
     session_id: str = Field(..., description="Session identifier")
-    versions: List[Version] = Field(..., description="List of versions")
+    versions: list[Version] = Field(..., description="List of versions")
     current_version_id: str = Field(..., description="Current version ID")
     total_versions: int = Field(..., description="Total number of versions")
 
     # Summary statistics
     total_edits: int = Field(default=0, description="Total number of edits")
-    creation_date: datetime = Field(default_factory=datetime.now, description="Initial creation date")
-    last_modified: datetime = Field(default_factory=datetime.now, description="Last modification date")
+    creation_date: datetime = Field(
+        default_factory=datetime.now, description="Initial creation date"
+    )
+    last_modified: datetime = Field(
+        default_factory=datetime.now, description="Last modification date"
+    )
 
 
 class VersionComparison(BaseModel):
@@ -90,7 +101,7 @@ class VersionComparison(BaseModel):
     version_b_number: int = Field(..., description="Second version number")
 
     # Comparison data
-    diff: List[TextDiff] = Field(..., description="Differences between versions")
+    diff: list[TextDiff] = Field(..., description="Differences between versions")
     similarity_score: float = Field(..., ge=0.0, le=1.0, description="Similarity score")
     change_summary: str = Field(..., description="Summary of changes")
 
@@ -100,7 +111,11 @@ class VersionComparison(BaseModel):
     modifications: int = Field(default=0, description="Number of modifications")
 
     # Quality comparison
-    quality_improvement: Optional[float] = Field(None, description="Quality improvement score")
-    readability_change: Optional[float] = Field(None, description="Readability change")
+    quality_improvement: float | None = Field(
+        None, description="Quality improvement score"
+    )
+    readability_change: float | None = Field(None, description="Readability change")
 
-    timestamp: datetime = Field(default_factory=datetime.now, description="Comparison timestamp")
+    timestamp: datetime = Field(
+        default_factory=datetime.now, description="Comparison timestamp"
+    )

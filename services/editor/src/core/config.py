@@ -2,7 +2,6 @@
 
 import logging
 from functools import lru_cache
-from typing import List
 
 from pydantic import Field
 from pydantic_settings import BaseSettings
@@ -17,7 +16,7 @@ class Settings(BaseSettings):
     DEBUG: bool = Field(default=False, description="Debug mode")
 
     # CORS configuration
-    ALLOWED_ORIGINS: List[str] = Field(
+    ALLOWED_ORIGINS: list[str] = Field(
         default=["http://localhost:3000", "http://localhost:8000"],
         description="Allowed CORS origins",
     )
@@ -29,20 +28,34 @@ class Settings(BaseSettings):
 
     # Editor configuration
     EDIT_TIMEOUT: int = Field(default=10, description="Edit timeout in seconds")
-    MAX_TEXT_LENGTH: int = Field(default=50000, description="Maximum text length for editing")
+    MAX_TEXT_LENGTH: int = Field(
+        default=50000, description="Maximum text length for editing"
+    )
 
     # Grammar and style checking
-    GRAMMAR_CHECK_ENABLED: bool = Field(default=True, description="Enable grammar checking")
+    GRAMMAR_CHECK_ENABLED: bool = Field(
+        default=True, description="Enable grammar checking"
+    )
     STYLE_CHECK_ENABLED: bool = Field(default=True, description="Enable style checking")
-    LANGUAGE_TOOL_LANGUAGE: str = Field(default="en-US", description="LanguageTool language")
+    LANGUAGE_TOOL_LANGUAGE: str = Field(
+        default="en-US", description="LanguageTool language"
+    )
 
     # Content enhancement
-    ENHANCEMENT_ENABLED: bool = Field(default=True, description="Enable content enhancement")
-    QUANTIFICATION_ENABLED: bool = Field(default=True, description="Enable achievement quantification")
+    ENHANCEMENT_ENABLED: bool = Field(
+        default=True, description="Enable content enhancement"
+    )
+    QUANTIFICATION_ENABLED: bool = Field(
+        default=True, description="Enable achievement quantification"
+    )
 
     # Version control
-    VERSION_TRACKING_ENABLED: bool = Field(default=True, description="Enable version tracking")
-    MAX_VERSIONS: int = Field(default=10, description="Maximum number of versions to keep")
+    VERSION_TRACKING_ENABLED: bool = Field(
+        default=True, description="Enable version tracking"
+    )
+    MAX_VERSIONS: int = Field(
+        default=10, description="Maximum number of versions to keep"
+    )
 
     # NLP configuration
     SPACY_MODEL_EN: str = Field(
@@ -60,7 +73,7 @@ class Settings(BaseSettings):
         case_sensitive = True
 
 
-@lru_cache()
+@lru_cache
 def get_settings() -> Settings:
     """Get cached settings instance."""
     return Settings()

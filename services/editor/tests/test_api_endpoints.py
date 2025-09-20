@@ -1,11 +1,10 @@
 """Tests for API endpoints."""
 
-import pytest
-from fastapi.testclient import TestClient
 from unittest.mock import Mock, patch
 
+import pytest
+from fastapi.testclient import TestClient
 from src.main import app
-from src.models.edit_request import EditRequest, EditType, EditResponse
 
 
 class TestEditorAPI:
@@ -24,7 +23,7 @@ class TestEditorAPI:
             "text": "This are a test sentence with grammar error.",
             "edit_type": "comprehensive",
             "industry": "technology",
-            "role": "software engineer"
+            "role": "software engineer",
         }
 
     def test_health_check(self, client):
@@ -54,29 +53,27 @@ class TestEditorAPI:
         assert response.status_code == 422
 
         # Invalid edit type
-        response = client.post("/edit", json={
-            "session_id": "test",
-            "text": "test",
-            "edit_type": "invalid_type"
-        })
+        response = client.post(
+            "/edit",
+            json={"session_id": "test", "text": "test", "edit_type": "invalid_type"},
+        )
         assert response.status_code == 422
 
     def test_edit_text_empty_text(self, client):
         """Test editing with empty text."""
-        response = client.post("/edit", json={
-            "session_id": "test",
-            "text": "",
-            "edit_type": "comprehensive"
-        })
+        response = client.post(
+            "/edit",
+            json={"session_id": "test", "text": "", "edit_type": "comprehensive"},
+        )
         assert response.status_code == 400
         assert "Text cannot be empty" in response.json()["detail"]
 
     def test_analyze_text_endpoint(self, client):
         """Test text analysis endpoint."""
-        response = client.post("/analyze", json={
-            "text": "This is a test sentence for analysis.",
-            "language": "en"
-        })
+        response = client.post(
+            "/analyze",
+            json={"text": "This is a test sentence for analysis.", "language": "en"},
+        )
         assert response.status_code == 200
 
         data = response.json()
@@ -90,12 +87,8 @@ class TestEditorAPI:
         """Test batch editing endpoint."""
         request_data = {
             "session_id": "test-batch",
-            "texts": [
-                "This are wrong.",
-                "This is correct.",
-                "Another eror here."
-            ],
-            "edit_type": "grammar"
+            "texts": ["This are wrong.", "This is correct.", "Another eror here."],
+            "edit_type": "grammar",
         }
 
         response = client.post("/edit/batch", json=request_data)
@@ -113,7 +106,7 @@ class TestEditorAPI:
         # First, create some versions by editing text
         edit_requests = [
             {"session_id": session_id, "text": "Initial text.", "edit_type": "initial"},
-            {"session_id": session_id, "text": "Edited text.", "edit_type": "grammar"}
+            {"session_id": session_id, "text": "Edited text.", "edit_type": "grammar"},
         ]
 
         for request in edit_requests:
@@ -133,8 +126,16 @@ class TestEditorAPI:
         session_id = "test-compare-session"
 
         # Create two versions
-        edit1 = {"session_id": session_id, "text": "Original text.", "edit_type": "initial"}
-        edit2 = {"session_id": session_id, "text": "Modified text.", "edit_type": "edit"}
+        edit1 = {
+            "session_id": session_id,
+            "text": "Original text.",
+            "edit_type": "initial",
+        }
+        edit2 = {
+            "session_id": session_id,
+            "text": "Modified text.",
+            "edit_type": "edit",
+        }
 
         response1 = client.post("/edit", json=edit1)
         response2 = client.post("/edit", json=edit2)
@@ -143,7 +144,9 @@ class TestEditorAPI:
         version2_id = response2.json()["version_id"]
 
         # Compare versions
-        response = client.get(f"/versions/{session_id}/compare?version_a={version1_id}&version_b={version2_id}")
+        response = client.get(
+            f"/versions/{session_id}/compare?version_a={version1_id}&version_b={version2_id}"
+        )
         assert response.status_code == 200
 
         data = response.json()
@@ -159,7 +162,7 @@ class TestEditorAPI:
         edits = [
             {"session_id": session_id, "text": "Version 1", "edit_type": "initial"},
             {"session_id": session_id, "text": "Version 2", "edit_type": "edit"},
-            {"session_id": session_id, "text": "Version 3", "edit_type": "edit"}
+            {"session_id": session_id, "text": "Version 3", "edit_type": "edit"},
         ]
 
         responses = []
@@ -170,10 +173,10 @@ class TestEditorAPI:
         version2_id = responses[1].json()["version_id"]
 
         # Revert to version 2
-        response = client.post(f"/versions/{session_id}/revert", json={
-            "target_version_id": version2_id,
-            "comment": "Reverted to version 2"
-        })
+        response = client.post(
+            f"/versions/{session_id}/revert",
+            json={"target_version_id": version2_id, "comment": "Reverted to version 2"},
+        )
         assert response.status_code == 200
 
         data = response.json()
@@ -195,17 +198,17 @@ class TestEditorAPI:
         request_data = {
             "session_id": "test-apply",
             "text": "This are wrong and has erors.",
-            "edit_type": "grammar"
+            "edit_type": "grammar",
         }
 
-        suggestions_response = client.post("/edit/suggestions", json=request_data)
-        suggestions = suggestions_response.json()["suggestions"]
+        # Get suggestions first (but don't use them in this test)
+        client.post("/edit/suggestions", json=request_data)
 
         # Apply specific suggestions
         apply_request = {
             "session_id": "test-apply",
             "text": request_data["text"],
-            "suggestion_ids": [0, 1]  # Apply first two suggestions
+            "suggestion_ids": [0, 1],  # Apply first two suggestions
         }
 
         response = client.post("/edit/apply", json=apply_request)
@@ -222,7 +225,7 @@ class TestEditorAPI:
             "text": "I worked on computer stuff and helped users.",
             "edit_type": "content_enhancement",
             "industry": "technology",
-            "role": "software developer"
+            "role": "software developer",
         }
 
         response = client.post("/edit", json=request_data)
@@ -231,7 +234,10 @@ class TestEditorAPI:
         data = response.json()
         # Should contain technology-specific terms
         edited_text = data["edited_text"].lower()
-        assert any(term in edited_text for term in ["software", "development", "applications", "systems"])
+        assert any(
+            term in edited_text
+            for term in ["software", "development", "applications", "systems"]
+        )
 
     def test_tone_adjustment_endpoint(self, client):
         """Test tone adjustment functionality."""
@@ -239,7 +245,7 @@ class TestEditorAPI:
             "session_id": "test-tone",
             "text": "I did some work on projects and stuff.",
             "edit_type": "tone_adjustment",
-            "tone": "professional"
+            "tone": "professional",
         }
 
         response = client.post("/edit", json=request_data)
@@ -275,10 +281,15 @@ class TestEditorAPI:
         response = client.options("/edit")
         # Should have CORS headers in actual deployment
         # For now, just check the endpoint exists
-        assert response.status_code in [200, 405]  # 405 = Method Not Allowed is also fine
+        assert response.status_code in [
+            200,
+            405,
+        ]  # 405 = Method Not Allowed is also fine
 
-    @patch('src.core.text_optimizer.TextOptimizer')
-    def test_edit_service_integration(self, mock_optimizer, client, sample_edit_request):
+    @patch("src.core.text_optimizer.TextOptimizer")
+    def test_edit_service_integration(
+        self, mock_optimizer, client, sample_edit_request
+    ):
         """Test integration with text optimization service."""
         mock_instance = Mock()
         mock_optimizer.return_value = mock_instance
@@ -290,7 +301,7 @@ class TestEditorAPI:
             grammar_issues_fixed=1,
             style_improvements=0,
             content_enhancements=0,
-            processing_time=0.5
+            processing_time=0.5,
         )
 
         response = client.post("/edit", json=sample_edit_request)
@@ -311,16 +322,18 @@ class TestEditorAPI:
     def test_concurrent_requests(self, client):
         """Test handling of concurrent requests."""
         import threading
-        import time
 
         results = []
 
         def make_request():
-            response = client.post("/edit", json={
-                "session_id": f"concurrent-{threading.current_thread().ident}",
-                "text": "Test concurrent editing.",
-                "edit_type": "grammar"
-            })
+            response = client.post(
+                "/edit",
+                json={
+                    "session_id": f"concurrent-{threading.current_thread().ident}",
+                    "text": "Test concurrent editing.",
+                    "edit_type": "grammar",
+                },
+            )
             results.append(response.status_code)
 
         threads = []

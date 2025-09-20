@@ -2,7 +2,6 @@
 
 from datetime import datetime
 from enum import Enum
-from typing import Dict, List, Optional
 
 from pydantic import BaseModel, Field
 
@@ -24,8 +23,12 @@ class GrammarIssue(BaseModel):
     message: str = Field(..., description="Description of the grammar issue")
     rule_id: str = Field(..., description="Grammar rule identifier")
     severity: IssueSeverity = Field(..., description="Issue severity")
-    suggestions: List[str] = Field(default_factory=list, description="Suggested corrections")
-    category: str = Field(..., description="Grammar category (e.g., 'Spelling', 'Grammar')")
+    suggestions: list[str] = Field(
+        default_factory=list, description="Suggested corrections"
+    )
+    category: str = Field(
+        ..., description="Grammar category (e.g., 'Spelling', 'Grammar')"
+    )
 
 
 class StyleIssue(BaseModel):
@@ -36,7 +39,9 @@ class StyleIssue(BaseModel):
     message: str = Field(..., description="Description of the style issue")
     issue_type: str = Field(..., description="Type of style issue")
     severity: IssueSeverity = Field(..., description="Issue severity")
-    suggestions: List[str] = Field(default_factory=list, description="Style improvement suggestions")
+    suggestions: list[str] = Field(
+        default_factory=list, description="Style improvement suggestions"
+    )
     improvement_reason: str = Field(..., description="Why this is an improvement")
 
 
@@ -46,7 +51,9 @@ class ReadabilityMetrics(BaseModel):
     flesch_reading_ease: float = Field(..., description="Flesch Reading Ease score")
     flesch_kincaid_grade: float = Field(..., description="Flesch-Kincaid Grade Level")
     gunning_fog: float = Field(..., description="Gunning Fog Index")
-    automated_readability_index: float = Field(..., description="Automated Readability Index")
+    automated_readability_index: float = Field(
+        ..., description="Automated Readability Index"
+    )
     coleman_liau_index: float = Field(..., description="Coleman-Liau Index")
 
     # Text statistics
@@ -62,14 +69,24 @@ class ContentAnalysis(BaseModel):
     """Content quality analysis."""
 
     # Achievement and impact analysis
-    quantified_achievements: int = Field(default=0, description="Number of quantified achievements")
-    action_verbs_count: int = Field(default=0, description="Number of strong action verbs")
-    passive_voice_count: int = Field(default=0, description="Number of passive voice instances")
+    quantified_achievements: int = Field(
+        default=0, description="Number of quantified achievements"
+    )
+    action_verbs_count: int = Field(
+        default=0, description="Number of strong action verbs"
+    )
+    passive_voice_count: int = Field(
+        default=0, description="Number of passive voice instances"
+    )
     weak_words_count: int = Field(default=0, description="Number of weak words")
 
     # Professional language
-    industry_keywords: List[str] = Field(default_factory=list, description="Identified industry keywords")
-    technical_terms: List[str] = Field(default_factory=list, description="Technical terms found")
+    industry_keywords: list[str] = Field(
+        default_factory=list, description="Identified industry keywords"
+    )
+    technical_terms: list[str] = Field(
+        default_factory=list, description="Technical terms found"
+    )
     jargon_count: int = Field(default=0, description="Amount of unnecessary jargon")
 
     # Structure analysis
@@ -78,7 +95,7 @@ class ContentAnalysis(BaseModel):
     headings: int = Field(default=0, description="Number of headings")
 
     # Tone analysis
-    tone_scores: Dict[str, float] = Field(
+    tone_scores: dict[str, float] = Field(
         default_factory=dict, description="Tone analysis scores"
     )
     formality_score: float = Field(default=0.5, description="Formality score (0-1)")
@@ -91,19 +108,31 @@ class TextAnalysis(BaseModel):
     language: str = Field(default="en", description="Detected language")
 
     # Issues
-    grammar_issues: List[GrammarIssue] = Field(default_factory=list, description="Grammar issues")
-    style_issues: List[StyleIssue] = Field(default_factory=list, description="Style issues")
+    grammar_issues: list[GrammarIssue] = Field(
+        default_factory=list, description="Grammar issues"
+    )
+    style_issues: list[StyleIssue] = Field(
+        default_factory=list, description="Style issues"
+    )
 
     # Metrics
     readability: ReadabilityMetrics = Field(..., description="Readability metrics")
     content_analysis: ContentAnalysis = Field(..., description="Content analysis")
 
     # Overall scores
-    overall_quality_score: float = Field(..., ge=0.0, le=100.0, description="Overall quality score")
-    grammar_score: float = Field(..., ge=0.0, le=100.0, description="Grammar quality score")
+    overall_quality_score: float = Field(
+        ..., ge=0.0, le=100.0, description="Overall quality score"
+    )
+    grammar_score: float = Field(
+        ..., ge=0.0, le=100.0, description="Grammar quality score"
+    )
     style_score: float = Field(..., ge=0.0, le=100.0, description="Style quality score")
-    content_score: float = Field(..., ge=0.0, le=100.0, description="Content quality score")
+    content_score: float = Field(
+        ..., ge=0.0, le=100.0, description="Content quality score"
+    )
 
     # Analysis metadata
     analysis_time: float = Field(..., description="Analysis time in seconds")
-    timestamp: datetime = Field(default_factory=datetime.now, description="Analysis timestamp")
+    timestamp: datetime = Field(
+        default_factory=datetime.now, description="Analysis timestamp"
+    )

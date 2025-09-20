@@ -2,10 +2,9 @@
 
 import logging
 import re
-from typing import List, Dict, Set
 
+from ..models.text_analysis import IssueSeverity, StyleIssue
 from .config import settings
-from ..models.text_analysis import StyleIssue, IssueSeverity
 
 logger = logging.getLogger(__name__)
 
@@ -20,60 +19,137 @@ class StyleAnalyzer:
         self.action_verbs = self._load_action_verbs()
         self.passive_indicators = self._load_passive_indicators()
 
-    def _load_weak_words(self) -> Set[str]:
+    def _load_weak_words(self) -> set[str]:
         """Load weak words that should be avoided."""
         return {
-            'things', 'stuff', 'very', 'really', 'quite', 'rather',
-            'somewhat', 'fairly', 'pretty', 'kind of', 'sort of',
-            'a lot', 'lots of', 'many', 'various', 'several',
-            'numerous', 'multiple', 'different', 'good', 'bad',
-            'nice', 'fine', 'okay', 'alright'
+            "things",
+            "stuff",
+            "very",
+            "really",
+            "quite",
+            "rather",
+            "somewhat",
+            "fairly",
+            "pretty",
+            "kind of",
+            "sort of",
+            "a lot",
+            "lots of",
+            "many",
+            "various",
+            "several",
+            "numerous",
+            "multiple",
+            "different",
+            "good",
+            "bad",
+            "nice",
+            "fine",
+            "okay",
+            "alright",
         }
 
-    def _load_filler_words(self) -> Set[str]:
+    def _load_filler_words(self) -> set[str]:
         """Load filler words that add no value."""
         return {
-            'actually', 'basically', 'essentially', 'literally',
-            'obviously', 'clearly', 'definitely', 'certainly',
-            'absolutely', 'totally', 'completely', 'exactly',
-            'just', 'simply', 'really', 'very', 'quite'
+            "actually",
+            "basically",
+            "essentially",
+            "literally",
+            "obviously",
+            "clearly",
+            "definitely",
+            "certainly",
+            "absolutely",
+            "totally",
+            "completely",
+            "exactly",
+            "just",
+            "simply",
+            "really",
+            "very",
+            "quite",
         }
 
-    def _load_action_verbs(self) -> Set[str]:
+    def _load_action_verbs(self) -> set[str]:
         """Load strong action verbs for replacements."""
         return {
-            'achieved', 'accelerated', 'accomplished', 'adapted',
-            'administered', 'advanced', 'analyzed', 'applied',
-            'architected', 'assembled', 'built', 'calculated',
-            'collaborated', 'communicated', 'compiled', 'completed',
-            'computed', 'conceived', 'conducted', 'constructed',
-            'created', 'debugged', 'demonstrated', 'designed',
-            'developed', 'devised', 'directed', 'discovered',
-            'engineered', 'enhanced', 'established', 'evaluated',
-            'executed', 'expanded', 'facilitated', 'formulated',
-            'generated', 'guided', 'implemented', 'improved',
-            'increased', 'initiated', 'innovated', 'integrated',
-            'introduced', 'launched', 'led', 'managed', 'optimized',
-            'organized', 'programmed', 'reduced', 'refined',
-            'resolved', 'spearheaded', 'streamlined', 'supervised',
-            'transformed', 'upgraded'
+            "achieved",
+            "accelerated",
+            "accomplished",
+            "adapted",
+            "administered",
+            "advanced",
+            "analyzed",
+            "applied",
+            "architected",
+            "assembled",
+            "built",
+            "calculated",
+            "collaborated",
+            "communicated",
+            "compiled",
+            "completed",
+            "computed",
+            "conceived",
+            "conducted",
+            "constructed",
+            "created",
+            "debugged",
+            "demonstrated",
+            "designed",
+            "developed",
+            "devised",
+            "directed",
+            "discovered",
+            "engineered",
+            "enhanced",
+            "established",
+            "evaluated",
+            "executed",
+            "expanded",
+            "facilitated",
+            "formulated",
+            "generated",
+            "guided",
+            "implemented",
+            "improved",
+            "increased",
+            "initiated",
+            "innovated",
+            "integrated",
+            "introduced",
+            "launched",
+            "led",
+            "managed",
+            "optimized",
+            "organized",
+            "programmed",
+            "reduced",
+            "refined",
+            "resolved",
+            "spearheaded",
+            "streamlined",
+            "supervised",
+            "transformed",
+            "upgraded",
         }
 
-    def _load_passive_indicators(self) -> List[str]:
+    def _load_passive_indicators(self) -> list[str]:
         """Load patterns that indicate passive voice."""
         return [
-            r'\bwas\s+\w+ed\b',
-            r'\bwere\s+\w+ed\b',
-            r'\bbeing\s+\w+ed\b',
-            r'\bbeen\s+\w+ed\b',
-            r'\bis\s+\w+ed\b',
-            r'\bare\s+\w+ed\b',
-            r'\bwill\s+be\s+\w+ed\b',
-            r'\bhas\s+been\s+\w+ed\b',
-            r'\bhave\s+been\s+\w+ed\b'
+            r"\bwas\s+\w+ed\b",
+            r"\bwere\s+\w+ed\b",
+            r"\bbeing\s+\w+ed\b",
+            r"\bbeen\s+\w+ed\b",
+            r"\bis\s+\w+ed\b",
+            r"\bare\s+\w+ed\b",
+            r"\bwill\s+be\s+\w+ed\b",
+            r"\bhas\s+been\s+\w+ed\b",
+            r"\bhave\s+been\s+\w+ed\b",
         ]
 
-    def analyze_style(self, text: str, language: str = "en") -> List[StyleIssue]:
+    def analyze_style(self, text: str, language: str = "en") -> list[StyleIssue]:
         """Analyze text for style issues."""
         if not text or text.strip() == "":
             return []
@@ -94,12 +170,12 @@ class StyleAnalyzer:
 
         return issues
 
-    def _check_weak_words(self, text: str) -> List[StyleIssue]:
+    def _check_weak_words(self, text: str) -> list[StyleIssue]:
         """Check for weak words that dilute impact."""
         issues = []
 
         for weak_word in self.weak_words:
-            pattern = r'\b' + re.escape(weak_word) + r'\b'
+            pattern = r"\b" + re.escape(weak_word) + r"\b"
             for match in re.finditer(pattern, text, re.IGNORECASE):
                 suggestions = self._suggest_strong_alternatives(weak_word)
 
@@ -110,18 +186,18 @@ class StyleAnalyzer:
                     issue_type="weak_word",
                     severity=IssueSeverity.MEDIUM,
                     suggestions=suggestions,
-                    improvement_reason="Replace with more specific or impactful language"
+                    improvement_reason="Replace with more specific or impactful language",
                 )
                 issues.append(issue)
 
         return issues
 
-    def _check_filler_words(self, text: str) -> List[StyleIssue]:
+    def _check_filler_words(self, text: str) -> list[StyleIssue]:
         """Check for filler words that add no value."""
         issues = []
 
         for filler in self.filler_words:
-            pattern = r'\b' + re.escape(filler) + r'\b'
+            pattern = r"\b" + re.escape(filler) + r"\b"
             for match in re.finditer(pattern, text, re.IGNORECASE):
                 issue = StyleIssue(
                     start_pos=match.start(),
@@ -130,13 +206,13 @@ class StyleAnalyzer:
                     issue_type="filler_word",
                     severity=IssueSeverity.LOW,
                     suggestions=[""],  # Suggest removal
-                    improvement_reason="Remove unnecessary filler words for cleaner prose"
+                    improvement_reason="Remove unnecessary filler words for cleaner prose",
                 )
                 issues.append(issue)
 
         return issues
 
-    def _check_passive_voice(self, text: str) -> List[StyleIssue]:
+    def _check_passive_voice(self, text: str) -> list[StyleIssue]:
         """Check for passive voice constructions."""
         issues = []
 
@@ -156,29 +232,29 @@ class StyleAnalyzer:
                     issue_type="passive_voice",
                     severity=IssueSeverity.MEDIUM,
                     suggestions=suggestions,
-                    improvement_reason="Active voice is more direct and engaging"
+                    improvement_reason="Active voice is more direct and engaging",
                 )
                 issues.append(issue)
 
         return issues
 
-    def _check_weak_phrases(self, text: str) -> List[StyleIssue]:
+    def _check_weak_phrases(self, text: str) -> list[StyleIssue]:
         """Check for weak phrases that should be strengthened."""
         weak_phrases = {
-            'responsible for': ['managed', 'led', 'oversaw', 'directed'],
-            'helped with': ['contributed to', 'assisted in', 'supported'],
-            'worked on': ['developed', 'created', 'built', 'designed'],
-            'in charge of': ['managed', 'supervised', 'led'],
-            'did': ['executed', 'performed', 'completed', 'accomplished'],
-            'made': ['created', 'developed', 'built', 'generated'],
-            'got': ['achieved', 'obtained', 'secured', 'earned'],
-            'used': ['utilized', 'employed', 'leveraged', 'applied']
+            "responsible for": ["managed", "led", "oversaw", "directed"],
+            "helped with": ["contributed to", "assisted in", "supported"],
+            "worked on": ["developed", "created", "built", "designed"],
+            "in charge of": ["managed", "supervised", "led"],
+            "did": ["executed", "performed", "completed", "accomplished"],
+            "made": ["created", "developed", "built", "generated"],
+            "got": ["achieved", "obtained", "secured", "earned"],
+            "used": ["utilized", "employed", "leveraged", "applied"],
         }
 
         issues = []
 
         for weak_phrase, alternatives in weak_phrases.items():
-            pattern = r'\b' + re.escape(weak_phrase) + r'\b'
+            pattern = r"\b" + re.escape(weak_phrase) + r"\b"
             for match in re.finditer(pattern, text, re.IGNORECASE):
                 issue = StyleIssue(
                     start_pos=match.start(),
@@ -187,35 +263,35 @@ class StyleAnalyzer:
                     issue_type="weak_phrase",
                     severity=IssueSeverity.HIGH,
                     suggestions=alternatives[:3],  # Top 3 alternatives
-                    improvement_reason="Use stronger, more specific action words"
+                    improvement_reason="Use stronger, more specific action words",
                 )
                 issues.append(issue)
 
         return issues
 
-    def _check_redundancy(self, text: str) -> List[StyleIssue]:
+    def _check_redundancy(self, text: str) -> list[StyleIssue]:
         """Check for redundant phrases."""
         redundant_phrases = {
-            'advance planning': ['planning'],
-            'end result': ['result'],
-            'future plans': ['plans'],
-            'past history': ['history'],
-            'basic fundamentals': ['fundamentals', 'basics'],
-            'close proximity': ['proximity'],
-            'completely filled': ['filled'],
-            'exactly the same': ['identical'],
-            'first priority': ['priority'],
-            'free gift': ['gift'],
-            'new innovation': ['innovation'],
-            'personal opinion': ['opinion'],
-            'true facts': ['facts'],
-            'unexpected surprise': ['surprise']
+            "advance planning": ["planning"],
+            "end result": ["result"],
+            "future plans": ["plans"],
+            "past history": ["history"],
+            "basic fundamentals": ["fundamentals", "basics"],
+            "close proximity": ["proximity"],
+            "completely filled": ["filled"],
+            "exactly the same": ["identical"],
+            "first priority": ["priority"],
+            "free gift": ["gift"],
+            "new innovation": ["innovation"],
+            "personal opinion": ["opinion"],
+            "true facts": ["facts"],
+            "unexpected surprise": ["surprise"],
         }
 
         issues = []
 
         for redundant, alternatives in redundant_phrases.items():
-            pattern = r'\b' + re.escape(redundant) + r'\b'
+            pattern = r"\b" + re.escape(redundant) + r"\b"
             for match in re.finditer(pattern, text, re.IGNORECASE):
                 issue = StyleIssue(
                     start_pos=match.start(),
@@ -224,15 +300,15 @@ class StyleAnalyzer:
                     issue_type="redundancy",
                     severity=IssueSeverity.MEDIUM,
                     suggestions=alternatives,
-                    improvement_reason="Remove redundancy for cleaner writing"
+                    improvement_reason="Remove redundancy for cleaner writing",
                 )
                 issues.append(issue)
 
         return issues
 
-    def _check_sentence_variety(self, text: str) -> List[StyleIssue]:
+    def _check_sentence_variety(self, text: str) -> list[StyleIssue]:
         """Check for lack of sentence variety."""
-        sentences = re.split(r'[.!?]+', text)
+        sentences = re.split(r"[.!?]+", text)
         sentences = [s.strip() for s in sentences if s.strip()]
 
         if len(sentences) < 3:
@@ -269,30 +345,30 @@ class StyleAnalyzer:
                                 issue_type="sentence_variety",
                                 severity=IssueSeverity.LOW,
                                 suggestions=["Consider varying sentence structure"],
-                                improvement_reason="Varied sentence structure improves readability"
+                                improvement_reason="Varied sentence structure improves readability",
                             )
                             issues.append(issue)
                             break
 
         return issues
 
-    def _check_professional_tone(self, text: str) -> List[StyleIssue]:
+    def _check_professional_tone(self, text: str) -> list[StyleIssue]:
         """Check for unprofessional language."""
         unprofessional_words = {
-            'awesome': ['excellent', 'outstanding', 'exceptional'],
-            'cool': ['impressive', 'effective', 'valuable'],
-            'crazy': ['remarkable', 'significant', 'substantial'],
-            'insane': ['extraordinary', 'exceptional', 'remarkable'],
-            'sick': ['excellent', 'impressive', 'outstanding'],
-            'dope': ['excellent', 'effective', 'valuable'],
-            'lit': ['excellent', 'outstanding', 'impressive'],
-            'fire': ['excellent', 'outstanding', 'exceptional']
+            "awesome": ["excellent", "outstanding", "exceptional"],
+            "cool": ["impressive", "effective", "valuable"],
+            "crazy": ["remarkable", "significant", "substantial"],
+            "insane": ["extraordinary", "exceptional", "remarkable"],
+            "sick": ["excellent", "impressive", "outstanding"],
+            "dope": ["excellent", "effective", "valuable"],
+            "lit": ["excellent", "outstanding", "impressive"],
+            "fire": ["excellent", "outstanding", "exceptional"],
         }
 
         issues = []
 
         for unprofessional, alternatives in unprofessional_words.items():
-            pattern = r'\b' + re.escape(unprofessional) + r'\b'
+            pattern = r"\b" + re.escape(unprofessional) + r"\b"
             for match in re.finditer(pattern, text, re.IGNORECASE):
                 issue = StyleIssue(
                     start_pos=match.start(),
@@ -301,40 +377,40 @@ class StyleAnalyzer:
                     issue_type="tone",
                     severity=IssueSeverity.MEDIUM,
                     suggestions=alternatives,
-                    improvement_reason="Use more professional language"
+                    improvement_reason="Use more professional language",
                 )
                 issues.append(issue)
 
         return issues
 
-    def _suggest_strong_alternatives(self, weak_word: str) -> List[str]:
+    def _suggest_strong_alternatives(self, weak_word: str) -> list[str]:
         """Suggest stronger alternatives for weak words."""
         alternatives = {
-            'things': ['items', 'elements', 'components', 'aspects'],
-            'stuff': ['materials', 'items', 'elements', 'components'],
-            'very': ['extremely', 'highly', 'significantly'],
-            'really': ['significantly', 'substantially', 'considerably'],
-            'good': ['excellent', 'effective', 'valuable', 'beneficial'],
-            'bad': ['ineffective', 'problematic', 'detrimental'],
-            'big': ['substantial', 'significant', 'major', 'extensive'],
-            'small': ['minor', 'minimal', 'limited', 'modest'],
-            'many': ['numerous', 'multiple', 'several'],
-            'a lot': ['significantly', 'substantially', 'considerably']
+            "things": ["items", "elements", "components", "aspects"],
+            "stuff": ["materials", "items", "elements", "components"],
+            "very": ["extremely", "highly", "significantly"],
+            "really": ["significantly", "substantially", "considerably"],
+            "good": ["excellent", "effective", "valuable", "beneficial"],
+            "bad": ["ineffective", "problematic", "detrimental"],
+            "big": ["substantial", "significant", "major", "extensive"],
+            "small": ["minor", "minimal", "limited", "modest"],
+            "many": ["numerous", "multiple", "several"],
+            "a lot": ["significantly", "substantially", "considerably"],
         }
 
-        return alternatives.get(weak_word.lower(), ['more specific term'])
+        return alternatives.get(weak_word.lower(), ["more specific term"])
 
-    def _suggest_active_voice(self, passive_phrase: str, context: str) -> List[str]:
+    def _suggest_active_voice(self, passive_phrase: str, context: str) -> list[str]:
         """Suggest active voice alternatives for passive constructions."""
         # Basic suggestions - could be enhanced with NLP
-        if 'was' in passive_phrase.lower():
-            return ['[subject] + [action verb]']
-        elif 'were' in passive_phrase.lower():
-            return ['[subjects] + [action verb]']
-        elif 'being' in passive_phrase.lower():
-            return ['[subject] + [present action verb]']
+        if "was" in passive_phrase.lower():
+            return ["[subject] + [action verb]"]
+        elif "were" in passive_phrase.lower():
+            return ["[subjects] + [action verb]"]
+        elif "being" in passive_phrase.lower():
+            return ["[subject] + [present action verb]"]
 
-        return ['Use active voice']
+        return ["Use active voice"]
 
     def calculate_style_score(self, text: str) -> float:
         """Calculate overall style score for the text."""
@@ -348,7 +424,7 @@ class StyleAnalyzer:
             IssueSeverity.LOW: 1,
             IssueSeverity.MEDIUM: 3,
             IssueSeverity.HIGH: 5,
-            IssueSeverity.CRITICAL: 10
+            IssueSeverity.CRITICAL: 10,
         }
 
         total_penalty = sum(severity_weights.get(issue.severity, 3) for issue in issues)

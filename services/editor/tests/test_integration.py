@@ -1,14 +1,11 @@
 """Integration tests for the Editor service."""
 
-import pytest
-import asyncio
-from fastapi.testclient import TestClient
 from unittest.mock import Mock, patch
 
-from src.main import app
-from src.core.text_optimizer import TextOptimizer
-from src.core.version_control import VersionController
+import pytest
+from fastapi.testclient import TestClient
 from src.integrations.orchestrator import OrchestratorClient
+from src.main import app
 
 
 class TestEditorIntegration:
@@ -29,7 +26,7 @@ class TestEditorIntegration:
         # Step 1: Analyze original text
         analyze_request = {
             "text": "I worked on computer things and helped with various projects.",
-            "language": "en"
+            "language": "en",
         }
 
         analyze_response = client.post("/analyze", json=analyze_request)
@@ -46,10 +43,12 @@ class TestEditorIntegration:
             "text": analyze_request["text"],
             "edit_type": "comprehensive",
             "industry": "technology",
-            "role": "software developer"
+            "role": "software developer",
         }
 
-        suggestions_response = client.post("/edit/suggestions", json=suggestions_request)
+        suggestions_response = client.post(
+            "/edit/suggestions", json=suggestions_request
+        )
         assert suggestions_response.status_code == 200
 
         suggestions_data = suggestions_response.json()
@@ -62,7 +61,7 @@ class TestEditorIntegration:
             "text": analyze_request["text"],
             "edit_type": "comprehensive",
             "industry": "technology",
-            "role": "software developer"
+            "role": "software developer",
         }
 
         edit_response = client.post("/edit", json=edit_request)
@@ -87,10 +86,10 @@ class TestEditorIntegration:
             "texts": [
                 "I did work on projects.",
                 "I helped with various things.",
-                "I was responsible for tasks."
+                "I was responsible for tasks.",
             ],
             "edit_type": "comprehensive",
-            "industry": "technology"
+            "industry": "technology",
         }
 
         response = client.post("/edit/batch", json=batch_request)
@@ -111,7 +110,7 @@ class TestEditorIntegration:
         texts = [
             "Original text with issues.",
             "First edit of the text.",
-            "Second edit of the text."
+            "Second edit of the text.",
         ]
 
         version_ids = []
@@ -120,7 +119,7 @@ class TestEditorIntegration:
                 "session_id": sample_session_id,
                 "text": text,
                 "edit_type": "grammar",
-                "version_comment": f"Version {i + 1}"
+                "version_comment": f"Version {i + 1}",
             }
 
             response = client.post("/edit", json=edit_request)
@@ -148,37 +147,36 @@ class TestEditorIntegration:
         if len(version_ids) >= 2:
             revert_request = {
                 "target_version_id": version_ids[0],
-                "comment": "Reverting to original"
+                "comment": "Reverting to original",
             }
 
             revert_response = client.post(
-                f"/versions/{sample_session_id}/revert",
-                json=revert_request
+                f"/versions/{sample_session_id}/revert", json=revert_request
             )
             assert revert_response.status_code == 200
 
     def test_error_handling_workflow(self, client):
         """Test error handling across the service."""
         # Test empty text
-        response = client.post("/edit", json={
-            "session_id": "error-test",
-            "text": "",
-            "edit_type": "comprehensive"
-        })
+        response = client.post(
+            "/edit",
+            json={"session_id": "error-test", "text": "", "edit_type": "comprehensive"},
+        )
         assert response.status_code == 400
 
         # Test invalid edit type
-        response = client.post("/edit", json={
-            "session_id": "error-test",
-            "text": "Valid text",
-            "edit_type": "invalid_type"
-        })
+        response = client.post(
+            "/edit",
+            json={
+                "session_id": "error-test",
+                "text": "Valid text",
+                "edit_type": "invalid_type",
+            },
+        )
         assert response.status_code == 422
 
         # Test missing required fields
-        response = client.post("/edit", json={
-            "text": "Missing session_id"
-        })
+        response = client.post("/edit", json={"text": "Missing session_id"})
         assert response.status_code == 422
 
     def test_metrics_and_monitoring(self, client):
@@ -188,7 +186,7 @@ class TestEditorIntegration:
             edit_request = {
                 "session_id": f"metrics-test-{i}",
                 "text": f"Test text {i} for metrics collection.",
-                "edit_type": "grammar"
+                "edit_type": "grammar",
             }
 
             response = client.post("/edit", json=edit_request)
@@ -221,15 +219,19 @@ class TestEditorIntegration:
     @pytest.mark.asyncio
     async def test_orchestrator_integration(self):
         """Test integration with orchestrator service."""
-        with patch('httpx.AsyncClient') as mock_client:
+        with patch("httpx.AsyncClient") as mock_client:
             # Mock successful responses
             mock_response = Mock()
             mock_response.status_code = 200
             mock_response.json.return_value = {"status": "success"}
             mock_response.raise_for_status.return_value = None
 
-            mock_client.return_value.__aenter__.return_value.post.return_value = mock_response
-            mock_client.return_value.__aenter__.return_value.get.return_value = mock_response
+            mock_client.return_value.__aenter__.return_value.post.return_value = (
+                mock_response
+            )
+            mock_client.return_value.__aenter__.return_value.get.return_value = (
+                mock_response
+            )
 
             orchestrator = OrchestratorClient()
 
@@ -248,26 +250,28 @@ class TestEditorIntegration:
     def test_concurrent_editing_sessions(self, client):
         """Test handling of concurrent editing sessions."""
         import threading
-        import time
 
         results = []
 
         def edit_worker(session_id, text):
             try:
-                response = client.post("/edit", json={
-                    "session_id": session_id,
-                    "text": text,
-                    "edit_type": "comprehensive"
-                })
+                response = client.post(
+                    "/edit",
+                    json={
+                        "session_id": session_id,
+                        "text": text,
+                        "edit_type": "comprehensive",
+                    },
+                )
                 results.append(response.status_code)
-            except Exception as e:
+            except Exception:
                 results.append(500)
 
         threads = []
         for i in range(5):
             thread = threading.Thread(
                 target=edit_worker,
-                args=(f"concurrent-session-{i}", f"Test text for session {i}")
+                args=(f"concurrent-session-{i}", f"Test text for session {i}"),
             )
             threads.append(thread)
 
@@ -292,11 +296,14 @@ class TestEditorIntegration:
 
         # Simulate load with multiple requests
         for i in range(20):
-            response = client.post("/edit", json={
-                "session_id": f"load-test-{i}",
-                "text": f"Performance test text {i} with various content to edit and optimize.",
-                "edit_type": "comprehensive"
-            })
+            response = client.post(
+                "/edit",
+                json={
+                    "session_id": f"load-test-{i}",
+                    "text": f"Performance test text {i} with various content to edit and optimize.",
+                    "edit_type": "comprehensive",
+                },
+            )
             responses.append(response)
 
         end_time = time.time()
@@ -312,11 +319,14 @@ class TestEditorIntegration:
     def test_data_consistency_across_operations(self, client, sample_session_id):
         """Test data consistency across different operations."""
         # Create initial version
-        edit_response = client.post("/edit", json={
-            "session_id": sample_session_id,
-            "text": "Initial text for consistency testing.",
-            "edit_type": "comprehensive"
-        })
+        edit_response = client.post(
+            "/edit",
+            json={
+                "session_id": sample_session_id,
+                "text": "Initial text for consistency testing.",
+                "edit_type": "comprehensive",
+            },
+        )
         assert edit_response.status_code == 200
 
         initial_data = edit_response.json()
@@ -330,11 +340,14 @@ class TestEditorIntegration:
         assert history["versions"][0]["version_id"] == initial_data["version_id"]
 
         # Edit again
-        second_edit_response = client.post("/edit", json={
-            "session_id": sample_session_id,
-            "text": "Second text for consistency testing.",
-            "edit_type": "comprehensive"
-        })
+        second_edit_response = client.post(
+            "/edit",
+            json={
+                "session_id": sample_session_id,
+                "text": "Second text for consistency testing.",
+                "edit_type": "comprehensive",
+            },
+        )
         assert second_edit_response.status_code == 200
 
         # Check updated history

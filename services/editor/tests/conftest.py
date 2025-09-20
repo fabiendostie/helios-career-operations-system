@@ -1,15 +1,14 @@
 """Pytest configuration and fixtures for Editor service tests."""
 
-import pytest
 import asyncio
-from typing import Generator
+import os
+import sys
 from unittest.mock import Mock
 
-import sys
-import os
+import pytest
 
 # Add src to Python path for imports
-sys.path.insert(0, os.path.join(os.path.dirname(__file__), '..', 'src'))
+sys.path.insert(0, os.path.join(os.path.dirname(__file__), "..", "src"))
 
 
 @pytest.fixture(scope="session")
@@ -55,7 +54,7 @@ def sample_texts():
         "quantified": "I increased sales by 25% and reduced costs by $50,000.",
         "passive": "The project was completed by me and results were achieved.",
         "empty": "",
-        "long": " ".join(["This is a very long text."] * 1000)
+        "long": " ".join(["This is a very long text."] * 1000),
     }
 
 
@@ -66,7 +65,7 @@ def sample_sessions():
         "main": "test-session-main",
         "batch": "test-session-batch",
         "version": "test-session-version",
-        "concurrent": "test-session-concurrent"
+        "concurrent": "test-session-concurrent",
     }
 
 
@@ -75,12 +74,15 @@ def reset_global_state():
     """Reset global state before each test."""
     # Reset metrics
     from src.api.editing import _metrics
-    _metrics.update({
-        "total_edits": 0,
-        "total_processing_time": 0.0,
-        "successful_edits": 0,
-        "failed_edits": 0
-    })
+
+    _metrics.update(
+        {
+            "total_edits": 0,
+            "total_processing_time": 0.0,
+            "successful_edits": 0,
+            "failed_edits": 0,
+        }
+    )
 
     yield
 

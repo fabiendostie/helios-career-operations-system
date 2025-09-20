@@ -1,8 +1,8 @@
 """Tests for grammar checking functionality."""
 
-import pytest
 from unittest.mock import Mock, patch
 
+import pytest
 from src.core.grammar_checker import GrammarChecker
 from src.models.text_analysis import GrammarIssue, IssueSeverity
 
@@ -18,8 +18,8 @@ class TestGrammarChecker:
     def test_checker_initialization(self, checker):
         """Test that checker initializes correctly."""
         assert checker is not None
-        assert hasattr(checker, 'check_grammar')
-        assert hasattr(checker, 'suggest_corrections')
+        assert hasattr(checker, "check_grammar")
+        assert hasattr(checker, "suggest_corrections")
 
     def test_check_grammar_basic(self, checker):
         """Test basic grammar checking."""
@@ -52,13 +52,13 @@ class TestGrammarChecker:
         issues = checker.check_grammar(text)
 
         for issue in issues:
-            assert hasattr(issue, 'start_pos')
-            assert hasattr(issue, 'end_pos')
-            assert hasattr(issue, 'message')
-            assert hasattr(issue, 'rule_id')
-            assert hasattr(issue, 'severity')
-            assert hasattr(issue, 'suggestions')
-            assert hasattr(issue, 'category')
+            assert hasattr(issue, "start_pos")
+            assert hasattr(issue, "end_pos")
+            assert hasattr(issue, "message")
+            assert hasattr(issue, "rule_id")
+            assert hasattr(issue, "severity")
+            assert hasattr(issue, "suggestions")
+            assert hasattr(issue, "category")
 
             assert issue.start_pos >= 0
             assert issue.end_pos > issue.start_pos
@@ -71,8 +71,12 @@ class TestGrammarChecker:
         issues = checker.check_grammar(text)
 
         grammar_issue = next(
-            (issue for issue in issues if "grammer" in text[issue.start_pos:issue.end_pos].lower()),
-            None
+            (
+                issue
+                for issue in issues
+                if "grammer" in text[issue.start_pos : issue.end_pos].lower()
+            ),
+            None,
         )
 
         if grammar_issue:
@@ -115,14 +119,14 @@ class TestGrammarChecker:
         issues = checker.check_grammar(text)
 
         for issue in issues:
-            flagged_text = text[issue.start_pos:issue.end_pos]
+            flagged_text = text[issue.start_pos : issue.end_pos]
             # The flagged text should not be empty
             assert len(flagged_text) > 0
             # Position should be within text bounds
             assert 0 <= issue.start_pos < len(text)
             assert issue.start_pos < issue.end_pos <= len(text)
 
-    @patch('src.core.grammar_checker.language_tool_python')
+    @patch("src.core.grammar_checker.language_tool_python")
     def test_language_tool_integration(self, mock_lt, checker):
         """Test integration with LanguageTool."""
         mock_tool = Mock()
@@ -131,9 +135,9 @@ class TestGrammarChecker:
         mock_match.offset = 5
         mock_match.errorLength = 4
         mock_match.message = "Test error"
-        mock_match.replacements = ['fixed']
-        mock_match.ruleId = 'TEST_RULE'
-        mock_match.category = 'Grammar'
+        mock_match.replacements = ["fixed"]
+        mock_match.ruleId = "TEST_RULE"
+        mock_match.category = "Grammar"
         mock_tool.check.return_value = [mock_match]
 
         issues = checker.check_grammar("Test text here")
@@ -173,11 +177,7 @@ class TestGrammarChecker:
 
     def test_batch_grammar_check(self, checker):
         """Test batch grammar checking."""
-        texts = [
-            "This are wrong.",
-            "This is correct.",
-            "Another eror here."
-        ]
+        texts = ["This are wrong.", "This is correct.", "Another eror here."]
 
         results = checker.check_grammar_batch(texts)
 

@@ -1,11 +1,11 @@
 """Tests for text optimization engine."""
 
-import pytest
 from unittest.mock import Mock, patch
 
+import pytest
 from src.core.text_optimizer import TextOptimizer
-from src.models.edit_request import EditType, EditRequest
-from src.models.text_analysis import TextAnalysis, ReadabilityMetrics, ContentAnalysis
+from src.models.edit_request import EditRequest, EditType
+from src.models.text_analysis import ContentAnalysis, ReadabilityMetrics, TextAnalysis
 
 
 class TestTextOptimizer:
@@ -33,14 +33,14 @@ class TestTextOptimizer:
             text=sample_text,
             edit_type=EditType.COMPREHENSIVE,
             industry="technology",
-            role="software engineer"
+            role="software engineer",
         )
 
     def test_optimizer_initialization(self, optimizer):
         """Test that optimizer initializes correctly."""
         assert optimizer is not None
-        assert hasattr(optimizer, 'optimize_text')
-        assert hasattr(optimizer, 'analyze_text')
+        assert hasattr(optimizer, "optimize_text")
+        assert hasattr(optimizer, "analyze_text")
 
     def test_analyze_text_basic(self, optimizer, sample_text):
         """Test basic text analysis."""
@@ -110,17 +110,17 @@ class TestTextOptimizer:
         """Test achievement quantification."""
         text = "I increased sales and improved customer satisfaction."
         request = EditRequest(
-            session_id="test",
-            text=text,
-            edit_type=EditType.QUANTIFICATION
+            session_id="test", text=text, edit_type=EditType.QUANTIFICATION
         )
 
         result = optimizer.optimize_text(request)
 
         # Should suggest adding numbers/percentages
-        assert any("%" in suggestion.suggested_text or
-                  any(char.isdigit() for char in suggestion.suggested_text)
-                  for suggestion in result.suggestions)
+        assert any(
+            "%" in suggestion.suggested_text
+            or any(char.isdigit() for char in suggestion.suggested_text)
+            for suggestion in result.suggestions
+        )
 
     def test_optimize_text_tone_adjustment(self, optimizer, sample_edit_request):
         """Test tone adjustment."""
@@ -153,15 +153,17 @@ class TestTextOptimizer:
             text=text,
             edit_type=EditType.CONTENT_ENHANCEMENT,
             industry="technology",
-            role="software developer"
+            role="software developer",
         )
 
         result = optimizer.optimize_text(request)
 
         # Should use industry-specific terms
         edited_lower = result.edited_text.lower()
-        assert any(tech_term in edited_lower for tech_term in
-                  ["software", "applications", "systems", "development"])
+        assert any(
+            tech_term in edited_lower
+            for tech_term in ["software", "applications", "systems", "development"]
+        )
 
     def test_optimize_text_preserves_meaning(self, optimizer, sample_edit_request):
         """Test that optimization preserves original meaning."""
@@ -204,14 +206,19 @@ class TestTextOptimizer:
         with pytest.raises(ValueError, match="Text too long"):
             optimizer.optimize_text(request)
 
-    @patch('src.core.text_optimizer.language_tool_python')
+    @patch("src.core.text_optimizer.language_tool_python")
     def test_grammar_check_with_language_tool(self, mock_lt, optimizer, sample_text):
         """Test grammar checking integration."""
         mock_tool = Mock()
         mock_lt.LanguageTool.return_value = mock_tool
         mock_tool.check.return_value = [
-            Mock(offset=0, errorLength=5, message="Test error",
-                 replacements=['fixed'], ruleId='TEST_RULE')
+            Mock(
+                offset=0,
+                errorLength=5,
+                message="Test error",
+                replacements=["fixed"],
+                ruleId="TEST_RULE",
+            )
         ]
 
         analysis = optimizer.analyze_text(sample_text)
@@ -228,4 +235,7 @@ class TestTextOptimizer:
         complex_analysis = optimizer.analyze_text(complex_text)
 
         # Simple text should have better readability
-        assert simple_analysis.readability.flesch_reading_ease > complex_analysis.readability.flesch_reading_ease
+        assert (
+            simple_analysis.readability.flesch_reading_ease
+            > complex_analysis.readability.flesch_reading_ease
+        )

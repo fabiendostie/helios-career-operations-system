@@ -1,16 +1,20 @@
 """Version control system for tracking text changes."""
 
+import difflib
 import logging
+import threading
 import uuid
 from datetime import datetime
-from typing import List, Optional, Dict
-import difflib
-import threading
 
-from .config import settings
 from ..models.version_control import (
-    Version, VersionHistory, ChangeLog, TextDiff, DiffOperation, VersionComparison
+    ChangeLog,
+    DiffOperation,
+    TextDiff,
+    Version,
+    VersionComparison,
+    VersionHistory,
 )
+from .config import settings
 
 logger = logging.getLogger(__name__)
 
@@ -20,12 +24,18 @@ class VersionController:
 
     def __init__(self):
         """Initialize the version controller."""
-        self.versions: Dict[str, List[Version]] = {}  # session_id -> versions
-        self.max_versions = getattr(settings, 'MAX_VERSIONS', 10)
+        self.versions: dict[str, list[Version]] = {}  # session_id -> versions
+        self.max_versions = getattr(settings, "MAX_VERSIONS", 10)
         self._lock = threading.RLock()
 
-    def create_version(self, session_id: str, text: str, edit_type: str,
-                      comment: Optional[str] = None, author: str = "system") -> Version:
+    def create_version(
+        self,
+        session_id: str,
+        text: str,
+        edit_type: str,
+        comment: str | None = None,
+        author: str = "system",
+    ) -> Version:
         """Create a new version for the given session."""
         if not session_id or session_id.strip() == "":
             raise ValueError("Session ID cannot be empty")
@@ -64,7 +74,7 @@ class VersionController:
                 word_count=len(text.split()),
                 character_count=len(text),
                 parent_version_id=parent_version_id,
-                is_current=True
+                is_current=True,
             )
 
             # Add to session versions
@@ -90,38 +100,51 @@ class VersionController:
                     versions=[],
                     current_version_id="",
                     total_versions=0,
-                    total_edits=0
+                    total_edits=0,
                 )
 
             current_version = next(
                 (v for v in session_versions if v.is_current),
-                session_versions[-1] if session_versions else None
+                session_versions[-1] if session_versions else None,
             )
 
             return VersionHistory(
                 session_id=session_id,
                 versions=session_versions.copy(),
-                current_version_id=current_version.version_id if current_version else "",
+                current_version_id=(
+                    current_version.version_id if current_version else ""
+                ),
                 total_versions=len(session_versions),
                 total_edits=len(session_versions) - 1,  # Exclude initial version
-                creation_date=session_versions[0].created_at if session_versions else datetime.now(),
-                last_modified=session_versions[-1].created_at if session_versions else datetime.now()
+                creation_date=(
+                    session_versions[0].created_at
+                    if session_versions
+                    else datetime.now()
+                ),
+                last_modified=(
+                    session_versions[-1].created_at
+                    if session_versions
+                    else datetime.now()
+                ),
             )
 
-    def get_current_version(self, session_id: str) -> Optional[Version]:
+    def get_current_version(self, session_id: str) -> Version | None:
         """Get the current version for a session."""
         with self._lock:
             session_versions = self.versions.get(session_id, [])
             return next((v for v in session_versions if v.is_current), None)
 
-    def get_version_by_id(self, session_id: str, version_id: str) -> Optional[Version]:
+    def get_version_by_id(self, session_id: str, version_id: str) -> Version | None:
         """Get a specific version by ID."""
         with self._lock:
             session_versions = self.versions.get(session_id, [])
-            return next((v for v in session_versions if v.version_id == version_id), None)
+            return next(
+                (v for v in session_versions if v.version_id == version_id), None
+            )
 
-    def compare_versions(self, session_id: str, version_a_id: str,
-                        version_b_id: str) -> VersionComparison:
+    def compare_versions(
+        self, session_id: str, version_a_id: str, version_b_id: str
+    ) -> VersionComparison:
         """Compare two versions and return differences."""
         with self._lock:
             version_a = self.get_version_by_id(session_id, version_a_id)
@@ -139,10 +162,14 @@ class VersionController:
             # Count changes
             additions = len([d for d in diff if d.operation == DiffOperation.INSERT])
             deletions = len([d for d in diff if d.operation == DiffOperation.DELETE])
-            modifications = len([d for d in diff if d.operation == DiffOperation.REPLACE])
+            modifications = len(
+                [d for d in diff if d.operation == DiffOperation.REPLACE]
+            )
 
             # Generate summary
-            change_summary = self._generate_change_summary(additions, deletions, modifications)
+            change_summary = self._generate_change_summary(
+                additions, deletions, modifications
+            )
 
             # Calculate quality improvement
             quality_improvement = None
@@ -161,11 +188,12 @@ class VersionController:
                 additions=additions,
                 deletions=deletions,
                 modifications=modifications,
-                quality_improvement=quality_improvement
+                quality_improvement=quality_improvement,
             )
 
-    def revert_to_version(self, session_id: str, target_version_id: str,
-                         comment: Optional[str] = None) -> Version:
+    def revert_to_version(
+        self, session_id: str, target_version_id: str, comment: str | None = None
+    ) -> Version:
         """Revert to a previous version by creating a new version with that content."""
         with self._lock:
             target_version = self.get_version_by_id(session_id, target_version_id)
@@ -177,8 +205,9 @@ class VersionController:
                 session_id=session_id,
                 text=target_version.text,
                 edit_type="revert",
-                comment=comment or f"Reverted to version {target_version.version_number}",
-                author="system"
+                comment=comment
+                or f"Reverted to version {target_version.version_number}",
+                author="system",
             )
 
             # Set parent to the target version for tracking
@@ -186,20 +215,19 @@ class VersionController:
 
             return new_version
 
-    def create_change_log(self, session_id: str, version_from: int,
-                         version_to: int, editor_type: str) -> ChangeLog:
+    def create_change_log(
+        self, session_id: str, version_from: int, version_to: int, editor_type: str
+    ) -> ChangeLog:
         """Create a change log between two versions."""
         with self._lock:
             session_versions = self.versions.get(session_id, [])
 
             # Find versions by number
             from_version = next(
-                (v for v in session_versions if v.version_number == version_from),
-                None
+                (v for v in session_versions if v.version_number == version_from), None
             )
             to_version = next(
-                (v for v in session_versions if v.version_number == version_to),
-                None
+                (v for v in session_versions if v.version_number == version_to), None
             )
 
             if not from_version or not to_version:
@@ -209,8 +237,9 @@ class VersionController:
             changes = self.generate_diff(from_version.text, to_version.text)
 
             # Create summary
-            change_count = len([c for c in changes
-                              if c.operation != DiffOperation.EQUAL])
+            change_count = len(
+                [c for c in changes if c.operation != DiffOperation.EQUAL]
+            )
             summary = self._generate_change_summary_detailed(changes)
 
             return ChangeLog(
@@ -220,10 +249,10 @@ class VersionController:
                 changes=changes,
                 change_summary=summary,
                 change_count=change_count,
-                editor_type=editor_type
+                editor_type=editor_type,
             )
 
-    def generate_diff(self, text1: str, text2: str) -> List[TextDiff]:
+    def generate_diff(self, text1: str, text2: str) -> list[TextDiff]:
         """Generate a diff between two texts."""
         # Use difflib for word-level differences
         words1 = text1.split()
@@ -233,13 +262,14 @@ class VersionController:
         diffs = []
 
         pos1 = 0  # Position in original text
-        pos2 = 0  # Position in new text
+        # TODO: Track position in new text for advanced diff features
+        # pos2 = 0  # Position in new text
 
         for tag, i1, i2, j1, j2 in differ.get_opcodes():
-            if tag == 'equal':
+            if tag == "equal":
                 # Calculate positions in original text
-                original_text = ' '.join(words1[i1:i2])
-                new_text = ' '.join(words2[j1:j2])
+                original_text = " ".join(words1[i1:i2])
+                new_text = " ".join(words2[j1:j2])
 
                 diff = TextDiff(
                     operation=DiffOperation.EQUAL,
@@ -247,41 +277,41 @@ class VersionController:
                     end_pos=pos1 + len(original_text),
                     original_text=original_text,
                     new_text=new_text,
-                    length=len(original_text)
+                    length=len(original_text),
                 )
                 diffs.append(diff)
 
                 pos1 += len(original_text) + (1 if i2 > i1 else 0)  # +1 for space
 
-            elif tag == 'delete':
-                original_text = ' '.join(words1[i1:i2])
+            elif tag == "delete":
+                original_text = " ".join(words1[i1:i2])
                 diff = TextDiff(
                     operation=DiffOperation.DELETE,
                     start_pos=pos1,
                     end_pos=pos1 + len(original_text),
                     original_text=original_text,
                     new_text="",
-                    length=len(original_text)
+                    length=len(original_text),
                 )
                 diffs.append(diff)
 
                 pos1 += len(original_text) + (1 if i2 > i1 else 0)
 
-            elif tag == 'insert':
-                new_text = ' '.join(words2[j1:j2])
+            elif tag == "insert":
+                new_text = " ".join(words2[j1:j2])
                 diff = TextDiff(
                     operation=DiffOperation.INSERT,
                     start_pos=pos1,
                     end_pos=pos1,
                     original_text="",
                     new_text=new_text,
-                    length=len(new_text)
+                    length=len(new_text),
                 )
                 diffs.append(diff)
 
-            elif tag == 'replace':
-                original_text = ' '.join(words1[i1:i2])
-                new_text = ' '.join(words2[j1:j2])
+            elif tag == "replace":
+                original_text = " ".join(words1[i1:i2])
+                new_text = " ".join(words2[j1:j2])
 
                 diff = TextDiff(
                     operation=DiffOperation.REPLACE,
@@ -289,7 +319,7 @@ class VersionController:
                     end_pos=pos1 + len(original_text),
                     original_text=original_text,
                     new_text=new_text,
-                    length=len(original_text)
+                    length=len(original_text),
                 )
                 diffs.append(diff)
 
@@ -325,8 +355,10 @@ class VersionController:
             for _ in range(min(versions_to_remove, len(sorted_versions))):
                 version_to_remove = sorted_versions.pop(0)
                 session_versions.remove(version_to_remove)
-                logger.info(f"Removed old version {version_to_remove.version_id} "
-                           f"from session {session_id}")
+                logger.info(
+                    f"Removed old version {version_to_remove.version_id} "
+                    f"from session {session_id}"
+                )
 
     def _calculate_quality_score(self, text: str) -> float:
         """Calculate a basic quality score for text."""
@@ -343,7 +375,7 @@ class VersionController:
             score += 5  # Longer isn't always better
 
         # Add points for sentence variety
-        sentences = text.split('.')
+        sentences = text.split(".")
         if len(sentences) > 1:
             score += 10
 
@@ -363,8 +395,9 @@ class VersionController:
 
         return max(0.0, min(100.0, score))
 
-    def _generate_change_summary(self, additions: int, deletions: int,
-                               modifications: int) -> str:
+    def _generate_change_summary(
+        self, additions: int, deletions: int, modifications: int
+    ) -> str:
         """Generate a summary of changes."""
         total_changes = additions + deletions + modifications
 
@@ -377,11 +410,13 @@ class VersionController:
         if deletions > 0:
             parts.append(f"{deletions} deletion{'s' if deletions > 1 else ''}")
         if modifications > 0:
-            parts.append(f"{modifications} modification{'s' if modifications > 1 else ''}")
+            parts.append(
+                f"{modifications} modification{'s' if modifications > 1 else ''}"
+            )
 
         return ", ".join(parts)
 
-    def _generate_change_summary_detailed(self, changes: List[TextDiff]) -> str:
+    def _generate_change_summary_detailed(self, changes: list[TextDiff]) -> str:
         """Generate a detailed summary of changes."""
         if not changes:
             return "No changes"
@@ -389,7 +424,9 @@ class VersionController:
         change_types = {}
         for change in changes:
             if change.operation != DiffOperation.EQUAL:
-                change_types[change.operation] = change_types.get(change.operation, 0) + 1
+                change_types[change.operation] = (
+                    change_types.get(change.operation, 0) + 1
+                )
 
         if not change_types:
             return "No changes"
