@@ -49,6 +49,7 @@ beautifulsoup4==4.12.3
 # ATS Compliance Validation
 PyPDF2==3.0.1
 beautifulsoup4==4.13.5
+weasyprint==62.3
 
 # Additional utilities
 python-multipart==0.0.17

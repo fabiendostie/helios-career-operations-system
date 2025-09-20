@@ -1,0 +1,25 @@
+version: '3.8'
+
+services:
+  editor:
+    build: .
+    ports:
+      - "8006:8006"
+    environment:
+      - EDITOR_HOST=0.0.0.0
+      - EDITOR_PORT=8006
+      - EDITOR_DEBUG=false
+      - EDITOR_LOG_LEVEL=INFO
+      - ORCHESTRATOR_URL=http://orchestrator:8001
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8006/health/"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 40s
+    restart: unless-stopped
+
+networks:
+  default:
+    name: helios-network
+    external: true

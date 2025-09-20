@@ -1,0 +1,48 @@
+# FastAPI and web framework
+fastapi==0.104.1
+uvicorn[standard]==0.24.0
+pydantic==2.5.0
+pydantic-settings==2.1.0
+
+# AI & Machine Learning for text processing
+spacy==3.7.5
+transformers==4.36.0
+torch==2.1.0
+numpy==1.26.2
+
+# Text processing and grammar checking
+language-tool-python==2.7.1
+textstat==0.7.3
+nltk==3.8.1
+
+# HTTP client for service communication
+aiohttp==3.9.1
+httpx==0.25.2
+
+# Database and caching
+redis==5.0.1
+asyncpg==0.29.0
+
+# Utilities
+python-multipart==0.0.6
+python-jose[cryptography]==3.3.0
+
+# Text processing
+difflib
+fuzzywuzzy==0.18.0
+python-levenshtein==0.23.0
+
+# Development and testing
+pytest==7.4.3
+pytest-asyncio==0.21.1
+pytest-cov==4.1.0
+pytest-mock==3.12.0
+black==23.11.0
+ruff==0.1.6
+
+# BMAD Core Utils for date/time
+aiohttp>=3.9.1
+pytz>=2023.3
+
+# Shared services
+../shared  # Local path to shared LLM client
