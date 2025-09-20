@@ -1,0 +1,313 @@
+# HELIOS Career Operations System - Integration Testing Environment
+# Optimized configuration for integration testing with isolated test data
+
+version: '3.8'
+
+services:
+  # PostgreSQL Test Database
+  postgres-test:
+    image: postgres:15-alpine
+    container_name: helios-test-postgres
+    environment:
+      POSTGRES_DB: helios_test
+      POSTGRES_USER: helios_test
+      POSTGRES_PASSWORD: helios_test_password
+    ports:
+      - "5433:5432"  # Different port to avoid conflicts
+    volumes:
+      - postgres_test_data:/var/lib/postgresql/data
+      - ./tests/integration/fixtures/sql:/docker-entrypoint-initdb.d
+    networks:
+      - helios-test
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U helios_test -d helios_test"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  # Redis Test Cache
+  redis-test:
+    image: redis:7-alpine
+    container_name: helios-test-redis
+    ports:
+      - "6380:6379"  # Different port to avoid conflicts
+    volumes:
+      - redis_test_data:/data
+    networks:
+      - helios-test
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  # Profile Ingestor Service (Test Mode)
+  profile-ingestor-test:
+    build:
+      context: ./services/profile-ingestor
+      dockerfile: Dockerfile
+      args:
+        - ENVIRONMENT=test
+    container_name: helios-test-profile-ingestor
+    environment:
+      - PROFILE_INGESTOR_HOST=0.0.0.0
+      - PROFILE_INGESTOR_PORT=8001
+      - LOG_LEVEL=INFO
+      - TESTING=true
+      - TEST_MODE=integration
+    ports:
+      - "8101:8001"  # Different port for testing
+    volumes:
+      - ./tests/integration/fixtures/resumes:/app/test_uploads:ro
+      - ./tests/integration/fixtures/output:/app/test_output:rw
+      - ./services/profile-ingestor/src:/app/src:ro
+    networks:
+      - helios-test
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8001/health"]
+      interval: 15s
+      timeout: 10s
+      retries: 5
+      start_period: 30s
+
+  # HELIOS Orchestrator Service (Test Mode)
+  orchestrator-test:
+    build:
+      context: ./services/orchestrator
+      dockerfile: Dockerfile
+      args:
+        - ENVIRONMENT=test
+    container_name: helios-test-orchestrator
+    environment:
+      - DEBUG=true
+      - LOG_LEVEL=INFO
+      - TESTING=true
+      - TEST_MODE=integration
+      - DATABASE_URL=postgresql+asyncpg://helios_test:helios_test_password@postgres-test:5432/helios_test
+      - REDIS_URL=redis://redis-test:6379/0
+      - PROFILE_INGESTOR_URL=http://profile-ingestor-test:8001
+      - STRATEGIST_URL=http://strategist-test:8002
+      - ANALYST_URL=http://analyst-test:8003
+      - SESSION_TIMEOUT_MINUTES=30
+      - CORS_ORIGINS=*
+      - REQUEST_TIMEOUT_SECONDS=30
+      - MAX_CONCURRENT_REQUESTS=10
+    ports:
+      - "8100:8000"  # Different port for testing
+    volumes:
+      - ./services/orchestrator/src:/app/src:ro
+      - ./tests/integration/fixtures/data:/app/test_data:rw
+    depends_on:
+      postgres-test:
+        condition: service_healthy
+      redis-test:
+        condition: service_healthy
+      profile-ingestor-test:
+        condition: service_healthy
+    networks:
+      - helios-test
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "python", "-c", "import requests; requests.get('http://localhost:8000/health/ready')"]
+      interval: 15s
+      timeout: 10s
+      retries: 5
+      start_period: 45s
+
+  # Strategist Service (Test Mode)
+  strategist-test:
+    build:
+      context: ./services/strategist
+      dockerfile: Dockerfile
+      args:
+        - ENVIRONMENT=test
+    container_name: helios-test-strategist
+    environment:
+      - STRATEGIST_HOST=0.0.0.0
+      - STRATEGIST_PORT=8002
+      - LOG_LEVEL=INFO
+      - TESTING=true
+      - TEST_MODE=integration
+      - REDIS_URL=redis://redis-test:6379/1
+      - MODEL_CACHE_SIZE=128MB
+      - MOCK_ML_MODELS=true  # Use mock models for testing
+    ports:
+      - "8102:8002"  # Different port for testing
+    volumes:
+      - ./services/strategist/src:/app/src:ro
+      - ./tests/integration/fixtures/ml_models:/app/test_models:rw
+    depends_on:
+      redis-test:
+        condition: service_healthy
+    networks:
+      - helios-test
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "python", "-c", "import requests; requests.get('http://localhost:8002/health')"]
+      interval: 15s
+      timeout: 10s
+      retries: 5
+      start_period: 60s
+
+  # Analyst Service (Test Mode)
+  analyst-test:
+    build:
+      context: ./services/analyst
+      dockerfile: Dockerfile
+      args:
+        - ENVIRONMENT=test
+    container_name: helios-test-analyst
+    environment:
+      - ANALYST_HOST=0.0.0.0
+      - ANALYST_PORT=8003
+      - LOG_LEVEL=INFO
+      - TESTING=true
+      - TEST_MODE=integration
+      - DATABASE_URL=postgresql+asyncpg://helios_test:helios_test_password@postgres-test:5432/helios_test
+      - REDIS_URL=redis://redis-test:6379/2
+      - MOCK_MARKET_DATA=true  # Use mock market data for testing
+    ports:
+      - "8103:8003"  # Different port for testing
+    volumes:
+      - ./services/analyst/src:/app/src:ro
+      - ./tests/integration/fixtures/market_data:/app/test_data:rw
+    depends_on:
+      postgres-test:
+        condition: service_healthy
+      redis-test:
+        condition: service_healthy
+    networks:
+      - helios-test
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8003/health"]
+      interval: 15s
+      timeout: 10s
+      retries: 5
+      start_period: 45s
+
+  # Test Runner Service
+  test-runner:
+    build:
+      context: .
+      dockerfile: tests/integration/Dockerfile.test
+    container_name: helios-test-runner
+    environment:
+      - PYTEST_CURRENT_TEST=integration
+      - DATABASE_URL=postgresql+asyncpg://helios_test:helios_test_password@postgres-test:5432/helios_test
+      - REDIS_URL=redis://redis-test:6379/0
+      - ORCHESTRATOR_URL=http://orchestrator-test:8000
+      - PROFILE_INGESTOR_URL=http://profile-ingestor-test:8001
+      - STRATEGIST_URL=http://strategist-test:8002
+      - ANALYST_URL=http://analyst-test:8003
+      - PYTHONPATH=/app
+    volumes:
+      - .:/app:ro
+      - ./tests/integration/reports:/app/reports:rw
+    depends_on:
+      orchestrator-test:
+        condition: service_healthy
+      profile-ingestor-test:
+        condition: service_healthy
+      strategist-test:
+        condition: service_healthy
+      analyst-test:
+        condition: service_healthy
+    networks:
+      - helios-test
+    profiles:
+      - test
+    command: >
+      sh -c "
+        echo 'Waiting for all services to be ready...' &&
+        sleep 30 &&
+        echo 'Running integration tests...' &&
+        python -m pytest tests/integration/
+          --verbose
+          --tb=short
+          --junit-xml=reports/integration-test-results.xml
+          --html=reports/integration-test-report.html
+          --self-contained-html
+          --cov=services
+          --cov-report=html:reports/coverage
+          --cov-report=term
+          --durations=10
+          -m 'integration'
+      "
+
+  # Performance Test Runner
+  performance-test-runner:
+    build:
+      context: .
+      dockerfile: tests/integration/Dockerfile.test
+    container_name: helios-performance-test-runner
+    environment:
+      - PYTEST_CURRENT_TEST=performance
+      - DATABASE_URL=postgresql+asyncpg://helios_test:helios_test_password@postgres-test:5432/helios_test
+      - REDIS_URL=redis://redis-test:6379/0
+      - ORCHESTRATOR_URL=http://orchestrator-test:8000
+      - PROFILE_INGESTOR_URL=http://profile-ingestor-test:8001
+      - STRATEGIST_URL=http://strategist-test:8002
+      - ANALYST_URL=http://analyst-test:8003
+      - PYTHONPATH=/app
+    volumes:
+      - .:/app:ro
+      - ./tests/integration/reports:/app/reports:rw
+    depends_on:
+      orchestrator-test:
+        condition: service_healthy
+      profile-ingestor-test:
+        condition: service_healthy
+      strategist-test:
+        condition: service_healthy
+      analyst-test:
+        condition: service_healthy
+    networks:
+      - helios-test
+    profiles:
+      - performance
+    command: >
+      sh -c "
+        echo 'Waiting for all services to be ready...' &&
+        sleep 30 &&
+        echo 'Running performance tests...' &&
+        python -m pytest tests/integration/
+          --verbose
+          --tb=short
+          --junit-xml=reports/performance-test-results.xml
+          --html=reports/performance-test-report.html
+          --self-contained-html
+          --durations=20
+          -m 'performance'
+          --timeout=300
+      "
+
+  # Load Test Monitor (Grafana-like monitoring for tests)
+  test-monitor:
+    image: prom/prometheus:latest
+    container_name: helios-test-monitor
+    ports:
+      - "9090:9090"
+    volumes:
+      - ./tests/integration/monitoring/prometheus.yml:/etc/prometheus/prometheus.yml
+    networks:
+      - helios-test
+    profiles:
+      - monitoring
+    restart: unless-stopped
+
+networks:
+  helios-test:
+    driver: bridge
+    name: helios-test-network
+
+volumes:
+  postgres_test_data:
+    driver: local
+    name: helios-test-postgres-data
+  redis_test_data:
+    driver: local
+    name: helios-test-redis-data

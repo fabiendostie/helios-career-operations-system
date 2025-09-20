@@ -1,0 +1,30 @@
+# Test Runner Dockerfile for Helios Integration Tests
+FROM python:3.13.1-slim
+
+# Set working directory
+WORKDIR /app
+
+# Install system dependencies
+RUN apt-get update && apt-get install -y \
+    curl \
+    git \
+    build-essential \
+    && rm -rf /var/lib/apt/lists/*
+
+# Install Python dependencies
+COPY requirements.txt .
+COPY tests/integration/requirements-test.txt ./tests/integration/
+RUN pip install --no-cache-dir -r requirements.txt
+RUN pip install --no-cache-dir -r tests/integration/requirements-test.txt
+
+# Copy source code
+COPY . .
+
+# Create reports directory
+RUN mkdir -p reports
+
+# Set Python path
+ENV PYTHONPATH=/app
+
+# Default command (can be overridden)
+CMD ["python", "-m", "pytest", "tests/integration/", "--verbose"]

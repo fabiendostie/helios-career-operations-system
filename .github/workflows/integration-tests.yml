@@ -1,0 +1,336 @@
+name: Integration Tests
+
+on:
+  push:
+    branches: [ main, development ]
+  pull_request:
+    branches: [ main, development ]
+  schedule:
+    # Run integration tests nightly at 2 AM UTC
+    - cron: '0 2 * * *'
+
+env:
+  PYTHON_VERSION: '3.13.1'
+  NODE_VERSION: '18'
+
+jobs:
+  integration-tests:
+    runs-on: ubuntu-latest
+    timeout-minutes: 60
+
+    services:
+      postgres:
+        image: postgres:15-alpine
+        env:
+          POSTGRES_DB: helios_test
+          POSTGRES_USER: helios_test
+          POSTGRES_PASSWORD: helios_test_password
+        options: >-
+          --health-cmd pg_isready
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
+        ports:
+          - 5432:5432
+
+      redis:
+        image: redis:7-alpine
+        options: >-
+          --health-cmd "redis-cli ping"
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
+        ports:
+          - 6379:6379
+
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+
+    - name: Set up Python
+      uses: actions/setup-python@v4
+      with:
+        python-version: ${{ env.PYTHON_VERSION }}
+
+    - name: Set up Node.js
+      uses: actions/setup-node@v4
+      with:
+        node-version: ${{ env.NODE_VERSION }}
+
+    - name: Cache Python dependencies
+      uses: actions/cache@v3
+      with:
+        path: ~/.cache/pip
+        key: ${{ runner.os }}-pip-${{ hashFiles('**/requirements*.txt') }}
+        restore-keys: |
+          ${{ runner.os }}-pip-
+
+    - name: Install system dependencies
+      run: |
+        sudo apt-get update
+        sudo apt-get install -y curl build-essential
+
+    - name: Install Python dependencies
+      run: |
+        python -m pip install --upgrade pip
+        pip install -r requirements.txt
+        pip install -r tests/integration/requirements-test.txt
+
+    - name: Set up Docker Buildx
+      uses: docker/setup-buildx-action@v3
+
+    - name: Cache Docker layers
+      uses: actions/cache@v3
+      with:
+        path: /tmp/.buildx-cache
+        key: ${{ runner.os }}-buildx-${{ github.sha }}
+        restore-keys: |
+          ${{ runner.os }}-buildx-
+
+    - name: Create test reports directory
+      run: mkdir -p tests/integration/reports
+
+    - name: Start test services
+      run: |
+        docker-compose -f docker-compose.test.yml up -d --build
+        echo "Waiting for services to start..."
+        sleep 30
+
+    - name: Wait for services to be healthy
+      run: |
+        timeout 300 bash -c '
+          until docker-compose -f docker-compose.test.yml ps | grep -q "healthy"; do
+            echo "Waiting for services to be healthy..."
+            sleep 10
+          done
+        '
+
+    - name: Run smoke tests
+      run: |
+        python -m pytest tests/integration/ \
+          -m "smoke" \
+          --verbose \
+          --tb=short \
+          --junit-xml=tests/integration/reports/smoke-test-results.xml \
+          --html=tests/integration/reports/smoke-test-report.html \
+          --self-contained-html
+
+    - name: Run integration tests
+      run: |
+        python -m pytest tests/integration/ \
+          -m "integration and not performance" \
+          --verbose \
+          --tb=short \
+          --junit-xml=tests/integration/reports/integration-test-results.xml \
+          --html=tests/integration/reports/integration-test-report.html \
+          --self-contained-html \
+          --cov=services \
+          --cov-report=html:tests/integration/reports/coverage \
+          --cov-report=xml:tests/integration/reports/coverage.xml \
+          --cov-report=term \
+          --durations=10
+
+    - name: Run data validation tests
+      run: |
+        python -m pytest tests/integration/ \
+          -m "data_validation" \
+          --verbose \
+          --tb=short \
+          --junit-xml=tests/integration/reports/validation-test-results.xml
+
+    - name: Run error handling tests
+      run: |
+        python -m pytest tests/integration/ \
+          -m "error_handling" \
+          --verbose \
+          --tb=short \
+          --junit-xml=tests/integration/reports/error-test-results.xml
+
+    - name: Check service logs on failure
+      if: failure()
+      run: |
+        echo "=== Orchestrator Logs ==="
+        docker-compose -f docker-compose.test.yml logs orchestrator-test
+        echo "=== Profile Ingestor Logs ==="
+        docker-compose -f docker-compose.test.yml logs profile-ingestor-test
+        echo "=== Strategist Logs ==="
+        docker-compose -f docker-compose.test.yml logs strategist-test
+        echo "=== Analyst Logs ==="
+        docker-compose -f docker-compose.test.yml logs analyst-test
+
+    - name: Upload test results
+      uses: actions/upload-artifact@v3
+      if: always()
+      with:
+        name: integration-test-results
+        path: |
+          tests/integration/reports/
+          !tests/integration/reports/.gitkeep
+
+    - name: Upload coverage reports to Codecov
+      uses: codecov/codecov-action@v3
+      if: always()
+      with:
+        file: tests/integration/reports/coverage.xml
+        flags: integration
+        name: integration-coverage
+        fail_ci_if_error: false
+
+    - name: Publish test results
+      uses: dorny/test-reporter@v1
+      if: always()
+      with:
+        name: Integration Test Results
+        path: tests/integration/reports/*-test-results.xml
+        reporter: java-junit
+        fail-on-error: false
+
+    - name: Clean up
+      if: always()
+      run: |
+        docker-compose -f docker-compose.test.yml down -v
+        docker system prune -f
+
+  performance-tests:
+    runs-on: ubuntu-latest
+    timeout-minutes: 90
+    if: github.event_name == 'schedule' || contains(github.event.head_commit.message, '[perf]')
+
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+
+    - name: Set up Python
+      uses: actions/setup-python@v4
+      with:
+        python-version: ${{ env.PYTHON_VERSION }}
+
+    - name: Install dependencies
+      run: |
+        python -m pip install --upgrade pip
+        pip install -r requirements.txt
+        pip install -r tests/integration/requirements-test.txt
+
+    - name: Start test services
+      run: |
+        docker-compose -f docker-compose.test.yml up -d --build
+        sleep 60  # Longer wait for performance tests
+
+    - name: Run performance tests
+      run: |
+        python -m pytest tests/integration/ \
+          -m "performance" \
+          --verbose \
+          --tb=short \
+          --junit-xml=tests/integration/reports/performance-test-results.xml \
+          --html=tests/integration/reports/performance-test-report.html \
+          --self-contained-html \
+          --timeout=600 \
+          --durations=20
+
+    - name: Upload performance results
+      uses: actions/upload-artifact@v3
+      if: always()
+      with:
+        name: performance-test-results
+        path: tests/integration/reports/
+
+    - name: Clean up
+      if: always()
+      run: |
+        docker-compose -f docker-compose.test.yml down -v
+        docker system prune -f
+
+  security-integration-tests:
+    runs-on: ubuntu-latest
+    timeout-minutes: 45
+
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+
+    - name: Run security integration tests
+      run: |
+        # Placeholder for security-specific integration tests
+        echo "Security integration tests would run here"
+        # These would test:
+        # - Authentication/authorization flows
+        # - Data encryption in transit
+        # - Input validation and sanitization
+        # - Rate limiting and abuse prevention
+
+    - name: Security scan of running services
+      run: |
+        # Placeholder for security scanning
+        echo "Security scan would run here"
+        # Could use tools like:
+        # - OWASP ZAP for API security testing
+        # - Bandit for Python security issues
+        # - Safety for dependency vulnerabilities
+
+  end-to-end-workflow:
+    runs-on: ubuntu-latest
+    timeout-minutes: 45
+    needs: [integration-tests]
+
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+
+    - name: Set up Python
+      uses: actions/setup-python@v4
+      with:
+        python-version: ${{ env.PYTHON_VERSION }}
+
+    - name: Install dependencies
+      run: |
+        python -m pip install --upgrade pip
+        pip install -r requirements.txt
+        pip install -r tests/integration/requirements-test.txt
+
+    - name: Start test services
+      run: |
+        docker-compose -f docker-compose.test.yml up -d --build
+        sleep 45
+
+    - name: Run end-to-end workflow tests
+      run: |
+        python tests/integration/test_runner.py \
+          --type integration \
+          --markers "not performance"
+
+    - name: Generate workflow report
+      run: |
+        python -c "
+        import json
+        import time
+
+        report = {
+            'timestamp': time.time(),
+            'workflow': 'complete',
+            'services_tested': [
+                'orchestrator', 'profile-ingestor',
+                'strategist', 'analyst'
+            ],
+            'test_types': [
+                'end_to_end', 'service_communication',
+                'data_flow', 'error_handling'
+            ]
+        }
+
+        with open('tests/integration/reports/workflow-report.json', 'w') as f:
+            json.dump(report, f, indent=2)
+        "
+
+    - name: Upload workflow results
+      uses: actions/upload-artifact@v3
+      if: always()
+      with:
+        name: end-to-end-workflow-results
+        path: tests/integration/reports/
+
+    - name: Clean up
+      if: always()
+      run: |
+        docker-compose -f docker-compose.test.yml down -v
+        docker system prune -f
