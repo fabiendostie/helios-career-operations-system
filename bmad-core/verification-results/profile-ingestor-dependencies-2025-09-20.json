@@ -1,0 +1,61 @@
+{
+  "agent_id": "profile-ingestor",
+  "verification_date": "2025-09-20",
+  "dependency_status": {
+    "spacy": {
+      "type": "python_package",
+      "spec": "spacy>=4.0.2",
+      "installed": true,
+      "error": null
+    },
+    "questionary": {
+      "type": "python_package",
+      "spec": "questionary>=2.1.0",
+      "installed": true,
+      "error": null
+    },
+    "pypdf": {
+      "type": "python_package",
+      "spec": "pypdf>=4.5.1",
+      "installed": true,
+      "error": null
+    },
+    "python-docx": {
+      "type": "python_package",
+      "spec": "python-docx>=1.2.0",
+      "installed": false,
+      "error": "  File \"<string>\", line 1\n    import python-docx\n                 ^\nSyntaxError: invalid syntax\n"
+    },
+    "PyYAML": {
+      "type": "python_package",
+      "spec": "PyYAML>=6.1.0",
+      "installed": false,
+      "error": "Traceback (most recent call last):\n  File \"<string>\", line 1, in <module>\n    import PyYAML\nModuleNotFoundError: No module named 'PyYAML'\n"
+    },
+    "mistune": {
+      "type": "python_package",
+      "spec": "mistune>=3.1.0",
+      "installed": true,
+      "error": null
+    },
+    "en_core_web_sm": {
+      "type": "spacy_model",
+      "installed": true,
+      "error": null
+    },
+    "fr_core_news_sm": {
+      "type": "spacy_model",
+      "installed": true,
+      "error": null
+    }
+  },
+  "missing_packages": [
+    "python-docx>=1.2.0",
+    "PyYAML>=6.1.0"
+  ],
+  "missing_models": [],
+  "installation_commands": [
+    "pip install \"python-docx>=1.2.0\" \"PyYAML>=6.1.0\""
+  ],
+  "all_dependencies_satisfied": false
+}
