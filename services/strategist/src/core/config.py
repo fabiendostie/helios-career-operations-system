@@ -8,31 +8,31 @@ from dataclasses import dataclass
 @dataclass
 class StrategistConfig:
     """Configuration for STRATEGIST service."""
-    
+
     # Service configuration
     host: str = "0.0.0.0"
     port: int = 8002
     debug: bool = False
-    
+
     # AI/ML configuration
     embedding_model: str = "all-MiniLM-L6-v2"
     max_career_paths: int = 3
     skill_weight: float = 0.65
     aspiration_weight: float = 0.35
-    
+
     # Performance configuration
     max_response_time: float = 3.0
     cache_ttl: int = 300  # 5 minutes
-    
+
     # Integration configuration
     orchestrator_url: str = "http://localhost:8001"
     orchestrator_timeout: float = 10.0
-    
+
     # Redis cache configuration
     redis_enabled: bool = True
     redis_url: str = "redis://localhost:6379"
     redis_ttl: int = 3600  # 1 hour TTL for cached vectors
-    
+
     @classmethod
     def from_env(cls) -> "StrategistConfig":
         """Load configuration from environment variables."""

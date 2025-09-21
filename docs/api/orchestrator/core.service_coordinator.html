@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>core.service_coordinator - orchestrator</title>
+    <style>
+        body { font-family: Arial, sans-serif; margin: 40px; background: #f8f9fa; }
+        .container { max-width: 1200px; margin: 0 auto; background: white; padding: 30px; border-radius: 8px; box-shadow: 0 2px 10px rgba(0,0,0,0.1); }
+        .header { background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; padding: 20px; border-radius: 5px; margin-bottom: 30px; }
+        .section { margin: 20px 0; padding: 20px; border-left: 4px solid #667eea; background: #f8f9ff; }
+        .docstring { background: #fff; padding: 15px; border-radius: 5px; border: 1px solid #e0e0e0; margin: 10px 0; white-space: pre-wrap; }
+        .nav { margin-bottom: 20px; }
+        .nav a { color: #667eea; text-decoration: none; margin-right: 20px; }
+        .nav a:hover { text-decoration: underline; }
+        h1, h2, h3 { color: #333; }
+        .module-path { color: #666; font-style: italic; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>core.service_coordinator</h1>
+            <p class="module-path">Service: orchestrator • Path: core\service_coordinator.py</p>
+        </div>
+
+        <div class="nav">
+            <a href="../index.html">← Back to API Index</a>
+            <a href="../orchestrator/index.html">← orchestrator Overview</a>
+        </div>
+
+        <div class="section">
+            <h2>Module Description</h2>
+            <div class="docstring">Cross-service coordination and pipeline management.</div>
+        </div>
+
+        <div class="section">
+            <h2>Classes</h2>
+
+            <h3>ServiceCoordinationError</h3>
+            <div class="docstring">Exception raised during service coordination.</div>
+
+            <h3>ServiceCoordinator</h3>
+            <div class="docstring">Coordinates cross-service operations and pipeline execution.</div>
+        </div>
+        <div class="section">
+            <h2>Functions</h2>
+
+            <h3>_get_current_timestamp()</h3>
+            <div class="docstring">Get current timestamp using internet time or system fallback.</div>
+
+            <h3>__init__()</h3>
+            <div class="docstring">Initialize service coordinator.
+
+Args:
+    session_manager: Session management service
+    profile_ingestor: Profile ingestor client
+    strategist: Strategist service client
+    analyst: Analyst service client</div>
+
+            <h3>async execute_full_pipeline()</h3>
+            <div class="docstring">Execute the complete Profile Ingestor → Strategist → Analyst pipeline.
+
+Args:
+    session_id: Session identifier
+    resume_path: Path to resume file (optional)
+    career_data: Direct career data input (optional)
+
+Returns:
+    Complete pipeline results
+
+Raises:
+    ServiceCoordinationError: If pipeline execution fails</div>
+
+            <h3>async _execute_profile_ingestion()</h3>
+            <div class="docstring">Execute profile ingestion step.
+
+Args:
+    session_id: Session identifier
+    resume_path: Path to resume file
+
+Returns:
+    Profile data from ingestion</div>
+
+            <h3>async _execute_career_strategy()</h3>
+            <div class="docstring">Execute career strategy generation step.
+
+Args:
+    session_id: Session identifier
+    profile_data: Profile data from ingestion
+
+Returns:
+    Career strategy results</div>
+
+            <h3>async _execute_market_analysis()</h3>
+            <div class="docstring">Execute market analysis step.
+
+Args:
+    session_id: Session identifier
+    profile_data: Profile data from ingestion
+    strategy_results: Results from career strategy generation
+
+Returns:
+    Market analysis results</div>
+
+            <h3>async _update_session_state()</h3>
+            <div class="docstring">Update session state and step.
+
+Args:
+    session_id: Session identifier
+    state: New session state
+    step: New current step</div>
+
+            <h3>async _update_session_data()</h3>
+            <div class="docstring">Update session with additional data.
+
+Args:
+    session_id: Session identifier
+    data: Data to add to session</div>
+
+            <h3>async get_pipeline_status()</h3>
+            <div class="docstring">Get current pipeline execution status.
+
+Args:
+    session_id: Session identifier
+
+Returns:
+    Pipeline status information</div>
+
+            <h3>_calculate_progress()</h3>
+            <div class="docstring">Calculate pipeline progress percentage.
+
+Args:
+    current_step: Current pipeline step
+
+Returns:
+    Progress percentage (0.0 to 1.0)</div>
+
+            <h3>async health_check_all_services()</h3>
+            <div class="docstring">Perform health check on all coordinated services.
+
+Returns:
+    Health status of all services</div>
+        </div>
+    </div>
+</body>
+</html>

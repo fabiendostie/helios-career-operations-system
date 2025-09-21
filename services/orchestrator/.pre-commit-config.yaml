@@ -7,7 +7,7 @@ repos:
       - id: black
         language_version: python3.13
         args: [--line-length=88]
-        
+
   # Python linting with Ruff
   - repo: https://github.com/astral-sh/ruff-pre-commit
     rev: v0.8.7
@@ -15,7 +15,7 @@ repos:
       - id: ruff
         args: [--fix, --exit-non-zero-on-fix]
       - id: ruff-format
-        
+
   # General file checks
   - repo: https://github.com/pre-commit/pre-commit-hooks
     rev: v5.0.0
@@ -28,7 +28,7 @@ repos:
       - id: check-json
       - id: pretty-format-json
         args: [--autofix]
-        
+
   # Security scanning with Bandit
   - repo: https://github.com/PyCQA/bandit
     rev: 1.8.0
@@ -36,7 +36,7 @@ repos:
       - id: bandit
         args: [-r, src/, -f, json, -o, bandit-report.json]
         pass_filenames: false
-        
+
   # Dockerfile linting
   - repo: https://github.com/hadolint/hadolint
     rev: v2.12.0

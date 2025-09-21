@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>tests.test_retry - shared</title>
+    <style>
+        body { font-family: Arial, sans-serif; margin: 40px; background: #f8f9fa; }
+        .container { max-width: 1200px; margin: 0 auto; background: white; padding: 30px; border-radius: 8px; box-shadow: 0 2px 10px rgba(0,0,0,0.1); }
+        .header { background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; padding: 20px; border-radius: 5px; margin-bottom: 30px; }
+        .section { margin: 20px 0; padding: 20px; border-left: 4px solid #667eea; background: #f8f9ff; }
+        .docstring { background: #fff; padding: 15px; border-radius: 5px; border: 1px solid #e0e0e0; margin: 10px 0; white-space: pre-wrap; }
+        .nav { margin-bottom: 20px; }
+        .nav a { color: #667eea; text-decoration: none; margin-right: 20px; }
+        .nav a:hover { text-decoration: underline; }
+        h1, h2, h3 { color: #333; }
+        .module-path { color: #666; font-style: italic; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>tests.test_retry</h1>
+            <p class="module-path">Service: shared • Path: tests\test_retry.py</p>
+        </div>
+
+        <div class="nav">
+            <a href="../index.html">← Back to API Index</a>
+            <a href="../shared/index.html">← shared Overview</a>
+        </div>
+
+        <div class="section">
+            <h2>Module Description</h2>
+            <div class="docstring">Tests for retry logic implementation.</div>
+        </div>
+
+        <div class="section">
+            <h2>Classes</h2>
+
+            <h3>TestRetryHandler</h3>
+            <div class="docstring">Test RetryHandler class.</div>
+        </div>
+        <div class="section">
+            <h2>Functions</h2>
+
+            <h3>async test_successful_execution_no_retry()</h3>
+            <div class="docstring">Test successful execution on first try.</div>
+
+            <h3>async test_sync_function_support()</h3>
+            <div class="docstring">Test retry handler works with sync functions.</div>
+
+            <h3>async test_eventual_success_after_retries()</h3>
+            <div class="docstring">Test eventual success after some failures.</div>
+
+            <h3>async test_all_retries_exhausted()</h3>
+            <div class="docstring">Test behavior when all retries are exhausted.</div>
+
+            <h3>async test_non_retryable_exception()</h3>
+            <div class="docstring">Test that non-retryable exceptions are not retried.</div>
+
+            <h3>async test_specific_retryable_exceptions()</h3>
+            <div class="docstring">Test retrying only specific exception types.</div>
+
+            <h3>test_delay_calculation_exponential()</h3>
+            <div class="docstring">Test exponential backoff delay calculation.</div>
+
+            <h3>test_delay_calculation_max_cap()</h3>
+            <div class="docstring">Test delay is capped at max_delay.</div>
+
+            <h3>test_delay_calculation_with_jitter()</h3>
+            <div class="docstring">Test delay calculation includes jitter.</div>
+
+            <h3>test_get_retry_info()</h3>
+            <div class="docstring">Test retry information generation.</div>
+
+            <h3>async test_timing_with_actual_delays()</h3>
+            <div class="docstring">Test that actual delays are applied during retries.</div>
+
+            <h3>async test_function_with_args_and_kwargs()</h3>
+            <div class="docstring">Test retry handler passes arguments correctly.</div>
+
+            <h3>async test_zero_retries_config()</h3>
+            <div class="docstring">Test configuration with zero retries.</div>
+        </div>
+    </div>
+</body>
+</html>

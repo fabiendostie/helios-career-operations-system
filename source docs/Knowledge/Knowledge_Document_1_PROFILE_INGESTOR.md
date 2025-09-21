@@ -77,4 +77,3 @@ To ensure data integrity, the agent must actively avoid common interviewing bias
   * **Halo/Horn Effect:** Do not let one particularly good or bad answer color the entire interview. Treat each question section as a distinct data-gathering phase.
 
 -----
-

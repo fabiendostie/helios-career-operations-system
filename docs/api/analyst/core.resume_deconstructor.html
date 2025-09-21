@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>core.resume_deconstructor - analyst</title>
+    <style>
+        body { font-family: Arial, sans-serif; margin: 40px; background: #f8f9fa; }
+        .container { max-width: 1200px; margin: 0 auto; background: white; padding: 30px; border-radius: 8px; box-shadow: 0 2px 10px rgba(0,0,0,0.1); }
+        .header { background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; padding: 20px; border-radius: 5px; margin-bottom: 30px; }
+        .section { margin: 20px 0; padding: 20px; border-left: 4px solid #667eea; background: #f8f9ff; }
+        .docstring { background: #fff; padding: 15px; border-radius: 5px; border: 1px solid #e0e0e0; margin: 10px 0; white-space: pre-wrap; }
+        .nav { margin-bottom: 20px; }
+        .nav a { color: #667eea; text-decoration: none; margin-right: 20px; }
+        .nav a:hover { text-decoration: underline; }
+        h1, h2, h3 { color: #333; }
+        .module-path { color: #666; font-style: italic; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>core.resume_deconstructor</h1>
+            <p class="module-path">Service: analyst • Path: core\resume_deconstructor.py</p>
+        </div>
+
+        <div class="nav">
+            <a href="../index.html">← Back to API Index</a>
+            <a href="../analyst/index.html">← analyst Overview</a>
+        </div>
+
+        <div class="section">
+            <h2>Module Description</h2>
+            <div class="docstring">Resume deconstruction engine with NLP processing and NER extraction.</div>
+        </div>
+
+        <div class="section">
+            <h2>Classes</h2>
+
+            <h3>ResumeDeconstructor</h3>
+            <div class="docstring">Resume deconstruction engine with multilingual NLP processing.</div>
+        </div>
+        <div class="section">
+            <h2>Functions</h2>
+
+            <h3>__init__()</h3>
+            <div class="docstring">Initialize NLP models and processing components.</div>
+
+            <h3>_load_models()</h3>
+            <div class="docstring">Load spaCy models and Sentence-BERT.</div>
+
+            <h3>_setup_matchers()</h3>
+            <div class="docstring">Setup spaCy matchers for professional entities.</div>
+
+            <h3>_get_high_impact_verbs()</h3>
+            <div class="docstring">Get list of high-impact action verbs.</div>
+
+            <h3>detect_language()</h3>
+            <div class="docstring">Detect primary language of text.</div>
+
+            <h3>extract_entities()</h3>
+            <div class="docstring">Extract professional entities from text.</div>
+
+            <h3>_classify_entity()</h3>
+            <div class="docstring">Classify spaCy entity into professional type.</div>
+
+            <h3>_extract_skills()</h3>
+            <div class="docstring">Extract technical and soft skills using domain knowledge.</div>
+
+            <h3>_get_entity_context()</h3>
+            <div class="docstring">Get surrounding context for an entity.</div>
+
+            <h3>_deduplicate_entities()</h3>
+            <div class="docstring">Remove duplicate entities based on text and position overlap.</div>
+
+            <h3>generate_semantic_embeddings()</h3>
+            <div class="docstring">Generate Sentence-BERT embeddings for accomplishment statements.</div>
+
+            <h3>process_resume_sections()</h3>
+            <div class="docstring">Process all resume sections and extract entities.</div>
+        </div>
+    </div>
+</body>
+</html>

@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>llm_client.providers - shared</title>
+    <style>
+        body { font-family: Arial, sans-serif; margin: 40px; background: #f8f9fa; }
+        .container { max-width: 1200px; margin: 0 auto; background: white; padding: 30px; border-radius: 8px; box-shadow: 0 2px 10px rgba(0,0,0,0.1); }
+        .header { background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; padding: 20px; border-radius: 5px; margin-bottom: 30px; }
+        .section { margin: 20px 0; padding: 20px; border-left: 4px solid #667eea; background: #f8f9ff; }
+        .docstring { background: #fff; padding: 15px; border-radius: 5px; border: 1px solid #e0e0e0; margin: 10px 0; white-space: pre-wrap; }
+        .nav { margin-bottom: 20px; }
+        .nav a { color: #667eea; text-decoration: none; margin-right: 20px; }
+        .nav a:hover { text-decoration: underline; }
+        h1, h2, h3 { color: #333; }
+        .module-path { color: #666; font-style: italic; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>llm_client.providers</h1>
+            <p class="module-path">Service: shared • Path: llm_client\providers.py</p>
+        </div>
+
+        <div class="nav">
+            <a href="../index.html">← Back to API Index</a>
+            <a href="../shared/index.html">← shared Overview</a>
+        </div>
+
+        <div class="section">
+            <h2>Module Description</h2>
+            <div class="docstring">LLM provider implementations for different APIs.</div>
+        </div>
+
+        <div class="section">
+            <h2>Classes</h2>
+
+            <h3>BaseLLMProvider</h3>
+            <div class="docstring">Base class for LLM providers.</div>
+
+            <h3>OpenAIProvider</h3>
+            <div class="docstring">OpenAI API provider.</div>
+
+            <h3>AnthropicProvider</h3>
+            <div class="docstring">Anthropic API provider.</div>
+
+            <h3>AzureOpenAIProvider</h3>
+            <div class="docstring">Azure OpenAI API provider.</div>
+        </div>
+        <div class="section">
+            <h2>Functions</h2>
+
+            <h3>get_provider()</h3>
+            <div class="docstring">Factory function to get the appropriate provider instance.
+
+Args:
+    config: Provider configuration
+
+Returns:
+    Provider instance
+
+Raises:
+    ValueError: If provider type is not supported</div>
+
+            <h3>async generate()</h3>
+            <div class="docstring">Generate response using Azure OpenAI API.</div>
+
+            <h3>_prepare_headers()</h3>
+            <div class="docstring">Prepare headers for Azure OpenAI API.</div>
+        </div>
+    </div>
+</body>
+</html>

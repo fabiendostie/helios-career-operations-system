@@ -6,46 +6,46 @@ This epic establishes the complete end-to-end pipeline for the Intelligent Resum
 ## Story Execution Order
 
 ### ✅ Story 1.1: Project Initialization & Dependency Setup
-**Status:** Ready for implementation  
-**File:** `story_1_1_setup.md`  
-**Dependencies:** None  
-**Estimated Effort:** 2 hours  
+**Status:** Ready for implementation
+**File:** `story_1_1_setup.md`
+**Dependencies:** None
+**Estimated Effort:** 2 hours
 
-### ✅ Story 1.2: Implement File Ingestion & Language Detection  
-**Status:** Ready for implementation  
-**File:** `story_1_2_ingestion.md`  
-**Dependencies:** Story 1.1 completed  
-**Estimated Effort:** 4 hours  
+### ✅ Story 1.2: Implement File Ingestion & Language Detection
+**Status:** Ready for implementation
+**File:** `story_1_2_ingestion.md`
+**Dependencies:** Story 1.1 completed
+**Estimated Effort:** 4 hours
 
 ### ✅ Story 1.3: Develop Bilingual Resume Parser
-**Status:** Ready for implementation  
-**File:** `story_1_3_parser.md`  
-**Dependencies:** Story 1.1, 1.2 completed  
-**Estimated Effort:** 8 hours  
+**Status:** Ready for implementation
+**File:** `story_1_3_parser.md`
+**Dependencies:** Story 1.1, 1.2 completed
+**Estimated Effort:** 8 hours
 
 ### ✅ Story 1.4: Build Interactive Conflict Resolution Module
-**Status:** Ready for implementation  
-**File:** `story_1_4_conflict.md`  
-**Dependencies:** Story 1.3 completed  
-**Estimated Effort:** 6 hours  
+**Status:** Ready for implementation
+**File:** `story_1_4_conflict.md`
+**Dependencies:** Story 1.3 completed
+**Estimated Effort:** 6 hours
 
 ### ✅ Story 1.5: Implement Bilingual Skill Mapping
-**Status:** Ready for implementation  
-**File:** `story_1_5_skillmap.md`  
-**Dependencies:** Story 1.3 completed  
-**Estimated Effort:** 4 hours  
+**Status:** Ready for implementation
+**File:** `story_1_5_skillmap.md`
+**Dependencies:** Story 1.3 completed
+**Estimated Effort:** 4 hours
 
 ### ✅ Story 1.6: Build Interactive Elicitation Module
-**Status:** Ready for implementation  
-**File:** `story_1_6_elicitation.md`  
-**Dependencies:** Story 1.4 completed  
-**Estimated Effort:** 6 hours  
+**Status:** Ready for implementation
+**File:** `story_1_6_elicitation.md`
+**Dependencies:** Story 1.4 completed
+**Estimated Effort:** 6 hours
 
 ### ✅ Story 1.7: Generate Final JSON Output
-**Status:** Ready for implementation  
-**File:** `story_1_7_output.md`  
-**Dependencies:** All previous stories completed  
-**Estimated Effort:** 4 hours  
+**Status:** Ready for implementation
+**File:** `story_1_7_output.md`
+**Dependencies:** All previous stories completed
+**Estimated Effort:** 4 hours
 
 ## Pipeline Integration Points
 
@@ -67,33 +67,33 @@ class ResumePipeline:
         self.consolidation = ConsolidationEngine()
         self.elicitation = ElicitationUI()
         self.output = OutputGenerator()
-    
+
     def run(self, directory: Path) -> Path:
         """Execute the complete pipeline"""
-        
+
         # Stage 1: Ingestion
         documents = self.ingestion.ingest_files(directory)
-        
+
         # Stage 2: Parsing
         parsed_data = [
-            self.parser.parse_document(doc) 
+            self.parser.parse_document(doc)
             for doc in documents
         ]
-        
+
         # Stage 3: Consolidation with conflict resolution
         consolidated = self.consolidation.consolidate_with_resolution(
             parsed_data
         )
-        
+
         # Stage 4: Interactive elicitation
         enriched = self.elicitation.conduct_interview(consolidated)
-        
+
         # Merge elicited data
         final_data = {**consolidated, "holistic_profile": enriched}
-        
+
         # Stage 5: Generate output
         output_path = self.output.generate_json(final_data)
-        
+
         return output_path
 ```
 
@@ -101,7 +101,7 @@ class ResumePipeline:
 
 ### Unit Testing Coverage
 - Story 1.2: File handlers, language detection
-- Story 1.3: Entity extraction, conflict detection  
+- Story 1.3: Entity extraction, conflict detection
 - Story 1.4: UI components, resolution logic
 - Story 1.5: Skill mapping, fuzzy matching
 - Story 1.6: Question flow, data capture
@@ -113,20 +113,20 @@ class ResumePipeline:
 def test_end_to_end_pipeline():
     """Test complete pipeline with sample resumes"""
     pipeline = ResumePipeline()
-    
+
     # Use test data directory
     test_dir = Path("tests/sample_resumes")
-    
+
     # Run pipeline
     output = pipeline.run(test_dir)
-    
+
     # Validate output
     assert output.exists()
-    
+
     # Load and validate JSON
     with open(output) as f:
         data = json.load(f)
-    
+
     assert "work_experience" in data
     assert "skills_inventory" in data
     assert "holistic_profile" in data
@@ -172,7 +172,7 @@ def test_end_to_end_pipeline():
 
 ## Success Metrics
 - ✅ All file types successfully ingested
-- ✅ >95% language detection accuracy  
+- ✅ >95% language detection accuracy
 - ✅ All conflicts resolved without data loss
 - ✅ Bilingual skills properly mapped
 - ✅ Valid JSON output generated

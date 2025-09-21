@@ -1,16 +1,18 @@
-name: Documentation
+name: Documentation Build and Deploy
 
 on:
   push:
     branches: [main, development]
     paths:
-      - 'services/*/src/**/*.py'
+      - 'services/**/*.py'
       - 'scripts/generate_docs.py'
+      - 'scripts/watch_docs.py'
       - '.github/workflows/docs.yml'
   pull_request:
     branches: [main, development]
     paths:
-      - 'services/*/src/**/*.py'
+      - 'services/**/*.py'
+      - 'scripts/generate_docs.py'
   workflow_dispatch:
 
 permissions:
@@ -18,8 +20,13 @@ permissions:
   pages: write
   id-token: write
 
+concurrency:
+  group: "pages"
+  cancel-in-progress: false
+
 jobs:
   generate-docs:
+    name: Generate Documentation
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
@@ -29,29 +36,200 @@ jobs:
         uses: actions/setup-python@v5
         with:
           python-version: '3.13'
+          cache: 'pip'
 
-      - name: Install dependencies
+      - name: Generate API Documentation
         run: |
-          python -m pip install --upgrade pip
-          # Install dependencies for each service
-          cd services/profile-ingestor && pip install -r requirements.txt
-          cd ../orchestrator && pip install -r requirements.txt
+          echo "📚 Generating comprehensive API documentation..."
+          python scripts/generate_docs.py
 
-      - name: Generate Comprehensive Documentation
+      - name: Generate Story Documentation
         run: |
-          python scripts/generate_all_docs.py
+          echo "📖 Generating story documentation..."
+          if [ -f "scripts/generate_story_docs.py" ]; then
+            python scripts/generate_story_docs.py
+          else
+            echo "⚠️  Story documentation generator not found"
+          fi
+
+      - name: Create Documentation Index
+        run: |
+          echo "📋 Creating comprehensive documentation index..."
+          cat > docs/index.html << 'EOF'
+          <!DOCTYPE html>
+          <html>
+          <head>
+              <title>HELIOS Career Operations System - Documentation</title>
+              <meta charset="UTF-8">
+              <meta name="viewport" content="width=device-width, initial-scale=1.0">
+              <style>
+                  body { font-family: 'Segoe UI', sans-serif; margin: 0; padding: 40px; background: #f8f9fa; }
+                  .container { max-width: 1000px; margin: 0 auto; }
+                  .header { background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; padding: 40px; border-radius: 12px; margin-bottom: 40px; text-align: center; }
+                  .section { background: white; padding: 30px; border-radius: 8px; margin-bottom: 30px; box-shadow: 0 2px 10px rgba(0,0,0,0.1); }
+                  .nav-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 20px; }
+                  .nav-item { background: #f8f9ff; padding: 20px; border-radius: 8px; text-align: center; transition: transform 0.2s; }
+                  .nav-item:hover { transform: translateY(-2px); }
+                  .nav-item a { color: #667eea; text-decoration: none; font-weight: 500; }
+                  .nav-item h3 { margin: 0 0 10px 0; color: #333; }
+                  .stats { display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 20px; text-align: center; }
+                  .stat { background: #e3f2fd; padding: 20px; border-radius: 8px; }
+                  .stat-number { font-size: 2em; font-weight: bold; color: #1565c0; }
+                  .stat-label { color: #666; }
+              </style>
+          </head>
+          <body>
+              <div class="container">
+                  <div class="header">
+                      <h1>🚀 HELIOS Career Operations System</h1>
+                      <p>AI-Powered Career Intelligence Platform Documentation</p>
+                      <p>Complete system documentation and API reference</p>
+                  </div>
+
+                  <div class="section">
+                      <h2>📊 System Statistics</h2>
+                      <div class="stats">
+                          <div class="stat">
+                              <div class="stat-number">7</div>
+                              <div class="stat-label">Services</div>
+                          </div>
+                          <div class="stat">
+                              <div class="stat-number">200+</div>
+                              <div class="stat-label">API Endpoints</div>
+                          </div>
+                          <div class="stat">
+                              <div class="stat-number">85%+</div>
+                              <div class="stat-label">Test Coverage</div>
+                          </div>
+                          <div class="stat">
+                              <div class="stat-number">6</div>
+                              <div class="stat-label">User Stories</div>
+                          </div>
+                      </div>
+                  </div>
+
+                  <div class="section">
+                      <h2>📚 Documentation Sections</h2>
+                      <div class="nav-grid">
+                          <div class="nav-item">
+                              <h3>🔧 API Documentation</h3>
+                              <p>Complete API reference for all services</p>
+                              <a href="api/index.html">Browse API Docs →</a>
+                          </div>
+                          <div class="nav-item">
+                              <h3>📖 User Stories</h3>
+                              <p>Development stories and requirements</p>
+                              <a href="stories/">Browse Stories →</a>
+                          </div>
+                          <div class="nav-item">
+                              <h3>🏗️ Architecture</h3>
+                              <p>System architecture and design</p>
+                              <a href="02-architecture/">View Architecture →</a>
+                          </div>
+                          <div class="nav-item">
+                              <h3>📋 QA Gates</h3>
+                              <p>Quality assurance and testing</p>
+                              <a href="qa/gates/">Quality Gates →</a>
+                          </div>
+                          <div class="nav-item">
+                              <h3>🚀 Deployment</h3>
+                              <p>Deployment guides and operations</p>
+                              <a href="06-deployment/">Deployment Docs →</a>
+                          </div>
+                          <div class="nav-item">
+                              <h3>⚙️ Configuration</h3>
+                              <p>Configuration and setup guides</p>
+                              <a href="config/">Configuration →</a>
+                          </div>
+                      </div>
+                  </div>
+
+                  <div class="section">
+                      <h2>🔄 Auto-Generation Info</h2>
+                      <p>This documentation is automatically generated from source code and updated on every commit.</p>
+                      <p><strong>Last Updated:</strong> $(date -u +"%Y-%m-%d %H:%M:%S UTC")</p>
+                      <p><strong>Generated From:</strong> Commit $(echo $GITHUB_SHA | cut -c1-7)</p>
+                  </div>
+              </div>
+          </body>
+          </html>
+          EOF
+
+      - name: Validate Documentation
+        run: |
+          echo "🔍 Validating generated documentation..."
+
+          # Check main files
+          files_to_check=("docs/index.html" "docs/api/index.html")
+          for file in "${files_to_check[@]}"; do
+            if [ -f "$file" ]; then
+              echo "✅ $file exists"
+            else
+              echo "❌ $file missing"
+              exit 1
+            fi
+          done
+
+          # Count generated files
+          api_files=$(find docs/api -name "*.html" | wc -l)
+          echo "📊 Generated $api_files API documentation files"
+
+          # Validate HTML structure
+          if command -v python3 &> /dev/null; then
+            python3 << 'EOF'
+import os
+from pathlib import Path
+
+def validate_html_file(file_path):
+    """Basic HTML validation."""
+    try:
+        content = Path(file_path).read_text(encoding='utf-8')
+        if '<html>' in content and '</html>' in content:
+            if '<title>' in content and '</title>' in content:
+                return True
+    except Exception:
+        pass
+    return False
+
+docs_dir = Path('docs/api')
+valid_files = 0
+total_files = 0
+
+for html_file in docs_dir.rglob('*.html'):
+    total_files += 1
+    if validate_html_file(html_file):
+        valid_files += 1
+    else:
+        print(f"⚠️  Invalid HTML: {html_file}")
+
+print(f"✅ HTML validation: {valid_files}/{total_files} files valid")
+if valid_files == total_files:
+    print("🎉 All HTML files are valid!")
+elif valid_files / total_files < 0.95:
+    print("❌ Too many invalid HTML files")
+    exit(1)
+EOF
+          fi
 
       - name: Setup Pages
         if: github.ref == 'refs/heads/main'
         uses: actions/configure-pages@v4
 
-      - name: Upload artifact
+      - name: Upload Pages Artifact
         if: github.ref == 'refs/heads/main'
         uses: actions/upload-pages-artifact@v3
         with:
           path: docs
 
+      - name: Upload Documentation Artifact (All Branches)
+        uses: actions/upload-artifact@v4
+        with:
+          name: helios-documentation-${{ github.sha }}
+          path: docs/
+          retention-days: 30
+
   deploy:
+    name: Deploy to GitHub Pages
     if: github.ref == 'refs/heads/main'
     environment:
       name: github-pages
@@ -62,3 +240,9 @@ jobs:
       - name: Deploy to GitHub Pages
         id: deployment
         uses: actions/deploy-pages@v4
+
+      - name: Post-Deploy Validation
+        run: |
+          echo "🌐 Documentation deployed successfully!"
+          echo "📖 Documentation URL: ${{ steps.deployment.outputs.page_url }}"
+          echo "🔄 Documentation will be available within a few minutes"

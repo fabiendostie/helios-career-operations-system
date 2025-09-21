@@ -72,4 +72,3 @@ The agent will query simulated, structured databases with the following schemas:
 **5.0 Steps 5 & 6:** The `Career Path Inference Engine` uses the output of the Skill Framing Matrix to define Horizons 1-3. The `Final Report Generation` synthesizes all findings into the master JSON output.
 
 -----
-

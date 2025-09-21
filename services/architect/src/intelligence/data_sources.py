@@ -14,7 +14,7 @@ class IngestionMethod(Enum):
 
 class DataSourceCategory(Enum):
     INDUSTRY_TRENDS = "industry_trends"
-    ATS_UPDATES = "ats_updates"  
+    ATS_UPDATES = "ats_updates"
     RESUME_TRENDS = "resume_trends"
     HIRING_SENTIMENT = "hiring_sentiment"
     JOB_MARKET = "job_market"
@@ -37,7 +37,7 @@ class DataSource:
 # ===================================================================
 
 RESEARCH_DATA_SOURCES = {
-    
+
     # INDUSTRY TRENDS - Tier 1 Consulting and Tech Giants
     DataSourceCategory.INDUSTRY_TRENDS: [
         DataSource(
@@ -48,14 +48,14 @@ RESEARCH_DATA_SOURCES = {
             update_frequency="weekly",
             priority=10,
             classification_labels=[
-                "digital_transformation", "ai_adoption", "future_of_work", 
+                "digital_transformation", "ai_adoption", "future_of_work",
                 "technology_trends", "business_strategy", "automation"
             ],
             extraction_focus="Extract key findings, strategic recommendations, and data-driven predictions from reports and articles",
             rate_limit_delay=3.0
         ),
         DataSource(
-            name="Gartner HR Insights", 
+            name="Gartner HR Insights",
             url="https://www.gartner.com/en/human-resources/insights",
             category=DataSourceCategory.INDUSTRY_TRENDS,
             ingestion_method=IngestionMethod.WEB_SCRAPING,
@@ -72,7 +72,7 @@ RESEARCH_DATA_SOURCES = {
             url="https://ai.google/research/",
             category=DataSourceCategory.INDUSTRY_TRENDS,
             ingestion_method=IngestionMethod.WEB_SCRAPING,
-            update_frequency="weekly", 
+            update_frequency="weekly",
             priority=8,
             classification_labels=[
                 "machine_learning", "artificial_intelligence", "research_breakthroughs",
@@ -88,13 +88,13 @@ RESEARCH_DATA_SOURCES = {
             update_frequency="weekly",
             priority=7,
             classification_labels=[
-                "ai_research", "computer_vision", "nlp_advances", 
+                "ai_research", "computer_vision", "nlp_advances",
                 "social_technology", "metaverse"
             ],
             extraction_focus="Focus on AI research with practical applications and emerging tech trends"
         )
     ],
-    
+
     # ATS ALGORITHM UPDATES - Direct from Vendor Sources
     DataSourceCategory.ATS_UPDATES: [
         DataSource(
@@ -149,7 +149,7 @@ RESEARCH_DATA_SOURCES = {
             extraction_focus="Extract staffing industry updates and technology integrations"
         )
     ],
-    
+
     # RESUME TRENDS - Expert Resume Guidance Sources
     DataSourceCategory.RESUME_TRENDS: [
         DataSource(
@@ -191,7 +191,7 @@ RESEARCH_DATA_SOURCES = {
             extraction_focus="Extract resume structure advice and industry-specific guidance"
         )
     ],
-    
+
     # HIRING MANAGER SENTIMENT - Ground Truth from Forums
     DataSourceCategory.HIRING_SENTIMENT: [
         DataSource(
@@ -221,7 +221,7 @@ RESEARCH_DATA_SOURCES = {
             extraction_focus="Extract candidate perspectives on hiring process pain points and ATS issues"
         )
     ],
-    
+
     # JOB MARKET INDICATORS - Government Economic Data
     DataSourceCategory.JOB_MARKET: [
         DataSource(
@@ -236,7 +236,7 @@ RESEARCH_DATA_SOURCES = {
             rate_limit_delay=1.0
         )
     ],
-    
+
     # SKILLS DEMAND - Educational and Professional Platform Data
     DataSourceCategory.SKILLS_DEMAND: [
         DataSource(
@@ -270,7 +270,7 @@ RESEARCH_DATA_SOURCES = {
 # BLS API Series IDs for Job Market Data
 BLS_SERIES_IDS = {
     "unemployment_rate": "LNS14000000",
-    "job_openings": "JTS00000000JOL",  
+    "job_openings": "JTS00000000JOL",
     "labor_force_participation": "LNS11300000",
     "employment_level": "LNS12000000"
 }

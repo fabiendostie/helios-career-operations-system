@@ -629,14 +629,14 @@ class ConsolidationEngine:
             # It's a dict
             entities = document_data.get("entities", [])
             contact = document_data.get("contact_info", {})
-        
+
         # Extract persons from entities if it's a list
         persons = []
         if isinstance(entities, list):
             persons = [e for e in entities if e.get("label") == "PERSON"]
-        
+
         return {
-            "name": persons[0]["text"] if persons else "Unknown", 
+            "name": persons[0]["text"] if persons else "Unknown",
             "contact": contact if isinstance(contact, dict) else {}
         }
 

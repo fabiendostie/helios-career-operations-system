@@ -113,10 +113,10 @@ graph TB
     B -->|Transform| C[Data Validator]
     C -->|Write| D[PostgreSQL]
     C -->|Cache| E[Redis]
-    
+
     A -->|Backup| F[S3 Archive]
     D -->|Replicate| G[Read Replica]
-    
+
     style A fill:#f9f,stroke:#333,stroke-width:2px
     style D fill:#bbf,stroke:#333,stroke-width:2px
 ```
@@ -148,26 +148,26 @@ grafana-cli dashboard import migration-monitor.json
 ```python
 class DualWriteManager:
     """Manages writing to both old and new systems during migration"""
-    
+
     def __init__(self):
         self.file_writer = LegacyFileWriter()
         self.db_writer = PostgreSQLWriter()
         self.validator = DataValidator()
-    
+
     async def write_profile(self, profile_data: dict):
         # Write to legacy system
         file_result = await self.file_writer.write(profile_data)
-        
+
         # Transform for new schema
         transformed = self.transform_schema(profile_data)
-        
+
         # Write to new database
         db_result = await self.db_writer.write(transformed)
-        
+
         # Validate consistency
         if not self.validator.compare(file_result, db_result):
             raise InconsistencyError("Dual write validation failed")
-        
+
         # Log success
         await self.audit_log.record({
             "profile_id": profile_data["id"],
@@ -183,31 +183,31 @@ from datetime import datetime
 
 class BatchMigrator:
     """Handles batch migration of existing profiles"""
-    
+
     def __init__(self, batch_size=100, parallel_workers=5):
         self.batch_size = batch_size
         self.parallel_workers = parallel_workers
         self.progress_tracker = ProgressTracker()
-    
+
     async def migrate_all(self):
         profiles = self.get_unmigrated_profiles()
         batches = self.create_batches(profiles, self.batch_size)
-        
+
         # Process batches in parallel
         tasks = []
         for batch in batches:
             task = asyncio.create_task(self.migrate_batch(batch))
             tasks.append(task)
-            
+
             # Limit parallel workers
             if len(tasks) >= self.parallel_workers:
                 await asyncio.gather(*tasks)
                 tasks = []
-        
+
         # Process remaining tasks
         if tasks:
             await asyncio.gather(*tasks)
-    
+
     async def migrate_batch(self, batch):
         """Migrate a single batch with transaction safety"""
         async with self.db.transaction() as tx:
@@ -215,23 +215,23 @@ class BatchMigrator:
                 for profile_path in batch:
                     # Read legacy profile
                     profile = self.read_legacy_profile(profile_path)
-                    
+
                     # Validate data integrity
                     if not self.validate_profile(profile):
                         await self.quarantine_profile(profile)
                         continue
-                    
+
                     # Transform schema
                     new_profile = self.transform_v1_to_v2(profile)
-                    
+
                     # Insert into new database
                     await self.insert_profile(new_profile, tx)
-                    
+
                     # Update progress
                     await self.progress_tracker.update(profile["id"])
-                
+
                 await tx.commit()
-                
+
             except Exception as e:
                 await tx.rollback()
                 await self.handle_batch_failure(batch, e)
@@ -241,7 +241,7 @@ class BatchMigrator:
 ```python
 class MigrationValidator:
     """Validates migration completeness and accuracy"""
-    
+
     async def full_validation(self):
         validation_report = {
             "total_source": 0,
@@ -250,33 +250,33 @@ class MigrationValidator:
             "missing_profiles": [],
             "data_mismatches": []
         }
-        
+
         # Count source profiles
         source_profiles = self.count_legacy_profiles()
         validation_report["total_source"] = source_profiles
-        
+
         # Count migrated profiles
         migrated = await self.db.count("SELECT COUNT(*) FROM user_profiles")
         validation_report["total_migrated"] = migrated
-        
+
         # Check for missing profiles
         source_ids = self.get_all_legacy_ids()
         migrated_ids = await self.get_all_migrated_ids()
-        
+
         missing = set(source_ids) - set(migrated_ids)
         validation_report["missing_profiles"] = list(missing)
-        
+
         # Sample validation (10% of profiles)
         sample_size = int(migrated * 0.1)
         sample = await self.get_random_sample(sample_size)
-        
+
         for profile_id in sample:
             source = self.get_legacy_profile(profile_id)
             migrated = await self.get_migrated_profile(profile_id)
-            
+
             if not self.compare_profiles(source, migrated):
                 validation_report["data_mismatches"].append(profile_id)
-        
+
         return validation_report
 ```
 
@@ -290,14 +290,14 @@ TRANSFORMATION_RULES = {
         "personal_info": "personal_info",
         "work_experience": "work_experience",
         "education": "education",
-        
+
         # Transformed fields
         "skills": lambda x: {
             "skills_list": x,
             "skill_vectors": generate_vectors(x),
             "skill_categories": categorize_skills(x)
         },
-        
+
         # New fields with defaults
         "_new_fields": {
             "profile_completeness": calculate_completeness,
@@ -310,25 +310,25 @@ TRANSFORMATION_RULES = {
 
 def transform_profile(profile: dict, from_version: str, to_version: str) -> dict:
     """Transform profile between schema versions"""
-    
+
     rule_key = f"{from_version}_to_{to_version}"
     rules = TRANSFORMATION_RULES.get(rule_key)
-    
+
     if not rules:
         raise ValueError(f"No transformation rules for {rule_key}")
-    
+
     transformed = {}
-    
+
     # Apply direct mappings
     for old_field, new_field in rules.items():
         if old_field == "_new_fields":
             continue
-            
+
         if callable(new_field):
             transformed[old_field] = new_field(profile.get(old_field))
         else:
             transformed[new_field] = profile.get(old_field)
-    
+
     # Add new fields
     if "_new_fields" in rules:
         for field, generator in rules["_new_fields"].items():
@@ -336,7 +336,7 @@ def transform_profile(profile: dict, from_version: str, to_version: str) -> dict
                 transformed[field] = generator(profile)
             else:
                 transformed[field] = generator
-    
+
     return transformed
 ```
 
@@ -356,21 +356,21 @@ class DataIntegrityChecker:
         # Normalize JSON (sort keys for consistency)
         normalized = json.dumps(profile, sort_keys=True)
         return hashlib.sha256(normalized.encode()).hexdigest()
-    
+
     @staticmethod
     def validate_migration(source_profile: dict, migrated_profile: dict) -> bool:
         """Validate data integrity after migration"""
         # Remove migration-specific fields
-        source_clean = {k: v for k, v in source_profile.items() 
+        source_clean = {k: v for k, v in source_profile.items()
                        if k not in ["migration_status", "schema_version"]}
-        
-        migrated_clean = {k: v for k, v in migrated_profile.items() 
+
+        migrated_clean = {k: v for k, v in migrated_profile.items()
                          if k not in ["migration_status", "schema_version", "_new_fields"]}
-        
+
         # Compare checksums
         source_checksum = DataIntegrityChecker.generate_checksum(source_clean)
         migrated_checksum = DataIntegrityChecker.generate_checksum(migrated_clean)
-        
+
         return source_checksum == migrated_checksum
 ```
 
@@ -387,7 +387,7 @@ SAVEPOINT migration_batch;
 
 -- Perform migration operations
 INSERT INTO user_profiles (legacy_id, profile_data, schema_version)
-SELECT 
+SELECT
     legacy_id,
     transform_profile(profile_data),
     '2.0'
@@ -402,9 +402,9 @@ DECLARE
 BEGIN
     SELECT COUNT(*) INTO error_count
     FROM user_profiles
-    WHERE profile_data IS NULL 
+    WHERE profile_data IS NULL
     OR profile_data = '{}'::jsonb;
-    
+
     IF error_count > 0 THEN
         RAISE EXCEPTION 'Migration validation failed: % empty profiles', error_count;
     END IF;
@@ -448,32 +448,32 @@ pg_ctl -D /recovery/cluster start
 class MigrationRollback:
     async def execute_rollback(self, rollback_point: datetime):
         """Rollback migration to specific point in time"""
-        
+
         # Step 1: Stop writes to new system
         await self.feature_flags.set("use_new_database", False)
-        
+
         # Step 2: Identify affected profiles
         affected = await self.db.query("""
-            SELECT profile_id, rollback_data 
-            FROM migration_audit 
+            SELECT profile_id, rollback_data
+            FROM migration_audit
             WHERE migration_date > %s
         """, rollback_point)
-        
+
         # Step 3: Restore original data
         for record in affected:
             profile_id = record["profile_id"]
             original_data = record["rollback_data"]
-            
+
             # Write back to file system
             await self.restore_to_legacy(profile_id, original_data)
-            
+
             # Mark as rolled back
             await self.db.execute("""
-                UPDATE user_profiles 
-                SET migration_status = 'rolled_back' 
+                UPDATE user_profiles
+                SET migration_status = 'rolled_back'
                 WHERE id = %s
             """, profile_id)
-        
+
         # Step 4: Verify rollback
         return await self.verify_rollback(rollback_point)
 ```
@@ -513,17 +513,17 @@ MIGRATION_CONFIG = {
 class PerformanceOptimizer:
     async def optimize_migration(self):
         """Dynamically adjust migration parameters based on performance"""
-        
+
         metrics = await self.get_current_metrics()
-        
+
         # Reduce batch size if resources constrained
         if metrics["cpu"] > MIGRATION_CONFIG["throttle_threshold"]["cpu_percent"]:
             MIGRATION_CONFIG["batch_size"] = max(10, MIGRATION_CONFIG["batch_size"] // 2)
-            
+
         # Increase batch size if resources available
         elif metrics["cpu"] < 50:
             MIGRATION_CONFIG["batch_size"] = min(500, MIGRATION_CONFIG["batch_size"] * 1.5)
-        
+
         # Run vacuum if needed
         if self.profiles_migrated % MIGRATION_CONFIG["vacuum_interval"] == 0:
             await self.db.execute("VACUUM ANALYZE user_profiles;")
@@ -537,49 +537,49 @@ class PerformanceOptimizer:
 ```python
 class MigrationTestSuite:
     """Comprehensive migration testing"""
-    
+
     async def test_data_integrity(self):
         """Test that all data is preserved during migration"""
         source = self.load_test_profile()
         migrated = await self.migrate_profile(source)
-        
+
         assert source["personal_info"] == migrated["personal_info"]
         assert len(source["work_experience"]) == len(migrated["work_experience"])
-        
+
     async def test_rollback_capability(self):
         """Test rollback functionality"""
         # Migrate profile
         profile = await self.migrate_profile(self.test_profile)
-        
+
         # Trigger rollback
         await self.rollback_migration(profile["id"])
-        
+
         # Verify original state restored
         restored = self.load_legacy_profile(profile["legacy_id"])
         assert restored == self.test_profile
-    
+
     async def test_concurrent_migration(self):
         """Test parallel migration safety"""
         profiles = [self.generate_test_profile() for _ in range(100)]
-        
+
         # Migrate concurrently
         tasks = [self.migrate_profile(p) for p in profiles]
         results = await asyncio.gather(*tasks)
-        
+
         # Verify no data corruption
         for original, migrated in zip(profiles, results):
             assert self.validate_migration(original, migrated)
-    
+
     async def test_performance_targets(self):
         """Test migration meets performance targets"""
         start = time.time()
-        
+
         # Migrate batch
         await self.migrate_batch(size=1000)
-        
+
         duration = time.time() - start
         rate = 1000 / duration * 3600  # profiles per hour
-        
+
         assert rate >= 1000, f"Migration rate {rate}/hour below target"
 ```
 
@@ -595,24 +595,24 @@ dashboard:
   panels:
     - title: "Migration Progress"
       query: |
-        SELECT 
+        SELECT
           COUNT(*) FILTER (WHERE migration_status = 'completed') as migrated,
           COUNT(*) FILTER (WHERE migration_status = 'pending') as pending,
           COUNT(*) FILTER (WHERE migration_status = 'failed') as failed
         FROM user_profiles
-    
+
     - title: "Migration Rate"
       query: |
-        SELECT 
+        SELECT
           date_trunc('hour', migration_date) as hour,
           COUNT(*) as profiles_migrated
         FROM migration_audit
         WHERE status = 'success'
         GROUP BY hour
-    
+
     - title: "Error Rate"
       query: |
-        SELECT 
+        SELECT
           COUNT(*) FILTER (WHERE status = 'error') * 100.0 / COUNT(*) as error_rate
         FROM migration_audit
         WHERE migration_date > NOW() - INTERVAL '1 hour'
@@ -625,12 +625,12 @@ alerts:
     condition: rate(migrated_profiles[5m]) == 0
     severity: critical
     action: page_oncall
-    
+
   - name: "High Error Rate"
     condition: error_rate > 0.02
     severity: warning
     action: notify_team
-    
+
   - name: "Database Performance"
     condition: db_cpu > 85 OR db_memory > 90
     severity: warning

@@ -56,4 +56,3 @@ This is a structured database mapping roles to their typical skill vectors and p
 ```
 
 -----
-

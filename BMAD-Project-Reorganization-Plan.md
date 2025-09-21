@@ -19,7 +19,7 @@ Helios/
 ├── .gitignore
 ├── requirements.txt                    # Root project requirements
 ├── docker-compose.yml                 # Development environment
-├── 
+├──
 ├── docs/                              # BMAD Standard Documentation
 │   ├── 00-project-overview/
 │   │   ├── project-charter.md
@@ -266,7 +266,7 @@ Helios/
 - [ ] Set up BMAD documentation folders
 - [ ] Create basic README and project files
 
-### Phase 2: Code Migration (2 days)  
+### Phase 2: Code Migration (2 days)
 - [ ] Move resume_extractor to profile-ingestor service
 - [ ] Create API wrapper
 - [ ] Update all import paths

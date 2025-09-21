@@ -17,7 +17,7 @@ templates:
     suitability:
       experience_levels: ["Entry", "Mid", "Senior", "Executive"]
       role_types: ["Technical", "Management", "Individual Contributor"]
-    
+
   t_shaped_modern:
     name: "T-Shaped Modern"
     description: "Contemporary design with subtle visual enhancements"
@@ -38,7 +38,7 @@ templates:
     suitability:
       experience_levels: ["Mid", "Senior", "Executive"]
       role_types: ["Technical", "Creative", "Leadership"]
-      
+
   t_shaped_minimal:
     name: "T-Shaped Minimal"
     description: "Ultra-minimal design for maximum ATS compatibility"
@@ -60,7 +60,7 @@ templates:
       experience_levels: ["All Levels"]
       role_types: ["All Roles"]
       special_use: ["ATS-first applications", "Conservative industries", "Government positions"]
-      
+
   pain_promise_cover_letter:
     name: "Pain & Promise Cover Letter"
     description: "Persuasive three-paragraph cover letter model"
@@ -88,35 +88,35 @@ industry_customizations:
     achievement_format: "metric_driven"
     preferred_adjectives: ["Innovative", "Results-driven", "Technical", "Strategic"]
     key_skills_focus: ["programming", "architecture", "leadership", "problem_solving"]
-    
+
   finance:
     emphasis: ["regulatory_compliance", "risk_management", "revenue_impact", "analysis"]
     terminology: "business"
     achievement_format: "financial_impact"
     preferred_adjectives: ["Analytical", "Strategic", "Results-driven", "Experienced"]
     key_skills_focus: ["analysis", "compliance", "risk_management", "reporting"]
-    
+
   consulting:
     emphasis: ["client_impact", "problem_solving", "methodology", "leadership"]
     terminology: "strategic"
     achievement_format: "client_outcomes"
     preferred_adjectives: ["Strategic", "Analytical", "Client-focused", "Results-driven"]
     key_skills_focus: ["consulting", "analysis", "client_management", "strategy"]
-    
+
   healthcare:
     emphasis: ["patient_outcomes", "compliance", "quality_improvement", "safety"]
     terminology: "clinical"
     achievement_format: "outcome_focused"
     preferred_adjectives: ["Dedicated", "Experienced", "Quality-focused", "Compassionate"]
     key_skills_focus: ["clinical", "compliance", "quality", "leadership"]
-    
+
   marketing:
     emphasis: ["campaign_results", "brand_impact", "customer_engagement", "roi"]
     terminology: "creative"
     achievement_format: "engagement_metrics"
     preferred_adjectives: ["Creative", "Strategic", "Data-driven", "Innovative"]
     key_skills_focus: ["marketing", "analytics", "creativity", "strategy"]
-    
+
   manufacturing:
     emphasis: ["operational_efficiency", "quality_control", "safety", "cost_reduction"]
     terminology: "operational"
@@ -131,19 +131,19 @@ experience_level_adjustments:
     achievement_emphasis: "learning_and_growth"
     adjective_preference: ["Motivated", "Dedicated", "Eager", "Skilled"]
     summary_length: "concise"
-    
+
   mid:
     focus: ["accomplishments", "skill_development", "increasing_responsibility"]
     achievement_emphasis: "project_impact"
     adjective_preference: ["Experienced", "Results-driven", "Skilled", "Professional"]
     summary_length: "standard"
-    
+
   senior:
     focus: ["leadership", "strategic_impact", "mentoring", "complex_projects"]
     achievement_emphasis: "organizational_impact"
     adjective_preference: ["Strategic", "Experienced", "Leadership-focused", "Accomplished"]
     summary_length: "comprehensive"
-    
+
   executive:
     focus: ["vision", "transformation", "organizational_leadership", "strategic_results"]
     achievement_emphasis: "business_transformation"
@@ -159,7 +159,7 @@ ats_optimization_rules:
     - keyword_optimization: true
     - no_graphics: true
     - parseable_formatting: true
-    
+
   maximum:
     - ultra_simple_formatting: true
     - no_colors: true
@@ -173,12 +173,12 @@ performance_targets:
     render_time_target: "< 5 seconds"
     memory_usage_target: "< 50MB"
     pdf_generation_target: "< 8 seconds"
-    
+
   medium:
     render_time_target: "< 10 seconds"
-    memory_usage_target: "< 100MB"  
+    memory_usage_target: "< 100MB"
     pdf_generation_target: "< 15 seconds"
-    
+
   high:
     render_time_target: "< 20 seconds"
     memory_usage_target: "< 200MB"

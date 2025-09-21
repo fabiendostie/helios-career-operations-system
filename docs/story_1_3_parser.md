@@ -20,26 +20,26 @@ from typing import Dict, List, Any
 
 class ParsingService:
     """Singleton service for NLP parsing using spaCy models"""
-    
+
     _instance = None
     _models = {}
-    
+
     def __new__(cls):
         if cls._instance is None:
             cls._instance = super().__new__(cls)
             cls._instance._load_models()
         return cls._instance
-    
+
     def _load_models(self):
         """Load spaCy models once at startup"""
         self._models['en'] = spacy.load("en_core_web_trf")
         self._models['fr'] = spacy.load("fr_dep_news_trf")
-    
+
     def parse_document(self, document: Document) -> ParsedData:
         """Parse document using appropriate language model"""
         model = self._models[document.language]
         doc = model(document.content)
-        
+
         return ParsedData(
             work_experiences=self._extract_work_experience(doc),
             projects=self._extract_projects(doc),
@@ -56,17 +56,17 @@ class ParsingService:
 def _extract_work_experience(self, doc) -> List[WorkExperience]:
     """Extract job roles, companies, dates, and descriptions"""
     experiences = []
-    
+
     # Pattern matching for job titles
     job_patterns = [
         {"LOWER": {"IN": ["senior", "junior", "lead", "principal"]}},
         {"POS": "NOUN", "OP": "+"}
     ]
-    
+
     # Entity recognition for ORG (companies)
     # Date pattern matching for employment periods
     # Chunk parsing for job descriptions
-    
+
     return experiences
 ```
 
@@ -75,11 +75,11 @@ def _extract_work_experience(self, doc) -> List[WorkExperience]:
 def _extract_skills(self, doc) -> List[str]:
     """Extract technical and soft skills"""
     skills = []
-    
+
     # Named Entity Recognition for PRODUCT, TECHNOLOGY
     # Custom patterns for programming languages
     # Phrase matching for multi-word skills
-    
+
     return skills
 ```
 
@@ -88,11 +88,11 @@ def _extract_skills(self, doc) -> List[str]:
 def _extract_projects(self, doc) -> List[Project]:
     """Extract project names, descriptions, and outcomes"""
     projects = []
-    
+
     # Header detection for project sections
     # Dependency parsing for project descriptions
     # Pattern matching for outcomes/results
-    
+
     return projects
 ```
 
@@ -133,12 +133,12 @@ class ConflictDetector:
     def find_conflicts(self, parsed_data_list: List[ParsedData]) -> List[Conflict]:
         """Identify conflicting information across documents"""
         conflicts = []
-        
+
         # Compare work experiences by company + role
         # Flag different dates for same position
         # Flag different descriptions for same role
         # Identify duplicate projects with variations
-        
+
         return conflicts
 
 @dataclass

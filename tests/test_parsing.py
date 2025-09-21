@@ -46,7 +46,7 @@ class TestParsingService:
 
         # Check that result is ParsedData instance
         assert isinstance(result, ParsedData)
-        
+
         # Check required fields
         assert hasattr(result, 'source_file')
         assert hasattr(result, 'language')
@@ -99,7 +99,7 @@ class TestParsingService:
     def test_conflict_detection(self):
         """Test basic conflict detection functionality."""
         detector = ConflictDetector()
-        
+
         # Create two parsed data objects with conflicting work experience
         exp1 = WorkExperience(
             company="Google",
@@ -109,16 +109,16 @@ class TestParsingService:
             accomplishments=None,
             technologies=None
         )
-        
+
         exp2 = WorkExperience(
-            company="Google", 
+            company="Google",
             role="Engineer",
             duration="2019-2023",  # Different duration
             description=None,
             accomplishments=None,
             technologies=None
         )
-        
+
         data1 = ParsedData(
             work_experiences=[exp1],
             projects=[],
@@ -129,7 +129,7 @@ class TestParsingService:
             language="en",
             source_file="doc1.txt"
         )
-        
+
         data2 = ParsedData(
             work_experiences=[exp2],
             projects=[],
@@ -140,9 +140,9 @@ class TestParsingService:
             language="en",
             source_file="doc2.txt"
         )
-        
+
         conflicts = detector.find_conflicts([data1, data2])
-        
+
         # Should find duration conflict
         assert len(conflicts) >= 1
         duration_conflicts = [c for c in conflicts if c.field == "work_experience.duration"]
@@ -159,9 +159,9 @@ class TestParsingService:
             language="en",
             file_type="txt"
         )
-        
+
         result = self.parsing_service.parse_document(doc)
-        
+
         # Should have deduplicated skills
         assert isinstance(result.skills, list)
         # Convert to lowercase for comparison since our deduplication works on lowercase
@@ -182,9 +182,9 @@ class TestParsingService:
             language="en",
             file_type="txt"
         )
-        
+
         result = self.parsing_service.parse_document(doc)
-        
+
         # Should extract contact information
         assert isinstance(result.contact_info, dict)
         # Depending on spaCy model performance, may or may not extract all info
@@ -192,19 +192,19 @@ class TestParsingService:
     def test_performance_within_limits(self):
         """Test that parsing completes within performance limits."""
         import time
-        
+
         content = "I am a Senior Software Engineer at Google working with Python and React."
         doc = Document(
             file_path=Path("perf_test.txt"),
             content=content,
-            language="en", 
+            language="en",
             file_type="txt"
         )
-        
+
         start_time = time.time()
         result = self.parsing_service.parse_document(doc)
         end_time = time.time()
-        
+
         processing_time = end_time - start_time
         assert processing_time < 2.0  # Should complete in under 2 seconds
         assert isinstance(result, ParsedData)
@@ -222,9 +222,9 @@ class TestParsingService:
             language="fr",
             file_type="txt"
         )
-        
+
         result = self.parsing_service.parse_document(doc)
-        
+
         assert result.language == "fr"
         assert isinstance(result, ParsedData)
         # Should extract some work experience or skills
@@ -239,9 +239,9 @@ class TestParsingService:
             language="en",
             file_type="txt"
         )
-        
+
         result = self.parsing_service.parse_document(doc)
-        
+
         assert isinstance(result, ParsedData)
         assert result.language == "en"
         assert len(result.work_experiences) == 0
@@ -250,11 +250,11 @@ class TestParsingService:
 
 class TestConflictDetector:
     """Test cases for ConflictDetector class."""
-    
+
     def test_no_conflicts_with_single_document(self):
         """Test that no conflicts are found with a single document."""
         detector = ConflictDetector()
-        
+
         data = ParsedData(
             work_experiences=[],
             projects=[],
@@ -265,14 +265,14 @@ class TestConflictDetector:
             language="en",
             source_file="single.txt"
         )
-        
+
         conflicts = detector.find_conflicts([data])
         assert len(conflicts) == 0
 
     def test_project_conflicts(self):
         """Test detection of project conflicts."""
         detector = ConflictDetector()
-        
+
         proj1 = Project(
             name="E-commerce Platform",
             description="Built with Django",
@@ -280,15 +280,15 @@ class TestConflictDetector:
             url=None,
             impact=None
         )
-        
+
         proj2 = Project(
-            name="E-commerce Platform System", 
+            name="E-commerce Platform System",
             description="Built with React",  # Different description
             technologies=None,
             url=None,
             impact=None
         )
-        
+
         data1 = ParsedData(
             work_experiences=[],
             projects=[proj1],
@@ -299,7 +299,7 @@ class TestConflictDetector:
             language="en",
             source_file="doc1.txt"
         )
-        
+
         data2 = ParsedData(
             work_experiences=[],
             projects=[proj2],
@@ -310,14 +310,14 @@ class TestConflictDetector:
             language="en",
             source_file="doc2.txt"
         )
-        
+
         conflicts = detector.find_conflicts([data1, data2])
-        
+
         # Debug the conflicts to understand what's happening
         print(f"Found conflicts: {len(conflicts)}")
         for c in conflicts:
             print(f"  - {c.field}: {c.variations}")
-        
+
         # Should find project description conflict (may not match exact names)
         # The conflict detection uses first 3 words as key, so these might not conflict
         # Let's check if any conflicts were found
@@ -326,7 +326,7 @@ class TestConflictDetector:
     def test_skill_conflicts(self):
         """Test detection of skill conflicts."""
         detector = ConflictDetector()
-        
+
         data1 = ParsedData(
             work_experiences=[],
             projects=[],
@@ -337,7 +337,7 @@ class TestConflictDetector:
             language="en",
             source_file="doc1.txt"
         )
-        
+
         data2 = ParsedData(
             work_experiences=[],
             projects=[],
@@ -348,9 +348,9 @@ class TestConflictDetector:
             language="en",
             source_file="doc2.txt"
         )
-        
+
         conflicts = detector.find_conflicts([data1, data2])
-        
+
         # Should find skill conflicts
         skill_conflicts = [c for c in conflicts if c.field == "skills"]
         assert len(skill_conflicts) >= 1

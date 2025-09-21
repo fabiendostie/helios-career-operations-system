@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>api.integrated_generation - architect</title>
+    <style>
+        body { font-family: Arial, sans-serif; margin: 40px; background: #f8f9fa; }
+        .container { max-width: 1200px; margin: 0 auto; background: white; padding: 30px; border-radius: 8px; box-shadow: 0 2px 10px rgba(0,0,0,0.1); }
+        .header { background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; padding: 20px; border-radius: 5px; margin-bottom: 30px; }
+        .section { margin: 20px 0; padding: 20px; border-left: 4px solid #667eea; background: #f8f9ff; }
+        .docstring { background: #fff; padding: 15px; border-radius: 5px; border: 1px solid #e0e0e0; margin: 10px 0; white-space: pre-wrap; }
+        .nav { margin-bottom: 20px; }
+        .nav a { color: #667eea; text-decoration: none; margin-right: 20px; }
+        .nav a:hover { text-decoration: underline; }
+        h1, h2, h3 { color: #333; }
+        .module-path { color: #666; font-style: italic; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>api.integrated_generation</h1>
+            <p class="module-path">Service: architect • Path: api\integrated_generation.py</p>
+        </div>
+
+        <div class="nav">
+            <a href="../index.html">← Back to API Index</a>
+            <a href="../architect/index.html">← architect Overview</a>
+        </div>
+
+        <div class="section">
+            <h2>Module Description</h2>
+            <div class="docstring">Integrated Document Generation API
+
+Provides document generation endpoints that coordinate with other Helios services
+to create optimized, intelligent documents using ANALYST recommendations and
+STRATEGIST insights.</div>
+        </div>
+
+        <div class="section">
+            <h2>Classes</h2>
+
+            <h3>IntegratedGenerationRequest</h3>
+            <div class="docstring">Request for integrated document generation with service coordination.</div>
+
+            <h3>GenerationStatus</h3>
+            <div class="docstring">Status response for document generation.</div>
+        </div>
+        <div class="section">
+            <h2>Functions</h2>
+
+            <h3>async generate_integrated_document()</h3>
+            <div class="docstring">Generate document with full service integration.</div>
+
+            <h3>async check_integration_health()</h3>
+            <div class="docstring">Check health of all service integrations.</div>
+
+            <h3>async _save_temporary_document()</h3>
+            <div class="docstring">Save document content to temporary file for validation.</div>
+
+            <h3>async _cleanup_temp_file()</h3>
+            <div class="docstring">Clean up temporary file.</div>
+
+            <h3>_calculate_content_quality_score()</h3>
+            <div class="docstring">Calculate content quality score based on available intelligence.</div>
+
+            <h3>_extract_research_sources()</h3>
+            <div class="docstring">Extract research sources from intelligence data.</div>
+        </div>
+    </div>
+</body>
+</html>

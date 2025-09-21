@@ -26,15 +26,15 @@ integration:
   service_location: "services/analyst/"
   api_endpoint: "/api/v1/analyze"
   health_check: "/health"
-  
+
   dependencies:
     - "PROFILE_INGESTOR"  # Requires processed resume data
     - "STRATEGIST"        # May use career strategies for analysis
-    
+
   input_formats:
     - "master_career_database"
     - "job_market_data"
-    
+
   output_format:
     type: "json"
     schema: "analysis_report"
@@ -52,7 +52,7 @@ commands:
       - name: "analysis_depth"
         type: "string"
         default: "comprehensive"
-        
+
   - command: "/simulate/ats"
     description: "Simulate ATS scoring for resume optimization"
     parameters:
@@ -83,11 +83,11 @@ dependencies:
     - "nltk>=3.8.0"                   # MISSING - Text processing
     - "matplotlib>=3.7.0"             # MISSING - Visualization
     - "seaborn>=0.12.0"               # MISSING - Statistical plots
-  
+
   models:
     - "en_core_web_sm"                # Required for NLP processing
     - "fr_core_news_sm"               # Required for bilingual support
-  
+
   external_services:
     - name: "job_market_api"
       endpoint: "https://api.example.com/jobs"
@@ -112,7 +112,7 @@ verification:
   status: "not_verified"
   last_verification_date: null
   verification_results_file: null
-  
+
   # Current blocking issues (ACCURATE)
   blocking_issues:
     - "Cannot import main module - missing scikit-learn"
@@ -121,20 +121,20 @@ verification:
     - "Cannot import data analysis - missing pandas, numpy"
     - "Cannot import text processing - missing nltk"
     - "Analytics pipeline completely non-functional"
-  
+
   required_stages:
     - "stage_1_dependency_validation"
     - "stage_2_import_verification"
     - "stage_3_service_startup"
     - "stage_4_test_execution"
     - "stage_5_functional_verification"
-  
+
   verify_commands:
     full_verification: "python bmad-core/scripts/verify-agent.py ANALYST"
     dependencies_only: "python bmad-core/scripts/verify-dependencies.py ANALYST"
-  
+
   status_change_rules:
-    pending_to_in_progress: 
+    pending_to_in_progress:
       verification_required: false
     in_progress_to_completed:
       verification_required: true
@@ -146,7 +146,7 @@ testing:
   unit_tests: "services/analyst/tests/"
   integration_tests: "tests/integration/test_analyst.py"
   coverage_target: "85%"
-  
+
   # Current test status (ACCURATE)
   current_status: "Cannot execute - analytics dependency failures prevent test imports"
   test_count_estimate: 52
@@ -167,7 +167,7 @@ remediation:
     6: "Execute analytics test suite and achieve 80%+ pass rate"
     7: "Test 6-step analysis pipeline end-to-end"
     8: "Update status to 'completed' only after verification passes"
-  
+
   known_issues:
     - "11% test failure rate reported in audit"
     - "spaCy model loading errors in ResumeDeconstructor"

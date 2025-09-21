@@ -34,4 +34,3 @@ The agent must generate documents that adhere to these rules for maximum machine
     3.  **Paragraph 3 (The Close & The Call to Action):** Reiterate your excitement and provide a confident, clear call to action. *Example: "I am confident that my experience in [Skill Area] can deliver similar results for [Company Name]. I am eager to discuss how my background can support your team's goals."*
 
 -----
-

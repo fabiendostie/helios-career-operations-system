@@ -11,7 +11,7 @@ metadata:
   story: "{Story Number (e.g., 2.1)}"
   epic: "{Epic Name}"
   priority: "high"  # high | medium | low
-  
+
 capabilities:
   - "{Primary capability}"
   - "{Secondary capability}"
@@ -21,19 +21,19 @@ integration:
   service_location: "services/{agent-name}/"
   api_endpoint: "/api/v1/{endpoint}"
   health_check: "/health"
-  
+
   dependencies:
     - "{Required service 1}"
     - "{Required service 2}"
-    
+
   input_formats:
     - "{Expected input type 1}"
     - "{Expected input type 2}"
-    
+
   output_format:
     type: "json"  # json | text | binary
     schema: "{output_schema_name}"
-    
+
 commands:
   - command: "/{primary_command}"
     description: "{Command description}"
@@ -42,18 +42,18 @@ commands:
         type: "string"  # string | number | array | object
         required: true  # true | false
         default: "{default_value}"
-        
+
 knowledge_base:
   location: "knowledge-base/agent-knowledge/{agent-name}/"
   documents:
     - "{knowledge_doc_1}.md"
     - "{knowledge_doc_2}.md"
-    
+
 dependencies:
   python_version: ">=3.11"
   packages:
     - "{required_package}>=x.x.x"
-    
+
   external_services:
     - name: "{service_name}"
       endpoint: "{service_endpoint}"
@@ -63,38 +63,38 @@ performance:
   max_concurrent_requests: 10
   response_time_target: "2s"
   memory_usage_limit: "512MB"
-  
+
 monitoring:
   logs: "services/{agent-name}/logs/"
   metrics:
     - "{metric_name_1}"
     - "{metric_name_2}"
-    
+
 # MANDATORY VERIFICATION REQUIREMENTS
 verification:
   status: "not_verified"  # not_verified | verification_failed | verified
   last_verification_date: null
   verification_results_file: null
-  
+
   # Required verification stages (ALL MUST PASS)
   required_stages:
-    - "stage_1_dependency_validation" 
+    - "stage_1_dependency_validation"
     - "stage_2_import_verification"
     - "stage_3_service_startup"
-    - "stage_4_test_execution" 
+    - "stage_4_test_execution"
     - "stage_5_functional_verification"
-  
+
   # Blocking issues that prevent completion
   blocking_issues: []
-  
+
   # Verification commands
   verify_commands:
     full_verification: "python bmad-core/scripts/verify-agent.py {agent_id}"
     dependencies_only: "python bmad-core/scripts/verify-dependencies.py {agent_id}"
-  
+
   # Status change rules
   status_change_rules:
-    pending_to_in_progress: 
+    pending_to_in_progress:
       verification_required: false
     in_progress_to_completed:
       verification_required: true
@@ -106,7 +106,7 @@ testing:
   unit_tests: "services/{agent-name}/tests/"
   integration_tests: "tests/integration/test_{agent-name}.py"
   coverage_target: "95%"
-  
+
   # Test execution requirements
   min_pass_rate: 80  # Minimum 80% pass rate required
   execution_timeout: 120  # seconds

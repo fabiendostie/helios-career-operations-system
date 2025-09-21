@@ -10,7 +10,7 @@ from ..core.database import get_db, SessionRepository
 from ..core.session_manager import SessionManager
 from ..models.session import (
     SessionCreate,
-    SessionUpdate, 
+    SessionUpdate,
     SessionResponse,
     SessionSummary,
     SessionState
@@ -34,11 +34,11 @@ async def create_session(
     manager: SessionManager = Depends(get_session_manager)
 ):
     """Create a new session.
-    
+
     Args:
         session_data: Session creation data
         manager: Session manager dependency
-        
+
     Returns:
         Created session
     """
@@ -64,14 +64,14 @@ async def list_sessions(
     manager: SessionManager = Depends(get_session_manager)
 ):
     """List sessions with optional filtering.
-    
+
     Args:
         user_id: Optional user ID filter
         state: Optional state filter
         limit: Maximum results
         offset: Results to skip
         manager: Session manager dependency
-        
+
     Returns:
         List of session summaries
     """
@@ -98,14 +98,14 @@ async def get_session(
     manager: SessionManager = Depends(get_session_manager)
 ):
     """Get session by ID.
-    
+
     Args:
         session_id: Session identifier
         manager: Session manager dependency
-        
+
     Returns:
         Session details
-        
+
     Raises:
         HTTPException: If session not found
     """
@@ -135,15 +135,15 @@ async def update_session(
     manager: SessionManager = Depends(get_session_manager)
 ):
     """Update session data.
-    
+
     Args:
         session_id: Session identifier
         updates: Fields to update
         manager: Session manager dependency
-        
+
     Returns:
         Updated session
-        
+
     Raises:
         HTTPException: If session not found
     """
@@ -172,11 +172,11 @@ async def delete_session(
     manager: SessionManager = Depends(get_session_manager)
 ):
     """Delete session.
-    
+
     Args:
         session_id: Session identifier
         manager: Session manager dependency
-        
+
     Raises:
         HTTPException: If session not found
     """
@@ -205,15 +205,15 @@ async def extend_session(
     manager: SessionManager = Depends(get_session_manager)
 ):
     """Extend session expiration time.
-    
+
     Args:
         session_id: Session identifier
         minutes: Minutes to extend (default from settings)
         manager: Session manager dependency
-        
+
     Returns:
         Updated session
-        
+
     Raises:
         HTTPException: If session not found
     """
@@ -243,15 +243,15 @@ async def transition_session_state(
     manager: SessionManager = Depends(get_session_manager)
 ):
     """Transition session to new state.
-    
+
     Args:
         session_id: Session identifier
         new_state: New session state
         manager: Session manager dependency
-        
+
     Returns:
         Updated session
-        
+
     Raises:
         HTTPException: If session not found
     """
@@ -279,10 +279,10 @@ async def cleanup_expired_sessions(
     manager: SessionManager = Depends(get_session_manager)
 ):
     """Clean up expired sessions.
-    
+
     Args:
         manager: Session manager dependency
-        
+
     Returns:
         Cleanup results
     """

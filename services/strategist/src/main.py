@@ -30,14 +30,14 @@ logger = logging.getLogger(__name__)
 async def lifespan(app: FastAPI) -> AsyncGenerator[None, None]:
     """Application lifespan management."""
     logger.info("STRATEGIST service starting up...")
-    
+
     # Initialize career generator with all components
     await initialize_career_generator()
-    
+
     logger.info("STRATEGIST service startup complete")
-    
+
     yield
-    
+
     logger.info("STRATEGIST service shutting down...")
     # Cleanup resources if needed
     logger.info("STRATEGIST service shutdown complete")
@@ -67,19 +67,19 @@ app.add_middleware(
 async def add_correlation_id(request: Request, call_next):
     """Add correlation ID to all requests."""
     correlation_id = request.headers.get("x-correlation-id") or str(uuid.uuid4())
-    
+
     # Add to logger context
-    logger.info(f"Request started - {request.method} {request.url}", 
+    logger.info(f"Request started - {request.method} {request.url}",
                 extra={"correlation_id": correlation_id})
-    
+
     response = await call_next(request)
-    
+
     # Add correlation ID to response headers
     response.headers["x-correlation-id"] = correlation_id
-    
-    logger.info(f"Request completed - Status: {response.status_code}", 
+
+    logger.info(f"Request completed - Status: {response.status_code}",
                 extra={"correlation_id": correlation_id})
-    
+
     return response
 
 
@@ -101,9 +101,9 @@ async def root():
 
 if __name__ == "__main__":
     import uvicorn
-    
+
     logger.info(f"Starting STRATEGIST service on {config.host}:{config.port}")
-    
+
     uvicorn.run(
         "src.main:app",
         host=config.host,

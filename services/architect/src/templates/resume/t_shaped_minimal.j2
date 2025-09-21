@@ -10,16 +10,16 @@
     <!-- T-Shaped Top Bar: Ultra-minimal Impact Summary -->
     <section class="impact-summary">
         <h1>{{ candidate_name }}</h1>
-        
+
         <div class="contact-info">
             {{ email }}{% if phone %} | {{ phone }}{% endif %}{% if location %} | {{ location }}{% endif %}
         </div>
-        
+
         <!-- Simplified Impact Summary for maximum ATS parsability -->
         <p class="summary">
             {{ adjective }} {{ target_role_title }} with {{ years_experience }} years of experience in {{ core_competency_1 }}, {{ core_competency_2 }}, and {{ core_technology }}. {{ top_quantified_achievement }} through {{ skill_area }} expertise.
         </p>
-        
+
         <!-- Simple skills list -->
         <div class="core-skills">
             <strong>Skills:</strong> {{ core_skills[:8] | join_with_comma }}
@@ -29,18 +29,18 @@
     <!-- T-Shaped Vertical Bar: Minimal Experience Log -->
     <section class="experience-log">
         <h2>Professional Experience</h2>
-        
+
         {% for job in work_experience %}
         <div class="job-entry">
             <h3>{{ job.role_title | default('Professional') }}</h3>
             <p><strong>{{ job.company_name | default('Company') }}</strong> | {{ job.start_date | format_duration(job.end_date) }}</p>
-            
+
             <ul class="accomplishments">
                 {% for accomplishment in job.accomplishments %}
                 <li>{{ accomplishment }}</li>
                 {% endfor %}
             </ul>
-            
+
             {% if job.skills_used %}
             <p><em>Technologies:</em> {{ job.skills_used | join_with_comma }}</p>
             {% endif %}
@@ -57,7 +57,7 @@
         {% endfor %}
     </section>
     {% endif %}
-    
+
     {% if technical_skills %}
     <section class="technical-skills">
         <h2>Technical Skills</h2>
@@ -66,7 +66,7 @@
         {% endfor %}
     </section>
     {% endif %}
-    
+
     {% if career_data.certifications %}
     <section class="certifications">
         <h2>Certifications</h2>

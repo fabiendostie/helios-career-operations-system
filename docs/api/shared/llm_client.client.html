@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>llm_client.client - shared</title>
+    <style>
+        body { font-family: Arial, sans-serif; margin: 40px; background: #f8f9fa; }
+        .container { max-width: 1200px; margin: 0 auto; background: white; padding: 30px; border-radius: 8px; box-shadow: 0 2px 10px rgba(0,0,0,0.1); }
+        .header { background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; padding: 20px; border-radius: 5px; margin-bottom: 30px; }
+        .section { margin: 20px 0; padding: 20px; border-left: 4px solid #667eea; background: #f8f9ff; }
+        .docstring { background: #fff; padding: 15px; border-radius: 5px; border: 1px solid #e0e0e0; margin: 10px 0; white-space: pre-wrap; }
+        .nav { margin-bottom: 20px; }
+        .nav a { color: #667eea; text-decoration: none; margin-right: 20px; }
+        .nav a:hover { text-decoration: underline; }
+        h1, h2, h3 { color: #333; }
+        .module-path { color: #666; font-style: italic; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>llm_client.client</h1>
+            <p class="module-path">Service: shared • Path: llm_client\client.py</p>
+        </div>
+
+        <div class="nav">
+            <a href="../index.html">← Back to API Index</a>
+            <a href="../shared/index.html">← shared Overview</a>
+        </div>
+
+        <div class="section">
+            <h2>Module Description</h2>
+            <div class="docstring">Main resilient LLM client implementation.</div>
+        </div>
+
+        <div class="section">
+            <h2>Classes</h2>
+
+            <h3>ResilientLLMClient</h3>
+            <div class="docstring">Resilient LLM client with caching, retries, fallbacks, and circuit breakers.
+
+This client provides a robust interface to LLM services with:
+- Redis caching for identical prompts
+- Automatic retries with exponential backoff
+- Fallback between multiple providers
+- Circuit breaker pattern to prevent cascading failures
+- Comprehensive logging and monitoring</div>
+        </div>
+        <div class="section">
+            <h2>Functions</h2>
+
+            <h3>_init_providers()</h3>
+            <div class="docstring">Initialize all configured providers.</div>
+
+            <h3>_init_circuit_breakers()</h3>
+            <div class="docstring">Initialize circuit breakers for each provider.</div>
+
+            <h3>async generate()</h3>
+            <div class="docstring">Generate a response from an LLM with full resilience features.
+
+Args:
+    prompt: User prompt
+    system_prompt: Optional system prompt
+    use_cache: Whether to use caching (default: True)
+    provider_preference: Optional list of preferred providers to try
+    **kwargs: Additional parameters passed to the provider
+
+Returns:
+    Dictionary containing:
+        - content: The generated text
+        - model: Model used
+        - provider: Provider used
+        - usage: Token usage information
+        - cached: Whether response was cached
+        - attempts: Number of attempts made
+
+Raises:
+    LLMClientError: When all providers fail or configuration is invalid</div>
+
+            <h3>async _generate_with_provider()</h3>
+            <div class="docstring">Generate response using a specific provider with retries and circuit breaker.</div>
+
+            <h3>_get_provider_order()</h3>
+            <div class="docstring">Determine the order in which to try providers.
+
+Args:
+    preference: Optional list of preferred providers
+
+Returns:
+    Ordered list of provider names to try</div>
+
+            <h3>async _get_cached_response()</h3>
+            <div class="docstring">Attempt to get a cached response.</div>
+
+            <h3>async _cache_response()</h3>
+            <div class="docstring">Cache a successful response.</div>
+
+            <h3>get_status()</h3>
+            <div class="docstring">Get comprehensive status of the client and all components.
+
+Returns:
+    Dictionary with status information</div>
+
+            <h3>reset_circuit_breakers()</h3>
+            <div class="docstring">Reset circuit breakers.
+
+Args:
+    provider_name: Specific provider to reset, or None for all</div>
+
+            <h3>async clear_cache()</h3>
+            <div class="docstring">Clear cache entries.
+
+Args:
+    pattern: Optional pattern to match (None clears all)
+
+Returns:
+    Number of entries cleared</div>
+
+            <h3>async close()</h3>
+            <div class="docstring">Close the client and clean up resources.</div>
+
+            <h3>async _context_manager()</h3>
+            <div class="docstring">Context manager for automatic cleanup.</div>
+        </div>
+    </div>
+</body>
+</html>

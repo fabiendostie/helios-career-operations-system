@@ -1,7 +1,7 @@
 # Epic 2: Intelligence & Analysis Layer
-**Status**: ⏳ PENDING  
-**Stories**: 2.1 (Orchestrator), 2.2 (Strategist), 2.3 (Analyst)  
-**Timeline**: Week 1-2 of MVP-Sequential Plan  
+**Status**: ⏳ PENDING
+**Stories**: 2.1 (Orchestrator), 2.2 (Strategist), 2.3 (Analyst)
+**Timeline**: Week 1-2 of MVP-Sequential Plan
 
 ## Overview
 Build the core intelligence layer that transforms raw career data into actionable insights, career path recommendations, and optimization strategies.
@@ -21,7 +21,7 @@ Build the core intelligence layer that transforms raw career data into actionabl
   7. The orchestrator must implement proper error handling and graceful degradation
   8. The system must provide session persistence and recovery mechanisms
 
-### Story 2.2 - STRATEGIST Agent ⏳  
+### Story 2.2 - STRATEGIST Agent ⏳
 - **Status**: PENDING
 - **Priority**: HIGH
 - **Functionality**:
@@ -31,7 +31,7 @@ Build the core intelligence layer that transforms raw career data into actionabl
   - Market-aligned role recommendations
 
 ### Story 2.3 - ANALYST Agent ⏳
-- **Status**: PENDING  
+- **Status**: PENDING
 - **Priority**: HIGH
 - **Functionality**:
   - Resume-to-market correlation analysis (3-step MVP pipeline)

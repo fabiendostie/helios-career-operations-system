@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>integrations.orchestrator - strategist</title>
+    <style>
+        body { font-family: Arial, sans-serif; margin: 40px; background: #f8f9fa; }
+        .container { max-width: 1200px; margin: 0 auto; background: white; padding: 30px; border-radius: 8px; box-shadow: 0 2px 10px rgba(0,0,0,0.1); }
+        .header { background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; padding: 20px; border-radius: 5px; margin-bottom: 30px; }
+        .section { margin: 20px 0; padding: 20px; border-left: 4px solid #667eea; background: #f8f9ff; }
+        .docstring { background: #fff; padding: 15px; border-radius: 5px; border: 1px solid #e0e0e0; margin: 10px 0; white-space: pre-wrap; }
+        .nav { margin-bottom: 20px; }
+        .nav a { color: #667eea; text-decoration: none; margin-right: 20px; }
+        .nav a:hover { text-decoration: underline; }
+        h1, h2, h3 { color: #333; }
+        .module-path { color: #666; font-style: italic; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>integrations.orchestrator</h1>
+            <p class="module-path">Service: strategist • Path: integrations\orchestrator.py</p>
+        </div>
+
+        <div class="nav">
+            <a href="../index.html">← Back to API Index</a>
+            <a href="../strategist/index.html">← strategist Overview</a>
+        </div>
+
+        <div class="section">
+            <h2>Module Description</h2>
+            <div class="docstring">Integration client for HELIOS Orchestrator service.</div>
+        </div>
+
+        <div class="section">
+            <h2>Classes</h2>
+
+            <h3>OrchestratorClient</h3>
+            <div class="docstring">HTTP client for communicating with HELIOS Orchestrator.</div>
+
+            <h3>HeartbeatManager</h3>
+            <div class="docstring">Manages periodic heartbeats to the Orchestrator.</div>
+        </div>
+        <div class="section">
+            <h2>Functions</h2>
+
+            <h3>async initialize_orchestrator_integration()</h3>
+            <div class="docstring">Initialize integration with HELIOS Orchestrator.</div>
+
+            <h3>__init__()</h3>
+            <div class="docstring">Initialize heartbeat manager.</div>
+
+            <h3>async __aenter__()</h3>
+            <div class="docstring">Async context manager entry.</div>
+
+            <h3>async __aexit__()</h3>
+            <div class="docstring">Async context manager exit.</div>
+
+            <h3>async register_with_orchestrator()</h3>
+            <div class="docstring">Register STRATEGIST service with the Orchestrator.</div>
+
+            <h3>async send_heartbeat()</h3>
+            <div class="docstring">Send heartbeat to Orchestrator to maintain service status.</div>
+
+            <h3>async get_session_data()</h3>
+            <div class="docstring">Retrieve session data from Orchestrator for a user.</div>
+
+            <h3>async update_session_data()</h3>
+            <div class="docstring">Update session with STRATEGIST results.</div>
+
+            <h3>async notify_completion()</h3>
+            <div class="docstring">Notify Orchestrator that STRATEGIST processing is complete.</div>
+
+            <h3>async get_orchestrator_health()</h3>
+            <div class="docstring">Check Orchestrator health status.</div>
+
+            <h3>async start()</h3>
+            <div class="docstring">Start periodic heartbeats.</div>
+
+            <h3>async stop()</h3>
+            <div class="docstring">Stop periodic heartbeats.</div>
+
+            <h3>async _heartbeat_loop()</h3>
+            <div class="docstring">Main heartbeat loop.</div>
+        </div>
+    </div>
+</body>
+</html>

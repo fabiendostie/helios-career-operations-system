@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>integrations.profile_ingestor - orchestrator</title>
+    <style>
+        body { font-family: Arial, sans-serif; margin: 40px; background: #f8f9fa; }
+        .container { max-width: 1200px; margin: 0 auto; background: white; padding: 30px; border-radius: 8px; box-shadow: 0 2px 10px rgba(0,0,0,0.1); }
+        .header { background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; padding: 20px; border-radius: 5px; margin-bottom: 30px; }
+        .section { margin: 20px 0; padding: 20px; border-left: 4px solid #667eea; background: #f8f9ff; }
+        .docstring { background: #fff; padding: 15px; border-radius: 5px; border: 1px solid #e0e0e0; margin: 10px 0; white-space: pre-wrap; }
+        .nav { margin-bottom: 20px; }
+        .nav a { color: #667eea; text-decoration: none; margin-right: 20px; }
+        .nav a:hover { text-decoration: underline; }
+        h1, h2, h3 { color: #333; }
+        .module-path { color: #666; font-style: italic; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>integrations.profile_ingestor</h1>
+            <p class="module-path">Service: orchestrator • Path: integrations\profile_ingestor.py</p>
+        </div>
+
+        <div class="nav">
+            <a href="../index.html">← Back to API Index</a>
+            <a href="../orchestrator/index.html">← orchestrator Overview</a>
+        </div>
+
+        <div class="section">
+            <h2>Module Description</h2>
+            <div class="docstring">Profile Ingestor service integration client.</div>
+        </div>
+
+        <div class="section">
+            <h2>Classes</h2>
+
+            <h3>IngestionRequest</h3>
+            <div class="docstring">Profile Ingestor ingestion request model.</div>
+
+            <h3>IngestionResponse</h3>
+            <div class="docstring">Profile Ingestor ingestion response model.</div>
+
+            <h3>IngestionProgress</h3>
+            <div class="docstring">Profile Ingestor progress tracking model.</div>
+
+            <h3>ProfileIngestorClient</h3>
+            <div class="docstring">HTTP client for Profile Ingestor service communication.</div>
+        </div>
+        <div class="section">
+            <h2>Functions</h2>
+
+            <h3>async get_profile_ingestor_client()</h3>
+            <div class="docstring">Get global Profile Ingestor client instance.
+
+Returns:
+    ProfileIngestorClient instance</div>
+
+            <h3>async close_profile_ingestor_client()</h3>
+            <div class="docstring">Close global Profile Ingestor client instance.</div>
+
+            <h3>__init__()</h3>
+            <div class="docstring">Initialize Profile Ingestor client.
+
+Args:
+    base_url: Profile Ingestor service base URL
+    timeout_seconds: Request timeout in seconds</div>
+
+            <h3>async __aenter__()</h3>
+            <div class="docstring">Async context manager entry.</div>
+
+            <h3>async __aexit__()</h3>
+            <div class="docstring">Async context manager exit.</div>
+
+            <h3>async _ensure_session()</h3>
+            <div class="docstring">Ensure HTTP session is created.</div>
+
+            <h3>async close()</h3>
+            <div class="docstring">Close HTTP session.</div>
+
+            <h3>async health_check()</h3>
+            <div class="docstring">Check Profile Ingestor service health.
+
+Returns:
+    Health status information
+
+Raises:
+    aiohttp.ClientError: If request fails</div>
+
+            <h3>async ingest_files()</h3>
+            <div class="docstring">Ingest files through Profile Ingestor service.
+
+Args:
+    session_id: Session identifier
+    file_paths: List of file paths to process
+    user_context: Additional user context
+    processing_options: Processing configuration options
+
+Returns:
+    Ingestion response with extracted data
+
+Raises:
+    aiohttp.ClientError: If request fails</div>
+
+            <h3>async ingest_text()</h3>
+            <div class="docstring">Ingest text content through Profile Ingestor service.
+
+Args:
+    session_id: Session identifier
+    text_content: Text content to process
+    user_context: Additional user context
+    processing_options: Processing configuration options
+
+Returns:
+    Ingestion response with extracted data
+
+Raises:
+    aiohttp.ClientError: If request fails</div>
+
+            <h3>async get_progress()</h3>
+            <div class="docstring">Get ingestion progress for a session.
+
+Args:
+    session_id: Session identifier
+
+Returns:
+    Current ingestion progress
+
+Raises:
+    aiohttp.ClientError: If request fails</div>
+
+            <h3>async cancel_ingestion()</h3>
+            <div class="docstring">Cancel ongoing ingestion for a session.
+
+Args:
+    session_id: Session identifier
+
+Returns:
+    Cancellation result
+
+Raises:
+    aiohttp.ClientError: If request fails</div>
+
+            <h3>async wait_for_completion()</h3>
+            <div class="docstring">Wait for ingestion to complete with polling.
+
+Args:
+    session_id: Session identifier
+    check_interval: Seconds between progress checks
+    max_wait_time: Maximum time to wait in seconds
+
+Returns:
+    Final ingestion progress
+
+Raises:
+    asyncio.TimeoutError: If ingestion doesn't complete in time</div>
+        </div>
+    </div>
+</body>
+</html>

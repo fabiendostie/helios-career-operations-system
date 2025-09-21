@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>core.grammar_checker - editor</title>
+    <style>
+        body { font-family: Arial, sans-serif; margin: 40px; background: #f8f9fa; }
+        .container { max-width: 1200px; margin: 0 auto; background: white; padding: 30px; border-radius: 8px; box-shadow: 0 2px 10px rgba(0,0,0,0.1); }
+        .header { background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; padding: 20px; border-radius: 5px; margin-bottom: 30px; }
+        .section { margin: 20px 0; padding: 20px; border-left: 4px solid #667eea; background: #f8f9ff; }
+        .docstring { background: #fff; padding: 15px; border-radius: 5px; border: 1px solid #e0e0e0; margin: 10px 0; white-space: pre-wrap; }
+        .nav { margin-bottom: 20px; }
+        .nav a { color: #667eea; text-decoration: none; margin-right: 20px; }
+        .nav a:hover { text-decoration: underline; }
+        h1, h2, h3 { color: #333; }
+        .module-path { color: #666; font-style: italic; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>core.grammar_checker</h1>
+            <p class="module-path">Service: editor • Path: core\grammar_checker.py</p>
+        </div>
+
+        <div class="nav">
+            <a href="../index.html">← Back to API Index</a>
+            <a href="../editor/index.html">← editor Overview</a>
+        </div>
+
+        <div class="section">
+            <h2>Module Description</h2>
+            <div class="docstring">Grammar checking functionality using LanguageTool.</div>
+        </div>
+
+        <div class="section">
+            <h2>Classes</h2>
+
+            <h3>GrammarChecker</h3>
+            <div class="docstring">Grammar checker using LanguageTool.</div>
+        </div>
+        <div class="section">
+            <h2>Functions</h2>
+
+            <h3>__init__()</h3>
+            <div class="docstring">Initialize the grammar checker.</div>
+
+            <h3>_initialize_tools()</h3>
+            <div class="docstring">Initialize LanguageTool instances for different languages.</div>
+
+            <h3>check_grammar()</h3>
+            <div class="docstring">Check grammar in the given text.</div>
+
+            <h3>_check_with_languagetool()</h3>
+            <div class="docstring">Check grammar using LanguageTool.</div>
+
+            <h3>_basic_grammar_check()</h3>
+            <div class="docstring">Basic grammar checking without external tools.</div>
+
+            <h3>_check_subject_verb_agreement()</h3>
+            <div class="docstring">Check for basic subject-verb agreement issues.</div>
+
+            <h3>_check_common_misspellings()</h3>
+            <div class="docstring">Check for common misspellings.</div>
+
+            <h3>_check_apostrophes()</h3>
+            <div class="docstring">Check for incorrect apostrophe usage.</div>
+
+            <h3>_determine_severity()</h3>
+            <div class="docstring">Determine severity of a grammar issue.</div>
+
+            <h3>suggest_corrections()</h3>
+            <div class="docstring">Get correction suggestions for a specific issue.</div>
+
+            <h3>check_grammar_batch()</h3>
+            <div class="docstring">Check grammar for multiple texts in batch.</div>
+
+            <h3>__del__()</h3>
+            <div class="docstring">Clean up LanguageTool instances.</div>
+        </div>
+    </div>
+</body>
+</html>

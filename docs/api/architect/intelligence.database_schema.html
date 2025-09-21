@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>intelligence.database_schema - architect</title>
+    <style>
+        body { font-family: Arial, sans-serif; margin: 40px; background: #f8f9fa; }
+        .container { max-width: 1200px; margin: 0 auto; background: white; padding: 30px; border-radius: 8px; box-shadow: 0 2px 10px rgba(0,0,0,0.1); }
+        .header { background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; padding: 20px; border-radius: 5px; margin-bottom: 30px; }
+        .section { margin: 20px 0; padding: 20px; border-left: 4px solid #667eea; background: #f8f9ff; }
+        .docstring { background: #fff; padding: 15px; border-radius: 5px; border: 1px solid #e0e0e0; margin: 10px 0; white-space: pre-wrap; }
+        .nav { margin-bottom: 20px; }
+        .nav a { color: #667eea; text-decoration: none; margin-right: 20px; }
+        .nav a:hover { text-decoration: underline; }
+        h1, h2, h3 { color: #333; }
+        .module-path { color: #666; font-style: italic; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>intelligence.database_schema</h1>
+            <p class="module-path">Service: architect • Path: intelligence\database_schema.py</p>
+        </div>
+
+        <div class="nav">
+            <a href="../index.html">← Back to API Index</a>
+            <a href="../architect/index.html">← architect Overview</a>
+        </div>
+
+        <div class="section">
+            <h2>Module Description</h2>
+            <div class="docstring">Database Schema Definition for Dynamic Research Engine
+Implements Medallion Architecture (Bronze, Silver, Gold layers)
+
+This module defines the complete database schema for storing and organizing
+research intelligence data in a structured, queryable format.
+
+Bronze Layer: Raw, immutable source data
+Silver Layer: Cleaned, parsed, structured data
+Gold Layer: Aggregated, analysis-ready intelligence tables
+
+Schema Design Philosophy:
+- Immutable Bronze layer for audit trail and replayability
+- Structured Silver layer for efficient processing
+- Denormalized Gold layer optimized for fast analytics queries
+- Comprehensive indexing for performance
+- Foreign key constraints for data integrity</div>
+        </div>
+
+        <div class="section">
+            <h2>Classes</h2>
+
+            <h3>BronzeRawContent</h3>
+            <div class="docstring">Stores raw, unprocessed content exactly as received from sources.
+Immutable for audit trail and pipeline replayability.</div>
+
+            <h3>SilverProcessedContent</h3>
+            <div class="docstring">Stores cleaned and NLP-processed content with extracted entities,
+classifications, and structured metadata.</div>
+
+            <h3>GoldIndustryTrends</h3>
+            <div class="docstring">Aggregated industry trends and insights from authoritative sources.
+Optimized for fast analytical queries by ARCHITECT service.</div>
+
+            <h3>GoldATSUpdates</h3>
+            <div class="docstring">ATS vendor updates and algorithm changes affecting resume optimization.</div>
+
+            <h3>GoldResumeTrends</h3>
+            <div class="docstring">Current resume formatting and content trends from expert sources.</div>
+
+            <h3>GoldHiringManagerSentiment</h3>
+            <div class="docstring">Aggregated hiring manager sentiment and preferences from forum discussions.</div>
+
+            <h3>GoldJobMarketIndicators</h3>
+            <div class="docstring">Economic indicators and job market statistics from government sources.</div>
+
+            <h3>GoldSkillsDemand</h3>
+            <div class="docstring">Skills demand trends from educational platforms and job market analysis.</div>
+
+            <h3>DatabaseManager</h3>
+            <div class="docstring">Manages database connections, schema creation, and maintenance operations.</div>
+        </div>
+        <div class="section">
+            <h2>Functions</h2>
+
+            <h3>get_database_manager()</h3>
+            <div class="docstring">Get global database manager instance.
+
+Args:
+    database_url: Database connection URL (required on first call)
+
+Returns:
+    DatabaseManager instance</div>
+
+            <h3>__init__()</h3>
+            <div class="docstring">Initialize database manager with connection URL.
+
+Args:
+    database_url: PostgreSQL connection string
+        Example: "postgresql://user:pass@localhost:5432/research_db"</div>
+
+            <h3>initialize_connection()</h3>
+            <div class="docstring">Initialize database engine and session factory</div>
+
+            <h3>create_all_tables()</h3>
+            <div class="docstring">Create all tables if they don't exist</div>
+
+            <h3>drop_all_tables()</h3>
+            <div class="docstring">Drop all tables (use with caution!)</div>
+
+            <h3>get_session()</h3>
+            <div class="docstring">Get a database session</div>
+
+            <h3>get_table_counts()</h3>
+            <div class="docstring">Get row counts for all tables</div>
+        </div>
+    </div>
+</body>
+</html>

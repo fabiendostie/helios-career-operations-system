@@ -52,7 +52,7 @@ attributes:
   - sessions: List[Session]
   - documents: List[Document]
   - preferences: UserPreferences
-  
+
 behaviors:
   - register()
   - authenticate()
@@ -61,7 +61,7 @@ behaviors:
   - executeCommand()
   - downloadDocument()
   - provideFeedback()
-  
+
 relationships:
   - owns: [Profile, Documents, Sessions]
   - uses: [Agents, Services]
@@ -79,7 +79,7 @@ attributes:
   - startTime: DateTime
   - commands: List[Command]
   - context: SessionContext
-  
+
 behaviors:
   - initialize()
   - updateState()
@@ -87,7 +87,7 @@ behaviors:
   - maintain
 Context()
   - terminate()
-  
+
 states:
   - NEW
   - ACTIVE
@@ -111,14 +111,14 @@ attributes:
   - projects: List[Project]
   - aspirations: CareerAspirations
   - constraints: CareerConstraints
-  
+
 behaviors:
   - validate()
   - enrich()
   - vectorize()
   - compareWith()
   - generateSummary()
-  
+
 derived_attributes:
   - competencyVector: Vector
   - careerAnchors: List[Anchor]
@@ -135,42 +135,42 @@ subtypes:
   - AnalystAgent
   - ArchitectAgent
   - EditorAgent
-  
+
 common_attributes:
   - agentId: String
   - version: String
   - status: AgentStatus
   - knowledgeBase: KnowledgeBase
   - configuration: AgentConfig
-  
+
 common_behaviors:
   - processRequest()
   - validateInput()
   - executeTask()
   - generateResponse()
   - logActivity()
-  
+
 polymorphic_behaviors:
   ProfileIngestorAgent:
     - conductInterview()
     - extractEntities()
     - resolveConflicts()
-    
+
   StrategistAgent:
     - generateCareerPaths()
     - calculateFitScores()
     - identifyOpportunities()
-    
+
   AnalystAgent:
     - performMarketAnalysis()
     - assessATSReadiness()
     - identifySkillGaps()
-    
+
   ArchitectAgent:
     - generateResume()
     - createCoverLetter()
     - optimizeForATS()
-    
+
   EditorAgent:
     - rewriteBulletPoint()
     - enhanceLanguage()
@@ -188,14 +188,14 @@ attributes:
   - metadata: DocumentMetadata
   - version: Integer
   - createdAt: DateTime
-  
+
 types:
   - RESUME
   - COVER_LETTER
   - LINKEDIN_PROFILE
   - PORTFOLIO
   - CAREER_REPORT
-  
+
 behaviors:
   - generate()
   - validate()
@@ -214,7 +214,7 @@ attributes:
   - skillDemand: Map[Skill, Demand]
   - industryTrends: List[Trend]
   - companyInsights: List[CompanyData]
-  
+
 behaviors:
   - aggregate()
   - analyze()
@@ -234,7 +234,7 @@ attributes:
   - parameters: Map[String, Any]
   - timestamp: DateTime
   - source: CommandSource
-  
+
 commands:
   - /start
   - /ingest
@@ -256,7 +256,7 @@ attributes:
   - tools: List[Tool]
   - certifications: List[Certification]
   - languages: List[Language]
-  
+
 behaviors:
   - categorize()
   - mapBilingual()
@@ -276,7 +276,7 @@ attributes:
   - requirements: List[Requirement]
   - timeline: TimeEstimate
   - steps: List[CareerStep]
-  
+
 behaviors:
   - evaluate()
   - compare()
@@ -299,7 +299,7 @@ operations:
   - downloadFile(handle: FileHandle): Binary
   - deleteFile(handle: FileHandle): Boolean
   - validateFile(file: Binary): ValidationResult
-  
+
 protocols:
   - Multipart form upload
   - Chunked transfer
@@ -313,12 +313,12 @@ type: External Service Interface
 providers:
   - OpenAI
   - Anthropic
-  
+
 operations:
   - generateText(prompt: String, params: LLMParams): String
   - generateEmbedding(text: String): Vector
   - moderateContent(text: String): ModerationResult
-  
+
 constraints:
   - Rate limiting
   - Token limits
@@ -333,7 +333,7 @@ sources:
   - LinkedIn API
   - Indeed API
   - Custom scrapers
-  
+
 operations:
   - searchJobs(criteria: SearchCriteria): List[JobListing]
   - getJobDetails(jobId: String): JobDetails
@@ -376,12 +376,12 @@ endpoints:
     - GET /sessions/{id}
     - POST /sessions/{id}/command
     - DELETE /sessions/{id}
-    
+
   documents:
     - POST /documents/upload
     - GET /documents/{id}
     - POST /documents/generate
-    
+
   profiles:
     - GET /profiles/{id}
     - PUT /profiles/{id}
@@ -415,12 +415,12 @@ responsibilities:
   - Manage session lifecycle
   - Coordinate multi-agent workflows
   - Handle error recovery
-  
+
 collaborators:
   - All Agent Controllers
   - SessionManager
   - StateManager
-  
+
 patterns:
   - Mediator
   - Chain of Responsibility
@@ -437,12 +437,12 @@ responsibilities:
   - Detect language
   - Parse structured data
   - Handle conflicts
-  
+
 collaborators:
   - FileSystemInterface
   - NLPProcessor
   - ConflictResolver
-  
+
 workflows:
   uploadAndProcess:
     1. Receive file
@@ -461,12 +461,12 @@ responsibilities:
   - Calculate fit scores
   - Generate insights
   - Create recommendations
-  
+
 collaborators:
   - MarketDataService
   - ScoringEngine
   - RecommendationEngine
-  
+
 algorithms:
   - Cosine similarity
   - TF-IDF weighting
@@ -482,12 +482,12 @@ responsibilities:
   - Apply templates
   - Optimize content
   - Ensure compliance
-  
+
 collaborators:
   - TemplateEngine
   - LLMInterface
   - ATSValidator
-  
+
 templates:
   - Resume templates
   - Cover letter templates
@@ -505,7 +505,7 @@ responsibilities:
   - Maintain state
   - Handle timeouts
   - Clean up resources
-  
+
 state_transitions:
   NEW -> ACTIVE: on /start
   ACTIVE -> INGESTING: on /ingest
@@ -523,7 +523,7 @@ responsibilities:
   - Authorize operations
   - Encrypt sensitive data
   - Audit access
-  
+
 security_layers:
   - JWT validation
   - RBAC enforcement
@@ -544,7 +544,7 @@ primary_actor: User
 preconditions:
   - User is authenticated
   - User has resume documents
-  
+
 main_flow:
   1. User initiates session (/start)
   2. User uploads resume documents
@@ -552,11 +552,11 @@ main_flow:
   4. User participates in interview (/ingest)
   5. System validates profile
   6. User confirms profile
-  
+
 postconditions:
   - Complete profile stored
   - Session state updated
-  
+
 exceptions:
   - Invalid document format
   - Extraction failure
@@ -570,14 +570,14 @@ primary_actor: User
 preconditions:
   - Profile exists
   - Session active
-  
+
 main_flow:
   1. User requests discovery (/discover)
   2. System analyzes profile
   3. System generates CTPs
   4. User reviews options
   5. User selects path
-  
+
 postconditions:
   - Career paths identified
   - Selection recorded
@@ -590,14 +590,14 @@ primary_actor: User
 preconditions:
   - Analysis complete
   - Target role selected
-  
+
 main_flow:
   1. User requests resume (/build resume)
   2. System applies optimization
   3. System generates document
   4. User reviews output
   5. User downloads document
-  
+
 postconditions:
   - Resume generated
   - Document stored
@@ -682,7 +682,7 @@ stateDiagram-v2
     GENERATING --> DOCUMENTS_READY: Documents created
     DOCUMENTS_READY --> COMPLETED: Session end
     COMPLETED --> [*]
-    
+
     ACTIVE --> EXPIRED: Timeout
     INGESTING --> EXPIRED: Timeout
     DISCOVERING --> EXPIRED: Timeout
@@ -697,19 +697,19 @@ agent_states:
   IDLE:
     - Ready for requests
     - No active processing
-    
+
   PROCESSING:
     - Handling request
     - Resources allocated
-    
+
   WAITING:
     - Awaiting external service
     - Timeout monitoring
-    
+
   ERROR:
     - Processing failed
     - Recovery attempted
-    
+
   MAINTENANCE:
     - Updates in progress
     - Requests queued

@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>core.ats_simulator - analyst</title>
+    <style>
+        body { font-family: Arial, sans-serif; margin: 40px; background: #f8f9fa; }
+        .container { max-width: 1200px; margin: 0 auto; background: white; padding: 30px; border-radius: 8px; box-shadow: 0 2px 10px rgba(0,0,0,0.1); }
+        .header { background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; padding: 20px; border-radius: 5px; margin-bottom: 30px; }
+        .section { margin: 20px 0; padding: 20px; border-left: 4px solid #667eea; background: #f8f9ff; }
+        .docstring { background: #fff; padding: 15px; border-radius: 5px; border: 1px solid #e0e0e0; margin: 10px 0; white-space: pre-wrap; }
+        .nav { margin-bottom: 20px; }
+        .nav a { color: #667eea; text-decoration: none; margin-right: 20px; }
+        .nav a:hover { text-decoration: underline; }
+        h1, h2, h3 { color: #333; }
+        .module-path { color: #666; font-style: italic; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>core.ats_simulator</h1>
+            <p class="module-path">Service: analyst • Path: core\ats_simulator.py</p>
+        </div>
+
+        <div class="nav">
+            <a href="../index.html">← Back to API Index</a>
+            <a href="../analyst/index.html">← analyst Overview</a>
+        </div>
+
+        <div class="section">
+            <h2>Module Description</h2>
+            <div class="docstring">ATS simulation engine with weighted scoring criteria.</div>
+        </div>
+
+        <div class="section">
+            <h2>Classes</h2>
+
+            <h3>ATSSimulator</h3>
+            <div class="docstring">ATS simulation engine with comprehensive scoring.</div>
+        </div>
+        <div class="section">
+            <h2>Functions</h2>
+
+            <h3>__init__()</h3>
+            <div class="docstring">Initialize ATS simulator with scoring data.</div>
+
+            <h3>_load_scoring_data()</h3>
+            <div class="docstring">Load high-impact verbs and scoring patterns.</div>
+
+            <h3>calculate_keyword_match_score()</h3>
+            <div class="docstring">Calculate keyword match score using cosine similarity (40% weight).</div>
+
+            <h3>calculate_format_parsability_score()</h3>
+            <div class="docstring">Calculate format parsability score based on NER extraction success (30% weight).</div>
+
+            <h3>calculate_quantification_score()</h3>
+            <div class="docstring">Calculate quantification score based on METRIC entity presence (20% weight).</div>
+
+            <h3>calculate_action_verb_score()</h3>
+            <div class="docstring">Calculate action verb score using high-impact verb classification (10% weight).</div>
+
+            <h3>determine_performance_level()</h3>
+            <div class="docstring">Determine performance level based on percentage score.</div>
+
+            <h3>simulate_ats_score()</h3>
+            <div class="docstring">Simulate comprehensive ATS scoring for a resume against a job.</div>
+
+            <h3>_estimate_ranking()</h3>
+            <div class="docstring">Estimate ranking among applicants based on ATS score.</div>
+        </div>
+    </div>
+</body>
+</html>

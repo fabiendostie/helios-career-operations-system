@@ -17,9 +17,9 @@ Base = declarative_base()
 
 class SessionState(str, Enum):
     """Session state enumeration."""
-    
+
     INITIALIZED = "initialized"
-    INGESTING = "ingesting"  
+    INGESTING = "ingesting"
     ANALYZING = "analyzing"
     GENERATING = "generating"
     COMPLETED = "completed"
@@ -29,9 +29,9 @@ class SessionState(str, Enum):
 
 class CurrentStep(str, Enum):
     """Current workflow step enumeration."""
-    
+
     START = "start"
-    INGEST = "ingest" 
+    INGEST = "ingest"
     DISCOVER = "discover"
     ANALYZE = "analyze"
     BUILD = "build"
@@ -40,7 +40,7 @@ class CurrentStep(str, Enum):
 
 class SessionBase(BaseModel):
     """Base session model for API operations."""
-    
+
     user_id: Optional[str] = Field(None, description="Optional user identifier")
     state: SessionState = Field(SessionState.INITIALIZED, description="Current session state")
     current_step: CurrentStep = Field(CurrentStep.START, description="Current workflow step")
@@ -56,7 +56,7 @@ class SessionCreate(SessionBase):
 
 class SessionUpdate(BaseModel):
     """Session update model - all fields optional."""
-    
+
     user_id: Optional[str] = None
     state: Optional[SessionState] = None
     current_step: Optional[CurrentStep] = None
@@ -67,19 +67,19 @@ class SessionUpdate(BaseModel):
 
 class SessionResponse(SessionBase):
     """Session response model with full details."""
-    
+
     session_id: UUID = Field(description="Unique session identifier")
     created_at: datetime = Field(description="Session creation timestamp")
     updated_at: datetime = Field(description="Last update timestamp")
     expires_at: datetime = Field(description="Session expiration timestamp")
-    
+
     class Config:
         from_attributes = True
 
 
 class SessionSummary(BaseModel):
     """Simplified session model for list operations."""
-    
+
     session_id: UUID
     user_id: Optional[str]
     state: SessionState
@@ -87,7 +87,7 @@ class SessionSummary(BaseModel):
     created_at: datetime
     updated_at: datetime
     expires_at: datetime
-    
+
     class Config:
         from_attributes = True
 
@@ -95,38 +95,38 @@ class SessionSummary(BaseModel):
 # SQLAlchemy ORM Model
 class Session(Base):
     """SQLAlchemy session model for database operations."""
-    
+
     __tablename__ = "sessions"
-    
+
     # Use String for UUID storage (compatible with both SQLite and PostgreSQL)
     session_id = Column(
         String(36),
         primary_key=True,
         default=lambda: str(uuid4())
     )
-    
+
     user_id = Column(String(100), nullable=True, index=True)
     state = Column(SQLEnum(SessionState), nullable=False, default=SessionState.INITIALIZED, index=True)
     current_step = Column(SQLEnum(CurrentStep), nullable=False, default=CurrentStep.START, index=True)
-    
+
     # JSON fields stored as TEXT
     master_career_database = Column(Text, nullable=False, default="{}")
     command_history = Column(Text, nullable=False, default="[]")
     session_metadata = Column(Text, nullable=False, default="{}")
-    
+
     # Timestamps
     created_at = Column(DateTime(timezone=True), nullable=False, default=lambda: datetime.now(timezone.utc))
     updated_at = Column(DateTime(timezone=True), nullable=False, default=lambda: datetime.now(timezone.utc), onupdate=lambda: datetime.now(timezone.utc))
     expires_at = Column(DateTime(timezone=True), nullable=False, index=True)
-    
+
     def __repr__(self) -> str:
         return f"<Session(session_id={self.session_id}, state={self.state}, user_id={self.user_id})>"
-    
+
     @property
     def is_expired(self) -> bool:
         """Check if session has expired."""
         return datetime.now(timezone.utc) > self.expires_at
-    
+
     @property
     def time_until_expiry(self) -> float:
         """Get seconds until session expires."""

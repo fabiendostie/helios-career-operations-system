@@ -1,0 +1,283 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>core.research_integrations - architect</title>
+    <style>
+        body { font-family: Arial, sans-serif; margin: 40px; background: #f8f9fa; }
+        .container { max-width: 1200px; margin: 0 auto; background: white; padding: 30px; border-radius: 8px; box-shadow: 0 2px 10px rgba(0,0,0,0.1); }
+        .header { background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; padding: 20px; border-radius: 5px; margin-bottom: 30px; }
+        .section { margin: 20px 0; padding: 20px; border-left: 4px solid #667eea; background: #f8f9ff; }
+        .docstring { background: #fff; padding: 15px; border-radius: 5px; border: 1px solid #e0e0e0; margin: 10px 0; white-space: pre-wrap; }
+        .nav { margin-bottom: 20px; }
+        .nav a { color: #667eea; text-decoration: none; margin-right: 20px; }
+        .nav a:hover { text-decoration: underline; }
+        h1, h2, h3 { color: #333; }
+        .module-path { color: #666; font-style: italic; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>core.research_integrations</h1>
+            <p class="module-path">Service: architect • Path: core\research_integrations.py</p>
+        </div>
+
+        <div class="nav">
+            <a href="../index.html">← Back to API Index</a>
+            <a href="../architect/index.html">← architect Overview</a>
+        </div>
+
+        <div class="section">
+            <h2>Module Description</h2>
+            <div class="docstring">Sophisticated Research Engine Integration for ARCHITECT Service
+
+This module provides the bridge between the ARCHITECT service and the advanced
+Dynamic Research Engine that uses:
+
+- **Semantic NLP Analysis**: spaCy + Transformers for genuine content understanding
+- **Authoritative Data Sources**: McKinsey, Gartner, ATS vendors, BLS API, Reddit forums
+- **Medallion Architecture**: Bronze/Silver/Gold data layers with PostgreSQL
+- **Scheduled Intelligence Updates**: Prefect orchestration for weekly research updates
+- **Production-Grade Infrastructure**: Rate limiting, caching, error handling, monitoring
+
+This system replaces shallow keyword-based research with deep semantic analysis
+of industry trends, ATS compliance updates, and company intelligence.
+
+Example:
+    >>> engine = await get_sophisticated_research_engine()
+    >>> intelligence = await engine.get_industry_intelligence("Technology")
+    >>> print(intelligence['trending_skills'])  # Real semantic analysis results
+    ['Kubernetes Orchestration', 'MLOps Pipeline Design', 'Cloud-Native Architecture']</div>
+        </div>
+
+        <div class="section">
+            <h2>Classes</h2>
+
+            <h3>SophisticatedResearchEngine</h3>
+            <div class="docstring">Advanced Research Engine providing semantic intelligence analysis.
+
+This class serves as the primary interface between the ARCHITECT service
+and the sophisticated research pipeline that provides rich, authoritative
+intelligence instead of shallow keyword matching.
+
+Features:
+- Real semantic analysis using NLP transformers
+- Multi-source authoritative data gathering
+- Structured data storage with quality scoring
+- Automatic background research updates
+- Comprehensive error handling and fallbacks
+
+Attributes:
+    database_url: PostgreSQL connection for research data
+    db_manager: Database manager instance
+    nlp_processor: Advanced NLP processing pipeline
+    data_ingester: Multi-source data ingestion system
+    orchestrator: Research pipeline orchestrator
+    cache: In-memory cache for recent queries</div>
+        </div>
+        <div class="section">
+            <h2>Functions</h2>
+
+            <h3>async get_sophisticated_research_engine()</h3>
+            <div class="docstring">Get global sophisticated research engine instance.
+
+Args:
+    database_url: PostgreSQL connection string (optional)
+
+Returns:
+    Initialized SophisticatedResearchEngine instance</div>
+
+            <h3>async get_live_research_engine()</h3>
+            <div class="docstring">Backward compatibility alias for existing code.</div>
+
+            <h3>__init__()</h3>
+            <div class="docstring">Initialize sophisticated research engine.
+
+Args:
+    database_url: PostgreSQL connection string. If None, uses environment variable.</div>
+
+            <h3>async initialize()</h3>
+            <div class="docstring">Initialize all research engine components.
+
+This method sets up the database connection, NLP processors,
+data ingestion systems, and orchestration components.</div>
+
+            <h3>async get_industry_intelligence()</h3>
+            <div class="docstring">Get comprehensive industry intelligence using semantic analysis.
+
+This method provides deep, authoritative industry insights by:
+1. Querying the Gold layer database for recent intelligence
+2. Performing semantic analysis on authoritative sources
+3. Extracting trending skills, technologies, and market dynamics
+4. Providing confidence scoring and source attribution
+
+Args:
+    industry: Target industry (e.g., "Technology", "Healthcare", "Finance")
+    research_depth: "quick", "standard", or "comprehensive"
+    max_age_hours: Maximum age of acceptable cached data
+
+Returns:
+    Dict containing:
+        - trending_skills: List of semantically extracted trending skills
+        - emphasis_areas: Key areas to emphasize based on current trends
+        - terminology_style: Recommended language style for the industry
+        - market_dynamics: Current market conditions and hiring trends
+        - confidence_score: Quality and recency confidence (0-1)
+        - data_sources: List of authoritative sources used
+        - semantic_analysis: Deep NLP insights from content analysis
+
+Example:
+    >>> intelligence = await engine.get_industry_intelligence("Technology")
+    >>> print(intelligence['trending_skills'])
+    ['Kubernetes Orchestration', 'MLOps Pipeline Design', 'Vector Databases',
+     'Edge Computing', 'Quantum-Safe Cryptography']</div>
+
+            <h3>async get_ats_compliance_intelligence()</h3>
+            <div class="docstring">Get current ATS compliance requirements from vendor documentation.
+
+This method analyzes ATS vendor documentation, algorithm updates,
+and parsing requirements to provide up-to-date compliance guidance.
+
+Args:
+    max_age_hours: Maximum age of acceptable cached ATS data
+
+Returns:
+    Dict containing:
+        - parsing_requirements: Current ATS parsing algorithms and requirements
+        - vendor_updates: Recent updates from major ATS vendors
+        - optimization_strategies: Evidence-based optimization techniques
+        - compliance_checklist: Actionable compliance validation steps
+        - algorithm_changes: Recent changes in ATS scoring algorithms
+        - confidence_score: Data quality and recency confidence
+
+Example:
+    >>> ats_intel = await engine.get_ats_compliance_intelligence()
+    >>> print(ats_intel['recent_updates'])
+    [{'vendor': 'Greenhouse', 'update': 'Semantic matching algorithm v3.2',
+      'impact': 'Better skills-based candidate matching', 'date': '2024-11-15'}]</div>
+
+            <h3>async get_company_intelligence()</h3>
+            <div class="docstring">Get comprehensive company intelligence for targeted cover letter customization.
+
+This method performs deep company research using multiple authoritative sources
+to identify pain points, growth opportunities, and cultural alignment opportunities.
+
+Args:
+    company_name: Target company name
+    research_focus: "pain_and_promise", "culture", or "comprehensive"
+
+Returns:
+    Dict containing:
+        - pain_points: Identified company challenges and pain points
+        - growth_opportunities: Areas of expansion and opportunity
+        - recent_initiatives: Latest company initiatives and projects
+        - cultural_values: Company culture and values analysis
+        - leadership_insights: Leadership team and strategic direction
+        - market_position: Competitive position and market challenges
+        - hiring_trends: Current hiring patterns and needs
+        - confidence_score: Data quality and recency confidence
+
+Example:
+    >>> company_intel = await engine.get_company_intelligence("Tesla")
+    >>> print(company_intel['pain_points'])
+    ['Scaling manufacturing operations globally', 'Autonomous driving regulatory challenges',
+     'Supply chain optimization for battery production', 'Talent retention in competitive market']</div>
+
+            <h3>async _aggregate_database_intelligence()</h3>
+            <div class="docstring">Aggregate database intelligence from Gold layer trends.</div>
+
+            <h3>async _query_ats_intelligence_from_db()</h3>
+            <div class="docstring">Query Gold layer for ATS updates.</div>
+
+            <h3>async _perform_live_ats_research()</h3>
+            <div class="docstring">Perform live ATS compliance research.</div>
+
+            <h3>async _enhance_ats_intelligence_with_nlp()</h3>
+            <div class="docstring">Enhance ATS intelligence with additional NLP processing.</div>
+
+            <h3>async _perform_comprehensive_company_research()</h3>
+            <div class="docstring">Perform comprehensive company research from multiple sources.</div>
+
+            <h3>async _extract_pain_points_with_nlp()</h3>
+            <div class="docstring">Extract pain points using NLP analysis.</div>
+
+            <h3>async _analyze_hiring_manager_sentiment_from_db()</h3>
+            <div class="docstring">Analyze hiring manager sentiment from database.</div>
+
+            <h3>async _perform_live_sentiment_analysis()</h3>
+            <div class="docstring">Perform live sentiment analysis of recruiting forums.</div>
+
+            <h3>_determine_emphasis_from_db_trends()</h3>
+            <div class="docstring">Determine emphasis areas from database trends.</div>
+
+            <h3>_determine_terminology_style_from_industry()</h3>
+            <div class="docstring">Determine terminology style based on industry.</div>
+
+            <h3>async _aggregate_ats_updates()</h3>
+            <div class="docstring">Aggregate ATS updates from database.</div>
+
+            <h3>async _process_ats_results_with_nlp()</h3>
+            <div class="docstring">Process ATS results using NLP.</div>
+
+            <h3>async _process_sentiment_results()</h3>
+            <div class="docstring">Process sentiment results from recruiting forums.</div>
+
+            <h3>async _simulate_company_web_search()</h3>
+            <div class="docstring">Simulate company web search results.</div>
+
+            <h3>async get_hiring_manager_sentiment()</h3>
+            <div class="docstring">Get hiring manager sentiment analysis from recruiting forums and discussions.
+
+This method analyzes recruiting forums, professional discussions, and social media
+to understand current hiring manager preferences and frustrations.
+
+Args:
+    topic: "resume_preferences", "ats_systems", "hiring_challenges", etc.
+    max_age_days: Maximum age of discussion data to analyze
+
+Returns:
+    Dict containing sentiment analysis and key insights from hiring managers</div>
+
+            <h3>async trigger_research_update()</h3>
+            <div class="docstring">Trigger immediate research pipeline update.
+
+This method manually triggers the research orchestrator to gather
+fresh intelligence from all configured sources.
+
+Args:
+    categories: Specific categories to update (None for all)
+    force_refresh: Force refresh even if recent data exists
+
+Returns:
+    Dict with update results and statistics</div>
+
+            <h3>async _query_industry_intelligence_from_db()</h3>
+            <div class="docstring">Query Gold layer database for existing industry intelligence.</div>
+
+            <h3>async _perform_live_industry_research()</h3>
+            <div class="docstring">Perform live industry research using authoritative sources.</div>
+
+            <h3>async _process_research_results_with_nlp()</h3>
+            <div class="docstring">Process research results using advanced NLP analysis.</div>
+
+            <h3>_determine_emphasis_areas_from_entities()</h3>
+            <div class="docstring">Determine emphasis areas based on extracted entities and industry context.</div>
+
+            <h3>_determine_terminology_style()</h3>
+            <div class="docstring">Determine appropriate terminology style based on industry and content analysis.</div>
+
+            <h3>_is_cache_valid()</h3>
+            <div class="docstring">Check if cached data is still valid.</div>
+
+            <h3>async _get_fallback_industry_intelligence()</h3>
+            <div class="docstring">Provide high-quality fallback intelligence when live research fails.</div>
+
+            <h3>async _get_fallback_ats_intelligence()</h3>
+            <div class="docstring">Provide current ATS compliance fallback data.</div>
+
+            <h3>async _get_fallback_company_intelligence()</h3>
+            <div class="docstring">Provide generic company intelligence fallback.</div>
+        </div>
+    </div>
+</body>
+</html>

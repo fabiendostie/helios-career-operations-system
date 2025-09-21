@@ -1,7 +1,7 @@
 # Epic 3: Document Generation & Optimization
-**Status**: ⏳ PENDING  
-**Stories**: 2.4 (Architect), 2.5 (Editor)  
-**Timeline**: Week 3 of MVP-Sequential Plan  
+**Status**: ⏳ PENDING
+**Stories**: 2.4 (Architect), 2.5 (Editor)
+**Timeline**: Week 3 of MVP-Sequential Plan
 
 ## Overview
 Transform career insights and analysis into high-quality, ATS-compliant documents that maximize application success rates through intelligent generation and micro-optimization.
@@ -20,7 +20,7 @@ Transform career insights and analysis into high-quality, ATS-compliant document
 
 ### Story 2.5 - EDITOR Agent ⏳
 - **Status**: PENDING
-- **Priority**: MEDIUM  
+- **Priority**: MEDIUM
 - **Functionality**:
   - Bullet point transformation (XYZ model: Accomplished [X] as measured by [Y] by doing [Z])
   - Weak word elimination and high-impact verb substitution
@@ -31,7 +31,7 @@ Transform career insights and analysis into high-quality, ATS-compliant document
 ## Key Deliverables (Planned)
 - [ ] Multi-format document generation system
 - [ ] ATS-compliant resume templates (2-3 variations)
-- [ ] Cover letter generation with job-specific customization  
+- [ ] Cover letter generation with job-specific customization
 - [ ] Text optimization engine with measurable improvements
 - [ ] Document quality scoring and validation
 - [ ] Performance target: <30 seconds per document

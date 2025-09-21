@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>core.connection_pool - orchestrator</title>
+    <style>
+        body { font-family: Arial, sans-serif; margin: 40px; background: #f8f9fa; }
+        .container { max-width: 1200px; margin: 0 auto; background: white; padding: 30px; border-radius: 8px; box-shadow: 0 2px 10px rgba(0,0,0,0.1); }
+        .header { background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; padding: 20px; border-radius: 5px; margin-bottom: 30px; }
+        .section { margin: 20px 0; padding: 20px; border-left: 4px solid #667eea; background: #f8f9ff; }
+        .docstring { background: #fff; padding: 15px; border-radius: 5px; border: 1px solid #e0e0e0; margin: 10px 0; white-space: pre-wrap; }
+        .nav { margin-bottom: 20px; }
+        .nav a { color: #667eea; text-decoration: none; margin-right: 20px; }
+        .nav a:hover { text-decoration: underline; }
+        h1, h2, h3 { color: #333; }
+        .module-path { color: #666; font-style: italic; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>core.connection_pool</h1>
+            <p class="module-path">Service: orchestrator • Path: core\connection_pool.py</p>
+        </div>
+
+        <div class="nav">
+            <a href="../index.html">← Back to API Index</a>
+            <a href="../orchestrator/index.html">← orchestrator Overview</a>
+        </div>
+
+        <div class="section">
+            <h2>Module Description</h2>
+            <div class="docstring">Advanced connection pooling for HTTP clients, databases, and external services.</div>
+        </div>
+
+        <div class="section">
+            <h2>Classes</h2>
+
+            <h3>ConnectionPoolConfig</h3>
+            <div class="docstring">Configuration for connection pools.</div>
+
+            <h3>PoolMetrics</h3>
+            <div class="docstring">Metrics for connection pool monitoring.</div>
+
+            <h3>HTTPConnectionPool</h3>
+            <div class="docstring">Optimized HTTP connection pool with advanced features.</div>
+
+            <h3>ConnectionPoolManager</h3>
+            <div class="docstring">Central manager for all connection pools.</div>
+        </div>
+        <div class="section">
+            <h2>Functions</h2>
+
+            <h3>get_connection_pool_manager()</h3>
+            <div class="docstring">Get global connection pool manager instance.</div>
+
+            <h3>async http_request()</h3>
+            <div class="docstring">Convenience function for making HTTP requests with connection pooling.</div>
+
+            <h3>__init__()</h3>
+            <div class="docstring">Initialize connection pool manager.</div>
+
+            <h3>async initialize()</h3>
+            <div class="docstring">Initialize the connection pool.</div>
+
+            <h3>async request()</h3>
+            <div class="docstring">Make HTTP request using specified pool.</div>
+
+            <h3>_record_request_metrics()</h3>
+            <div class="docstring">Record request metrics.</div>
+
+            <h3>async _health_check_loop()</h3>
+            <div class="docstring">Periodic health check for the connection pool.</div>
+
+            <h3>async get_metrics()</h3>
+            <div class="docstring">Get connection pool metrics.</div>
+
+            <h3>_calculate_success_rate()</h3>
+            <div class="docstring">Calculate success rate percentage.</div>
+
+            <h3>async close()</h3>
+            <div class="docstring">Close the connection pool and cleanup resources.</div>
+
+            <h3>async create_pool()</h3>
+            <div class="docstring">Create a new HTTP connection pool.</div>
+
+            <h3>get_pool()</h3>
+            <div class="docstring">Get existing connection pool.</div>
+
+            <h3>async get_or_create_pool()</h3>
+            <div class="docstring">Get existing pool or create new one.</div>
+
+            <h3>async get_all_metrics()</h3>
+            <div class="docstring">Get metrics for all pools.</div>
+
+            <h3>async close_all_pools()</h3>
+            <div class="docstring">Close all connection pools.</div>
+        </div>
+    </div>
+</body>
+</html>

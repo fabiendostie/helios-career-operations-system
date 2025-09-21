@@ -68,7 +68,7 @@ class Pipeline:
         # Step 5: Interactive Elicitation
         logger.info("Step 5: Conducting interactive interview")
         elicited_info = self.elicitation_ui.conduct_interview(resolved_data)
-        
+
         # Merge elicited info into final data
         final_data = resolved_data.copy()
         final_data["holistic_profile"] = elicited_info

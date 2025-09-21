@@ -73,7 +73,7 @@ def mock_strategist():
                 },
                 {
                     "path_id": "tech_lead",
-                    "title": "Technical Lead", 
+                    "title": "Technical Lead",
                     "fit_score": 0.85,
                     "transition_difficulty": "medium",
                     "learning_time_months": 12
@@ -138,7 +138,7 @@ def service_coordinator(mock_session_manager, mock_profile_ingestor, mock_strate
 
 class TestPipelineIntegration:
     """Test complete pipeline integration."""
-    
+
     @pytest.mark.asyncio
     async def test_full_pipeline_execution_success(self, service_coordinator):
         """Test successful execution of complete pipeline."""
@@ -147,7 +147,7 @@ class TestPipelineIntegration:
             session_id="test-session-123",
             resume_path="/path/to/resume.pdf"
         )
-        
+
         # Verify results structure
         assert "session_id" in results
         assert "timestamp" in results
@@ -155,25 +155,25 @@ class TestPipelineIntegration:
         assert "career_strategies" in results
         assert "market_analysis" in results
         assert results["pipeline_status"] == "completed"
-        
+
         # Verify profile data
         profile_data = results["profile_data"]
         assert "work_experience" in profile_data
         assert "skills_inventory" in profile_data
         assert len(profile_data["work_experience"]) > 0
-        
+
         # Verify career strategies
         strategies = results["career_strategies"]
         assert "recommended_paths" in strategies
         assert len(strategies["recommended_paths"]) == 2
         assert strategies["recommended_paths"][0]["fit_score"] == 0.92
-        
+
         # Verify market analysis
         analysis = results["market_analysis"]
         assert "market_demand" in analysis
         assert "skill_gaps" in analysis
         assert "resume_optimization" in analysis
-    
+
     @pytest.mark.asyncio
     async def test_pipeline_with_direct_career_data(self, service_coordinator):
         """Test pipeline execution with direct career data input."""
@@ -209,15 +209,15 @@ class TestPipelineIntegration:
                 "motivators": ["Data insights", "Innovation"]
             }
         }
-        
+
         results = await service_coordinator.execute_full_pipeline(
             session_id="test-session-123",
             career_data=career_data
         )
-        
+
         assert results["pipeline_status"] == "completed"
         assert results["profile_data"] == career_data
-    
+
     @pytest.mark.asyncio
     async def test_pipeline_failure_handling(self, service_coordinator, mock_profile_ingestor):
         """Test pipeline failure handling."""
@@ -226,58 +226,58 @@ class TestPipelineIntegration:
             "success": False,
             "error": "Resume file not found"
         }
-        
+
         with pytest.raises(ServiceCoordinationError) as exc_info:
             await service_coordinator.execute_full_pipeline(
                 session_id="test-session-123",
                 resume_path="/invalid/path.pdf"
             )
-        
+
         assert "Profile ingestion failed" in str(exc_info.value)
-    
+
     @pytest.mark.asyncio
     async def test_pipeline_status_tracking(self, service_coordinator, mock_session_manager):
         """Test pipeline status tracking."""
         # Get pipeline status
         status = await service_coordinator.get_pipeline_status("test-session-123")
-        
+
         assert "session_id" in status
         assert "state" in status
         assert "current_step" in status
         assert "progress" in status
         assert status["progress"] == 1.0  # REVIEW step = 100%
-    
+
     @pytest.mark.asyncio
     async def test_service_health_check(self, service_coordinator):
         """Test health check for all coordinated services."""
         health_status = await service_coordinator.health_check_all_services()
-        
+
         assert "overall_status" in health_status
         assert "services" in health_status
         assert "timestamp" in health_status
-        
+
         services = health_status["services"]
         assert "profile_ingestor" in services
         assert "strategist" in services
         assert "analyst" in services
-        
+
         # All services should be healthy
         assert health_status["overall_status"] == "healthy"
         for service in services.values():
             assert service["status"] == "healthy"
-    
+
     @pytest.mark.asyncio
     async def test_service_health_check_degraded(self, service_coordinator, mock_strategist):
         """Test health check when one service is unhealthy."""
         # Mock strategist to be unhealthy
         mock_strategist.health_check.side_effect = Exception("Connection timeout")
-        
+
         health_status = await service_coordinator.health_check_all_services()
-        
+
         assert health_status["overall_status"] == "degraded"
         assert health_status["services"]["strategist"]["status"] == "unhealthy"
         assert "Connection timeout" in health_status["services"]["strategist"]["error"]
-    
+
     def test_progress_calculation(self, service_coordinator):
         """Test progress calculation for different steps."""
         assert service_coordinator._calculate_progress(CurrentStep.START) == 0.0
@@ -290,7 +290,7 @@ class TestPipelineIntegration:
 
 class TestDataFlowValidation:
     """Test data flow through Master Career Database schema."""
-    
+
     @pytest.mark.asyncio
     async def test_master_career_database_schema_validation(self, service_coordinator):
         """Test that data flows correctly through Master Career Database schema."""
@@ -299,25 +299,25 @@ class TestDataFlowValidation:
             session_id="test-session-123",
             resume_path="/path/to/resume.pdf"
         )
-        
+
         profile_data = results["profile_data"]
-        
+
         # Validate required schema fields
         required_fields = ["work_experience", "projects", "skills_inventory"]
         for field in required_fields:
             assert field in profile_data, f"Missing required field: {field}"
-        
+
         # Validate work experience structure
         if profile_data["work_experience"]:
             experience = profile_data["work_experience"][0]
             expected_exp_fields = ["job_title", "company", "duration", "accomplishments"]
             for field in expected_exp_fields:
                 assert field in experience, f"Missing work experience field: {field}"
-        
+
         # Validate skills inventory structure
         skills = profile_data["skills_inventory"]
         assert isinstance(skills, dict), "Skills inventory should be a dictionary"
-        
+
         # Validate career strategies structure
         strategies = results["career_strategies"]
         assert "recommended_paths" in strategies
@@ -326,13 +326,13 @@ class TestDataFlowValidation:
             expected_path_fields = ["path_id", "title", "fit_score", "transition_difficulty"]
             for field in expected_path_fields:
                 assert field in path, f"Missing career path field: {field}"
-        
+
         # Validate market analysis structure
         analysis = results["market_analysis"]
         expected_analysis_fields = ["market_demand", "skill_gaps", "resume_optimization"]
         for field in expected_analysis_fields:
             assert field in analysis, f"Missing analysis field: {field}"
-    
+
     @pytest.mark.asyncio
     async def test_data_transformation_between_services(self, service_coordinator):
         """Test data transformation and compatibility between services."""
@@ -340,23 +340,23 @@ class TestDataFlowValidation:
             session_id="test-session-123",
             resume_path="/path/to/resume.pdf"
         )
-        
-        # Verify that profile data from Profile Ingestor 
+
+        # Verify that profile data from Profile Ingestor
         # is compatible with Strategist input format
         profile_data = results["profile_data"]
         assert "skills_inventory" in profile_data
         assert isinstance(profile_data["skills_inventory"], dict)
-        
+
         # Verify that career strategies from Strategist
-        # are compatible with Analyst input format  
+        # are compatible with Analyst input format
         strategies = results["career_strategies"]
         assert "recommended_paths" in strategies
         assert isinstance(strategies["recommended_paths"], list)
-        
+
         # Verify final consolidated data structure
         assert results["pipeline_status"] == "completed"
         assert "timestamp" in results
-        
+
         # All services should have contributed data
         assert len(results["profile_data"]) > 0
         assert len(results["career_strategies"]) > 0

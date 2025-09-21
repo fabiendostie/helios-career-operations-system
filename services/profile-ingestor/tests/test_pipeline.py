@@ -54,11 +54,11 @@ class TestPipeline:
         # Mock UI components to avoid interactive prompts
         with patch("resume_extractor.ui.elicitation.questionary") as mock_questionary, \
              patch("resume_extractor.ui.conflict_resolver.questionary") as mock_quest_conflict:
-            
+
             # Set up mock to skip all interactive parts
             mock_questionary.confirm.return_value.ask.return_value = False
             mock_quest_conflict.confirm.return_value.ask.return_value = False
-            
+
             # Mock the UI components at the pipeline level
             mock_elicitation = Mock()
             mock_elicitation.conduct_interview.return_value = {
@@ -67,7 +67,7 @@ class TestPipeline:
                 "motivators": [],
             }
             self.pipeline.elicitation_ui = mock_elicitation
-            
+
             mock_resolver = Mock()
             mock_resolver.resolve_conflicts_legacy.return_value = {
                 "work_experience": [],

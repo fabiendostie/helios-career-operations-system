@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>core.database - orchestrator</title>
+    <style>
+        body { font-family: Arial, sans-serif; margin: 40px; background: #f8f9fa; }
+        .container { max-width: 1200px; margin: 0 auto; background: white; padding: 30px; border-radius: 8px; box-shadow: 0 2px 10px rgba(0,0,0,0.1); }
+        .header { background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; padding: 20px; border-radius: 5px; margin-bottom: 30px; }
+        .section { margin: 20px 0; padding: 20px; border-left: 4px solid #667eea; background: #f8f9ff; }
+        .docstring { background: #fff; padding: 15px; border-radius: 5px; border: 1px solid #e0e0e0; margin: 10px 0; white-space: pre-wrap; }
+        .nav { margin-bottom: 20px; }
+        .nav a { color: #667eea; text-decoration: none; margin-right: 20px; }
+        .nav a:hover { text-decoration: underline; }
+        h1, h2, h3 { color: #333; }
+        .module-path { color: #666; font-style: italic; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>core.database</h1>
+            <p class="module-path">Service: orchestrator • Path: core\database.py</p>
+        </div>
+
+        <div class="nav">
+            <a href="../index.html">← Back to API Index</a>
+            <a href="../orchestrator/index.html">← orchestrator Overview</a>
+        </div>
+
+        <div class="section">
+            <h2>Module Description</h2>
+            <div class="docstring">Database configuration and setup.</div>
+        </div>
+
+        <div class="section">
+            <h2>Classes</h2>
+
+            <h3>DatabaseManager</h3>
+            <div class="docstring">Manages database connections and operations.</div>
+
+            <h3>SessionRepository</h3>
+            <div class="docstring">Repository for session database operations.</div>
+        </div>
+        <div class="section">
+            <h2>Functions</h2>
+
+            <h3>async get_db()</h3>
+            <div class="docstring">FastAPI dependency for database sessions.</div>
+
+            <h3>__init__()</h3>
+            <div class="docstring">Initialize database manager.
+
+Args:
+    database_url: Override default database URL from settings</div>
+
+            <h3>async initialize()</h3>
+            <div class="docstring">Initialize database engine and create tables.</div>
+
+            <h3>async get_session()</h3>
+            <div class="docstring">Get session by ID.
+
+Args:
+    session_id: Session identifier
+
+Returns:
+    Session object or None if not found</div>
+
+            <h3>async close()</h3>
+            <div class="docstring">Close database connections.</div>
+
+            <h3>async create_session()</h3>
+            <div class="docstring">Create a new session.
+
+Args:
+    user_id: Optional user identifier
+    initial_data: Initial session data
+
+Returns:
+    Created session object</div>
+
+            <h3>async update_session()</h3>
+            <div class="docstring">Update session data.
+
+Args:
+    session_id: Session identifier
+    **updates: Fields to update
+
+Returns:
+    Updated session or None if not found</div>
+
+            <h3>async delete_session()</h3>
+            <div class="docstring">Delete session by ID.
+
+Args:
+    session_id: Session identifier
+
+Returns:
+    True if session was deleted, False if not found</div>
+
+            <h3>async list_sessions()</h3>
+            <div class="docstring">List sessions with optional filtering.
+
+Args:
+    user_id: Filter by user ID
+    state: Filter by session state
+    limit: Maximum number of results
+    offset: Number of results to skip
+
+Returns:
+    List of session objects</div>
+
+            <h3>async cleanup_expired_sessions()</h3>
+            <div class="docstring">Remove expired sessions.
+
+Returns:
+    Number of sessions cleaned up</div>
+
+            <h3>async extend_session()</h3>
+            <div class="docstring">Extend session expiration time.
+
+Args:
+    session_id: Session identifier
+    minutes: Minutes to extend (default: session_timeout_minutes)
+
+Returns:
+    Updated session or None if not found</div>
+        </div>
+    </div>
+</body>
+</html>

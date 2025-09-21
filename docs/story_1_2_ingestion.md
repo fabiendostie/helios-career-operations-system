@@ -26,10 +26,10 @@ class IngestionEngine:
             '.yaml': YAMLHandler(),
             '.json': JSONHandler()
         }
-    
+
     def ingest_files(self, directory_path: Path) -> List[Document]:
         """Read all supported files from directory"""
-        
+
     def _read_file(self, file_path: Path) -> str:
         """Delegate to appropriate handler using Strategy pattern"""
 ```
@@ -151,7 +151,7 @@ Claude-3.5-Sonnet-20241022
 ### File List
 - resume_extractor/schemas/master_schema.py (added Document dataclass)
 - resume_extractor/components/ingestion.py (complete implementation)
-- tests/test_ingestion.py (comprehensive unit tests)  
+- tests/test_ingestion.py (comprehensive unit tests)
 - tests/test_integration_ingestion.py (integration tests)
 - tests/sample_resumes/ (test data in multiple formats)
 - requirements.txt (added langdetect dependency)

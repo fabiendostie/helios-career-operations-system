@@ -4,7 +4,7 @@
 ---
 
 ### CONTACT
-- **Email:** michael.chen@email.com  
+- **Email:** michael.chen@email.com
 - **Phone:** (555) 456-7890
 - **Location:** Austin, TX
 - **GitHub:** github.com/mchen-ds
@@ -53,12 +53,12 @@ Passionate data scientist with 6+ years of experience in machine learning, stati
 
 ### EDUCATION
 
-**Master of Science in Data Science**  
-*Stanford University* | 2018  
+**Master of Science in Data Science**
+*Stanford University* | 2018
 *Thesis: "Deep Learning for Time Series Forecasting"*
 
-**Bachelor of Science in Statistics**  
-*UC Davis* | 2016  
+**Bachelor of Science in Statistics**
+*UC Davis* | 2016
 *Magna Cum Laude, GPA: 3.9*
 
 ---
@@ -75,7 +75,7 @@ Passionate data scientist with 6+ years of experience in machine learning, stati
 #### **Customer Lifetime Value Predictor**
 Built end-to-end ML pipeline predicting customer lifetime value with ensemble methods, deployed on AWS SageMaker.
 
-#### **Real-time Fraud Detection System**  
+#### **Real-time Fraud Detection System**
 Developed streaming analytics system using Kafka and Apache Spark to detect fraudulent transactions in real-time.
 
 #### **Natural Language Processing for Customer Support**

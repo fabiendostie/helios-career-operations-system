@@ -32,7 +32,7 @@ CommandHandler = Callable[[CommandRequest, SessionManager], Awaitable[CommandRes
 
 class CommandRouter:
     """Routes and executes commands with proper validation and error handling."""
-    
+
     def __init__(self):
         """Initialize command router with handlers."""
         self._handlers: Dict[CommandType, CommandHandler] = {
@@ -44,7 +44,7 @@ class CommandRouter:
             CommandType.STATUS: self._handle_status,
             CommandType.HELP: self._handle_help,
         }
-        
+
         # Define valid command transitions based on current session state/step
         self._valid_transitions: Dict[CurrentStep, List[CommandType]] = {
             CurrentStep.START: [CommandType.START, CommandType.STATUS, CommandType.HELP],
@@ -54,33 +54,33 @@ class CommandRouter:
             CurrentStep.BUILD: [CommandType.BUILD, CommandType.STATUS, CommandType.HELP],
             CurrentStep.REVIEW: [CommandType.STATUS, CommandType.BUILD, CommandType.HELP],
         }
-    
+
     async def route_command(
         self,
         request: CommandRequest,
         session_manager: SessionManager
     ) -> CommandResponse:
         """Route and execute a command request.
-        
+
         Args:
             request: Command request to execute
             session_manager: Session manager instance
-            
+
         Returns:
             Command response
-            
+
         Raises:
             CommandValidationError: If command validation fails
             CommandExecutionError: If command execution fails
         """
         start_time = time.time()
-        
+
         try:
             logger.info(f"Routing command {request.command} for session {request.session_id}")
-            
+
             # Validate command request
             await self._validate_command(request, session_manager)
-            
+
             # Get command handler
             handler = self._handlers.get(request.command)
             if not handler:
@@ -88,21 +88,21 @@ class CommandRouter:
                     f"Unknown command: {request.command}",
                     command=request.command
                 )
-            
+
             # Execute command
             response = await handler(request, session_manager)
-            
+
             # Calculate execution time
             execution_time = (time.time() - start_time) * 1000  # Convert to milliseconds
             response.execution_time_ms = execution_time
-            
+
             # Add command to session history if session exists
             if request.session_id:
                 await self._add_to_history(request, response, session_manager)
-            
+
             logger.info(f"Command {request.command} completed in {execution_time:.2f}ms")
             return response
-            
+
         except (CommandValidationError, CommandExecutionError) as e:
             # Re-raise known command errors
             logger.error(f"Command {request.command} failed: {str(e)}")
@@ -115,18 +115,18 @@ class CommandRouter:
                 command=request.command,
                 details={"original_error": str(e)}
             )
-    
+
     async def _validate_command(
         self,
         request: CommandRequest,
         session_manager: SessionManager
     ) -> None:
         """Validate command request.
-        
+
         Args:
             request: Command request to validate
             session_manager: Session manager instance
-            
+
         Raises:
             CommandValidationError: If validation fails
         """
@@ -139,7 +139,7 @@ class CommandRouter:
                 command=request.command,
                 details={"parameters": request.parameters}
             )
-        
+
         # For non-/start commands, validate session exists
         if request.command != CommandType.START:
             session = await session_manager.get_session(request.session_id)
@@ -149,7 +149,7 @@ class CommandRouter:
                     command=request.command,
                     details={"session_id": request.session_id}
                 )
-            
+
             # Validate command is allowed for current session step
             valid_commands = self._valid_transitions.get(session.current_step, [])
             if request.command not in valid_commands:
@@ -161,13 +161,13 @@ class CommandRouter:
                         "allowed_commands": [cmd.value for cmd in valid_commands]
                     }
                 )
-    
+
     async def _validate_command_parameters(self, request: CommandRequest) -> None:
         """Validate command-specific parameters.
-        
+
         Args:
             request: Command request to validate
-            
+
         Raises:
             ValueError: If parameters are invalid
         """
@@ -180,13 +180,13 @@ class CommandRouter:
             CommandType.BUILD: BuildCommandParams,
             CommandType.STATUS: StatusCommandParams,
         }
-        
+
         # Validate parameters if model exists
         model_class = param_models.get(request.command)
         if model_class:
             # This will raise ValidationError if parameters are invalid
             model_class(**request.parameters)
-    
+
     async def _add_to_history(
         self,
         request: CommandRequest,
@@ -194,7 +194,7 @@ class CommandRouter:
         session_manager: SessionManager
     ) -> None:
         """Add command execution to session history.
-        
+
         Args:
             request: Original command request
             response: Command response
@@ -210,12 +210,12 @@ class CommandRouter:
                 "timestamp": response.timestamp.isoformat(),
                 "execution_time_ms": response.execution_time_ms,
             }
-            
+
             await session_manager.add_command_to_history(request.session_id, history_entry)
         except Exception as e:
             # Log error but don't fail the command
             logger.error(f"Failed to add command to history: {str(e)}")
-    
+
     # Command handlers
     async def _handle_start(
         self,
@@ -225,16 +225,16 @@ class CommandRouter:
         """Handle /start command - initialize new session."""
         try:
             params = StartCommandParams(**request.parameters)
-            
+
             # Create new session
             from ..models.session import SessionCreate
             session_data = SessionCreate(
                 user_id=params.user_id,
                 master_career_database=params.initial_data
             )
-            
+
             session = await session_manager.create_session(session_data)
-            
+
             return CommandResponse(
                 command=request.command,
                 session_id=str(session.session_id),
@@ -243,14 +243,14 @@ class CommandRouter:
                 message="New session started successfully",
                 next_actions=[CommandType.INGEST, CommandType.STATUS]
             )
-            
+
         except Exception as e:
             raise CommandExecutionError(
                 f"Failed to start session: {str(e)}",
                 command=request.command,
                 details={"error": str(e)}
             )
-    
+
     async def _handle_ingest(
         self,
         request: CommandRequest,
@@ -258,7 +258,7 @@ class CommandRouter:
     ) -> CommandResponse:
         """Handle /ingest command - integrate with Profile Ingestor service."""
         params = IngestCommandParams(**request.parameters)
-        
+
         try:
             # Transition session to ingesting state
             await session_manager.transition_state(
@@ -266,13 +266,13 @@ class CommandRouter:
                 SessionState.INGESTING,
                 CurrentStep.INGEST
             )
-            
+
             # Import here to avoid circular imports
             from ..integrations.profile_ingestor import get_profile_ingestor_client
-            
+
             # Get Profile Ingestor client
             client = await get_profile_ingestor_client()
-            
+
             # Determine ingestion type and start processing
             if params.text_content:
                 # Process text content
@@ -301,21 +301,21 @@ class CommandRouter:
                     command=request.command,
                     details={"parameters": request.parameters}
                 )
-            
+
             # Update session with extracted data
             if response.success:
                 await session_manager.update_career_database(
                     request.session_id,
                     response.master_career_database
                 )
-                
+
                 # Transition to completed state
                 await session_manager.transition_state(
                     request.session_id,
                     SessionState.COMPLETED,
                     CurrentStep.DISCOVER
                 )
-                
+
                 return CommandResponse(
                     command=request.command,
                     session_id=request.session_id,
@@ -335,7 +335,7 @@ class CommandRouter:
                     SessionState.ERROR,
                     CurrentStep.INGEST
                 )
-                
+
                 return CommandResponse(
                     command=request.command,
                     session_id=request.session_id,
@@ -348,24 +348,24 @@ class CommandRouter:
                     message="Ingestion failed - see errors for details",
                     next_actions=[CommandType.STATUS]
                 )
-        
+
         except Exception as e:
             # Handle any unexpected errors
             logger.error(f"Ingestion failed for session {request.session_id}: {str(e)}")
-            
+
             # Transition to error state
             await session_manager.transition_state(
                 request.session_id,
                 SessionState.ERROR,
                 CurrentStep.INGEST
             )
-            
+
             raise CommandExecutionError(
                 f"Ingestion failed: {str(e)}",
                 command=request.command,
                 details={"error": str(e), "session_id": request.session_id}
             )
-    
+
     async def _handle_discover(
         self,
         request: CommandRequest,
@@ -373,13 +373,13 @@ class CommandRouter:
     ) -> CommandResponse:
         """Handle /discover command - career discovery analysis."""
         params = DiscoverCommandParams(**request.parameters)
-        
+
         await session_manager.transition_state(
             request.session_id,
             SessionState.ANALYZING,
             CurrentStep.DISCOVER
         )
-        
+
         # TODO: Implement discovery logic
         return CommandResponse(
             command=request.command,
@@ -389,7 +389,7 @@ class CommandRouter:
             message="Career discovery analysis started",
             next_actions=[CommandType.ANALYZE, CommandType.STATUS]
         )
-    
+
     async def _handle_analyze(
         self,
         request: CommandRequest,
@@ -397,13 +397,13 @@ class CommandRouter:
     ) -> CommandResponse:
         """Handle /analyze command - career analysis."""
         params = AnalyzeCommandParams(**request.parameters)
-        
+
         await session_manager.transition_state(
             request.session_id,
             SessionState.ANALYZING,
             CurrentStep.ANALYZE
         )
-        
+
         # TODO: Implement analysis logic
         return CommandResponse(
             command=request.command,
@@ -413,7 +413,7 @@ class CommandRouter:
             message="Career analysis started",
             next_actions=[CommandType.BUILD, CommandType.STATUS]
         )
-    
+
     async def _handle_build(
         self,
         request: CommandRequest,
@@ -421,13 +421,13 @@ class CommandRouter:
     ) -> CommandResponse:
         """Handle /build command - document building."""
         params = BuildCommandParams(**request.parameters)
-        
+
         await session_manager.transition_state(
             request.session_id,
             SessionState.GENERATING,
             CurrentStep.BUILD
         )
-        
+
         # TODO: Implement document building logic
         return CommandResponse(
             command=request.command,
@@ -437,7 +437,7 @@ class CommandRouter:
             message="Document building started",
             next_actions=[CommandType.STATUS]
         )
-    
+
     async def _handle_status(
         self,
         request: CommandRequest,
@@ -445,7 +445,7 @@ class CommandRouter:
     ) -> CommandResponse:
         """Handle /status command - get session status."""
         params = StatusCommandParams(**request.parameters)
-        
+
         # Get current session
         session = await session_manager.get_session(request.session_id)
         if not session:
@@ -453,7 +453,7 @@ class CommandRouter:
                 f"Session {request.session_id} not found",
                 command=request.command
             )
-        
+
         result = {
             "session_id": str(session.session_id),
             "state": session.state.value,
@@ -462,17 +462,17 @@ class CommandRouter:
             "updated_at": session.updated_at.isoformat(),
             "expires_at": session.expires_at.isoformat(),
         }
-        
+
         if params.include_history:
             result["command_history"] = session.command_history
-        
+
         if params.include_details:
             result["master_career_database"] = session.master_career_database
             result["metadata"] = session.session_metadata
-        
+
         # Determine next actions based on current step
         next_actions = self._valid_transitions.get(session.current_step, [])
-        
+
         return CommandResponse(
             command=request.command,
             session_id=request.session_id,
@@ -481,7 +481,7 @@ class CommandRouter:
             message=f"Session {session.session_id} is in {session.state.value} state",
             next_actions=next_actions
         )
-    
+
     async def _handle_help(
         self,
         request: CommandRequest,
@@ -506,7 +506,7 @@ class CommandRouter:
                 "5. /build - Generate optimized documents"
             ]
         }
-        
+
         return CommandResponse(
             command=request.command,
             session_id=request.session_id,

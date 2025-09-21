@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>api.validation - architect</title>
+    <style>
+        body { font-family: Arial, sans-serif; margin: 40px; background: #f8f9fa; }
+        .container { max-width: 1200px; margin: 0 auto; background: white; padding: 30px; border-radius: 8px; box-shadow: 0 2px 10px rgba(0,0,0,0.1); }
+        .header { background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; padding: 20px; border-radius: 5px; margin-bottom: 30px; }
+        .section { margin: 20px 0; padding: 20px; border-left: 4px solid #667eea; background: #f8f9ff; }
+        .docstring { background: #fff; padding: 15px; border-radius: 5px; border: 1px solid #e0e0e0; margin: 10px 0; white-space: pre-wrap; }
+        .nav { margin-bottom: 20px; }
+        .nav a { color: #667eea; text-decoration: none; margin-right: 20px; }
+        .nav a:hover { text-decoration: underline; }
+        h1, h2, h3 { color: #333; }
+        .module-path { color: #666; font-style: italic; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>api.validation</h1>
+            <p class="module-path">Service: architect • Path: api\validation.py</p>
+        </div>
+
+        <div class="nav">
+            <a href="../index.html">← Back to API Index</a>
+            <a href="../architect/index.html">← architect Overview</a>
+        </div>
+
+        <div class="section">
+            <h2>Module Description</h2>
+            <div class="docstring">ATS Compliance Validation API Endpoints
+
+Provides REST API endpoints for validating documents against ATS compliance standards.</div>
+        </div>
+
+        <div class="section">
+            <h2>Classes</h2>
+
+            <h3>ValidationRequest</h3>
+            <div class="docstring">Request model for document validation.</div>
+
+            <h3>ValidationResponse</h3>
+            <div class="docstring">Response model for validation results.</div>
+        </div>
+        <div class="section">
+            <h2>Functions</h2>
+
+            <h3>async validate_document_compliance()</h3>
+            <div class="docstring">Validate uploaded document against ATS compliance standards.</div>
+
+            <h3>async get_supported_ats_vendors()</h3>
+            <div class="docstring">Get list of supported ATS vendors.</div>
+
+            <h3>async get_compliance_levels()</h3>
+            <div class="docstring">Get list of compliance validation levels.</div>
+
+            <h3>async validate_text_content()</h3>
+            <div class="docstring">Validate raw text content against ATS compliance standards.</div>
+
+            <h3>_get_vendor_description()</h3>
+            <div class="docstring">Get description for ATS vendor.</div>
+
+            <h3>_get_level_description()</h3>
+            <div class="docstring">Get description for compliance level.</div>
+
+            <h3>_get_level_threshold()</h3>
+            <div class="docstring">Get score threshold for compliance level.</div>
+        </div>
+    </div>
+</body>
+</html>

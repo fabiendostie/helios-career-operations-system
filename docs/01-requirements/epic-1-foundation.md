@@ -1,7 +1,7 @@
 # Epic 1: Foundation & Data Acquisition
-**Status**: ✅ COMPLETED  
-**Stories**: 1.1 - Profile Ingestor Service  
-**Timeline**: Completed  
+**Status**: ✅ COMPLETED
+**Stories**: 1.1 - Profile Ingestor Service
+**Timeline**: Completed
 
 ## Overview
 Establish the foundational data acquisition capabilities of the Helios Career Operations System through intelligent resume processing and career data extraction.
@@ -10,7 +10,7 @@ Establish the foundational data acquisition capabilities of the Helios Career Op
 ### Story 1.1 - Profile Ingestor Service ✅
 - **Status**: COMPLETED
 - **Test Coverage**: 208 tests, 99% pass rate
-- **Functionality**: 
+- **Functionality**:
   - Multi-format resume processing (PDF, DOCX, MD, TXT, YAML, JSON)
   - Bilingual NLP processing (English/French)
   - Interactive conflict resolution

@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>api.editing - editor</title>
+    <style>
+        body { font-family: Arial, sans-serif; margin: 40px; background: #f8f9fa; }
+        .container { max-width: 1200px; margin: 0 auto; background: white; padding: 30px; border-radius: 8px; box-shadow: 0 2px 10px rgba(0,0,0,0.1); }
+        .header { background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; padding: 20px; border-radius: 5px; margin-bottom: 30px; }
+        .section { margin: 20px 0; padding: 20px; border-left: 4px solid #667eea; background: #f8f9ff; }
+        .docstring { background: #fff; padding: 15px; border-radius: 5px; border: 1px solid #e0e0e0; margin: 10px 0; white-space: pre-wrap; }
+        .nav { margin-bottom: 20px; }
+        .nav a { color: #667eea; text-decoration: none; margin-right: 20px; }
+        .nav a:hover { text-decoration: underline; }
+        h1, h2, h3 { color: #333; }
+        .module-path { color: #666; font-style: italic; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>api.editing</h1>
+            <p class="module-path">Service: editor • Path: api\editing.py</p>
+        </div>
+
+        <div class="nav">
+            <a href="../index.html">← Back to API Index</a>
+            <a href="../editor/index.html">← editor Overview</a>
+        </div>
+
+        <div class="section">
+            <h2>Module Description</h2>
+            <div class="docstring">Editing endpoints for the Editor service.</div>
+        </div>
+
+        <div class="section">
+            <h2>Classes</h2>
+
+            <h3>AnalyzeRequest</h3>
+            <div class="docstring">Request for text analysis.</div>
+
+            <h3>SuggestionRequest</h3>
+            <div class="docstring">Request for edit suggestions without applying them.</div>
+
+            <h3>SuggestionResponse</h3>
+            <div class="docstring">Response with suggestions and analysis.</div>
+
+            <h3>ApplySuggestionsRequest</h3>
+            <div class="docstring">Request to apply specific suggestions.</div>
+
+            <h3>RevertRequest</h3>
+            <div class="docstring">Request to revert to a previous version.</div>
+
+            <h3>MetricsResponse</h3>
+            <div class="docstring">Service metrics response.</div>
+        </div>
+        <div class="section">
+            <h2>Functions</h2>
+
+            <h3>async edit_text()</h3>
+            <div class="docstring">Edit text with comprehensive optimization.</div>
+
+            <h3>async edit_batch()</h3>
+            <div class="docstring">Edit multiple texts in batch.</div>
+
+            <h3>async analyze_text()</h3>
+            <div class="docstring">Analyze text for grammar, style, and content issues.</div>
+
+            <h3>async get_suggestions()</h3>
+            <div class="docstring">Get edit suggestions without applying them.</div>
+
+            <h3>async apply_suggestions()</h3>
+            <div class="docstring">Apply specific suggestions to text.</div>
+
+            <h3>async get_version_history()</h3>
+            <div class="docstring">Get version history for a session.</div>
+
+            <h3>async compare_versions()</h3>
+            <div class="docstring">Compare two versions.</div>
+
+            <h3>async revert_to_version()</h3>
+            <div class="docstring">Revert to a previous version.</div>
+
+            <h3>async get_metrics()</h3>
+            <div class="docstring">Get service metrics.</div>
+        </div>
+    </div>
+</body>
+</html>

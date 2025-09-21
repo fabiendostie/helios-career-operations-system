@@ -90,7 +90,7 @@ python scripts/migration/05_verify_migration.py
 - Migration runs in transaction with automatic rollback on error
 - Checksum validation after each step
 
-**Rollback**: 
+**Rollback**:
 ```bash
 python scripts/migration/rollback_phase2.py
 ```
@@ -240,7 +240,7 @@ python scripts/load_testing/test_migration_performance.py
 ### 7.2 Alerting Thresholds
 ```yaml
 alerts:
-  data_inconsistency: 
+  data_inconsistency:
     threshold: 0%  # Zero tolerance for data loss
   service_downtime:
     threshold: 30s  # Maximum acceptable downtime
@@ -253,7 +253,7 @@ alerts:
 metrics:
   - migration_progress_percentage
   - data_validation_status
-  - service_health_status  
+  - service_health_status
   - rollback_readiness_status
   - performance_impact_percentage
 ```
@@ -267,7 +267,7 @@ metrics:
 - [ ] Prepare rollback communication
 - [ ] Set up monitoring alerts
 
-### 8.2 During Migration  
+### 8.2 During Migration
 - [ ] Real-time status updates
 - [ ] Progress notifications
 - [ ] Issue escalation procedures

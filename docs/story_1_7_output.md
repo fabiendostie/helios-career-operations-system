@@ -17,7 +17,7 @@ consolidated_data = {
     "work_experience": [
         {
             "role": str,
-            "company": str, 
+            "company": str,
             "dates": str,
             "description": str,
             "accomplishments": List[str],  # Raw accomplishment strings
@@ -73,25 +73,25 @@ class OutputGenerator:
         self.schema = self._load_schema(schema_path)
         self.output_dir = Path("output")
         self.output_dir.mkdir(exist_ok=True)
-    
+
     def generate_json(self, consolidated_data: Dict[str, Any]) -> Path:
         """Generate and save the final JSON output"""
-        
+
         # Transform data to match schema
         final_data = self._transform_to_schema(consolidated_data)
-        
+
         # Validate against schema
         self._validate_data(final_data)
-        
+
         # Enrich with metadata
         final_data = self._add_metadata(final_data)
-        
+
         # Write to file
         output_path = self._write_json(final_data)
-        
+
         # Display success message
         self._display_success(output_path, final_data)
-        
+
         return output_path
 ```
 
@@ -264,7 +264,7 @@ MASTER_SCHEMA = {
 ```python
 def _transform_to_schema(self, raw_data: Dict) -> Dict:
     """Transform consolidated data to match schema structure"""
-    
+
     transformed = {
         "work_experience": self._transform_work_experience(raw_data),
         "projects": self._transform_projects(raw_data),
@@ -272,13 +272,13 @@ def _transform_to_schema(self, raw_data: Dict) -> Dict:
         "strategic_metadata": self._generate_strategic_metadata(raw_data),
         "holistic_profile": raw_data.get("holistic_profile", {})
     }
-    
+
     return transformed
 
 def _transform_work_experience(self, data: Dict) -> List[Dict]:
     """Transform work experience to schema format"""
     experiences = []
-    
+
     for exp in data.get("work_experience", []):
         transformed_exp = {
             "role": exp.get("role", ""),
@@ -287,7 +287,7 @@ def _transform_work_experience(self, data: Dict) -> List[Dict]:
             "description": exp.get("description", ""),
             "accomplishments": []
         }
-        
+
         # Process accomplishments
         for acc in exp.get("accomplishments", []):
             accomplishment = {
@@ -298,38 +298,38 @@ def _transform_work_experience(self, data: Dict) -> List[Dict]:
                 "impact_score": self._calculate_impact_score(acc)
             }
             transformed_exp["accomplishments"].append(accomplishment)
-        
+
         experiences.append(transformed_exp)
-    
+
     return experiences
 
 def _deconstruct_accomplishment(self, text: str) -> Dict:
     """Break down accomplishment into action, challenge, outcome"""
     # Simple pattern matching for now
     # Could use NLP for better extraction
-    
+
     parts = {
         "action": "",
         "challenge": "",
         "outcome": ""
     }
-    
+
     # Look for action verbs
     action_verbs = ["led", "developed", "implemented", "designed", "managed", "created"]
     for verb in action_verbs:
         if verb.lower() in text.lower():
             parts["action"] = verb.capitalize()
             break
-    
+
     # Look for result indicators
     if "resulting in" in text.lower():
         parts["outcome"] = text.split("resulting in")[-1].strip()
     elif "achieved" in text.lower():
         parts["outcome"] = text.split("achieved")[-1].strip()
-    
+
     # The rest is the challenge
     parts["challenge"] = text[:50] + "..." if len(text) > 50 else text
-    
+
     return parts
 ```
 
@@ -338,44 +338,44 @@ def _deconstruct_accomplishment(self, text: str) -> Dict:
 ```python
 def _generate_strategic_metadata(self, data: Dict) -> Dict:
     """Generate strategic metadata from the data"""
-    
+
     metadata = {
         "job_title_variations": self._extract_title_variations(data),
         "top_anchor_accomplishments": self._identify_top_accomplishments(data),
         "core_competencies": self._identify_core_competencies(data)
     }
-    
+
     return metadata
 
 def _extract_title_variations(self, data: Dict) -> List[str]:
     """Extract all unique job titles"""
     titles = set()
-    
+
     for exp in data.get("work_experience", []):
         if exp.get("role"):
             titles.add(exp["role"])
-            
+
             # Generate variations
             base_title = exp["role"]
             if "Senior" in base_title:
                 titles.add(base_title.replace("Senior", "Lead"))
             if "Engineer" in base_title:
                 titles.add(base_title.replace("Engineer", "Developer"))
-    
+
     return list(titles)
 
 def _identify_top_accomplishments(self, data: Dict) -> List[str]:
     """Identify the most impactful accomplishments"""
     all_accomplishments = []
-    
+
     for exp in data.get("work_experience", []):
         for acc in exp.get("accomplishments", []):
             score = self._calculate_impact_score(acc)
             all_accomplishments.append((acc, score))
-    
+
     # Sort by impact score and take top 5
     all_accomplishments.sort(key=lambda x: x[1], reverse=True)
-    
+
     return [acc[0] for acc in all_accomplishments[:5]]
 ```
 
@@ -389,7 +389,7 @@ def _validate_data(self, data: Dict):
         self.console.print("[green]✓ Data validation passed[/green]")
     except ValidationError as e:
         self.console.print(f"[red]✗ Validation error: {e.message}[/red]")
-        
+
         # Attempt to fix common issues
         fixed_data = self._attempt_auto_fix(data, e)
         if fixed_data:
@@ -398,12 +398,12 @@ def _validate_data(self, data: Dict):
             return fixed_data
         else:
             raise e
-    
+
     return data
 
 def _attempt_auto_fix(self, data: Dict, error: ValidationError) -> Optional[Dict]:
     """Try to automatically fix validation errors"""
-    
+
     # Common fixes
     if "required property" in error.message:
         # Add missing required fields with defaults
@@ -413,9 +413,9 @@ def _attempt_auto_fix(self, data: Dict, error: ValidationError) -> Optional[Dict
             data["skills_inventory"] = {}
         if "holistic_profile" not in data:
             data["holistic_profile"] = {}
-        
+
         return data
-    
+
     return None
 ```
 
@@ -424,15 +424,15 @@ def _attempt_auto_fix(self, data: Dict, error: ValidationError) -> Optional[Dict
 ```python
 def _write_json(self, data: Dict) -> Path:
     """Write JSON to file with proper formatting"""
-    
+
     # Generate filename with timestamp
     timestamp = datetime.now().strftime("%Y%m%d_%H%M%S")
     filename = f"master_career_database_{timestamp}.json"
     output_path = self.output_dir / filename
-    
+
     # Also create a "latest" symlink
     latest_path = self.output_dir / "master_career_database.json"
-    
+
     # Write with pretty formatting
     with open(output_path, 'w', encoding='utf-8') as f:
         json.dump(
@@ -442,14 +442,14 @@ def _write_json(self, data: Dict) -> Path:
             indent=2,
             sort_keys=False  # Preserve logical ordering
         )
-    
+
     # Create/update latest symlink (Windows compatible)
     if latest_path.exists():
         latest_path.unlink()
-    
+
     with open(latest_path, 'w', encoding='utf-8') as f:
         json.dump(data, f, ensure_ascii=False, indent=2)
-    
+
     return output_path
 ```
 
@@ -458,7 +458,7 @@ def _write_json(self, data: Dict) -> Path:
 ```python
 def _display_success(self, output_path: Path, data: Dict):
     """Display success message with statistics"""
-    
+
     stats = {
         "Work Experiences": len(data.get("work_experience", [])),
         "Projects": len(data.get("projects", [])),
@@ -466,10 +466,10 @@ def _display_success(self, output_path: Path, data: Dict):
         "Transversal Projects": len(data.get("holistic_profile", {}).get("transversal_projects", [])),
         "File Size": f"{output_path.stat().st_size / 1024:.1f} KB"
     }
-    
+
     # Create summary panel
     summary_lines = [f"{key}: {value}" for key, value in stats.items()]
-    
+
     self.console.print(Panel.fit(
         "\n".join([
             "[bold green]✓ Database successfully generated![/bold green]",
@@ -489,10 +489,10 @@ def _display_success(self, output_path: Path, data: Dict):
 def _create_backup(self, data: Dict):
     """Create backup before writing"""
     backup_path = self.output_dir / f".backup_{datetime.now().timestamp()}.json"
-    
+
     with open(backup_path, 'w') as f:
         json.dump(data, f)
-    
+
     # Clean old backups (keep last 5)
     backups = sorted(self.output_dir.glob(".backup_*.json"))
     for old_backup in backups[:-5]:
@@ -525,7 +525,7 @@ def _create_backup(self, data: Dict):
 
 ### Tasks
 - [x] Create OutputGenerator class in components/output_generator.py
-- [x] Update master_schema.py with complete schema definition  
+- [x] Update master_schema.py with complete schema definition
 - [x] Implement data transformation methods
 - [x] Add schema validation functionality
 - [x] Implement metadata generation

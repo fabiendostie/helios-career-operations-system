@@ -13,15 +13,15 @@ acceptance_criteria:
   - criterion: "Conflict display with clear formatting"
     status: "PASS"
     notes: "Rich tables show conflicts with source files and details"
-  
+
   - criterion: "Smart default selection based on content analysis"
     status: "PASS"
     notes: "Algorithm scores variations by length, dates, structure, and keywords"
-  
+
   - criterion: "User selection captured and used as canonical data"
     status: "PASS"
     notes: "Interactive selection with questionary, resolved values properly applied"
-  
+
   - criterion: "Process repeats until all conflicts resolved"
     status: "PASS"
     notes: "Progress tracking and iteration through all conflicts"
@@ -37,7 +37,7 @@ technical_components:
       - "Batch operation modes"
       - "Progress tracking"
       - "Legacy method for backward compatibility"
-  
+
   resolution_history:
     location: "resume_extractor/ui/conflict_resolver.py"
     status: "COMPLETE"
@@ -45,7 +45,7 @@ technical_components:
       - "Full undo/redo functionality"
       - "History tracking"
       - "State management"
-  
+
   consolidation_engine_integration:
     location: "resume_extractor/components/consolidation.py"
     status: "COMPLETE"

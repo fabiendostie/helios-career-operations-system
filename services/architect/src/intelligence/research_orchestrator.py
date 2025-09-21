@@ -38,7 +38,7 @@ from .data_ingestion import get_data_ingester, AdvancedDataIngester
 from .nlp_processor import get_nlp_processor, AdvancedNLPProcessor
 from .database_schema import (
     get_database_manager, DatabaseManager,
-    BronzeRawContent, SilverProcessedContent, 
+    BronzeRawContent, SilverProcessedContent,
     GoldIndustryTrends, GoldATSUpdates, GoldResumeTrends,
     GoldHiringManagerSentiment, GoldJobMarketIndicators, GoldSkillsDemand
 )
@@ -49,15 +49,15 @@ logger = structlog.get_logger(__name__)
 class ResearchOrchestrator:
     """
     Main orchestrator for the Dynamic Research Engine.
-    
+
     Manages the complete research pipeline from data ingestion through
     NLP processing to gold layer analytics preparation.
     """
-    
+
     def __init__(self, database_url: str):
         """
         Initialize research orchestrator.
-        
+
         Args:
             database_url: PostgreSQL connection string
         """
@@ -69,7 +69,7 @@ class ResearchOrchestrator:
             'total_content_processed': 0,
             'processing_errors': []
         }
-    
+
     async def initialize(self):
         """Initialize database and create tables if needed"""
         self.db_manager.initialize_connection()
@@ -84,25 +84,25 @@ class ResearchOrchestrator:
 async def ingest_source_data(source: DataSource) -> Dict[str, Any]:
     """
     Ingest data from a single source with error handling.
-    
+
     Args:
         source: DataSource configuration object
-        
+
     Returns:
         Dict containing ingested data and metadata
-        
+
     Raises:
         Exception: Re-raises after max retries exceeded
     """
     run_logger = get_run_logger()
     run_logger.info(f"Starting ingestion for source: {source.name}")
-    
+
     try:
         ingester = await get_data_ingester()
-        
+
         # Fetch data from source
         raw_data = await ingester.fetch_from_source(source)
-        
+
         # Add source metadata
         result = {
             'source': source,
@@ -110,11 +110,11 @@ async def ingest_source_data(source: DataSource) -> Dict[str, Any]:
             'ingestion_timestamp': datetime.utcnow().isoformat(),
             'success': True
         }
-        
+
         run_logger.info(f"Successfully ingested data from {source.name}: "
                        f"{len(raw_data.get('text_content', ''))} characters")
         return result
-        
+
     except Exception as e:
         run_logger.error(f"Failed to ingest data from {source.name}: {str(e)}")
         raise
@@ -123,33 +123,33 @@ async def ingest_source_data(source: DataSource) -> Dict[str, Any]:
 async def process_with_nlp(ingestion_result: Dict[str, Any]) -> Dict[str, Any]:
     """
     Process ingested content with NLP pipeline.
-    
+
     Args:
         ingestion_result: Result from ingestion task
-        
+
     Returns:
         Dict containing NLP-processed data
     """
     run_logger = get_run_logger()
-    
+
     if not ingestion_result.get('success'):
         run_logger.warning("Skipping NLP processing for failed ingestion")
         return {'success': False, 'reason': 'ingestion_failed'}
-    
+
     source = ingestion_result['source']
     raw_data = ingestion_result['raw_data']
-    
+
     run_logger.info(f"Starting NLP processing for {source.name}")
-    
+
     try:
         nlp_processor = await get_nlp_processor()
-        
+
         # Extract text content
         text_content = raw_data.get('text_content', '')
         if not text_content or len(text_content) < 100:
             run_logger.warning(f"Insufficient content from {source.name}: {len(text_content)} chars")
             return {'success': False, 'reason': 'insufficient_content'}
-        
+
         # Run comprehensive NLP analysis
         entities = await nlp_processor.extract_entities(text_content)
         summary = await nlp_processor.summarize_text(text_content)
@@ -158,7 +158,7 @@ async def process_with_nlp(ingestion_result: Dict[str, Any]) -> Dict[str, Any]:
         )
         sentiment = await nlp_processor.analyze_sentiment(text_content)
         skills_trends = await nlp_processor.extract_skills_and_trends(text_content)
-        
+
         # Calculate overall processing confidence
         confidence_scores = [
             sentiment.get('confidence', 0),
@@ -166,7 +166,7 @@ async def process_with_nlp(ingestion_result: Dict[str, Any]) -> Dict[str, Any]:
             1.0 if len(entities.get('ORG', [])) > 0 else 0.5  # Basic entity validation
         ]
         overall_confidence = sum(confidence_scores) / len(confidence_scores)
-        
+
         result = {
             'source': source,
             'original_data': raw_data,
@@ -187,11 +187,11 @@ async def process_with_nlp(ingestion_result: Dict[str, Any]) -> Dict[str, Any]:
             'processing_timestamp': datetime.utcnow().isoformat(),
             'success': True
         }
-        
+
         run_logger.info(f"NLP processing completed for {source.name}: "
                        f"confidence={overall_confidence:.2f}")
         return result
-        
+
     except Exception as e:
         run_logger.error(f"NLP processing failed for {source.name}: {str(e)}")
         return {
@@ -205,38 +205,38 @@ async def process_with_nlp(ingestion_result: Dict[str, Any]) -> Dict[str, Any]:
 async def store_bronze_data(ingestion_result: Dict[str, Any], db_url: str) -> str:
     """
     Store raw ingested data in Bronze layer.
-    
+
     Args:
         ingestion_result: Result from ingestion task
         db_url: Database connection URL
-        
+
     Returns:
         Bronze record ID
     """
     run_logger = get_run_logger()
-    
+
     if not ingestion_result.get('success'):
         run_logger.warning("Skipping bronze storage for failed ingestion")
         return None
-    
+
     try:
         db_manager = get_database_manager(db_url)
         session = db_manager.get_session()
-        
+
         source = ingestion_result['source']
         raw_data = ingestion_result['raw_data']
-        
+
         # Generate content hash for deduplication
         content_text = raw_data.get('text_content', '') or raw_data.get('raw_html', '')
         content_hash = hashlib.md5(content_text.encode('utf-8')).hexdigest()
-        
+
         # Check if content already exists
         existing = session.query(BronzeRawContent).filter_by(content_hash=content_hash).first()
         if existing:
             run_logger.info(f"Content from {source.name} already exists in bronze layer")
             session.close()
             return str(existing.id)
-        
+
         # Create new bronze record
         bronze_record = BronzeRawContent(
             source_name=source.name,
@@ -249,16 +249,16 @@ async def store_bronze_data(ingestion_result: Dict[str, Any], db_url: str) -> st
             http_status=raw_data.get('http_status', 200),
             response_headers=raw_data.get('response_headers', {})
         )
-        
+
         session.add(bronze_record)
         session.commit()
-        
+
         record_id = str(bronze_record.id)
         session.close()
-        
+
         run_logger.info(f"Stored bronze data for {source.name}: {record_id}")
         return record_id
-        
+
     except Exception as e:
         run_logger.error(f"Failed to store bronze data for {source.name}: {str(e)}")
         raise
@@ -267,27 +267,27 @@ async def store_bronze_data(ingestion_result: Dict[str, Any], db_url: str) -> st
 async def store_silver_data(nlp_result: Dict[str, Any], bronze_id: str, db_url: str) -> str:
     """
     Store NLP-processed data in Silver layer.
-    
+
     Args:
         nlp_result: Result from NLP processing task
         bronze_id: Bronze layer record ID
         db_url: Database connection URL
-        
+
     Returns:
         Silver record ID
     """
     run_logger = get_run_logger()
-    
+
     if not nlp_result.get('success'):
         run_logger.warning("Skipping silver storage for failed NLP processing")
         return None
-    
+
     try:
         db_manager = get_database_manager(db_url)
         session = db_manager.get_session()
-        
+
         processed = nlp_result['processed_content']
-        
+
         # Create silver record
         silver_record = SilverProcessedContent(
             bronze_source_id=bronze_id,
@@ -305,16 +305,16 @@ async def store_silver_data(nlp_result: Dict[str, Any], bronze_id: str, db_url: 
             quality_score=processed['quality_score'],
             nlp_model_version="spacy_3.7_transformers_4.46"
         )
-        
+
         session.add(silver_record)
         session.commit()
-        
+
         record_id = str(silver_record.id)
         session.close()
-        
+
         run_logger.info(f"Stored silver data: {record_id}")
         return record_id
-        
+
     except Exception as e:
         run_logger.error(f"Failed to store silver data: {str(e)}")
         raise
@@ -323,30 +323,30 @@ async def store_silver_data(nlp_result: Dict[str, Any], bronze_id: str, db_url: 
 async def create_gold_analytics(nlp_result: Dict[str, Any], silver_id: str, db_url: str) -> Dict[str, Any]:
     """
     Create analytics-ready records in Gold layer.
-    
+
     Args:
         nlp_result: NLP processing result
-        silver_id: Silver layer record ID  
+        silver_id: Silver layer record ID
         db_url: Database connection URL
-        
+
     Returns:
         Dict with gold record creation results
     """
     run_logger = get_run_logger()
-    
+
     if not nlp_result.get('success'):
         return {'success': False, 'reason': 'nlp_processing_failed'}
-    
+
     try:
         db_manager = get_database_manager(db_url)
         session = db_manager.get_session()
-        
+
         source = nlp_result['source']
         processed = nlp_result['processed_content']
         original_data = nlp_result['original_data']
-        
+
         gold_records_created = []
-        
+
         # Create appropriate gold record based on source category
         if source.category == DataSourceCategory.INDUSTRY_TRENDS:
             gold_record = GoldIndustryTrends(
@@ -355,7 +355,7 @@ async def create_gold_analytics(nlp_result: Dict[str, Any], silver_id: str, db_u
                 source_name=source.name,
                 article_title=processed['title'] or f"Research from {source.name}",
                 summary=processed['summary'],
-                primary_category=max(processed['content_classification'], 
+                primary_category=max(processed['content_classification'],
                                    key=processed['content_classification'].get),
                 mentioned_orgs=processed['extracted_entities'].get('ORG', []),
                 mentioned_people=processed['extracted_entities'].get('PERSON', []),
@@ -367,7 +367,7 @@ async def create_gold_analytics(nlp_result: Dict[str, Any], silver_id: str, db_u
                 source_authority=source.priority  # Use priority as authority score
             )
             gold_records_created.append('industry_trends')
-        
+
         elif source.category == DataSourceCategory.ATS_UPDATES:
             gold_record = GoldATSUpdates(
                 silver_source_id=silver_id,
@@ -375,7 +375,7 @@ async def create_gold_analytics(nlp_result: Dict[str, Any], silver_id: str, db_u
                 vendor_name=source.name.split()[0],  # Extract vendor from source name
                 feature_name=processed['title'] or "ATS Update",
                 update_summary=processed['summary'],
-                update_category=max(processed['content_classification'], 
+                update_category=max(processed['content_classification'],
                                   key=processed['content_classification'].get),
                 technical_details=processed['extracted_entities'],
                 confidence_score=processed['processing_confidence'],
@@ -383,25 +383,25 @@ async def create_gold_analytics(nlp_result: Dict[str, Any], silver_id: str, db_u
                 vendor_authority_score=source.priority
             )
             gold_records_created.append('ats_updates')
-        
+
         # Add similar logic for other categories...
         # This is abbreviated for space, but would include all gold table types
-        
+
         if 'gold_record' in locals():
             session.add(gold_record)
             session.commit()
-            
+
             record_id = str(gold_record.id)
             run_logger.info(f"Created gold record: {record_id} for category {source.category.value}")
-        
+
         session.close()
-        
+
         return {
             'success': True,
             'records_created': gold_records_created,
             'source_category': source.category.value
         }
-        
+
     except Exception as e:
         run_logger.error(f"Failed to create gold analytics: {str(e)}")
         return {'success': False, 'error': str(e)}
@@ -414,31 +414,31 @@ async def create_gold_analytics(nlp_result: Dict[str, Any], silver_id: str, db_u
 async def process_single_source_flow(source: DataSource, db_url: str) -> Dict[str, Any]:
     """
     Complete processing pipeline for a single data source.
-    
+
     This flow handles the full Bronze->Silver->Gold pipeline for one source
     with proper error handling and state management.
     """
     run_logger = get_run_logger()
     run_logger.info(f"Processing source: {source.name}")
-    
+
     try:
         # Step 1: Ingest raw data
         ingestion_result = await ingest_source_data.submit(source)
-        
-        # Step 2: Store in Bronze layer  
+
+        # Step 2: Store in Bronze layer
         bronze_id = await store_bronze_data.submit(ingestion_result, db_url)
-        
+
         if bronze_id:
             # Step 3: Process with NLP
             nlp_result = await process_with_nlp.submit(ingestion_result)
-            
+
             # Step 4: Store in Silver layer
             silver_id = await store_silver_data.submit(nlp_result, bronze_id, db_url)
-            
+
             if silver_id:
                 # Step 5: Create Gold analytics
                 gold_result = await create_gold_analytics.submit(nlp_result, silver_id, db_url)
-                
+
                 return {
                     'source_name': source.name,
                     'success': True,
@@ -446,9 +446,9 @@ async def process_single_source_flow(source: DataSource, db_url: str) -> Dict[st
                     'silver_id': silver_id,
                     'gold_result': gold_result
                 }
-        
+
         return {'source_name': source.name, 'success': False}
-        
+
     except Exception as e:
         run_logger.error(f"Source processing failed for {source.name}: {str(e)}")
         return {'source_name': source.name, 'success': False, 'error': str(e)}
@@ -457,33 +457,33 @@ async def process_single_source_flow(source: DataSource, db_url: str) -> Dict[st
 async def dynamic_research_engine_pipeline(db_url: str, max_sources: int = None) -> Dict[str, Any]:
     """
     Main research pipeline flow that processes all configured sources.
-    
+
     This is the primary entry point for the research system, handling
     parallel processing of multiple sources with comprehensive reporting.
-    
+
     Args:
         db_url: Database connection URL
         max_sources: Optional limit on number of sources to process
-        
+
     Returns:
         Dict with complete pipeline results and statistics
     """
     run_logger = get_run_logger()
     run_logger.info("Starting Dynamic Research Engine pipeline")
-    
+
     # Get all configured sources
     all_sources = get_all_sources()
     if max_sources:
         all_sources = all_sources[:max_sources]
-    
+
     run_logger.info(f"Processing {len(all_sources)} data sources")
-    
+
     # Process sources in parallel
     source_futures = []
     for source in all_sources:
         future = process_single_source_flow.submit(source, db_url)
         source_futures.append(future)
-    
+
     # Wait for all sources to complete
     results = []
     for future in source_futures:
@@ -493,11 +493,11 @@ async def dynamic_research_engine_pipeline(db_url: str, max_sources: int = None)
         except Exception as e:
             run_logger.error(f"Source processing failed: {str(e)}")
             results.append({'success': False, 'error': str(e)})
-    
+
     # Calculate pipeline statistics
     successful_sources = [r for r in results if r.get('success')]
     failed_sources = [r for r in results if not r.get('success')]
-    
+
     pipeline_result = {
         'pipeline_timestamp': datetime.utcnow().isoformat(),
         'total_sources': len(all_sources),
@@ -506,10 +506,10 @@ async def dynamic_research_engine_pipeline(db_url: str, max_sources: int = None)
         'success_rate': len(successful_sources) / len(all_sources) * 100,
         'results': results
     }
-    
+
     run_logger.info(f"Pipeline completed: {len(successful_sources)}/{len(all_sources)} sources successful "
                    f"({pipeline_result['success_rate']:.1f}%)")
-    
+
     return pipeline_result
 
 # ===================================================================
@@ -519,10 +519,10 @@ async def dynamic_research_engine_pipeline(db_url: str, max_sources: int = None)
 if __name__ == "__main__":
     # For deployment and scheduling
     import os
-    
+
     # Get database URL from environment
     DATABASE_URL = os.getenv("DATABASE_URL", "postgresql://user:pass@localhost:5432/research")
-    
+
     # Deploy the flow for scheduled execution
     dynamic_research_engine_pipeline.serve(
         name="weekly-research-deployment",

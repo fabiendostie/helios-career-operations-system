@@ -17,7 +17,7 @@ python scripts/generate_docs.py
 if [ $? -eq 0 ]; then
     echo "✅ Documentation generated successfully!"
     echo "📂 Documentation available at: docs/api/index.html"
-    
+
     # Check if we should serve locally
     if [ "$1" = "--serve" ]; then
         echo "🌐 Starting local server..."

@@ -46,7 +46,7 @@ ruff check --fix .
    ```python
    # OLD
    datetime.utcnow()
-   
+
    # NEW
    from datetime import datetime, timezone
    datetime.now(timezone.utc)

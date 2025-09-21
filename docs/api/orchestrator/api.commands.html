@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>api.commands - orchestrator</title>
+    <style>
+        body { font-family: Arial, sans-serif; margin: 40px; background: #f8f9fa; }
+        .container { max-width: 1200px; margin: 0 auto; background: white; padding: 30px; border-radius: 8px; box-shadow: 0 2px 10px rgba(0,0,0,0.1); }
+        .header { background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; padding: 20px; border-radius: 5px; margin-bottom: 30px; }
+        .section { margin: 20px 0; padding: 20px; border-left: 4px solid #667eea; background: #f8f9ff; }
+        .docstring { background: #fff; padding: 15px; border-radius: 5px; border: 1px solid #e0e0e0; margin: 10px 0; white-space: pre-wrap; }
+        .nav { margin-bottom: 20px; }
+        .nav a { color: #667eea; text-decoration: none; margin-right: 20px; }
+        .nav a:hover { text-decoration: underline; }
+        h1, h2, h3 { color: #333; }
+        .module-path { color: #666; font-style: italic; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>api.commands</h1>
+            <p class="module-path">Service: orchestrator • Path: api\commands.py</p>
+        </div>
+
+        <div class="nav">
+            <a href="../index.html">← Back to API Index</a>
+            <a href="../orchestrator/index.html">← orchestrator Overview</a>
+        </div>
+
+        <div class="section">
+            <h2>Module Description</h2>
+            <div class="docstring">Command execution API endpoints.</div>
+        </div>
+
+        <div class="section">
+            <h2>Functions</h2>
+
+            <h3>async get_session_manager()</h3>
+            <div class="docstring">Dependency to get session manager.</div>
+
+            <h3>async get_command_router()</h3>
+            <div class="docstring">Dependency to get command router.</div>
+
+            <h3>async execute_command()</h3>
+            <div class="docstring">Execute a command.
+
+Args:
+    request: Command request to execute
+    session_manager: Session manager dependency
+    command_router: Command router dependency
+
+Returns:
+    Command response
+
+Raises:
+    HTTPException: If command validation or execution fails</div>
+
+            <h3>async start_session()</h3>
+            <div class="docstring">Start a new session (convenience endpoint for /start command).
+
+Args:
+    user_id: Optional user identifier
+    initial_data: Optional initial session data
+    session_manager: Session manager dependency
+    command_router: Command router dependency
+
+Returns:
+    Command response with new session ID</div>
+
+            <h3>async get_help()</h3>
+            <div class="docstring">Get command help information.
+
+Args:
+    session_id: Session ID (defaults to help-session)
+    session_manager: Session manager dependency
+    command_router: Command router dependency
+
+Returns:
+    Help information response</div>
+
+            <h3>async get_session_status()</h3>
+            <div class="docstring">Get session status (convenience endpoint for /status command).
+
+Args:
+    session_id: Session identifier
+    include_history: Include command history in response
+    include_details: Include detailed session information
+    session_manager: Session manager dependency
+    command_router: Command router dependency
+
+Returns:
+    Session status response</div>
+
+            <h3>async list_commands()</h3>
+            <div class="docstring">List all available commands.
+
+Returns:
+    Dictionary of available commands and their descriptions</div>
+        </div>
+    </div>
+</body>
+</html>

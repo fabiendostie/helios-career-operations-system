@@ -21,7 +21,7 @@ async def get_career_generator() -> CareerGenerator:
     """Dependency to get initialized career generator."""
     if career_generator is None:
         raise HTTPException(
-            status_code=503, 
+            status_code=503,
             detail="STRATEGIST service not fully initialized. Please try again later."
         )
     return career_generator
@@ -46,30 +46,30 @@ async def generate_career_paths(
     generator: CareerGenerator = Depends(get_career_generator)
 ) -> CareerPathResponse:
     """Generate career path recommendations for a user.
-    
+
     This is the main endpoint that the Orchestrator calls for the /discover command.
     """
     try:
         logger.info(f"Generating career paths for user {request.user_id}")
-        
+
         # Validate request
         if not request.master_career_database:
             raise HTTPException(
                 status_code=400,
                 detail="master_career_database is required"
             )
-        
+
         # Generate career paths
         response = await generator.generate_career_paths(request)
-        
+
         logger.info(f"Successfully generated {len(response.career_target_profiles)} recommendations for user {request.user_id}")
-        
+
         return response
-        
+
     except ValueError as e:
         logger.warning(f"Invalid request for user {request.user_id}: {e}")
         raise HTTPException(status_code=400, detail=str(e))
-    
+
     except Exception as e:
         logger.error(f"Error generating career paths for user {request.user_id}: {e}")
         raise HTTPException(
@@ -84,7 +84,7 @@ async def discover_command_handler(
     generator: CareerGenerator = Depends(get_career_generator)
 ) -> JSONResponse:
     """Handle /discover command from HELIOS Orchestrator.
-    
+
     This endpoint matches the expected interface from the Orchestrator service.
     """
     try:
@@ -92,16 +92,16 @@ async def discover_command_handler(
         user_id = payload.get("user_id")
         session_data = payload.get("session_data", {})
         master_career_database = session_data.get("master_career_database")
-        
+
         if not user_id:
             raise HTTPException(status_code=400, detail="user_id is required")
-        
+
         if not master_career_database:
             raise HTTPException(
                 status_code=400,
                 detail="master_career_database not found in session data"
             )
-        
+
         # Create career path request
         request = CareerPathRequest(
             user_id=user_id,
@@ -111,10 +111,10 @@ async def discover_command_handler(
             preferred_industries=payload.get("preferred_industries"),
             salary_requirements=payload.get("salary_requirements")
         )
-        
+
         # Generate career paths
         response = await generator.generate_career_paths(request)
-        
+
         # Format response for Orchestrator
         orchestrator_response = {
             "status": "success",
@@ -135,7 +135,7 @@ async def discover_command_handler(
                         "next_steps": ctp.next_steps[:3],  # Top 3 next steps
                         "skill_gaps_count": len(ctp.skill_gaps),
                         "critical_skills_needed": [
-                            sg.skill_name for sg in ctp.skill_gaps 
+                            sg.skill_name for sg in ctp.skill_gaps
                             if sg.priority.value == "critical"
                         ][:5],  # Top 5 critical skills
                         "salary_range": ctp.role.median_salary_range,
@@ -152,15 +152,15 @@ async def discover_command_handler(
                 "timestamp": response.career_target_profiles[0].generation_timestamp if response.career_target_profiles else None
             }
         }
-        
+
         return JSONResponse(content=orchestrator_response)
-        
+
     except HTTPException:
         raise  # Re-raise HTTP exceptions as-is
-    
+
     except Exception as e:
         logger.error(f"Error in discover command handler: {e}")
-        
+
         return JSONResponse(
             status_code=500,
             content={
@@ -180,10 +180,10 @@ async def service_status() -> Dict[str, Any]:
     """Get STRATEGIST service status and statistics."""
     try:
         config = get_config()
-        
+
         # Check if career generator is initialized
         is_ready = career_generator is not None and career_generator._initialized
-        
+
         status_info = {
             "service": "STRATEGIST",
             "version": "1.0.0",
@@ -195,7 +195,7 @@ async def service_status() -> Dict[str, Any]:
                 "embedding_model": config.embedding_model
             }
         }
-        
+
         if is_ready and career_generator.taxonomy_manager.is_loaded():
             # Add taxonomy statistics
             stats = career_generator.taxonomy_manager.get_statistics()
@@ -204,13 +204,13 @@ async def service_status() -> Dict[str, Any]:
                 "industries": len(stats.roles_by_industry),
                 "unique_skills": stats.unique_skills
             }
-            
+
             # Add vectorizer statistics
             vectorizer_stats = career_generator.vectorizer.get_cache_stats()
             status_info["vectorizer_stats"] = vectorizer_stats
-        
+
         return status_info
-        
+
     except Exception as e:
         logger.error(f"Error getting service status: {e}")
         raise HTTPException(status_code=500, detail="Error retrieving service status")

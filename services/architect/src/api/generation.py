@@ -11,7 +11,7 @@ import structlog
 
 from ..core.document_generator import DocumentGenerator, monitor_memory_usage
 from ..models.generation_request import (
-    DocumentGenerationRequest, DocumentResponse, 
+    DocumentGenerationRequest, DocumentResponse,
     TemplateListRequest, TemplateListResponse,
     BulkGenerationRequest, BulkGenerationResponse,
     GenerationStatusRequest, GenerationStatus
@@ -31,10 +31,10 @@ generation_tasks: Dict[str, Dict[str, Any]] = {}
 async def get_session_data(session_id: str) -> Dict[str, Any]:
     """Fetch session data from orchestrator service."""
     settings = get_settings()
-    
+
     try:
         import aiohttp
-        
+
         async with aiohttp.ClientSession(
             timeout=aiohttp.ClientTimeout(total=settings.orchestrator_timeout)
         ) as session:
@@ -54,7 +54,7 @@ async def get_session_data(session_id: str) -> Dict[str, Any]:
                         status_code=503,
                         detail="Orchestrator service unavailable"
                     )
-                    
+
     except aiohttp.ClientError as e:
         logger.error("Failed to connect to orchestrator", error=str(e))
         raise HTTPException(
@@ -75,38 +75,38 @@ async def generate_resume(
     background_tasks: BackgroundTasks
 ) -> DocumentResponse:
     """Generate a resume document."""
-    
+
     # Validate document type
     if request.document_type != "resume":
         raise HTTPException(
             status_code=400,
             detail="This endpoint is for resume generation only"
         )
-    
+
     # Check memory usage before processing
     if not await monitor_memory_usage():
         raise HTTPException(
             status_code=503,
             detail="Service overloaded - please try again later"
         )
-    
+
     try:
         # Get career data from orchestrator
         career_data = await get_session_data(request.session_id)
-        
+
         if not career_data:
             raise HTTPException(
                 status_code=404,
                 detail="No career data found for session"
             )
-        
+
         logger.info(
             "Starting resume generation",
             session_id=request.session_id,
             template_name=request.template_name,
             output_format=request.output_format
         )
-        
+
         # Generate document
         result = await document_generator.generate_document(
             template_name=request.template_name,
@@ -116,10 +116,10 @@ async def generate_resume(
             customizations=request.customizations,
             document_type="resume"
         )
-        
+
         # Prepare response
         content = result["content"]
-        
+
         # Encode binary content as base64 for JSON response
         if isinstance(content, bytes):
             content_str = base64.b64encode(content).decode('utf-8')
@@ -127,7 +127,7 @@ async def generate_resume(
         else:
             content_str = content
             content_encoding = "utf-8"
-        
+
         response = DocumentResponse(
             content=content_str,
             content_encoding=content_encoding,
@@ -136,19 +136,19 @@ async def generate_resume(
             success=True,
             message="Resume generated successfully"
         )
-        
+
         # Schedule cleanup task
         background_tasks.add_task(cleanup_generation_artifacts, request.session_id)
-        
+
         logger.info(
             "Resume generation completed",
             session_id=request.session_id,
             file_size=len(content),
             generation_time=result["metadata"]["generation_time"]
         )
-        
+
         return response
-        
+
     except HTTPException:
         # Re-raise HTTP exceptions
         raise
@@ -171,45 +171,45 @@ async def generate_cover_letter(
     background_tasks: BackgroundTasks
 ) -> DocumentResponse:
     """Generate a cover letter document."""
-    
+
     # Validate document type
     if request.document_type != "cover_letter":
         raise HTTPException(
             status_code=400,
             detail="This endpoint is for cover letter generation only"
         )
-    
+
     # Validate required fields for cover letters
     if not request.job_requirements:
         raise HTTPException(
             status_code=400,
             detail="Job requirements are required for cover letter generation"
         )
-    
+
     # Check memory usage before processing
     if not await monitor_memory_usage():
         raise HTTPException(
             status_code=503,
             detail="Service overloaded - please try again later"
         )
-    
+
     try:
         # Get career data from orchestrator
         career_data = await get_session_data(request.session_id)
-        
+
         if not career_data:
             raise HTTPException(
                 status_code=404,
                 detail="No career data found for session"
             )
-        
+
         logger.info(
             "Starting cover letter generation",
             session_id=request.session_id,
             template_name=request.template_name,
             company=request.job_requirements.get('company', 'Unknown')
         )
-        
+
         # Generate document
         result = await document_generator.generate_document(
             template_name=request.template_name,
@@ -219,10 +219,10 @@ async def generate_cover_letter(
             customizations=request.customizations,
             document_type="cover_letter"
         )
-        
+
         # Prepare response
         content = result["content"]
-        
+
         # Encode binary content as base64 for JSON response
         if isinstance(content, bytes):
             content_str = base64.b64encode(content).decode('utf-8')
@@ -230,7 +230,7 @@ async def generate_cover_letter(
         else:
             content_str = content
             content_encoding = "utf-8"
-        
+
         response = DocumentResponse(
             content=content_str,
             content_encoding=content_encoding,
@@ -239,18 +239,18 @@ async def generate_cover_letter(
             success=True,
             message="Cover letter generated successfully"
         )
-        
+
         # Schedule cleanup task
         background_tasks.add_task(cleanup_generation_artifacts, request.session_id)
-        
+
         logger.info(
             "Cover letter generation completed",
             session_id=request.session_id,
             file_size=len(content)
         )
-        
+
         return response
-        
+
     except HTTPException:
         # Re-raise HTTP exceptions
         raise
@@ -273,7 +273,7 @@ async def generate_document(
     background_tasks: BackgroundTasks
 ) -> DocumentResponse:
     """Generate any type of document (unified endpoint)."""
-    
+
     # Route to specific endpoints based on document type
     if request.document_type == "resume":
         return await generate_resume(request, background_tasks)
@@ -293,34 +293,34 @@ async def list_templates(
     ats_optimization: str = None
 ) -> TemplateListResponse:
     """List available templates with optional filtering."""
-    
+
     try:
         # Get all templates
         templates = await document_generator.list_available_templates(document_type)
-        
+
         # Apply additional filters
         filtered_templates = templates
-        
+
         if industry:
             filtered_templates = [
                 t for t in filtered_templates
                 if industry.lower() in [ind.lower() for ind in t.get('target_industries', [])]
             ]
-        
+
         if ats_optimization:
             filtered_templates = [
                 t for t in filtered_templates
                 if t.get('ats_optimization', '').lower() == ats_optimization.lower()
             ]
-        
+
         # Get available filter options
         available_industries = set()
         available_optimizations = set()
-        
+
         for template in templates:
             available_industries.update(template.get('target_industries', []))
             available_optimizations.add(template.get('ats_optimization', ''))
-        
+
         return TemplateListResponse(
             templates=filtered_templates,
             total_count=len(templates),
@@ -328,7 +328,7 @@ async def list_templates(
             available_industries=sorted(list(available_industries)),
             available_optimizations=sorted(list(available_optimizations))
         )
-        
+
     except Exception as e:
         logger.error("Failed to list templates", error=str(e))
         raise HTTPException(
@@ -340,16 +340,16 @@ async def list_templates(
 @router.get("/templates/{template_name}")
 async def get_template_info(template_name: str) -> Dict[str, Any]:
     """Get detailed information about a specific template."""
-    
+
     try:
         template_info = await document_generator.get_template_info(template_name)
-        
+
         if not template_info:
             raise HTTPException(
                 status_code=404,
                 detail=f"Template '{template_name}' not found"
             )
-        
+
         return {
             "template_name": template_name,
             "info": template_info,
@@ -359,7 +359,7 @@ async def get_template_info(template_name: str) -> Dict[str, Any]:
                 "with_customizations": "Include customizations object for personalization"
             }
         }
-        
+
     except HTTPException:
         # Re-raise HTTP exceptions
         raise
@@ -381,25 +381,25 @@ async def bulk_generate_documents(
     background_tasks: BackgroundTasks
 ) -> BulkGenerationResponse:
     """Generate multiple documents in parallel."""
-    
+
     # Check memory usage before processing
     if not await monitor_memory_usage():
         raise HTTPException(
             status_code=503,
             detail="Service overloaded - cannot process bulk requests"
         )
-    
+
     if len(request.generations) > 10:
         raise HTTPException(
             status_code=400,
             detail="Maximum 10 documents can be generated in a single bulk request"
         )
-    
+
     start_time = time.time()
     results = []
     success_count = 0
     failure_count = 0
-    
+
     try:
         logger.info(
             "Starting bulk document generation",
@@ -407,7 +407,7 @@ async def bulk_generate_documents(
             document_count=len(request.generations),
             parallel=request.parallel_processing
         )
-        
+
         if request.parallel_processing:
             # Process in parallel
             tasks = []
@@ -417,10 +417,10 @@ async def bulk_generate_documents(
                     _generate_single_document(gen_request)
                 )
                 tasks.append(task)
-            
+
             # Wait for all tasks to complete
             task_results = await asyncio.gather(*tasks, return_exceptions=True)
-            
+
             for result in task_results:
                 if isinstance(result, Exception):
                     results.append(DocumentResponse(
@@ -433,7 +433,7 @@ async def bulk_generate_documents(
                 else:
                     results.append(result)
                     success_count += 1
-                    
+
                 # Check fail_fast option
                 if request.fail_fast and failure_count > 0:
                     break
@@ -441,7 +441,7 @@ async def bulk_generate_documents(
             # Process sequentially
             for gen_request in request.generations:
                 gen_request.session_id = request.session_id
-                
+
                 try:
                     result = await _generate_single_document(gen_request)
                     results.append(result)
@@ -454,16 +454,16 @@ async def bulk_generate_documents(
                         message=str(e)
                     ))
                     failure_count += 1
-                    
+
                     # Check fail_fast option
                     if request.fail_fast:
                         break
-        
+
         total_time = time.time() - start_time
-        
+
         # Schedule cleanup
         background_tasks.add_task(cleanup_generation_artifacts, request.session_id)
-        
+
         logger.info(
             "Bulk generation completed",
             session_id=request.session_id,
@@ -471,7 +471,7 @@ async def bulk_generate_documents(
             failure_count=failure_count,
             total_time=total_time
         )
-        
+
         return BulkGenerationResponse(
             results=results,
             success_count=success_count,
@@ -483,7 +483,7 @@ async def bulk_generate_documents(
                 "fail_fast": request.fail_fast
             }
         )
-        
+
     except Exception as e:
         logger.error(
             "Bulk generation failed",
@@ -499,13 +499,13 @@ async def bulk_generate_documents(
 
 async def _generate_single_document(request: DocumentGenerationRequest) -> DocumentResponse:
     """Generate a single document (internal helper)."""
-    
+
     # Get career data
     career_data = await get_session_data(request.session_id)
-    
+
     if not career_data:
         raise ValueError("No career data found for session")
-    
+
     # Generate document
     result = await document_generator.generate_document(
         template_name=request.template_name,
@@ -515,17 +515,17 @@ async def _generate_single_document(request: DocumentGenerationRequest) -> Docum
         customizations=request.customizations,
         document_type=request.document_type
     )
-    
+
     # Prepare response
     content = result["content"]
-    
+
     if isinstance(content, bytes):
         content_str = base64.b64encode(content).decode('utf-8')
         content_encoding = "base64"
     else:
         content_str = content
         content_encoding = "utf-8"
-    
+
     return DocumentResponse(
         content=content_str,
         content_encoding=content_encoding,
@@ -544,7 +544,7 @@ async def download_document(
     document_type: str = "resume"
 ) -> Response:
     """Download document directly as file."""
-    
+
     try:
         # Validate format
         if format.lower() not in ['pdf', 'html', 'markdown', 'docx']:
@@ -552,16 +552,16 @@ async def download_document(
                 status_code=400,
                 detail="Unsupported format. Use: pdf, html, markdown, docx"
             )
-        
+
         # Get career data
         career_data = await get_session_data(session_id)
-        
+
         if not career_data:
             raise HTTPException(
                 status_code=404,
                 detail="Session not found"
             )
-        
+
         # Generate document
         result = await document_generator.generate_document(
             template_name=template_name,
@@ -569,16 +569,16 @@ async def download_document(
             output_format=format,
             document_type=document_type
         )
-        
+
         # Prepare filename
         candidate_name = career_data.get('candidate_name', 'Professional').replace(' ', '_')
         timestamp = int(time.time())
-        
+
         if document_type == "resume":
             filename = f"{candidate_name}_Resume_{timestamp}.{format}"
         else:
             filename = f"{candidate_name}_Cover_Letter_{timestamp}.{format}"
-        
+
         # Return file response
         return Response(
             content=result["content"],
@@ -588,7 +588,7 @@ async def download_document(
                 "Cache-Control": "no-cache"
             }
         )
-        
+
     except HTTPException:
         # Re-raise HTTP exceptions
         raise
@@ -611,12 +611,12 @@ async def cleanup_generation_artifacts(session_id: str):
         # Clean up any temporary files, caches, etc.
         # This would typically involve cleaning up session-specific data
         logger.debug("Cleaning up generation artifacts", session_id=session_id)
-        
+
         # Could implement:
         # - Remove temporary files
         # - Clear session-specific caches
         # - Update usage metrics
-        
+
     except Exception as e:
         logger.error(
             "Failed to cleanup generation artifacts",

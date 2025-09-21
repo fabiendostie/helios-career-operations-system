@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>core.fit_scorer - strategist</title>
+    <style>
+        body { font-family: Arial, sans-serif; margin: 40px; background: #f8f9fa; }
+        .container { max-width: 1200px; margin: 0 auto; background: white; padding: 30px; border-radius: 8px; box-shadow: 0 2px 10px rgba(0,0,0,0.1); }
+        .header { background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; padding: 20px; border-radius: 5px; margin-bottom: 30px; }
+        .section { margin: 20px 0; padding: 20px; border-left: 4px solid #667eea; background: #f8f9ff; }
+        .docstring { background: #fff; padding: 15px; border-radius: 5px; border: 1px solid #e0e0e0; margin: 10px 0; white-space: pre-wrap; }
+        .nav { margin-bottom: 20px; }
+        .nav a { color: #667eea; text-decoration: none; margin-right: 20px; }
+        .nav a:hover { text-decoration: underline; }
+        h1, h2, h3 { color: #333; }
+        .module-path { color: #666; font-style: italic; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>core.fit_scorer</h1>
+            <p class="module-path">Service: strategist • Path: core\fit_scorer.py</p>
+        </div>
+
+        <div class="nav">
+            <a href="../index.html">← Back to API Index</a>
+            <a href="../strategist/index.html">← strategist Overview</a>
+        </div>
+
+        <div class="section">
+            <h2>Module Description</h2>
+            <div class="docstring">Fit scoring algorithm that combines skill similarity and aspiration alignment.</div>
+        </div>
+
+        <div class="section">
+            <h2>Classes</h2>
+
+            <h3>FitScoreDetails</h3>
+            <div class="docstring">Detailed breakdown of fit score calculation.</div>
+
+            <h3>AspirationProfile</h3>
+            <div class="docstring">User's aspiration profile extracted from Master Career Database.</div>
+
+            <h3>FitScorer</h3>
+            <div class="docstring">Calculates fit scores between candidate profiles and job roles.</div>
+        </div>
+        <div class="section">
+            <h2>Functions</h2>
+
+            <h3>__init__()</h3>
+            <div class="docstring">Initialize fit scorer with configuration.</div>
+
+            <h3>calculate_fit_score()</h3>
+            <div class="docstring">Calculate comprehensive fit score between candidate and role.</div>
+
+            <h3>_calculate_skill_similarity()</h3>
+            <div class="docstring">Calculate cosine similarity between candidate and role vectors.</div>
+
+            <h3>_calculate_aspiration_alignment()</h3>
+            <div class="docstring">Calculate alignment between user aspirations and role characteristics.</div>
+
+            <h3>_calculate_riasec_alignment()</h3>
+            <div class="docstring">Calculate RIASEC personality type alignment.</div>
+
+            <h3>_calculate_career_anchor_alignment()</h3>
+            <div class="docstring">Calculate career anchor alignment based on Schein's framework.</div>
+
+            <h3>_calculate_interest_alignment()</h3>
+            <div class="docstring">Calculate alignment between user interests and role characteristics.</div>
+
+            <h3>_count_skill_overlap()</h3>
+            <div class="docstring">Count overlapping skills between candidate and role.</div>
+
+            <h3>_find_riasec_matches()</h3>
+            <div class="docstring">Find matching RIASEC codes between user and role.</div>
+
+            <h3>_find_career_anchor_matches()</h3>
+            <div class="docstring">Find matching career anchors between user and role.</div>
+
+            <h3>_generate_score_explanation()</h3>
+            <div class="docstring">Generate human-readable explanation of the fit score.</div>
+
+            <h3>extract_aspiration_profile()</h3>
+            <div class="docstring">Extract aspiration profile from Master Career Database.</div>
+
+            <h3>_infer_riasec_codes()</h3>
+            <div class="docstring">Infer RIASEC codes from user's career data and interests.</div>
+
+            <h3>_infer_career_anchors()</h3>
+            <div class="docstring">Infer career anchors from user's motivators and work patterns.</div>
+        </div>
+    </div>
+</body>
+</html>

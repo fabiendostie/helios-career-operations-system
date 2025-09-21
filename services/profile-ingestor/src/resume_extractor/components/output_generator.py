@@ -570,7 +570,7 @@ class OutputGenerator:
             current_dt = get_current_datetime_sync()
         else:
             current_dt = datetime.now()
-            
+
         metadata = {
             "generated_at": current_dt.isoformat(),
             "version": "1.0",
@@ -594,7 +594,7 @@ class OutputGenerator:
         Args:
             data: Data to backup
         """
-        # Use internet time for backup timestamp  
+        # Use internet time for backup timestamp
         if INTERNET_TIME_AVAILABLE:
             timestamp = get_current_datetime_sync().timestamp()
         else:

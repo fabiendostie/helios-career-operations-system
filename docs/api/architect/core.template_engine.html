@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>core.template_engine - architect</title>
+    <style>
+        body { font-family: Arial, sans-serif; margin: 40px; background: #f8f9fa; }
+        .container { max-width: 1200px; margin: 0 auto; background: white; padding: 30px; border-radius: 8px; box-shadow: 0 2px 10px rgba(0,0,0,0.1); }
+        .header { background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; padding: 20px; border-radius: 5px; margin-bottom: 30px; }
+        .section { margin: 20px 0; padding: 20px; border-left: 4px solid #667eea; background: #f8f9ff; }
+        .docstring { background: #fff; padding: 15px; border-radius: 5px; border: 1px solid #e0e0e0; margin: 10px 0; white-space: pre-wrap; }
+        .nav { margin-bottom: 20px; }
+        .nav a { color: #667eea; text-decoration: none; margin-right: 20px; }
+        .nav a:hover { text-decoration: underline; }
+        h1, h2, h3 { color: #333; }
+        .module-path { color: #666; font-style: italic; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>core.template_engine</h1>
+            <p class="module-path">Service: architect • Path: core\template_engine.py</p>
+        </div>
+
+        <div class="nav">
+            <a href="../index.html">← Back to API Index</a>
+            <a href="../architect/index.html">← architect Overview</a>
+        </div>
+
+        <div class="section">
+            <h2>Module Description</h2>
+            <div class="docstring">Template engine with Jinja2 and memory optimization for document generation.</div>
+        </div>
+
+        <div class="section">
+            <h2>Classes</h2>
+
+            <h3>TemplateRenderError</h3>
+            <div class="docstring">Raised when template rendering fails.</div>
+
+            <h3>MemoryOptimizedTemplateEngine</h3>
+            <div class="docstring">Template engine with memory optimization patterns.</div>
+
+            <h3>TemplateEngine</h3>
+            <div class="docstring">High-level template engine interface.</div>
+        </div>
+        <div class="section">
+            <h2>Functions</h2>
+
+            <h3>_format_duration()</h3>
+            <div class="docstring">Format employment duration.</div>
+
+            <h3>_join_with_comma()</h3>
+            <div class="docstring">Join items with commas, optionally limiting count.</div>
+
+            <h3>_truncate_text()</h3>
+            <div class="docstring">Truncate text to specified length.</div>
+
+            <h3>_capitalize_first()</h3>
+            <div class="docstring">Capitalize only the first letter.</div>
+
+            <h3>get_compiled_template()</h3>
+            <div class="docstring">Get compiled template with LRU caching.</div>
+
+            <h3>record_template_cache_hit()</h3>
+            <div class="docstring">Record template cache hit.</div>
+
+            <h3>get_cache_stats()</h3>
+            <div class="docstring">Get template cache statistics.</div>
+
+            <h3>async render_template_with_memory_management()</h3>
+            <div class="docstring">Render template with memory optimization strategies.
+
+Memory optimization techniques:
+1. Streaming for large documents
+2. Context data chunking
+3. Aggressive garbage collection
+4. Temporary file usage for large renders</div>
+
+            <h3>_estimate_context_size()</h3>
+            <div class="docstring">Estimate context size in MB.</div>
+
+            <h3>async _render_with_streaming()</h3>
+            <div class="docstring">Render large templates using streaming approach.</div>
+
+            <h3>async _render_standard()</h3>
+            <div class="docstring">Standard rendering with memory monitoring.</div>
+
+            <h3>async _render_minimal_memory()</h3>
+            <div class="docstring">Emergency minimal memory rendering.</div>
+
+            <h3>async _emergency_memory_cleanup()</h3>
+            <div class="docstring">Emergency memory cleanup procedures.</div>
+
+            <h3>async warm_cache()</h3>
+            <div class="docstring">Warm up template cache.</div>
+
+            <h3>async clear_cache()</h3>
+            <div class="docstring">Clear template cache.</div>
+
+            <h3>async render_template()</h3>
+            <div class="docstring">Generic template rendering method.</div>
+
+            <h3>async render_resume_template()</h3>
+            <div class="docstring">Render resume template with career data.</div>
+
+            <h3>async render_cover_letter_template()</h3>
+            <div class="docstring">Render cover letter template with career and job data.</div>
+
+            <h3>_prepare_resume_context()</h3>
+            <div class="docstring">Prepare context for resume template rendering.</div>
+
+            <h3>_prepare_cover_letter_context()</h3>
+            <div class="docstring">Prepare context for cover letter template rendering.</div>
+
+            <h3>_prepare_t_shaped_context()</h3>
+            <div class="docstring">Prepare T-shaped resume specific context fields.</div>
+
+            <h3>_prepare_pain_promise_context()</h3>
+            <div class="docstring">Prepare Pain & Promise cover letter specific context.</div>
+
+            <h3>_calculate_years_experience()</h3>
+            <div class="docstring">Calculate total years of experience from work history.</div>
+
+            <h3>_select_adjective_by_experience()</h3>
+            <div class="docstring">Select appropriate adjective based on experience level.</div>
+
+            <h3>_extract_core_skills()</h3>
+            <div class="docstring">Extract core skills from skills inventory.</div>
+        </div>
+    </div>
+</body>
+</html>

@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>examples.service_integration - shared</title>
+    <style>
+        body { font-family: Arial, sans-serif; margin: 40px; background: #f8f9fa; }
+        .container { max-width: 1200px; margin: 0 auto; background: white; padding: 30px; border-radius: 8px; box-shadow: 0 2px 10px rgba(0,0,0,0.1); }
+        .header { background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; padding: 20px; border-radius: 5px; margin-bottom: 30px; }
+        .section { margin: 20px 0; padding: 20px; border-left: 4px solid #667eea; background: #f8f9ff; }
+        .docstring { background: #fff; padding: 15px; border-radius: 5px; border: 1px solid #e0e0e0; margin: 10px 0; white-space: pre-wrap; }
+        .nav { margin-bottom: 20px; }
+        .nav a { color: #667eea; text-decoration: none; margin-right: 20px; }
+        .nav a:hover { text-decoration: underline; }
+        h1, h2, h3 { color: #333; }
+        .module-path { color: #666; font-style: italic; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>examples.service_integration</h1>
+            <p class="module-path">Service: shared • Path: examples\service_integration.py</p>
+        </div>
+
+        <div class="nav">
+            <a href="../index.html">← Back to API Index</a>
+            <a href="../shared/index.html">← shared Overview</a>
+        </div>
+
+        <div class="section">
+            <h2>Module Description</h2>
+            <div class="docstring">Service integration examples for the ResilientLLMClient.
+
+This script shows how to integrate the LLM client into Helios services
+like Strategist and Analyst, following best practices for production use.</div>
+        </div>
+
+        <div class="section">
+            <h2>Classes</h2>
+
+            <h3>CareerProfile</h3>
+            <div class="docstring">Example career profile data structure.</div>
+
+            <h3>CareerPath</h3>
+            <div class="docstring">Generated career path recommendation.</div>
+
+            <h3>CareerStrategistLLMService</h3>
+            <div class="docstring">Example Strategist service using ResilientLLMClient.
+
+This service generates career path recommendations based on
+user profiles using AI-powered analysis.</div>
+
+            <h3>MarketAnalyzerLLMService</h3>
+            <div class="docstring">Example Analyst service using ResilientLLMClient.
+
+This service analyzes job markets and provides insights
+on demand, salary trends, and skill requirements.</div>
+
+            <h3>HeliosServiceOrchestrator</h3>
+            <div class="docstring">Example orchestrator that coordinates multiple LLM-powered services.
+
+This demonstrates how to manage multiple services sharing an LLM client
+and implement graceful error handling and monitoring.</div>
+        </div>
+        <div class="section">
+            <h2>Functions</h2>
+
+            <h3>async demo_strategist_service()</h3>
+            <div class="docstring">Demonstrate the career strategist service.</div>
+
+            <h3>async demo_analyzer_service()</h3>
+            <div class="docstring">Demonstrate the market analyzer service.</div>
+
+            <h3>async demo_orchestrator()</h3>
+            <div class="docstring">Demonstrate the service orchestrator.</div>
+
+            <h3>async main()</h3>
+            <div class="docstring">Run all service integration examples.</div>
+
+            <h3>async generate_career_path()</h3>
+            <div class="docstring">Generate a comprehensive career path for the given profile.
+
+Args:
+    profile: User's career profile
+
+Returns:
+    CareerPath with recommendations
+
+Raises:
+    LLMClientError: If generation fails</div>
+
+            <h3>_build_career_prompt()</h3>
+            <div class="docstring">Build a structured prompt for career path generation.</div>
+
+            <h3>_get_strategist_system_prompt()</h3>
+            <div class="docstring">Get the system prompt for career strategist.</div>
+
+            <h3>_parse_career_response()</h3>
+            <div class="docstring">Parse LLM response into structured CareerPath.</div>
+
+            <h3>async close()</h3>
+            <div class="docstring">Clean up all resources.</div>
+
+            <h3>async analyze_job_market()</h3>
+            <div class="docstring">Analyze job market conditions for specific skills and location.
+
+Args:
+    skills: List of relevant skills
+    location: Geographic location
+    experience_level: Experience level (junior, mid, senior)
+
+Returns:
+    Market analysis dictionary</div>
+
+            <h3>async generate_resume_optimization()</h3>
+            <div class="docstring">Generate resume optimization recommendations.
+
+Args:
+    current_resume: Current resume text
+    target_job_description: Target job posting
+
+Returns:
+    Optimization recommendations</div>
+
+            <h3>async comprehensive_career_analysis()</h3>
+            <div class="docstring">Perform comprehensive career analysis using multiple services.
+
+Args:
+    profile: User's career profile
+
+Returns:
+    Complete analysis results</div>
+
+            <h3>_determine_experience_level()</h3>
+            <div class="docstring">Determine experience level from years of experience.</div>
+
+            <h3>async get_health_status()</h3>
+            <div class="docstring">Get health status of all services and the LLM client.</div>
+        </div>
+    </div>
+</body>
+</html>

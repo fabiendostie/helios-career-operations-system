@@ -17,7 +17,7 @@ The Helios Career Operations System is designed as a multi-agent, event-driven a
 
 ### 1.2 Architecture Style
 - **Primary Pattern**: Microservices with Agent Orchestration
-- **Secondary Patterns**: 
+- **Secondary Patterns**:
   - Event-Driven Architecture (EDA)
   - Command Query Responsibility Segregation (CQRS)
   - Repository Pattern for data access
@@ -166,24 +166,24 @@ integrations:
       purpose: GPT-4 for document generation
       auth: API Key
       rate_limit: 100 req/min
-    
+
     - service: Anthropic
       purpose: Claude for complex analysis
       auth: API Key
       rate_limit: 50 req/min
-  
+
   nlp_services:
     - service: spaCy
       purpose: Entity recognition
       deployment: Self-hosted
       models: [en_core_web_trf, fr_dep_news_trf]
-  
+
   storage:
     - service: AWS S3
       purpose: Document storage
       auth: IAM Role
       encryption: AES-256
-  
+
   job_boards:
     - service: LinkedIn API
       purpose: Job market data
@@ -257,35 +257,35 @@ services:
     resources:
       cpu: 2
       memory: 4Gi
-    
+
   profile_ingestor:
     image: helios/profile-ingestor:latest
     replicas: 2
     resources:
       cpu: 1
       memory: 2Gi
-    
+
   strategist:
     image: helios/strategist:latest
     replicas: 2
     resources:
       cpu: 2
       memory: 4Gi
-    
+
   analyst:
     image: helios/analyst:latest
     replicas: 3
     resources:
       cpu: 4
       memory: 8Gi
-    
+
   architect:
     image: helios/architect:latest
     replicas: 2
     resources:
       cpu: 1
       memory: 2Gi
-    
+
   editor:
     image: helios/editor:latest
     replicas: 2
@@ -320,7 +320,7 @@ CIRCUIT_BREAKERS = {
     },
     'anthropic_api': {
         'failure_threshold': 3,
-        'recovery_timeout': 60, 
+        'recovery_timeout': 60,
         'timeout': 30,
         'fallback': 'queue_for_later_processing'
     },
@@ -348,11 +348,11 @@ retry_strategies:
     max_delay: 30s
     max_retries: 3
     jitter: true
-    
+
   linear_backoff:
     delay: 2s
     max_retries: 5
-    
+
   immediate_retry:
     max_retries: 1
     use_cases: ["network_timeout", "connection_reset"]
@@ -376,16 +376,16 @@ health_checks:
     - /health/basic      # Service alive
     - /health/ready      # Dependencies available
     - /health/models     # ML models loaded
-    
+
 recovery_actions:
   service_restart:
     max_attempts: 3
     backoff: exponential
-  
+
   model_reload:
     triggers: ["memory_error", "model_corruption"]
     timeout: 300s
-  
+
   cache_clear:
     triggers: ["memory_pressure", "stale_data"]
 ```
@@ -399,15 +399,15 @@ istio_policies:
     attempts: 3
     per_try_timeout: 10s
     retry_on: "gateway-error,connect-failure,refused-stream"
-  
+
   circuit_breaker:
     max_connections: 100
     max_pending_requests: 10
     max_requests_per_connection: 2
     consecutive_errors: 3
-  
+
   timeout: 30s
-  
+
   outlier_detection:
     consecutive_errors: 5
     interval: 30s
@@ -422,12 +422,12 @@ database_resilience:
     max_connections: 100
     connection_timeout: 30s
     statement_timeout: 30s
-    
+
   redis:
     cluster_mode: true
     sentinel_enabled: true
     failover_timeout: 5s
-    
+
   vector_db:
     replication_factor: 3
     consistency_level: "eventual"
@@ -513,7 +513,7 @@ sequenceDiagram
     Gateway->>Orchestrator: Route command
     Orchestrator->>Cache: Create session
     Orchestrator->>User: Welcome message
-    
+
     User->>Gateway: /ingest command
     Gateway->>Orchestrator: Route to Ingestor
     Orchestrator->>Ingestor: Begin interview
@@ -691,7 +691,7 @@ endpoints:
     - POST /api/v1/commands/{command}
     - GET /api/v1/sessions/{id}/status
     - GET /api/v1/documents/{id}
-    
+
   admin:
     - GET /api/admin/metrics
     - POST /api/admin/agents/{id}/restart

@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>core.content_selector - architect</title>
+    <style>
+        body { font-family: Arial, sans-serif; margin: 40px; background: #f8f9fa; }
+        .container { max-width: 1200px; margin: 0 auto; background: white; padding: 30px; border-radius: 8px; box-shadow: 0 2px 10px rgba(0,0,0,0.1); }
+        .header { background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; padding: 20px; border-radius: 5px; margin-bottom: 30px; }
+        .section { margin: 20px 0; padding: 20px; border-left: 4px solid #667eea; background: #f8f9ff; }
+        .docstring { background: #fff; padding: 15px; border-radius: 5px; border: 1px solid #e0e0e0; margin: 10px 0; white-space: pre-wrap; }
+        .nav { margin-bottom: 20px; }
+        .nav a { color: #667eea; text-decoration: none; margin-right: 20px; }
+        .nav a:hover { text-decoration: underline; }
+        h1, h2, h3 { color: #333; }
+        .module-path { color: #666; font-style: italic; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>core.content_selector</h1>
+            <p class="module-path">Service: architect • Path: core\content_selector.py</p>
+        </div>
+
+        <div class="nav">
+            <a href="../index.html">← Back to API Index</a>
+            <a href="../architect/index.html">← architect Overview</a>
+        </div>
+
+        <div class="section">
+            <h2>Module Description</h2>
+            <div class="docstring">Dynamic content selection system using ANALYST recommendations.</div>
+        </div>
+
+        <div class="section">
+            <h2>Classes</h2>
+
+            <h3>SkillQuadrant</h3>
+            <div class="docstring">Skill quadrant classification from ANALYST service.</div>
+
+            <h3>ContentPriority</h3>
+            <div class="docstring">Content priority levels.</div>
+
+            <h3>SkillRecommendation</h3>
+            <div class="docstring">Skill recommendation from ANALYST service.</div>
+
+            <h3>ContentRecommendation</h3>
+            <div class="docstring">Content recommendation for document generation.</div>
+
+            <h3>AnalystRecommendations</h3>
+            <div class="docstring">Parsed recommendations from ANALYST service.</div>
+
+            <h3>ContentSelector</h3>
+            <div class="docstring">Intelligent content selection based on ANALYST recommendations.</div>
+        </div>
+        <div class="section">
+            <h2>Functions</h2>
+
+            <h3>async customize_template_by_industry()</h3>
+            <div class="docstring">Apply DYNAMIC industry-specific customizations using real-time research.
+
+Args:
+    template_content: Base template content
+    industry: Target industry
+    role_level: Experience level (entry, mid, senior, executive)
+    recommendations: ANALYST recommendations
+
+Returns:
+    Dynamically customized template content</div>
+
+            <h3>async select_resume_content()</h3>
+            <div class="docstring">Select optimal content for resume based on ANALYST recommendations.
+
+Args:
+    master_career_db: Complete career data from Profile Ingestor
+    analyst_recommendations: ANALYST service recommendations
+    job_requirements: Job-specific requirements
+    template_preferences: Template customization preferences
+
+Returns:
+    Optimized content structure for resume generation</div>
+
+            <h3>async select_cover_letter_content()</h3>
+            <div class="docstring">Select and customize content for Pain & Promise cover letter.
+
+Args:
+    master_career_db: Complete career data
+    job_requirements: Target job requirements
+    analyst_recommendations: ANALYST service recommendations
+    company_data: Company research data
+
+Returns:
+    Optimized content for cover letter generation</div>
+
+            <h3>_parse_analyst_recommendations()</h3>
+            <div class="docstring">Parse and structure ANALYST service recommendations.</div>
+
+            <h3>async _select_work_experience()</h3>
+            <div class="docstring">Select and optimize work experience entries.</div>
+
+            <h3>async _optimize_accomplishments()</h3>
+            <div class="docstring">Optimize accomplishment bullets based on recommendations.</div>
+
+            <h3>async _optimize_job_skills()</h3>
+            <div class="docstring">Optimize skills list based on quadrant recommendations.</div>
+
+            <h3>async _select_skills()</h3>
+            <div class="docstring">Select and prioritize skills based on recommendations.</div>
+
+            <h3>async _select_projects()</h3>
+            <div class="docstring">Select most relevant projects.</div>
+
+            <h3>async _create_t_shaped_summary()</h3>
+            <div class="docstring">Create optimized T-shaped summary fields.</div>
+
+            <h3>async _create_pain_promise_content()</h3>
+            <div class="docstring">Create Pain & Promise specific content with DYNAMIC company research.</div>
+
+            <h3>async _select_top_achievement()</h3>
+            <div class="docstring">Select the most impactful achievement for cover letter.</div>
+
+            <h3>async _calculate_job_relevance()</h3>
+            <div class="docstring">Calculate relevance score for a job entry.</div>
+
+            <h3>async _calculate_accomplishment_relevance()</h3>
+            <div class="docstring">Calculate relevance score for an accomplishment.</div>
+
+            <h3>async _enhance_with_action_verbs()</h3>
+            <div class="docstring">Enhance text with stronger action verbs if appropriate.</div>
+
+            <h3>async _enhance_impact_metrics()</h3>
+            <div class="docstring">Ensure impact metrics are clearly presented.</div>
+
+            <h3>async _infer_pain_point_with_research()</h3>
+            <div class="docstring">Infer pain points enhanced with dynamic research intelligence.</div>
+
+            <h3>async _infer_pain_point()</h3>
+            <div class="docstring">Infer likely pain points based on role and industry.</div>
+
+            <h3>async _select_pain_addressing_achievement()</h3>
+            <div class="docstring">Select achievement that best addresses the identified pain point.</div>
+
+            <h3>async _select_bridge_skills_with_research()</h3>
+            <div class="docstring">Select bridge skills enhanced with current market intelligence.</div>
+
+            <h3>async _select_bridge_skills()</h3>
+            <div class="docstring">Select skills that bridge to job requirements.</div>
+
+            <h3>async _select_optimal_adjective()</h3>
+            <div class="docstring">Select optimal adjective based on experience and role.</div>
+
+            <h3>_calculate_years_experience()</h3>
+            <div class="docstring">Calculate years of experience from work history.</div>
+        </div>
+    </div>
+</body>
+</html>

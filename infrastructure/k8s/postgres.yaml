@@ -147,19 +147,19 @@ metadata:
 data:
   init.sql: |
     -- HELIOS Career Operations System Database Initialization
-    
+
     -- Create extensions
     CREATE EXTENSION IF NOT EXISTS "uuid-ossp";
     CREATE EXTENSION IF NOT EXISTS "pg_trgm";
-    
+
     -- Create schemas
     CREATE SCHEMA IF NOT EXISTS helios_sessions;
     CREATE SCHEMA IF NOT EXISTS helios_profiles;
     CREATE SCHEMA IF NOT EXISTS helios_analytics;
-    
+
     -- Grant permissions
     GRANT ALL PRIVILEGES ON SCHEMA helios_sessions TO helios_user;
     GRANT ALL PRIVILEGES ON SCHEMA helios_profiles TO helios_user;
     GRANT ALL PRIVILEGES ON SCHEMA helios_analytics TO helios_user;
-    
+
     -- Create initial tables will be handled by application migrations

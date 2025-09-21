@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>tests.test_cache - shared</title>
+    <style>
+        body { font-family: Arial, sans-serif; margin: 40px; background: #f8f9fa; }
+        .container { max-width: 1200px; margin: 0 auto; background: white; padding: 30px; border-radius: 8px; box-shadow: 0 2px 10px rgba(0,0,0,0.1); }
+        .header { background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; padding: 20px; border-radius: 5px; margin-bottom: 30px; }
+        .section { margin: 20px 0; padding: 20px; border-left: 4px solid #667eea; background: #f8f9ff; }
+        .docstring { background: #fff; padding: 15px; border-radius: 5px; border: 1px solid #e0e0e0; margin: 10px 0; white-space: pre-wrap; }
+        .nav { margin-bottom: 20px; }
+        .nav a { color: #667eea; text-decoration: none; margin-right: 20px; }
+        .nav a:hover { text-decoration: underline; }
+        h1, h2, h3 { color: #333; }
+        .module-path { color: #666; font-style: italic; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>tests.test_cache</h1>
+            <p class="module-path">Service: shared • Path: tests\test_cache.py</p>
+        </div>
+
+        <div class="nav">
+            <a href="../index.html">← Back to API Index</a>
+            <a href="../shared/index.html">← shared Overview</a>
+        </div>
+
+        <div class="section">
+            <h2>Module Description</h2>
+            <div class="docstring">Tests for LLM cache implementation.</div>
+        </div>
+
+        <div class="section">
+            <h2>Classes</h2>
+
+            <h3>TestLLMCache</h3>
+            <div class="docstring">Test LLMCache class.</div>
+        </div>
+        <div class="section">
+            <h2>Functions</h2>
+
+            <h3>async test_cache_disabled()</h3>
+            <div class="docstring">Test cache behavior when disabled.</div>
+
+            <h3>test_redis_initialization_success()</h3>
+            <div class="docstring">Test successful Redis initialization.</div>
+
+            <h3>test_redis_initialization_failure()</h3>
+            <div class="docstring">Test Redis initialization failure.</div>
+
+            <h3>async test_cache_key_generation()</h3>
+            <div class="docstring">Test cache key generation is consistent.</div>
+
+            <h3>async test_cache_get_hit()</h3>
+            <div class="docstring">Test cache hit scenario.</div>
+
+            <h3>async test_cache_get_miss()</h3>
+            <div class="docstring">Test cache miss scenario.</div>
+
+            <h3>async test_cache_get_error()</h3>
+            <div class="docstring">Test cache get with Redis error.</div>
+
+            <h3>async test_cache_set_success()</h3>
+            <div class="docstring">Test successful cache set.</div>
+
+            <h3>async test_cache_set_custom_ttl()</h3>
+            <div class="docstring">Test cache set with custom TTL.</div>
+
+            <h3>async test_cache_set_error()</h3>
+            <div class="docstring">Test cache set with Redis error.</div>
+
+            <h3>test_invalidate_pattern()</h3>
+            <div class="docstring">Test cache invalidation by pattern.</div>
+
+            <h3>test_invalidate_pattern_no_keys()</h3>
+            <div class="docstring">Test cache invalidation when no keys match.</div>
+
+            <h3>test_invalidate_pattern_error()</h3>
+            <div class="docstring">Test cache invalidation with Redis error.</div>
+
+            <h3>test_clear_all()</h3>
+            <div class="docstring">Test clearing all cache entries.</div>
+
+            <h3>test_get_stats_success()</h3>
+            <div class="docstring">Test getting cache statistics successfully.</div>
+
+            <h3>test_get_stats_error()</h3>
+            <div class="docstring">Test getting cache statistics with error.</div>
+
+            <h3>test_get_stats_disabled()</h3>
+            <div class="docstring">Test getting cache statistics when disabled.</div>
+
+            <h3>test_close_connection()</h3>
+            <div class="docstring">Test closing Redis connection.</div>
+
+            <h3>test_close_connection_error()</h3>
+            <div class="docstring">Test closing Redis connection with error.</div>
+        </div>
+    </div>
+</body>
+</html>

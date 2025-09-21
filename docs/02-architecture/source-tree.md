@@ -95,7 +95,7 @@ helios-career-operations-system/
 Each agent gets its own service directory:
 - **profile-ingestor/** - Story 1.1 (COMPLETED) - Resume data extraction and consolidation
 - **orchestrator/** - HELIOS main controller (PENDING)
-- **strategist/** - Career path generation (PENDING)  
+- **strategist/** - Career path generation (PENDING)
 - **analyst/** - Market analysis pipeline (PENDING)
 - **architect/** - Document generation (PENDING)
 - **editor/** - Text optimization (PENDING)

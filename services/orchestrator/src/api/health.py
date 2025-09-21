@@ -13,17 +13,17 @@ router = APIRouter()
 
 class HealthResponse(BaseModel):
     """Health check response model."""
-    
+
     status: str
     timestamp: float
     service: str
     version: str
     uptime_seconds: float
-    
+
 
 class DetailedHealthResponse(HealthResponse):
     """Detailed health check with system information."""
-    
+
     database: str
     external_services: Dict[str, str]
     configuration: Dict[str, Any]
@@ -36,12 +36,12 @@ _start_time = time.time()
 @router.get("/", response_model=HealthResponse, tags=["health"])
 async def health_check():
     """Basic health check endpoint.
-    
+
     Returns:
         HealthResponse: Basic service health information
     """
     current_time = time.time()
-    
+
     return HealthResponse(
         status="healthy",
         timestamp=current_time,
@@ -54,12 +54,12 @@ async def health_check():
 @router.get("/detailed", response_model=DetailedHealthResponse, tags=["health"])
 async def detailed_health_check():
     """Detailed health check with system information.
-    
+
     Returns:
         DetailedHealthResponse: Comprehensive system health information
     """
     current_time = time.time()
-    
+
     return DetailedHealthResponse(
         status="healthy",
         timestamp=current_time,
@@ -81,17 +81,17 @@ async def detailed_health_check():
 @router.get("/ready", tags=["health"])
 async def readiness_check():
     """Kubernetes readiness probe endpoint.
-    
+
     Returns:
         Dict: Simple readiness confirmation
     """
     return {"status": "ready"}
 
 
-@router.get("/live", tags=["health"]) 
+@router.get("/live", tags=["health"])
 async def liveness_check():
     """Kubernetes liveness probe endpoint.
-    
+
     Returns:
         Dict: Simple liveness confirmation
     """

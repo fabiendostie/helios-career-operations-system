@@ -17,7 +17,7 @@ The Helios Career Operations System is designed as a multi-agent, event-driven a
 
 ### 1.2 Architecture Style
 - **Primary Pattern**: Microservices with Agent Orchestration
-- **Secondary Patterns**: 
+- **Secondary Patterns**:
   - Event-Driven Architecture (EDA)
   - Command Query Responsibility Segregation (CQRS)
   - Repository Pattern for data access
@@ -166,24 +166,24 @@ integrations:
       purpose: GPT-4 for document generation
       auth: API Key
       rate_limit: 100 req/min
-    
+
     - service: Anthropic
       purpose: Claude for complex analysis
       auth: API Key
       rate_limit: 50 req/min
-  
+
   nlp_services:
     - service: spaCy
       purpose: Entity recognition
       deployment: Self-hosted
       models: [en_core_web_trf, fr_dep_news_trf]
-  
+
   storage:
     - service: AWS S3
       purpose: Document storage
       auth: IAM Role
       encryption: AES-256
-  
+
   job_boards:
     - service: LinkedIn API
       purpose: Job market data
@@ -257,35 +257,35 @@ services:
     resources:
       cpu: 2
       memory: 4Gi
-    
+
   profile_ingestor:
     image: helios/profile-ingestor:latest
     replicas: 2
     resources:
       cpu: 1
       memory: 2Gi
-    
+
   strategist:
     image: helios/strategist:latest
     replicas: 2
     resources:
       cpu: 2
       memory: 4Gi
-    
+
   analyst:
     image: helios/analyst:latest
     replicas: 3
     resources:
       cpu: 4
       memory: 8Gi
-    
+
   architect:
     image: helios/architect:latest
     replicas: 2
     resources:
       cpu: 1
       memory: 2Gi
-    
+
   editor:
     image: helios/editor:latest
     replicas: 2
@@ -379,7 +379,7 @@ sequenceDiagram
     Gateway->>Orchestrator: Route command
     Orchestrator->>Cache: Create session
     Orchestrator->>User: Welcome message
-    
+
     User->>Gateway: /ingest command
     Gateway->>Orchestrator: Route to Ingestor
     Orchestrator->>Ingestor: Begin interview
@@ -557,7 +557,7 @@ endpoints:
     - POST /api/v1/commands/{command}
     - GET /api/v1/sessions/{id}/status
     - GET /api/v1/documents/{id}
-    
+
   admin:
     - GET /api/admin/metrics
     - POST /api/admin/agents/{id}/restart

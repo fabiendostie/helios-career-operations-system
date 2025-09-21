@@ -1,0 +1,240 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>resume_extractor.components.output_generator - profile-ingestor</title>
+    <style>
+        body { font-family: Arial, sans-serif; margin: 40px; background: #f8f9fa; }
+        .container { max-width: 1200px; margin: 0 auto; background: white; padding: 30px; border-radius: 8px; box-shadow: 0 2px 10px rgba(0,0,0,0.1); }
+        .header { background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; padding: 20px; border-radius: 5px; margin-bottom: 30px; }
+        .section { margin: 20px 0; padding: 20px; border-left: 4px solid #667eea; background: #f8f9ff; }
+        .docstring { background: #fff; padding: 15px; border-radius: 5px; border: 1px solid #e0e0e0; margin: 10px 0; white-space: pre-wrap; }
+        .nav { margin-bottom: 20px; }
+        .nav a { color: #667eea; text-decoration: none; margin-right: 20px; }
+        .nav a:hover { text-decoration: underline; }
+        h1, h2, h3 { color: #333; }
+        .module-path { color: #666; font-style: italic; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>resume_extractor.components.output_generator</h1>
+            <p class="module-path">Service: profile-ingestor • Path: resume_extractor\components\output_generator.py</p>
+        </div>
+
+        <div class="nav">
+            <a href="../index.html">← Back to API Index</a>
+            <a href="../profile-ingestor/index.html">← profile-ingestor Overview</a>
+        </div>
+
+        <div class="section">
+            <h2>Module Description</h2>
+            <div class="docstring">Output generation module for final JSON database creation.</div>
+        </div>
+
+        <div class="section">
+            <h2>Classes</h2>
+
+            <h3>OutputGenerator</h3>
+            <div class="docstring">Generates the final JSON output from consolidated data.</div>
+        </div>
+        <div class="section">
+            <h2>Functions</h2>
+
+            <h3>__init__()</h3>
+            <div class="docstring">Initialize output generator.
+
+Args:
+    output_dir: Directory for output files. Defaults to 'output'</div>
+
+            <h3>generate_json()</h3>
+            <div class="docstring">Generate and save the final JSON output.
+
+Args:
+    consolidated_data: Consolidated data from ConsolidationEngine
+
+Returns:
+    Path to the generated JSON file
+
+Raises:
+    ValidationError: If data doesn't match schema
+    IOError: If file writing fails</div>
+
+            <h3>_transform_to_schema()</h3>
+            <div class="docstring">Transform consolidated data to match schema structure.
+
+Args:
+    raw_data: Raw consolidated data
+
+Returns:
+    Schema-compliant data structure</div>
+
+            <h3>_transform_work_experience()</h3>
+            <div class="docstring">Transform work experience to schema format.
+
+Args:
+    data: Raw data containing work experience
+
+Returns:
+    List of transformed work experiences</div>
+
+            <h3>_transform_projects()</h3>
+            <div class="docstring">Transform projects to schema format.
+
+Args:
+    data: Raw data containing projects
+
+Returns:
+    List of transformed projects</div>
+
+            <h3>_transform_skills()</h3>
+            <div class="docstring">Transform skills to schema format with evidence pointers.
+
+Args:
+    data: Raw data containing skills
+
+Returns:
+    Skills inventory with evidence pointers</div>
+
+            <h3>_find_evidence_pointers()</h3>
+            <div class="docstring">Find evidence of skill usage in work experience and projects.
+
+Args:
+    skill: Skill to find evidence for
+    data: Complete data to search through
+
+Returns:
+    List of evidence pointer strings</div>
+
+            <h3>_deconstruct_accomplishment()</h3>
+            <div class="docstring">Break down accomplishment into action, challenge, outcome.
+
+Args:
+    text: Accomplishment text
+
+Returns:
+    Dictionary with action, challenge, outcome components</div>
+
+            <h3>_extract_metrics()</h3>
+            <div class="docstring">Extract quantifiable metrics from accomplishment text.
+
+Args:
+    text: Text to extract metrics from
+
+Returns:
+    Dictionary of extracted metrics</div>
+
+            <h3>_extract_skills_from_text()</h3>
+            <div class="docstring">Extract potential skills mentioned in accomplishment text.
+
+Args:
+    text: Text to extract skills from
+
+Returns:
+    List of potential skills</div>
+
+            <h3>_calculate_impact_score()</h3>
+            <div class="docstring">Calculate impact score based on accomplishment content.
+
+Args:
+    text: Accomplishment text
+
+Returns:
+    Impact score between 0 and 10</div>
+
+            <h3>_generate_strategic_metadata()</h3>
+            <div class="docstring">Generate strategic metadata from the data.
+
+Args:
+    data: Complete consolidated data
+
+Returns:
+    Strategic metadata dictionary</div>
+
+            <h3>_extract_title_variations()</h3>
+            <div class="docstring">Extract all unique job titles and variations.
+
+Args:
+    data: Data containing work experience
+
+Returns:
+    List of job title variations</div>
+
+            <h3>_identify_top_accomplishments()</h3>
+            <div class="docstring">Identify the most impactful accomplishments.
+
+Args:
+    data: Data containing work experience
+
+Returns:
+    List of top accomplishments</div>
+
+            <h3>_identify_core_competencies()</h3>
+            <div class="docstring">Identify core competencies from skills and experience.
+
+Args:
+    data: Complete data
+
+Returns:
+    List of core competencies</div>
+
+            <h3>_validate_data()</h3>
+            <div class="docstring">Validate data against schema.
+
+Args:
+    data: Data to validate
+
+Returns:
+    Validated data (possibly with fixes applied)
+
+Raises:
+    ValidationError: If validation fails and can't be auto-fixed</div>
+
+            <h3>_attempt_auto_fix()</h3>
+            <div class="docstring">Try to automatically fix validation errors.
+
+Args:
+    data: Data with validation errors
+    error: Validation error details
+
+Returns:
+    Fixed data if possible, None otherwise</div>
+
+            <h3>_add_metadata()</h3>
+            <div class="docstring">Add metadata to the final output.
+
+Args:
+    data: Schema-compliant data
+    original_data: Original consolidated data for reference
+
+Returns:
+    Data with metadata added</div>
+
+            <h3>_create_backup()</h3>
+            <div class="docstring">Create backup before writing main file.
+
+Args:
+    data: Data to backup</div>
+
+            <h3>_write_json()</h3>
+            <div class="docstring">Write JSON to file with proper formatting.
+
+Args:
+    data: Data to write
+
+Returns:
+    Path to written file
+
+Raises:
+    IOError: If file writing fails</div>
+
+            <h3>_display_success()</h3>
+            <div class="docstring">Display success message with statistics.
+
+Args:
+    output_path: Path to generated file
+    data: Generated data for statistics</div>
+        </div>
+    </div>
+</body>
+</html>

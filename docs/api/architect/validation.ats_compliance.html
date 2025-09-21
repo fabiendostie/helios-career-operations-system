@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>validation.ats_compliance - architect</title>
+    <style>
+        body { font-family: Arial, sans-serif; margin: 40px; background: #f8f9fa; }
+        .container { max-width: 1200px; margin: 0 auto; background: white; padding: 30px; border-radius: 8px; box-shadow: 0 2px 10px rgba(0,0,0,0.1); }
+        .header { background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; padding: 20px; border-radius: 5px; margin-bottom: 30px; }
+        .section { margin: 20px 0; padding: 20px; border-left: 4px solid #667eea; background: #f8f9ff; }
+        .docstring { background: #fff; padding: 15px; border-radius: 5px; border: 1px solid #e0e0e0; margin: 10px 0; white-space: pre-wrap; }
+        .nav { margin-bottom: 20px; }
+        .nav a { color: #667eea; text-decoration: none; margin-right: 20px; }
+        .nav a:hover { text-decoration: underline; }
+        h1, h2, h3 { color: #333; }
+        .module-path { color: #666; font-style: italic; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>validation.ats_compliance</h1>
+            <p class="module-path">Service: architect • Path: validation\ats_compliance.py</p>
+        </div>
+
+        <div class="nav">
+            <a href="../index.html">← Back to API Index</a>
+            <a href="../architect/index.html">← architect Overview</a>
+        </div>
+
+        <div class="section">
+            <h2>Module Description</h2>
+            <div class="docstring">ATS Compliance Validation System for ARCHITECT Service
+
+This module provides comprehensive validation of generated documents against
+2025 ATS (Applicant Tracking System) compliance standards including:
+
+- **Format Compatibility**: PDF, DOCX, TXT parsing requirements
+- **Content Structure**: Section headers, keyword density, formatting rules
+- **Technical Standards**: Character encoding, font compatibility, file size limits
+- **Parsing Optimization**: Machine readability, OCR compatibility, metadata standards
+
+The system uses real-time intelligence from the research engine to stay current
+with evolving ATS vendor requirements (Workday, Greenhouse, Lever, BambooHR, etc.).</div>
+        </div>
+
+        <div class="section">
+            <h2>Classes</h2>
+
+            <h3>ATSVendor</h3>
+            <div class="docstring">Major ATS vendors with specific requirements.</div>
+
+            <h3>ComplianceLevel</h3>
+            <div class="docstring">ATS compliance validation levels.</div>
+
+            <h3>ValidationResult</h3>
+            <div class="docstring">Result of ATS compliance validation.</div>
+
+            <h3>ValidationIssue</h3>
+            <div class="docstring">Individual validation issue found during ATS compliance check.</div>
+
+            <h3>ATSRule</h3>
+            <div class="docstring">Individual ATS compliance rule.</div>
+
+            <h3>ATSComplianceValidator</h3>
+            <div class="docstring">Comprehensive ATS compliance validation system.
+
+Validates documents against current ATS parsing requirements using
+real-time intelligence from the research engine.</div>
+        </div>
+        <div class="section">
+            <h2>Functions</h2>
+
+            <h3>async get_ats_validator()</h3>
+            <div class="docstring">Get configured ATS compliance validator instance.</div>
+
+            <h3>_initialize_validation_rules()</h3>
+            <div class="docstring">Initialize comprehensive ATS validation rules.</div>
+
+            <h3>async validate_document()</h3>
+            <div class="docstring">Perform comprehensive ATS compliance validation.
+
+Args:
+    document_path: Path to document to validate
+    target_vendors: Specific ATS vendors to optimize for
+    compliance_level: Validation strictness level
+
+Returns:
+    Detailed validation results with scores and recommendations</div>
+
+            <h3>async _extract_document_content()</h3>
+            <div class="docstring">Extract content and metadata from document for analysis.</div>
+
+            <h3>async _extract_pdf_content()</h3>
+            <div class="docstring">Extract content from PDF document.</div>
+
+            <h3>async _extract_docx_content()</h3>
+            <div class="docstring">Extract content from DOCX document.</div>
+
+            <h3>async _extract_html_content()</h3>
+            <div class="docstring">Extract content from HTML document.</div>
+
+            <h3>async _extract_txt_content()</h3>
+            <div class="docstring">Extract content from plain text document.</div>
+
+            <h3>async _validate_pdf_text_extraction()</h3>
+            <div class="docstring">Validate PDF has extractable text content.</div>
+
+            <h3>async _validate_file_size()</h3>
+            <div class="docstring">Validate document file size is within ATS limits.</div>
+
+            <h3>async _validate_font_compatibility()</h3>
+            <div class="docstring">Validate use of ATS-friendly fonts.</div>
+
+            <h3>async _validate_section_headers()</h3>
+            <div class="docstring">Validate presence of clear section headers.</div>
+
+            <h3>async _validate_contact_info()</h3>
+            <div class="docstring">Validate contact information is present and well-formatted.</div>
+
+            <h3>async _validate_keyword_density()</h3>
+            <div class="docstring">Validate appropriate keyword density for ATS optimization.</div>
+
+            <h3>async _validate_date_formatting()</h3>
+            <div class="docstring">Validate consistent date formatting.</div>
+
+            <h3>async _validate_character_encoding()</h3>
+            <div class="docstring">Validate proper character encoding.</div>
+
+            <h3>async _validate_headers_footers()</h3>
+            <div class="docstring">Validate minimal use of headers/footers.</div>
+
+            <h3>async _validate_graphics_placement()</h3>
+            <div class="docstring">Validate no graphics overlay text content.</div>
+
+            <h3>_calculate_vendor_score()</h3>
+            <div class="docstring">Calculate compliance score for specific ATS vendor.</div>
+
+            <h3>_calculate_overall_score()</h3>
+            <div class="docstring">Calculate overall compliance score.</div>
+
+            <h3>_estimate_parsing_confidence()</h3>
+            <div class="docstring">Estimate ATS parsing confidence based on content and violations.</div>
+
+            <h3>_generate_recommendations()</h3>
+            <div class="docstring">Generate actionable recommendations based on violations.</div>
+
+            <h3>async _get_current_ats_requirements()</h3>
+            <div class="docstring">Get current ATS requirements from internet research.</div>
+
+            <h3>async validate_for_vendor()</h3>
+            <div class="docstring">Validate document against specific ATS vendor requirements.</div>
+
+            <h3>async _validate_current_standards()</h3>
+            <div class="docstring">Validate against current parsing standards from internet research.</div>
+
+            <h3>async _analyze_content_structure()</h3>
+            <div class="docstring">Intelligent analysis of content structure for ATS optimization.</div>
+
+            <h3>async validate_with_adaptive_compliance()</h3>
+            <div class="docstring">Validate with adaptive compliance levels based on current market standards.</div>
+
+            <h3>async _analyze_document_parseability()</h3>
+            <div class="docstring">Analyze document parsing difficulty and ATS compatibility.</div>
+
+            <h3>async _assess_semantic_content_quality()</h3>
+            <div class="docstring">Assess semantic quality of resume content for ATS systems.</div>
+
+            <h3>async analyze_multi_vendor_compatibility()</h3>
+            <div class="docstring">Analyze compatibility across multiple ATS vendors simultaneously.</div>
+
+            <h3>_calculate_confidence()</h3>
+            <div class="docstring">Calculate confidence score based on content quality and violations.</div>
+
+            <h3>_get_compliance_threshold()</h3>
+            <div class="docstring">Get compliance score threshold for different levels.</div>
+        </div>
+    </div>
+</body>
+</html>

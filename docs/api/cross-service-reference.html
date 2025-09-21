@@ -1,0 +1,451 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>HELIOS Cross-Service API Reference</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            margin: 0;
+            padding: 20px;
+            background: #f8f9fa;
+            line-height: 1.6;
+        }
+        .header {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 40px;
+            border-radius: 15px;
+            margin-bottom: 30px;
+            text-align: center;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+        }
+        .section {
+            background: white;
+            padding: 30px;
+            border-radius: 10px;
+            margin-bottom: 25px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+        .service-flow {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 20px;
+            margin: 20px 0;
+        }
+        .flow-step {
+            background: #f8f9fa;
+            padding: 20px;
+            border-radius: 8px;
+            border-left: 4px solid #667eea;
+            text-align: center;
+        }
+        .api-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 20px 0;
+        }
+        .api-table th,
+        .api-table td {
+            padding: 12px;
+            text-align: left;
+            border-bottom: 1px solid #ddd;
+        }
+        .api-table th {
+            background: #667eea;
+            color: white;
+        }
+        .api-table tr:hover {
+            background: #f5f5f5;
+        }
+        .endpoint {
+            font-family: 'Courier New', monospace;
+            background: #f8f9fa;
+            padding: 2px 6px;
+            border-radius: 3px;
+        }
+        .method {
+            display: inline-block;
+            padding: 2px 8px;
+            border-radius: 3px;
+            font-size: 11px;
+            font-weight: bold;
+        }
+        .method.get { background: #d4edda; color: #155724; }
+        .method.post { background: #cce5ff; color: #004085; }
+        .method.put { background: #fff3cd; color: #856404; }
+        .method.delete { background: #f8d7da; color: #721c24; }
+        .integration-map {
+            background: #f8f9fa;
+            padding: 20px;
+            border-radius: 8px;
+            margin: 20px 0;
+        }
+        .nav-links {
+            text-align: center;
+            margin: 20px 0;
+        }
+        .nav-links a {
+            display: inline-block;
+            padding: 10px 20px;
+            margin: 0 10px;
+            background: #667eea;
+            color: white;
+            text-decoration: none;
+            border-radius: 5px;
+            transition: background 0.2s;
+        }
+        .nav-links a:hover {
+            background: #764ba2;
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <h1>🔄 HELIOS Cross-Service API Reference</h1>
+        <p>Inter-service communication patterns and integration points</p>
+        <p>All 6 services operational with unified API architecture</p>
+    </div>
+
+    <div class="nav-links">
+        <a href="index.html">📚 Main Documentation</a>
+        <a href="verified-endpoints-summary.md">📋 Endpoint Summary</a>
+        <a href="#service-flow">🔄 Service Flow</a>
+        <a href="#api-endpoints">🔗 API Endpoints</a>
+    </div>
+
+    <div class="section" id="service-flow">
+        <h2>🔄 Service Interaction Flow</h2>
+        <p>HELIOS follows a microservices architecture with the Orchestrator managing all inter-service communication:</p>
+
+        <div class="service-flow">
+            <div class="flow-step">
+                <h4>1. ORCHESTRATOR</h4>
+                <p>Session management and service coordination</p>
+                <div class="endpoint">POST /api/session</div>
+            </div>
+            <div class="flow-step">
+                <h4>2. PROFILE INGESTOR</h4>
+                <p>Data acquisition and resume processing</p>
+                <div class="endpoint">POST /api/process</div>
+            </div>
+            <div class="flow-step">
+                <h4>3. STRATEGIST</h4>
+                <p>Career path generation</p>
+                <div class="endpoint">POST /api/career-paths</div>
+            </div>
+            <div class="flow-step">
+                <h4>4. ANALYST</h4>
+                <p>Market analysis and optimization</p>
+                <div class="endpoint">POST /api/analyze</div>
+            </div>
+            <div class="flow-step">
+                <h4>5. ARCHITECT</h4>
+                <p>Document generation</p>
+                <div class="endpoint">POST /api/generate</div>
+            </div>
+            <div class="flow-step">
+                <h4>6. EDITOR</h4>
+                <p>Text optimization and refinement</p>
+                <div class="endpoint">POST /api/edit</div>
+            </div>
+        </div>
+    </div>
+
+    <div class="section" id="api-endpoints">
+        <h2>🔗 Service API Endpoints</h2>
+
+        <h3>📄 Profile Ingestor Service</h3>
+        <table class="api-table">
+            <thead>
+                <tr>
+                    <th>Method</th>
+                    <th>Endpoint</th>
+                    <th>Description</th>
+                    <th>Port</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td><span class="method post">POST</span></td>
+                    <td><span class="endpoint">/api/process</span></td>
+                    <td>Process resume documents and extract career data</td>
+                    <td>8001</td>
+                </tr>
+                <tr>
+                    <td><span class="method get">GET</span></td>
+                    <td><span class="endpoint">/health</span></td>
+                    <td>Service health check</td>
+                    <td>8001</td>
+                </tr>
+            </tbody>
+        </table>
+
+        <h3>🎯 HELIOS Orchestrator</h3>
+        <table class="api-table">
+            <thead>
+                <tr>
+                    <th>Method</th>
+                    <th>Endpoint</th>
+                    <th>Description</th>
+                    <th>Port</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td><span class="method post">POST</span></td>
+                    <td><span class="endpoint">/api/session</span></td>
+                    <td>Create new career session</td>
+                    <td>8000</td>
+                </tr>
+                <tr>
+                    <td><span class="method get">GET</span></td>
+                    <td><span class="endpoint">/api/session/{id}</span></td>
+                    <td>Get session details</td>
+                    <td>8000</td>
+                </tr>
+                <tr>
+                    <td><span class="method post">POST</span></td>
+                    <td><span class="endpoint">/api/orchestrate</span></td>
+                    <td>Coordinate multi-service operations</td>
+                    <td>8000</td>
+                </tr>
+                <tr>
+                    <td><span class="method get">GET</span></td>
+                    <td><span class="endpoint">/health</span></td>
+                    <td>Service health check</td>
+                    <td>8000</td>
+                </tr>
+            </tbody>
+        </table>
+
+        <h3>🗺️ Strategist Agent</h3>
+        <table class="api-table">
+            <thead>
+                <tr>
+                    <th>Method</th>
+                    <th>Endpoint</th>
+                    <th>Description</th>
+                    <th>Port</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td><span class="method post">POST</span></td>
+                    <td><span class="endpoint">/api/career-paths</span></td>
+                    <td>Generate personalized career trajectories</td>
+                    <td>8002</td>
+                </tr>
+                <tr>
+                    <td><span class="method post">POST</span></td>
+                    <td><span class="endpoint">/api/skill-analysis</span></td>
+                    <td>Analyze skill adjacency and gaps</td>
+                    <td>8002</td>
+                </tr>
+                <tr>
+                    <td><span class="method get">GET</span></td>
+                    <td><span class="endpoint">/health</span></td>
+                    <td>Service health check</td>
+                    <td>8002</td>
+                </tr>
+            </tbody>
+        </table>
+
+        <h3>📊 Analyst Agent</h3>
+        <table class="api-table">
+            <thead>
+                <tr>
+                    <th>Method</th>
+                    <th>Endpoint</th>
+                    <th>Description</th>
+                    <th>Port</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td><span class="method post">POST</span></td>
+                    <td><span class="endpoint">/api/analyze</span></td>
+                    <td>Perform market correlation analysis</td>
+                    <td>8003</td>
+                </tr>
+                <tr>
+                    <td><span class="method post">POST</span></td>
+                    <td><span class="endpoint">/api/ats-simulate</span></td>
+                    <td>Run ATS compatibility simulation</td>
+                    <td>8003</td>
+                </tr>
+                <tr>
+                    <td><span class="method post">POST</span></td>
+                    <td><span class="endpoint">/api/optimize</span></td>
+                    <td>Optimize resume for target roles</td>
+                    <td>8003</td>
+                </tr>
+                <tr>
+                    <td><span class="method get">GET</span></td>
+                    <td><span class="endpoint">/health</span></td>
+                    <td>Service health check</td>
+                    <td>8003</td>
+                </tr>
+            </tbody>
+        </table>
+
+        <h3>🏗️ Architect Agent</h3>
+        <table class="api-table">
+            <thead>
+                <tr>
+                    <th>Method</th>
+                    <th>Endpoint</th>
+                    <th>Description</th>
+                    <th>Port</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td><span class="method post">POST</span></td>
+                    <td><span class="endpoint">/api/generate</span></td>
+                    <td>Generate optimized career documents</td>
+                    <td>8004</td>
+                </tr>
+                <tr>
+                    <td><span class="method post">POST</span></td>
+                    <td><span class="endpoint">/api/template</span></td>
+                    <td>Apply document templates</td>
+                    <td>8004</td>
+                </tr>
+                <tr>
+                    <td><span class="method post">POST</span></td>
+                    <td><span class="endpoint">/api/validate</span></td>
+                    <td>Validate ATS compliance</td>
+                    <td>8004</td>
+                </tr>
+                <tr>
+                    <td><span class="method get">GET</span></td>
+                    <td><span class="endpoint">/health</span></td>
+                    <td>Service health check</td>
+                    <td>8004</td>
+                </tr>
+            </tbody>
+        </table>
+
+        <h3>✏️ Editor Agent</h3>
+        <table class="api-table">
+            <thead>
+                <tr>
+                    <th>Method</th>
+                    <th>Endpoint</th>
+                    <th>Description</th>
+                    <th>Port</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td><span class="method post">POST</span></td>
+                    <td><span class="endpoint">/api/edit</span></td>
+                    <td>Perform granular text optimization</td>
+                    <td>8005</td>
+                </tr>
+                <tr>
+                    <td><span class="method post">POST</span></td>
+                    <td><span class="endpoint">/api/enhance</span></td>
+                    <td>Enhance content quality and clarity</td>
+                    <td>8005</td>
+                </tr>
+                <tr>
+                    <td><span class="method post">POST</span></td>
+                    <td><span class="endpoint">/api/version</span></td>
+                    <td>Manage document versions</td>
+                    <td>8005</td>
+                </tr>
+                <tr>
+                    <td><span class="method get">GET</span></td>
+                    <td><span class="endpoint">/health</span></td>
+                    <td>Service health check</td>
+                    <td>8005</td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+
+    <div class="section">
+        <h2>🔧 Shared LLM Client Integration</h2>
+        <div class="integration-map">
+            <h4>🔗 Service Dependencies</h4>
+            <p>All services utilize the shared LLM client library for AI model interactions:</p>
+            <ul>
+                <li><strong>LLM Client Module:</strong> <a href="shared/llm_client.html">llm_client</a></li>
+                <li><strong>Configuration:</strong> <a href="shared/llm_client.config.html">llm_client.config</a></li>
+                <li><strong>Providers:</strong> <a href="shared/llm_client.providers.html">llm_client.providers</a></li>
+                <li><strong>Caching:</strong> <a href="shared/llm_client.cache.html">llm_client.cache</a></li>
+                <li><strong>Circuit Breaker:</strong> <a href="shared/llm_client.circuit_breaker.html">llm_client.circuit_breaker</a></li>
+                <li><strong>Retry Logic:</strong> <a href="shared/llm_client.retry.html">llm_client.retry</a></li>
+            </ul>
+        </div>
+    </div>
+
+    <div class="section">
+        <h2>📋 Integration Patterns</h2>
+
+        <h3>🔄 Orchestrator-Driven Communication</h3>
+        <p>All inter-service communication flows through the HELIOS Orchestrator:</p>
+        <ol>
+            <li><strong>Session Creation:</strong> Client creates session via Orchestrator</li>
+            <li><strong>Service Coordination:</strong> Orchestrator manages service calls</li>
+            <li><strong>Data Flow:</strong> Profile → Strategy → Analysis → Architecture → Editing</li>
+            <li><strong>Response Aggregation:</strong> Orchestrator combines service responses</li>
+        </ol>
+
+        <h3>🔒 Authentication & Security</h3>
+        <ul>
+            <li>Shared authentication middleware across all services</li>
+            <li>API key validation for inter-service communication</li>
+            <li>Rate limiting and circuit breaker patterns</li>
+            <li>Centralized logging and monitoring</li>
+        </ul>
+
+        <h3>⚡ Performance Optimizations</h3>
+        <ul>
+            <li>Redis caching for frequently accessed data</li>
+            <li>Connection pooling for database operations</li>
+            <li>Async processing for long-running operations</li>
+            <li>Load balancing across service instances</li>
+        </ul>
+    </div>
+
+    <div class="section">
+        <h2>🚀 Quick Start Guide</h2>
+        <h4>1. Start All Services</h4>
+        <pre style="background: #f8f9fa; padding: 15px; border-radius: 5px; overflow-x: auto;">
+# Using Docker Compose
+docker-compose up -d
+
+# Services will be available at:
+# Orchestrator:     http://localhost:8000
+# Profile Ingestor: http://localhost:8001
+# Strategist:       http://localhost:8002
+# Analyst:          http://localhost:8003
+# Architect:        http://localhost:8004
+# Editor:           http://localhost:8005</pre>
+
+        <h4>2. Test Service Health</h4>
+        <pre style="background: #f8f9fa; padding: 15px; border-radius: 5px; overflow-x: auto;">
+# Check all service health endpoints
+curl http://localhost:8000/health  # Orchestrator
+curl http://localhost:8001/health  # Profile Ingestor
+curl http://localhost:8002/health  # Strategist
+curl http://localhost:8003/health  # Analyst
+curl http://localhost:8004/health  # Architect
+curl http://localhost:8005/health  # Editor</pre>
+
+        <h4>3. Access API Documentation</h4>
+        <ul>
+            <li><strong>Interactive Docs:</strong> <a href="http://localhost:8000/docs" target="_blank">http://localhost:8000/docs</a></li>
+            <li><strong>OpenAPI Schema:</strong> <a href="http://localhost:8000/openapi.json" target="_blank">http://localhost:8000/openapi.json</a></li>
+            <li><strong>Pydoc Browser:</strong> Start local pydoc server for module documentation</li>
+        </ul>
+    </div>
+
+    <footer style="margin-top: 40px; padding-top: 20px; border-top: 1px solid #eee; color: #666; text-align: center;">
+        <p><strong>HELIOS Career Operations System</strong> • Cross-Service API Reference</p>
+        <p>Generated September 20, 2025 • All 6 Services Operational</p>
+    </footer>
+</body>
+</html>

@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>intelligence.research_orchestrator - architect</title>
+    <style>
+        body { font-family: Arial, sans-serif; margin: 40px; background: #f8f9fa; }
+        .container { max-width: 1200px; margin: 0 auto; background: white; padding: 30px; border-radius: 8px; box-shadow: 0 2px 10px rgba(0,0,0,0.1); }
+        .header { background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; padding: 20px; border-radius: 5px; margin-bottom: 30px; }
+        .section { margin: 20px 0; padding: 20px; border-left: 4px solid #667eea; background: #f8f9ff; }
+        .docstring { background: #fff; padding: 15px; border-radius: 5px; border: 1px solid #e0e0e0; margin: 10px 0; white-space: pre-wrap; }
+        .nav { margin-bottom: 20px; }
+        .nav a { color: #667eea; text-decoration: none; margin-right: 20px; }
+        .nav a:hover { text-decoration: underline; }
+        h1, h2, h3 { color: #333; }
+        .module-path { color: #666; font-style: italic; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>intelligence.research_orchestrator</h1>
+            <p class="module-path">Service: architect • Path: intelligence\research_orchestrator.py</p>
+        </div>
+
+        <div class="nav">
+            <a href="../index.html">← Back to API Index</a>
+            <a href="../architect/index.html">← architect Overview</a>
+        </div>
+
+        <div class="section">
+            <h2>Module Description</h2>
+            <div class="docstring">Prefect-based Research Orchestration System
+
+This module implements the complete orchestration pipeline for the Dynamic Research Engine
+using Prefect Core for scheduling, error handling, and monitoring of research operations.
+
+Key Features:
+- Weekly automated research updates from authoritative sources
+- Fault-tolerant processing with automatic retries
+- Bronze/Silver/Gold data layer population
+- Quality assurance and validation
+- Comprehensive logging and monitoring
+
+Architecture:
+- Prefect flows orchestrate the complete research pipeline
+- Tasks handle individual operations with retry logic
+- Parallel processing of multiple data sources
+- Graceful degradation on partial failures
+
+Example Usage:
+    >>> from research_orchestrator import ResearchOrchestrator
+    >>> orchestrator = ResearchOrchestrator(database_url="postgresql://...")
+    >>> await orchestrator.run_full_research_pipeline()</div>
+        </div>
+
+        <div class="section">
+            <h2>Classes</h2>
+
+            <h3>ResearchOrchestrator</h3>
+            <div class="docstring">Main orchestrator for the Dynamic Research Engine.
+
+Manages the complete research pipeline from data ingestion through
+NLP processing to gold layer analytics preparation.</div>
+        </div>
+        <div class="section">
+            <h2>Functions</h2>
+
+            <h3>async ingest_source_data()</h3>
+            <div class="docstring">Ingest data from a single source with error handling.
+
+Args:
+    source: DataSource configuration object
+
+Returns:
+    Dict containing ingested data and metadata
+
+Raises:
+    Exception: Re-raises after max retries exceeded</div>
+
+            <h3>async process_with_nlp()</h3>
+            <div class="docstring">Process ingested content with NLP pipeline.
+
+Args:
+    ingestion_result: Result from ingestion task
+
+Returns:
+    Dict containing NLP-processed data</div>
+
+            <h3>async store_bronze_data()</h3>
+            <div class="docstring">Store raw ingested data in Bronze layer.
+
+Args:
+    ingestion_result: Result from ingestion task
+    db_url: Database connection URL
+
+Returns:
+    Bronze record ID</div>
+
+            <h3>async store_silver_data()</h3>
+            <div class="docstring">Store NLP-processed data in Silver layer.
+
+Args:
+    nlp_result: Result from NLP processing task
+    bronze_id: Bronze layer record ID
+    db_url: Database connection URL
+
+Returns:
+    Silver record ID</div>
+
+            <h3>async create_gold_analytics()</h3>
+            <div class="docstring">Create analytics-ready records in Gold layer.
+
+Args:
+    nlp_result: NLP processing result
+    silver_id: Silver layer record ID
+    db_url: Database connection URL
+
+Returns:
+    Dict with gold record creation results</div>
+
+            <h3>async process_single_source_flow()</h3>
+            <div class="docstring">Complete processing pipeline for a single data source.
+
+This flow handles the full Bronze->Silver->Gold pipeline for one source
+with proper error handling and state management.</div>
+
+            <h3>async dynamic_research_engine_pipeline()</h3>
+            <div class="docstring">Main research pipeline flow that processes all configured sources.
+
+This is the primary entry point for the research system, handling
+parallel processing of multiple sources with comprehensive reporting.
+
+Args:
+    db_url: Database connection URL
+    max_sources: Optional limit on number of sources to process
+
+Returns:
+    Dict with complete pipeline results and statistics</div>
+
+            <h3>__init__()</h3>
+            <div class="docstring">Initialize research orchestrator.
+
+Args:
+    database_url: PostgreSQL connection string</div>
+
+            <h3>async initialize()</h3>
+            <div class="docstring">Initialize database and create tables if needed</div>
+        </div>
+    </div>
+</body>
+</html>

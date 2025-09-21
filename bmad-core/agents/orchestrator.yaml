@@ -26,18 +26,18 @@ integration:
   service_location: "services/orchestrator/"
   api_endpoint: "/api/v1/orchestrate"
   health_check: "/health"
-  
+
   dependencies:
     - "PROFILE_INGESTOR"
-    - "STRATEGIST" 
+    - "STRATEGIST"
     - "ANALYST"
     - "ARCHITECT"
     - "EDITOR"
-    
+
   input_formats:
     - "session_commands"
     - "agent_responses"
-    
+
   output_format:
     type: "json"
     schema: "orchestration_response"
@@ -52,7 +52,7 @@ commands:
       - name: "session_config"
         type: "object"
         required: false
-        
+
   - command: "/agent/coordinate"
     description: "Coordinate workflow between agents"
     parameters:
@@ -82,7 +82,7 @@ dependencies:
     - "uvicorn>=0.24.0"           # MISSING - ASGI server
     - "asyncpg>=0.29.0"           # MISSING - PostgreSQL async driver
     - "redis>=5.0.0"              # MISSING - Session caching
-  
+
   external_services:
     - name: "postgresql"
       endpoint: "postgresql://localhost:5432/helios"
@@ -110,7 +110,7 @@ verification:
   status: "not_verified"
   last_verification_date: null
   verification_results_file: null
-  
+
   # Current blocking issues (ACCURATE)
   blocking_issues:
     - "Cannot import main module - missing fastapi"
@@ -119,20 +119,20 @@ verification:
     - "Cannot import HTTP client - missing aiohttp"
     - "Cannot import logging - missing pythonjsonlogger"
     - "Cannot start service - missing uvicorn"
-  
+
   required_stages:
     - "stage_1_dependency_validation"
     - "stage_2_import_verification"
     - "stage_3_service_startup"
     - "stage_4_test_execution"
     - "stage_5_functional_verification"
-  
+
   verify_commands:
     full_verification: "python bmad-core/scripts/verify-agent.py ORCHESTRATOR"
     dependencies_only: "python bmad-core/scripts/verify-dependencies.py ORCHESTRATOR"
-  
+
   status_change_rules:
-    pending_to_in_progress: 
+    pending_to_in_progress:
       verification_required: false
     in_progress_to_completed:
       verification_required: true
@@ -144,7 +144,7 @@ testing:
   unit_tests: "services/orchestrator/tests/"
   integration_tests: "tests/integration/test_orchestrator.py"
   coverage_target: "85%"
-  
+
   # Current test status (ACCURATE)
   current_status: "Cannot execute - dependency failures prevent test imports"
   test_count_estimate: 25

@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>core.document_generator_reportlab - architect</title>
+    <style>
+        body { font-family: Arial, sans-serif; margin: 40px; background: #f8f9fa; }
+        .container { max-width: 1200px; margin: 0 auto; background: white; padding: 30px; border-radius: 8px; box-shadow: 0 2px 10px rgba(0,0,0,0.1); }
+        .header { background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; padding: 20px; border-radius: 5px; margin-bottom: 30px; }
+        .section { margin: 20px 0; padding: 20px; border-left: 4px solid #667eea; background: #f8f9ff; }
+        .docstring { background: #fff; padding: 15px; border-radius: 5px; border: 1px solid #e0e0e0; margin: 10px 0; white-space: pre-wrap; }
+        .nav { margin-bottom: 20px; }
+        .nav a { color: #667eea; text-decoration: none; margin-right: 20px; }
+        .nav a:hover { text-decoration: underline; }
+        h1, h2, h3 { color: #333; }
+        .module-path { color: #666; font-style: italic; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>core.document_generator_reportlab</h1>
+            <p class="module-path">Service: architect • Path: core\document_generator_reportlab.py</p>
+        </div>
+
+        <div class="nav">
+            <a href="../index.html">← Back to API Index</a>
+            <a href="../architect/index.html">← architect Overview</a>
+        </div>
+
+        <div class="section">
+            <h2>Module Description</h2>
+            <div class="docstring">Multi-format document generation with ReportLab PDF engine.</div>
+        </div>
+
+        <div class="section">
+            <h2>Classes</h2>
+
+            <h3>DocumentGenerationError</h3>
+            <div class="docstring">Raised when document generation fails.</div>
+
+            <h3>ReportLabPDFGenerator</h3>
+            <div class="docstring">PDF generation using ReportLab for maximum compatibility.</div>
+
+            <h3>MultiFormatDocumentGenerator</h3>
+            <div class="docstring">Document generator supporting multiple output formats.</div>
+        </div>
+        <div class="section">
+            <h2>Functions</h2>
+
+            <h3>_create_custom_styles()</h3>
+            <div class="docstring">Create custom styles for ATS-compliant PDF generation.</div>
+
+            <h3>async generate_pdf()</h3>
+            <div class="docstring">Generate PDF directly from structured resume data.</div>
+
+            <h3>_create_header_section()</h3>
+            <div class="docstring">Create header section with name and contact info.</div>
+
+            <h3>_create_impact_summary()</h3>
+            <div class="docstring">Create impact summary section (T-shaped top bar).</div>
+
+            <h3>_create_experience_section()</h3>
+            <div class="docstring">Create experience section (T-shaped vertical bar).</div>
+
+            <h3>_create_education_section()</h3>
+            <div class="docstring">Create education section.</div>
+
+            <h3>_create_skills_section()</h3>
+            <div class="docstring">Create additional skills section.</div>
+
+            <h3>async generate_document()</h3>
+            <div class="docstring">Generate document in specified format.</div>
+
+            <h3>async _generate_docx()</h3>
+            <div class="docstring">Generate DOCX document.</div>
+
+            <h3>async _generate_html()</h3>
+            <div class="docstring">Generate HTML document.</div>
+
+            <h3>async _generate_markdown()</h3>
+            <div class="docstring">Generate Markdown document.</div>
+        </div>
+    </div>
+</body>
+</html>

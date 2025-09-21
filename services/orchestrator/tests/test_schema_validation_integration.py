@@ -82,7 +82,7 @@ def mock_profile_ingestor():
             "strategic_metadata": {
                 "job_title_variations": [
                     "Senior Software Engineer",
-                    "Senior Backend Developer", 
+                    "Senior Backend Developer",
                     "Lead Software Engineer"
                 ],
                 "core_competencies": [
@@ -115,7 +115,7 @@ def mock_profile_ingestor():
                 ],
                 "motivators": [
                     "Technical challenges",
-                    "Team mentoring", 
+                    "Team mentoring",
                     "Innovation",
                     "Impact at scale"
                 ],
@@ -169,7 +169,7 @@ def mock_strategist():
                 "current_level": "senior_engineer",
                 "strength_areas": [
                     "technical_implementation",
-                    "system_optimization", 
+                    "system_optimization",
                     "team_leadership"
                 ],
                 "growth_areas": [
@@ -241,7 +241,7 @@ def mock_analyst():
 
 
 @pytest.fixture
-def service_coordinator_with_validation(mock_session_manager, mock_profile_ingestor, 
+def service_coordinator_with_validation(mock_session_manager, mock_profile_ingestor,
                                        mock_strategist, mock_analyst):
     """Create service coordinator with schema validation."""
     return ServiceCoordinator(
@@ -254,7 +254,7 @@ def service_coordinator_with_validation(mock_session_manager, mock_profile_inges
 
 class TestSchemaValidationIntegration:
     """Test schema validation integration in service coordinator."""
-    
+
     @pytest.mark.asyncio
     async def test_full_pipeline_with_valid_schema(self, service_coordinator_with_validation):
         """Test complete pipeline with valid Master Career Database schema."""
@@ -263,35 +263,35 @@ class TestSchemaValidationIntegration:
             session_id="schema-test-session",
             resume_path="/path/to/test/resume.pdf"
         )
-        
+
         # Verify pipeline completion
         assert results["pipeline_status"] == "completed"
         assert "schema_validation" in results
-        
+
         # Verify schema validation passed
         schema_validation = results["schema_validation"]
         assert schema_validation["is_valid"] is True
         assert "report" in schema_validation
-        
+
         # Verify comprehensive data structure
         profile_data = results["profile_data"]
-        
+
         # Verify Master Career Database schema compliance
         assert "work_experience" in profile_data
         assert "projects" in profile_data
         assert "skills_inventory" in profile_data
         assert "strategic_metadata" in profile_data
         assert "holistic_profile" in profile_data
-        
+
         # Verify work experience structure
         work_exp = profile_data["work_experience"][0]
         required_exp_fields = [
-            "job_title", "company", "duration", "accomplishments", 
+            "job_title", "company", "duration", "accomplishments",
             "responsibilities", "skills_used", "metrics"
         ]
         for field in required_exp_fields:
             assert field in work_exp, f"Missing work experience field: {field}"
-        
+
         # Verify skills inventory completeness
         skills_inventory = profile_data["skills_inventory"]
         skill_categories = [
@@ -301,25 +301,25 @@ class TestSchemaValidationIntegration:
         for category in skill_categories:
             assert category in skills_inventory
             assert isinstance(skills_inventory[category], list)
-        
+
         # Verify strategic metadata
         strategic_meta = profile_data["strategic_metadata"]
         assert "core_competencies" in strategic_meta
         assert "job_title_variations" in strategic_meta
         assert "career_level" in strategic_meta
         assert strategic_meta["career_level"] == "senior"
-        
+
         # Verify holistic profile
         holistic_profile = profile_data["holistic_profile"]
         assert "career_aspirations" in holistic_profile
         assert "motivators" in holistic_profile
         assert len(holistic_profile["career_aspirations"]) >= 3
-        
+
         # Verify career strategies structure
         strategies = results["career_strategies"]
         assert "recommended_paths" in strategies
         assert len(strategies["recommended_paths"]) >= 2
-        
+
         path = strategies["recommended_paths"][0]
         expected_path_fields = [
             "path_id", "title", "fit_score", "transition_difficulty",
@@ -327,25 +327,25 @@ class TestSchemaValidationIntegration:
         ]
         for field in expected_path_fields:
             assert field in path, f"Missing career path field: {field}"
-        
+
         # Verify market analysis structure
         analysis = results["market_analysis"]
         expected_analysis_fields = ["market_demand", "skill_gaps", "resume_optimization"]
         for field in expected_analysis_fields:
             assert field in analysis, f"Missing analysis field: {field}"
-        
+
         # Verify skill gaps analysis
         skill_gaps = analysis["skill_gaps"]
         assert len(skill_gaps) >= 2
         gap = skill_gaps[0]
         assert all(field in gap for field in ["skill", "importance", "current_level", "target_level"])
-        
+
         # Verify resume optimization
         resume_opt = analysis["resume_optimization"]
         assert "ats_score" in resume_opt
         assert "recommendations" in resume_opt
         assert resume_opt["ats_score"] > 0.5  # Should be reasonable score
-    
+
     @pytest.mark.asyncio
     async def test_schema_validation_report_generation(self, service_coordinator_with_validation):
         """Test schema validation report generation with detailed metrics."""
@@ -353,20 +353,20 @@ class TestSchemaValidationIntegration:
             session_id="schema-test-session",
             resume_path="/path/to/test/resume.pdf"
         )
-        
+
         # Extract schema validation report
         schema_report = results["schema_validation"]["report"]
-        
+
         # Verify report structure
         assert "validation_summary" in schema_report
         assert "data_metrics" in schema_report
         assert "recommendations" in schema_report
-        
+
         # Verify validation summary
         validation_summary = schema_report["validation_summary"]
         assert validation_summary["is_valid"] is True
         assert "validation_timestamp" in validation_summary
-        
+
         # Verify data metrics
         data_metrics = schema_report["data_metrics"]
         assert data_metrics["work_experience_entries"] >= 1
@@ -374,40 +374,40 @@ class TestSchemaValidationIntegration:
         assert data_metrics["total_skills"] >= 15  # Should have substantial skills
         assert data_metrics["has_strategic_metadata"] is True
         assert data_metrics["has_holistic_profile"] is True
-        
+
         # Verify recommendations exist (should be minimal for good data)
         recommendations = schema_report["recommendations"]
         assert isinstance(recommendations, list)
-    
-    @pytest.mark.asyncio 
+
+    @pytest.mark.asyncio
     async def test_pipeline_data_flow_validation(self, service_coordinator_with_validation):
         """Test comprehensive pipeline data flow validation."""
         results = await service_coordinator_with_validation.execute_full_pipeline(
-            session_id="schema-test-session", 
+            session_id="schema-test-session",
             resume_path="/path/to/test/resume.pdf"
         )
-        
+
         # Verify that data flows correctly between services
         profile_data = results["profile_data"]
         strategies = results["career_strategies"]
         analysis = results["market_analysis"]
-        
+
         # Verify Profile Ingestor output feeds into Strategist
         assert "skills_inventory" in profile_data
         skills_from_profile = profile_data["skills_inventory"]["technical"]
         assert len(skills_from_profile) > 0
-        
+
         # Verify Strategist uses profile data
         recommended_paths = strategies["recommended_paths"]
         assert len(recommended_paths) > 0
-        
+
         # Verify Analyst references both profile and strategy data
         skill_gaps = analysis["skill_gaps"]
         market_demand = analysis["market_demand"]
-        
+
         # Should have skill gaps identified based on career paths
         assert len(skill_gaps) > 0
-        
+
         # Should have market analysis for recommended career paths
         path_titles = [path["path_id"] for path in recommended_paths]
         for path_id in path_titles:
@@ -416,9 +416,9 @@ class TestSchemaValidationIntegration:
                 demand_data = market_demand[path_id]
                 assert "demand_score" in demand_data
                 assert "salary_range" in demand_data
-    
+
     @pytest.mark.asyncio
-    async def test_invalid_schema_handling(self, service_coordinator_with_validation, 
+    async def test_invalid_schema_handling(self, service_coordinator_with_validation,
                                          mock_profile_ingestor):
         """Test handling of invalid schema data - should fail pipeline."""
         # Mock profile ingestor to return completely invalid data (empty skills)
@@ -433,20 +433,20 @@ class TestSchemaValidationIntegration:
                 "holistic_profile": {}
             }
         }
-        
+
         # Execute pipeline - should fail due to invalid schema
         with pytest.raises(ServiceCoordinationError) as exc_info:
             await service_coordinator_with_validation.execute_full_pipeline(
                 session_id="schema-test-session",
                 resume_path="/path/to/invalid/resume.pdf"
             )
-        
+
         # Should fail with schema validation error
         assert "Pipeline data flow validation failed" in str(exc_info.value)
         assert "Skills inventory is completely empty" in str(exc_info.value)
-    
+
     @pytest.mark.asyncio
-    async def test_minimal_valid_schema_handling(self, service_coordinator_with_validation, 
+    async def test_minimal_valid_schema_handling(self, service_coordinator_with_validation,
                                                 mock_profile_ingestor):
         """Test handling of minimal but valid schema data - should complete with warnings."""
         # Mock profile ingestor to return minimal but valid data
@@ -475,20 +475,20 @@ class TestSchemaValidationIntegration:
                 }
             }
         }
-        
+
         # Execute pipeline - should complete with warnings
         results = await service_coordinator_with_validation.execute_full_pipeline(
             session_id="schema-test-session",
             resume_path="/path/to/minimal/resume.pdf"
         )
-        
+
         # Pipeline should complete despite warnings
         assert results["pipeline_status"] == "completed"
-        
+
         # Schema validation should show warnings but be valid
         schema_validation = results["schema_validation"]
         assert schema_validation["is_valid"] is True
-        
+
         schema_report = schema_validation["report"]
         assert len(schema_report["warnings"]) > 0  # Should have warnings
         assert "recommendations" in schema_report

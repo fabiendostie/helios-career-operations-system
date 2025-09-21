@@ -59,7 +59,7 @@ async def ingest_directory(directory_path: str):
     # Implementation here
     pass
 
-@app.post("/ingest/files")  
+@app.post("/ingest/files")
 async def ingest_files(files: List[UploadFile] = File(...)):
     """Ingest uploaded resume files"""
     # Implementation here
@@ -103,32 +103,32 @@ import numpy as np
 
 def create_career_embeddings(master_db_path):
     """Create vector embeddings from Master Career Database"""
-    
+
     # Load sentence transformer model
     model = SentenceTransformer('all-MiniLM-L6-v2')
-    
+
     # Load career data
     with open(master_db_path, 'r') as f:
         career_data = json.load(f)
-    
+
     # Extract text for embedding
     text_chunks = []
-    
+
     # Work experience
     for exp in career_data.get('work_experience', []):
         text_chunks.append(f"{exp.get('company', '')} {exp.get('title', '')} {exp.get('description', '')}")
-    
+
     # Skills
     for category, skills in career_data.get('skills_inventory', {}).items():
         text_chunks.append(f"{category}: {', '.join(skills)}")
-    
+
     # Projects
     for project in career_data.get('projects', []):
         text_chunks.append(f"{project.get('name', '')} {project.get('description', '')}")
-    
+
     # Create embeddings
     embeddings = model.encode(text_chunks)
-    
+
     return text_chunks, embeddings
 ```
 
@@ -154,7 +154,7 @@ def create_career_embeddings(master_db_path):
 ### Response Format
 ```json
 {
-  "agent_id": "PROFILE_INGESTOR", 
+  "agent_id": "PROFILE_INGESTOR",
   "session_id": "uuid",
   "status": "success",
   "result": {
@@ -173,7 +173,7 @@ def create_career_embeddings(master_db_path):
 ```json
 {
   "agent_id": "PROFILE_INGESTOR",
-  "session_id": "uuid", 
+  "session_id": "uuid",
   "status": "error",
   "error": {
     "code": "PROCESSING_ERROR",
@@ -191,7 +191,7 @@ def create_career_embeddings(master_db_path):
 - **Integration**: Receives Master Career Database from Profile Ingestor
 - **Commands**: `/session`, `/status`, `/route`
 
-### Story 2.2: STRATEGIST Agent  
+### Story 2.2: STRATEGIST Agent
 - **Role**: Career path generation using skill adjacency modeling
 - **Integration**: Uses Master Career Database for skill analysis
 - **Commands**: `/discover`, `/pathways`, `/adjacency`
@@ -202,7 +202,7 @@ def create_career_embeddings(master_db_path):
 - **Commands**: `/analyze`, `/optimize`, `/market`
 
 ### Story 2.4: ARCHITECT Agent
-- **Role**: Document generation with ATS compliance  
+- **Role**: Document generation with ATS compliance
 - **Integration**: Generates documents from Master Career Database
 - **Commands**: `/build`, `/template`, `/validate`
 
@@ -259,7 +259,7 @@ spec:
         env:
         - name: DATABASE_URL
           value: "postgresql://user:pass@postgres:5432/helios"
-        - name: REDIS_URL  
+        - name: REDIS_URL
           value: "redis://redis:6379"
 ```
 
@@ -274,23 +274,23 @@ import json
 from pathlib import Path
 
 class TestProfileIngestorIntegration:
-    
+
     @pytest.fixture
     def api_client(self):
         return "http://localhost:8000"  # Profile Ingestor API
-    
+
     def test_directory_ingestion(self, api_client):
         """Test full directory ingestion workflow"""
         response = requests.post(
             f"{api_client}/ingest/directory",
             json={"directory_path": "tests/sample_resumes"}
         )
-        
+
         assert response.status_code == 200
         result = response.json()
         assert "master_career_database" in result
         assert result["processing_metadata"]["files_processed"] > 0
-    
+
     def test_agent_communication(self, api_client):
         """Test agent communication protocol"""
         message = {
@@ -298,11 +298,11 @@ class TestProfileIngestorIntegration:
             "command": "/ingest",
             "payload": {"directory_path": "tests/sample_resumes"}
         }
-        
+
         response = requests.post(f"{api_client}/agent/message", json=message)
         assert response.status_code == 200
-        
-        result = response.json() 
+
+        result = response.json()
         assert result["agent_id"] == "PROFILE_INGESTOR"
         assert result["status"] == "success"
 ```
@@ -341,13 +341,13 @@ ACTIVE_SESSIONS = Gauge('active_sessions', 'Number of active processing sessions
 @PROCESSING_TIME.time()
 def process_with_metrics(directory_path):
     start_time = time.time()
-    
+
     # Process files
     result = process_directory(directory_path)
-    
+
     # Update metrics
     FILES_PROCESSED.inc(result.files_count)
-    
+
     return result
 ```
 
