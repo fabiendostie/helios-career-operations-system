@@ -1,205 +1,69 @@
-"""FastAPI application entry point for ARCHITECT service."""
+"""FastAPI application entry point for the Architect service."""
 
 import logging
-import asyncio
 from contextlib import asynccontextmanager
-from typing import Dict, Any
+from typing import AsyncGenerator
 
-from fastapi import FastAPI, HTTPException, Request, Response
+from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
-from fastapi.responses import JSONResponse
-import uvicorn
-from prometheus_client import make_asgi_app, Counter, Histogram
-import structlog
 
-from .api import generation, health, validation, integrated_generation
-from .core.config import get_settings
+from src.api.generation import router as generation_router
+from src.api.health import router as health_router
+from src.core.config import settings
 
-
-# Configure structured logging
-structlog.configure(
-    processors=[
-        structlog.stdlib.filter_by_level,
-        structlog.stdlib.add_logger_name,
-        structlog.stdlib.add_log_level,
-        structlog.stdlib.PositionalArgumentsFormatter(),
-        structlog.processors.TimeStamper(fmt="iso"),
-        structlog.processors.StackInfoRenderer(),
-        structlog.processors.format_exc_info,
-        structlog.processors.UnicodeDecoder(),
-        structlog.processors.JSONRenderer()
-    ],
-    context_class=dict,
-    logger_factory=structlog.stdlib.LoggerFactory(),
-    wrapper_class=structlog.stdlib.BoundLogger,
-    cache_logger_on_first_use=True,
-)
-
-logger = structlog.get_logger(__name__)
-
-# Prometheus metrics
-REQUEST_COUNT = Counter('architect_requests_total', 'Total requests', ['method', 'endpoint', 'status'])
-REQUEST_DURATION = Histogram('architect_request_duration_seconds', 'Request duration', ['method', 'endpoint'])
+logger = logging.getLogger(__name__)
 
 
 @asynccontextmanager
-async def lifespan(app: FastAPI):
+async def lifespan(app: FastAPI) -> AsyncGenerator[None, None]:
     """Application lifespan management."""
-    logger.info("Starting ARCHITECT service", service="architect", version="1.0.0")
+    # Startup
+    logging.info("Starting Architect service...")
 
-    # Startup tasks
-    settings = get_settings()
-
-    # Initialize template cache
-    from .core.template_engine import TemplateEngine
-    template_engine = TemplateEngine()
-    app.state.template_engine = template_engine
-
-    # Warm up template cache with common templates
-    await template_engine.warm_cache()
-
-    logger.info("ARCHITECT service startup complete")
+    # Initialize document generation components
+    # TODO: Pre-load templates, ATS compliance engine, etc.
 
     yield
 
-    # Cleanup tasks
-    logger.info("Shutting down ARCHITECT service")
-
-    # Clear template cache
-    if hasattr(app.state, 'template_engine'):
-        await app.state.template_engine.clear_cache()
-
-    logger.info("ARCHITECT service shutdown complete")
+    # Shutdown
+    logging.info("Shutting down Architect service...")
 
 
 def create_app() -> FastAPI:
-    """Create and configure FastAPI application."""
-    settings = get_settings()
-
+    """Create and configure the FastAPI application."""
     app = FastAPI(
-        title="Helios ARCHITECT Service",
-        description="AI-powered document generation with ATS compliance",
+        title="Helios Architect Service",
+        description="ATS-compliant document generation agent",
         version="1.0.0",
         lifespan=lifespan,
-        docs_url="/docs" if settings.debug else None,
-        redoc_url="/redoc" if settings.debug else None,
     )
 
-    # Add CORS middleware
+    # Configure CORS
     app.add_middleware(
         CORSMiddleware,
-        allow_origins=["*"],  # Configure appropriately for production
+        allow_origins=settings.ALLOWED_ORIGINS,
         allow_credentials=True,
         allow_methods=["*"],
         allow_headers=["*"],
     )
 
-    # Add request logging middleware
-    @app.middleware("http")
-    async def logging_middleware(request: Request, call_next):
-        """Log requests with correlation IDs."""
-        correlation_id = request.headers.get("X-Correlation-ID", "unknown")
-
-        with structlog.contextvars.bind_contextvars(
-            correlation_id=correlation_id,
-            method=request.method,
-            url=str(request.url),
-            client_ip=request.client.host if request.client else "unknown"
-        ):
-            logger.info("Request started")
-
-            start_time = asyncio.get_event_loop().time()
-
-            try:
-                response = await call_next(request)
-                duration = asyncio.get_event_loop().time() - start_time
-
-                # Record metrics
-                REQUEST_COUNT.labels(
-                    method=request.method,
-                    endpoint=request.url.path,
-                    status=response.status_code
-                ).inc()
-
-                REQUEST_DURATION.labels(
-                    method=request.method,
-                    endpoint=request.url.path
-                ).observe(duration)
-
-                logger.info(
-                    "Request completed",
-                    status_code=response.status_code,
-                    duration=duration
-                )
-
-                # Add correlation ID to response headers
-                response.headers["X-Correlation-ID"] = correlation_id
-
-                return response
-
-            except Exception as e:
-                duration = asyncio.get_event_loop().time() - start_time
-
-                REQUEST_COUNT.labels(
-                    method=request.method,
-                    endpoint=request.url.path,
-                    status=500
-                ).inc()
-
-                logger.error(
-                    "Request failed",
-                    error=str(e),
-                    duration=duration,
-                    exc_info=True
-                )
-
-                raise
-
     # Include routers
-    app.include_router(health.router, prefix="/health", tags=["health"])
-    app.include_router(generation.router, prefix="/generate", tags=["generation"])
-    app.include_router(validation.router, tags=["validation"])
-    app.include_router(integrated_generation.router, tags=["integrated-generation"])
-
-    # Add Prometheus metrics endpoint
-    metrics_app = make_asgi_app()
-    app.mount("/metrics", metrics_app)
-
-    # Global exception handler
-    @app.exception_handler(Exception)
-    async def global_exception_handler(request: Request, exc: Exception):
-        """Global exception handler with structured logging."""
-        correlation_id = request.headers.get("X-Correlation-ID", "unknown")
-
-        logger.error(
-            "Unhandled exception",
-            correlation_id=correlation_id,
-            error=str(exc),
-            exc_info=True
-        )
-
-        return JSONResponse(
-            status_code=500,
-            content={
-                "detail": "Internal server error",
-                "correlation_id": correlation_id
-            }
-        )
+    app.include_router(health_router, prefix="/health", tags=["health"])
+    app.include_router(generation_router, prefix="/generation", tags=["generation"])
 
     return app
 
 
-# Create the FastAPI app instance
 app = create_app()
 
 
 if __name__ == "__main__":
-    settings = get_settings()
+    import uvicorn
 
     uvicorn.run(
-        "main:app",
-        host=settings.host,
-        port=settings.port,
-        reload=settings.debug,
-        log_level="info" if settings.debug else "warning"
+        "src.main:app",
+        host=settings.HOST,
+        port=settings.PORT,
+        reload=settings.DEBUG,
+        log_level="info",
     )
