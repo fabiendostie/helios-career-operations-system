@@ -31,16 +31,45 @@ class DocGenerator:
         self.project_root = project_root
         self.docs_dir = project_root / "docs" / "api"
         self.services_dir = project_root / "services"
+        self.progress_file = project_root / "bmad-progress" / "progress-log.json"
         self.timeout = 15  # Reduced timeout for faster processing
-        self.service_status = {
-            "profile-ingestor": "✅ OPERATIONAL",
-            "orchestrator": "✅ OPERATIONAL",
-            "strategist": "✅ OPERATIONAL",
-            "analyst": "✅ OPERATIONAL",
-            "architect": "⚠️ IN DEVELOPMENT",
-            "editor": "⚠️ IN DEVELOPMENT",
-            "shared": "🔧 SHARED LIBRARY"
-        }
+        # Load service status from BMAD progress tracking
+        self.service_status = self.load_bmad_service_status()
+
+    def load_bmad_service_status(self) -> Dict[str, str]:
+        """Load service status from BMAD progress tracking"""
+        try:
+            with open(self.progress_file, 'r') as f:
+                progress_data = json.load(f)
+
+            service_status = {}
+            bmad_services = progress_data.get("service_status", {})
+
+            for service_name, data in bmad_services.items():
+                status = data.get("status", "not_started")
+                if status == "operational":
+                    service_status[service_name] = "✅ OPERATIONAL"
+                elif status == "in_progress":
+                    service_status[service_name] = "🔄 IN PROGRESS"
+                else:
+                    service_status[service_name] = "📋 PLANNED"
+
+            # Add shared library status
+            service_status["shared"] = "🔧 SHARED LIBRARY"
+
+            return service_status
+        except Exception as e:
+            print(f"⚠️ Could not load BMAD progress data: {e}")
+            # Fallback to static status
+            return {
+                "profile-ingestor": "✅ OPERATIONAL",
+                "orchestrator": "🔄 IN PROGRESS",
+                "strategist": "🔄 IN PROGRESS",
+                "analyst": "✅ OPERATIONAL",
+                "architect": "✅ OPERATIONAL",
+                "editor": "✅ OPERATIONAL",
+                "shared": "🔧 SHARED LIBRARY"
+            }
 
     def setup_directories(self) -> None:
         """Create necessary documentation directories."""
