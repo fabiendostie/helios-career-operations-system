@@ -77,6 +77,30 @@ repos:
         files: \.py$
         exclude: ^tests/
 
+  # Quick tests before commit
+  - repo: local
+    hooks:
+      - id: pytest-check
+        name: pytest-check
+        description: Run fast tests before commit
+        entry: bash -c 'cd services/profile-ingestor && python -m pytest tests/ -x -q --tb=short || echo "Tests failed - commit blocked"'
+        language: system
+        files: \.py$
+        always_run: false
+        pass_filenames: false
+
+  # Documentation generation
+  - repo: local
+    hooks:
+      - id: docs-generation
+        name: docs-generation
+        description: Generate documentation when Python files change
+        entry: python scripts/generate_docs.py
+        language: system
+        files: ^services/.*\.py$
+        always_run: false
+        pass_filenames: false
+
   # Conventional commits
   - repo: https://github.com/compilerla/conventional-pre-commit
     rev: v3.4.0

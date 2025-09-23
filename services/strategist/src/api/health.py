@@ -44,9 +44,9 @@ async def readiness_check() -> Dict[str, Any]:
         "memory": True,
         "disk": True
     }
-    
+
     all_ready = all(checks.values())
-    
+
     return {
         "status": "ready" if all_ready else "not_ready",
         "service": "strategist",

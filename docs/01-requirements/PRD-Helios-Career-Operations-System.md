@@ -63,7 +63,7 @@ A comprehensive Career Operations System featuring:
 ### 3.1 Primary Persona: "Career Transitioner Carlos"
 - **Demographics**: 28-35 years, 5-8 years experience
 - **Background**: Technical professional seeking role advancement or domain shift
-- **Pain Points**: 
+- **Pain Points**:
   - Unclear how to position diverse experience
   - Overwhelmed by different career options
   - Resume doesn't reflect true capabilities

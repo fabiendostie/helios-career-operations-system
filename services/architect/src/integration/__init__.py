@@ -23,7 +23,7 @@ from .data_contracts import (
 
 __all__ = [
     'OrchestratorClient',
-    'AnalystClient', 
+    'AnalystClient',
     'StrategistClient',
     'get_service_clients',
     'AnalystRecommendations',

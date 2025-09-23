@@ -82,19 +82,19 @@
         {% if phone %} | {{ phone }}{% endif %}
         {% if location %} | {{ location }}{% endif %}
     </div>
-    
+
     <!-- Summary -->
     {% if summary %}
     <div class="summary">{{ summary }}</div>
     {% endif %}
-    
+
     <!-- Core Skills -->
     {% if core_skills %}
     <div class="skills">
         <strong>Core Competencies:</strong> {{ core_skills | join(' • ') }}
     </div>
     {% endif %}
-    
+
     <!-- Professional Experience -->
     {% if work_experience %}
     <h2>Professional Experience</h2>
@@ -120,7 +120,7 @@
     </div>
     {% endfor %}
     {% endif %}
-    
+
     <!-- Education -->
     {% if education %}
     <h2>Education</h2>

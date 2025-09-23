@@ -1,0 +1,193 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>core.research_engine - architect</title>
+    <style>
+        body { font-family: Arial, sans-serif; margin: 40px; background: #f8f9fa; }
+        .container { max-width: 1200px; margin: 0 auto; background: white; padding: 30px; border-radius: 8px; box-shadow: 0 2px 10px rgba(0,0,0,0.1); }
+        .header { background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; padding: 20px; border-radius: 5px; margin-bottom: 30px; }
+        .section { margin: 20px 0; padding: 20px; border-left: 4px solid #667eea; background: #f8f9ff; }
+        .docstring { background: #fff; padding: 15px; border-radius: 5px; border: 1px solid #e0e0e0; margin: 10px 0; white-space: pre-wrap; }
+        .nav { margin-bottom: 20px; }
+        .nav a { color: #667eea; text-decoration: none; margin-right: 20px; }
+        .nav a:hover { text-decoration: underline; }
+        h1, h2, h3 { color: #333; }
+        .module-path { color: #666; font-style: italic; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>core.research_engine</h1>
+            <p class="module-path">Service: architect • Path: core\research_engine.py</p>
+        </div>
+
+        <div class="nav">
+            <a href="../index.html">← Back to API Index</a>
+            <a href="../architect/index.html">← architect Overview</a>
+        </div>
+
+        <div class="section">
+            <h2>Module Description</h2>
+            <div class="docstring">Dynamic Research Engine for real-time industry and ATS intelligence.</div>
+        </div>
+
+        <div class="section">
+            <h2>Classes</h2>
+
+            <h3>ResearchCategory</h3>
+            <div class="docstring">Categories of research data.</div>
+
+            <h3>ResearchData</h3>
+            <div class="docstring">Dynamic research data structure.</div>
+
+            <h3>DynamicResearchEngine</h3>
+            <div class="docstring">Dynamic Research Engine that continuously gathers intelligence from multiple sources
+to keep the ARCHITECT service current with latest trends and best practices.</div>
+        </div>
+        <div class="section">
+            <h2>Functions</h2>
+
+            <h3>async get_research_engine()</h3>
+            <div class="docstring">Get global research engine instance.</div>
+
+            <h3>is_expired()</h3>
+            <div class="docstring">Check if research data has expired.</div>
+
+            <h3>get_hash()</h3>
+            <div class="docstring">Get unique hash for this research data.</div>
+
+            <h3>async get_industry_intelligence()</h3>
+            <div class="docstring">Get comprehensive industry intelligence with real-time research.
+
+Args:
+    industry: Target industry for research
+    research_depth: Research depth (quick, standard, deep)
+    max_age_hours: Maximum age of cached data to accept
+
+Returns:
+    Comprehensive industry intelligence data</div>
+
+            <h3>async get_ats_compliance_intelligence()</h3>
+            <div class="docstring">Get latest ATS compliance requirements and algorithm updates.
+
+Args:
+    max_age_hours: Maximum age of cached ATS data
+
+Returns:
+    Current ATS compliance intelligence</div>
+
+            <h3>async get_skills_demand_intelligence()</h3>
+            <div class="docstring">Get real-time skills demand and market trends.
+
+Args:
+    industry: Target industry
+    role_type: Target role type
+    max_age_hours: Maximum age of cached skills data
+
+Returns:
+    Skills demand intelligence</div>
+
+            <h3>async get_company_intelligence()</h3>
+            <div class="docstring">Get real-time company intelligence for Pain & Promise customization.
+
+Args:
+    company_name: Target company name
+    max_age_hours: Maximum age of cached company data
+
+Returns:
+    Company intelligence data</div>
+
+            <h3>async _research_industry_intelligence()</h3>
+            <div class="docstring">Perform comprehensive industry research using multiple sources.</div>
+
+            <h3>async _research_ats_compliance()</h3>
+            <div class="docstring">Research current ATS compliance requirements.</div>
+
+            <h3>async _research_skills_demand()</h3>
+            <div class="docstring">Research current skills demand trends.</div>
+
+            <h3>async _research_company_intelligence()</h3>
+            <div class="docstring">Research comprehensive company intelligence.</div>
+
+            <h3>async _web_search_industry_trends()</h3>
+            <div class="docstring">Web search for industry trends - MOCK IMPLEMENTATION.</div>
+
+            <h3>async _analyze_job_postings()</h3>
+            <div class="docstring">Analyze job postings for skills trends - MOCK IMPLEMENTATION.</div>
+
+            <h3>async _research_industry_reports()</h3>
+            <div class="docstring">Research industry reports - MOCK IMPLEMENTATION.</div>
+
+            <h3>async _research_salary_trends()</h3>
+            <div class="docstring">Research salary trends - MOCK IMPLEMENTATION.</div>
+
+            <h3>async _web_search_ats_updates()</h3>
+            <div class="docstring">Search for ATS updates - MOCK IMPLEMENTATION.</div>
+
+            <h3>async _research_ats_vendor_documentation()</h3>
+            <div class="docstring">Research ATS vendor docs - MOCK IMPLEMENTATION.</div>
+
+            <h3>async _analyze_recruiting_forums()</h3>
+            <div class="docstring">Analyze recruiting forums - MOCK IMPLEMENTATION.</div>
+
+            <h3>async _analyze_job_board_skills()</h3>
+            <div class="docstring">Analyze job board skills - MOCK IMPLEMENTATION.</div>
+
+            <h3>async _research_linkedin_skills_trends()</h3>
+            <div class="docstring">Research LinkedIn skills - MOCK IMPLEMENTATION.</div>
+
+            <h3>async _web_search_skills_trends()</h3>
+            <div class="docstring">Web search skills trends - MOCK IMPLEMENTATION.</div>
+
+            <h3>async _web_search_company_info()</h3>
+            <div class="docstring">Web search company info - MOCK IMPLEMENTATION.</div>
+
+            <h3>async _research_company_news()</h3>
+            <div class="docstring">Research company news - MOCK IMPLEMENTATION.</div>
+
+            <h3>async _analyze_company_culture()</h3>
+            <div class="docstring">Analyze company culture - MOCK IMPLEMENTATION.</div>
+
+            <h3>async _research_company_challenges()</h3>
+            <div class="docstring">Research company challenges - MOCK IMPLEMENTATION.</div>
+
+            <h3>_merge_research_results()</h3>
+            <div class="docstring">Merge research results intelligently.</div>
+
+            <h3>_merge_ats_research()</h3>
+            <div class="docstring">Merge ATS research results.</div>
+
+            <h3>_merge_skills_research()</h3>
+            <div class="docstring">Merge skills research results.</div>
+
+            <h3>_merge_company_research()</h3>
+            <div class="docstring">Merge company research results.</div>
+
+            <h3>async _analyze_intelligence_data()</h3>
+            <div class="docstring">Apply AI analysis to research data.</div>
+
+            <h3>_get_cached_research()</h3>
+            <div class="docstring">Get cached research data if still valid.</div>
+
+            <h3>_cache_research()</h3>
+            <div class="docstring">Cache research data.</div>
+
+            <h3>_cleanup_expired_cache()</h3>
+            <div class="docstring">Remove expired cache entries.</div>
+
+            <h3>async start_background_research()</h3>
+            <div class="docstring">Start background research tasks for continuous updates.</div>
+
+            <h3>async _periodic_research_updates()</h3>
+            <div class="docstring">Periodic research updates in background.</div>
+
+            <h3>async _periodic_cache_cleanup()</h3>
+            <div class="docstring">Periodic cache cleanup.</div>
+
+            <h3>async _update_core_intelligence()</h3>
+            <div class="docstring">Update core intelligence data in background.</div>
+        </div>
+    </div>
+</body>
+</html>

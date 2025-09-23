@@ -1,0 +1,314 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Python: package validation</title>
+</head><body>
+
+<table class="heading">
+<tr class="heading-text decor">
+<td class="title">&nbsp;<br><strong class="title">validation</strong></td>
+<td class="extra"><a href=".">index</a><br><a href="file:c%3A%5Cusers%5Cfabie%5Cdocuments%5Cprompt_engineering%5Cjob%20seeking%5Chelios-career-operations-system%5Cservices%5Carchitect%5Csrc%5Cvalidation%5C__init__.py">c:\users\fabie\documents\prompt_engineering\job seeking\helios-career-operations-system\services\architect\src\validation\__init__.py</a></td></tr></table>
+    <p><span class="code">Validation&nbsp;Module&nbsp;for&nbsp;ARCHITECT&nbsp;Service<br>
+&nbsp;<br>
+Provides&nbsp;comprehensive&nbsp;document&nbsp;validation&nbsp;including:<br>
+-&nbsp;ATS&nbsp;compliance&nbsp;checking<br>
+-&nbsp;Format&nbsp;compatibility&nbsp;validation<br>
+-&nbsp;Content&nbsp;quality&nbsp;assessment</span></p>
+<p>
+<table class="section">
+<tr class="decor pkg-content-decor heading-text">
+<td class="section-title" colspan=3>&nbsp;<br><strong class="bigsection">Package Contents</strong></td></tr>
+
+<tr><td class="decor pkg-content-decor"><span class="code">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span></td><td>&nbsp;</td>
+<td class="singlecolumn"><table><tr><td class="multicolumn"><a href="validation.ats_compliance.html">ats_compliance</a><br>
+</td><td class="multicolumn"></td><td class="multicolumn"></td><td class="multicolumn"></td></tr></table></td></tr></table><p>
+<table class="section">
+<tr class="decor index-decor heading-text">
+<td class="section-title" colspan=3>&nbsp;<br><strong class="bigsection">Classes</strong></td></tr>
+
+<tr><td class="decor index-decor"><span class="code">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span></td><td>&nbsp;</td>
+<td class="singlecolumn"><dl>
+<dt class="heading-text"><a href="builtins.html#object">builtins.object</a>
+</dt><dd>
+<dl>
+<dt class="heading-text"><a href="validation.ats_compliance.html#ATSComplianceValidator">validation.ats_compliance.ATSComplianceValidator</a>
+</dt><dt class="heading-text"><a href="validation.ats_compliance.html#ValidationResult">validation.ats_compliance.ValidationResult</a>
+</dt></dl>
+</dd>
+<dt class="heading-text"><a href="enum.html#Enum">enum.Enum</a>(<a href="builtins.html#object">builtins.object</a>)
+</dt><dd>
+<dl>
+<dt class="heading-text"><a href="validation.ats_compliance.html#ATSVendor">validation.ats_compliance.ATSVendor</a>
+</dt><dt class="heading-text"><a href="validation.ats_compliance.html#ComplianceLevel">validation.ats_compliance.ComplianceLevel</a>
+</dt></dl>
+</dd>
+</dl>
+ <p>
+<table class="section">
+<tr class="decor title-decor heading-text">
+<td class="section-title" colspan=3>&nbsp;<br><a name="ATSComplianceValidator">class <strong>ATSComplianceValidator</strong></a>(<a href="builtins.html#object">builtins.object</a>)</td></tr>
+
+<tr><td class="decor title-decor" rowspan=2><span class="code">&nbsp;&nbsp;&nbsp;</span></td>
+<td class="decor title-decor" colspan=2><span class="code">Comprehensive&nbsp;ATS&nbsp;compliance&nbsp;validation&nbsp;system.<br>
+&nbsp;<br>
+Validates&nbsp;documents&nbsp;against&nbsp;current&nbsp;ATS&nbsp;parsing&nbsp;requirements&nbsp;using<br>
+real-time&nbsp;intelligence&nbsp;from&nbsp;the&nbsp;research&nbsp;engine.<br>&nbsp;</span></td></tr>
+<tr><td>&nbsp;</td>
+<td class="singlecolumn">Methods defined here:<br>
+<dl><dt><a name="ATSComplianceValidator-__init__"><strong>__init__</strong></a>(self)</dt><dd><span class="code">Initialize&nbsp;self.&nbsp;&nbsp;See&nbsp;help(type(self))&nbsp;for&nbsp;accurate&nbsp;signature.</span></dd></dl>
+
+<dl><dt>async <a name="ATSComplianceValidator-analyze_multi_vendor_compatibility"><strong>analyze_multi_vendor_compatibility</strong></a>(
+    self,
+    content: Dict[str, Any],
+    file_path: pathlib._local.Path,
+    target_vendors: List[validation.ats_compliance.ATSVendor]
+) -&gt; Dict[str, Any]</dt><dd><span class="code">Analyze&nbsp;compatibility&nbsp;across&nbsp;multiple&nbsp;ATS&nbsp;vendors&nbsp;simultaneously.</span></dd></dl>
+
+<dl><dt>async <a name="ATSComplianceValidator-validate_document"><strong>validate_document</strong></a>(
+    self,
+    document_path: pathlib._local.Path,
+    target_vendors: List[validation.ats_compliance.ATSVendor] = None,
+    compliance_level: validation.ats_compliance.ComplianceLevel = &lt;ComplianceLevel.STANDARD: 'standard'&gt;
+) -&gt; validation.ats_compliance.ValidationResult</dt><dd><span class="code">Perform&nbsp;comprehensive&nbsp;ATS&nbsp;compliance&nbsp;validation.<br>
+&nbsp;<br>
+Args:<br>
+&nbsp;&nbsp;&nbsp;&nbsp;document_path:&nbsp;Path&nbsp;to&nbsp;document&nbsp;to&nbsp;validate<br>
+&nbsp;&nbsp;&nbsp;&nbsp;target_vendors:&nbsp;Specific&nbsp;ATS&nbsp;vendors&nbsp;to&nbsp;optimize&nbsp;for<br>
+&nbsp;&nbsp;&nbsp;&nbsp;compliance_level:&nbsp;Validation&nbsp;strictness&nbsp;level<br>
+&nbsp;&nbsp;&nbsp;&nbsp;<br>
+Returns:<br>
+&nbsp;&nbsp;&nbsp;&nbsp;Detailed&nbsp;validation&nbsp;results&nbsp;with&nbsp;scores&nbsp;and&nbsp;recommendations</span></dd></dl>
+
+<dl><dt>async <a name="ATSComplianceValidator-validate_for_vendor"><strong>validate_for_vendor</strong></a>(
+    self,
+    content: Dict[str, Any],
+    file_path: pathlib._local.Path,
+    vendor: validation.ats_compliance.ATSVendor
+) -&gt; 'ValidationResult'</dt><dd><span class="code">Validate&nbsp;document&nbsp;against&nbsp;specific&nbsp;ATS&nbsp;vendor&nbsp;requirements.</span></dd></dl>
+
+<dl><dt>async <a name="ATSComplianceValidator-validate_with_adaptive_compliance"><strong>validate_with_adaptive_compliance</strong></a>(
+    self,
+    content: Dict[str, Any],
+    file_path: pathlib._local.Path,
+    industry: str,
+    target_vendors: List[validation.ats_compliance.ATSVendor]
+) -&gt; 'ValidationResult'</dt><dd><span class="code">Validate&nbsp;with&nbsp;adaptive&nbsp;compliance&nbsp;levels&nbsp;based&nbsp;on&nbsp;current&nbsp;market&nbsp;standards.</span></dd></dl>
+
+<hr>
+Data descriptors defined here:<br>
+<dl><dt><strong>__dict__</strong></dt>
+<dd><span class="code">dictionary&nbsp;for&nbsp;instance&nbsp;variables</span></dd>
+</dl>
+<dl><dt><strong>__weakref__</strong></dt>
+<dd><span class="code">list&nbsp;of&nbsp;weak&nbsp;references&nbsp;to&nbsp;the&nbsp;object</span></dd>
+</dl>
+</td></tr></table> <p>
+<table class="section">
+<tr class="decor title-decor heading-text">
+<td class="section-title" colspan=3>&nbsp;<br><a name="ATSVendor">class <strong>ATSVendor</strong></a>(<a href="enum.html#Enum">enum.Enum</a>)</td></tr>
+
+<tr><td class="decor title-decor" rowspan=2><span class="code">&nbsp;&nbsp;&nbsp;</span></td>
+<td class="decor title-decor" colspan=2><span class="code"><a href="#ATSVendor">ATSVendor</a>(*values)<br>
+&nbsp;<br>
+Major&nbsp;ATS&nbsp;vendors&nbsp;with&nbsp;specific&nbsp;requirements.<br>&nbsp;</span></td></tr>
+<tr><td>&nbsp;</td>
+<td class="singlecolumn"><dl><dt>Method resolution order:</dt>
+<dd><a href="validation.ats_compliance.html#ATSVendor">ATSVendor</a></dd>
+<dd><a href="enum.html#Enum">enum.Enum</a></dd>
+<dd><a href="builtins.html#object">builtins.object</a></dd>
+</dl>
+<hr>
+Data and other attributes defined here:<br>
+<dl><dt><strong>BAMBOO_HR</strong> = &lt;ATSVendor.BAMBOO_HR: 'bamboo_hr'&gt;</dl>
+
+<dl><dt><strong>GENERIC</strong> = &lt;ATSVendor.GENERIC: 'generic'&gt;</dl>
+
+<dl><dt><strong>GREENHOUSE</strong> = &lt;ATSVendor.GREENHOUSE: 'greenhouse'&gt;</dl>
+
+<dl><dt><strong>ICIMS</strong> = &lt;ATSVendor.ICIMS: 'icims'&gt;</dl>
+
+<dl><dt><strong>JOBVITE</strong> = &lt;ATSVendor.JOBVITE: 'jobvite'&gt;</dl>
+
+<dl><dt><strong>LEVER</strong> = &lt;ATSVendor.LEVER: 'lever'&gt;</dl>
+
+<dl><dt><strong>SUCCESSFACTORS</strong> = &lt;ATSVendor.SUCCESSFACTORS: 'successfactors'&gt;</dl>
+
+<dl><dt><strong>TALEO</strong> = &lt;ATSVendor.TALEO: 'taleo'&gt;</dl>
+
+<dl><dt><strong>WORKDAY</strong> = &lt;ATSVendor.WORKDAY: 'workday'&gt;</dl>
+
+<hr>
+Data descriptors inherited from <a href="enum.html#Enum">enum.Enum</a>:<br>
+<dl><dt><strong>name</strong></dt>
+<dd><span class="code">The&nbsp;name&nbsp;of&nbsp;the&nbsp;Enum&nbsp;member.</span></dd>
+</dl>
+<dl><dt><strong>value</strong></dt>
+<dd><span class="code">The&nbsp;value&nbsp;of&nbsp;the&nbsp;Enum&nbsp;member.</span></dd>
+</dl>
+<hr>
+Static methods inherited from <a href="enum.html#EnumType">enum.EnumType</a>:<br>
+<dl><dt><a name="ATSVendor-__contains__"><strong>__contains__</strong></a>(value)</dt><dd><span class="code">Return&nbsp;True&nbsp;if&nbsp;`value`&nbsp;is&nbsp;in&nbsp;`cls`.<br>
+&nbsp;<br>
+`value`&nbsp;is&nbsp;in&nbsp;`cls`&nbsp;if:<br>
+1)&nbsp;`value`&nbsp;is&nbsp;a&nbsp;member&nbsp;of&nbsp;`cls`,&nbsp;or<br>
+2)&nbsp;`value`&nbsp;is&nbsp;the&nbsp;value&nbsp;of&nbsp;one&nbsp;of&nbsp;the&nbsp;`cls`'s&nbsp;members.<br>
+3)&nbsp;`value`&nbsp;is&nbsp;a&nbsp;pseudo-member&nbsp;(flags)</span></dd></dl>
+
+<dl><dt><a name="ATSVendor-__getitem__"><strong>__getitem__</strong></a>(name)</dt><dd><span class="code">Return&nbsp;the&nbsp;member&nbsp;matching&nbsp;`name`.</span></dd></dl>
+
+<dl><dt><a name="ATSVendor-__iter__"><strong>__iter__</strong></a>()</dt><dd><span class="code">Return&nbsp;members&nbsp;in&nbsp;definition&nbsp;order.</span></dd></dl>
+
+<dl><dt><a name="ATSVendor-__len__"><strong>__len__</strong></a>()</dt><dd><span class="code">Return&nbsp;the&nbsp;number&nbsp;of&nbsp;members&nbsp;(no&nbsp;aliases)</span></dd></dl>
+
+<hr>
+Readonly properties inherited from <a href="enum.html#EnumType">enum.EnumType</a>:<br>
+<dl><dt><strong>__members__</strong></dt>
+<dd><span class="code">Returns&nbsp;a&nbsp;mapping&nbsp;of&nbsp;member&nbsp;name-&gt;value.<br>
+&nbsp;<br>
+This&nbsp;mapping&nbsp;lists&nbsp;all&nbsp;enum&nbsp;members,&nbsp;including&nbsp;aliases.&nbsp;Note&nbsp;that&nbsp;this<br>
+is&nbsp;a&nbsp;read-only&nbsp;view&nbsp;of&nbsp;the&nbsp;internal&nbsp;mapping.</span></dd>
+</dl>
+</td></tr></table> <p>
+<table class="section">
+<tr class="decor title-decor heading-text">
+<td class="section-title" colspan=3>&nbsp;<br><a name="ComplianceLevel">class <strong>ComplianceLevel</strong></a>(<a href="enum.html#Enum">enum.Enum</a>)</td></tr>
+
+<tr><td class="decor title-decor" rowspan=2><span class="code">&nbsp;&nbsp;&nbsp;</span></td>
+<td class="decor title-decor" colspan=2><span class="code"><a href="#ComplianceLevel">ComplianceLevel</a>(*values)<br>
+&nbsp;<br>
+ATS&nbsp;compliance&nbsp;validation&nbsp;levels.<br>&nbsp;</span></td></tr>
+<tr><td>&nbsp;</td>
+<td class="singlecolumn"><dl><dt>Method resolution order:</dt>
+<dd><a href="validation.ats_compliance.html#ComplianceLevel">ComplianceLevel</a></dd>
+<dd><a href="enum.html#Enum">enum.Enum</a></dd>
+<dd><a href="builtins.html#object">builtins.object</a></dd>
+</dl>
+<hr>
+Data and other attributes defined here:<br>
+<dl><dt><strong>BASIC</strong> = &lt;ComplianceLevel.BASIC: 'basic'&gt;</dl>
+
+<dl><dt><strong>STANDARD</strong> = &lt;ComplianceLevel.STANDARD: 'standard'&gt;</dl>
+
+<dl><dt><strong>STRICT</strong> = &lt;ComplianceLevel.STRICT: 'strict'&gt;</dl>
+
+<hr>
+Data descriptors inherited from <a href="enum.html#Enum">enum.Enum</a>:<br>
+<dl><dt><strong>name</strong></dt>
+<dd><span class="code">The&nbsp;name&nbsp;of&nbsp;the&nbsp;Enum&nbsp;member.</span></dd>
+</dl>
+<dl><dt><strong>value</strong></dt>
+<dd><span class="code">The&nbsp;value&nbsp;of&nbsp;the&nbsp;Enum&nbsp;member.</span></dd>
+</dl>
+<hr>
+Static methods inherited from <a href="enum.html#EnumType">enum.EnumType</a>:<br>
+<dl><dt><a name="ComplianceLevel-__contains__"><strong>__contains__</strong></a>(value)</dt><dd><span class="code">Return&nbsp;True&nbsp;if&nbsp;`value`&nbsp;is&nbsp;in&nbsp;`cls`.<br>
+&nbsp;<br>
+`value`&nbsp;is&nbsp;in&nbsp;`cls`&nbsp;if:<br>
+1)&nbsp;`value`&nbsp;is&nbsp;a&nbsp;member&nbsp;of&nbsp;`cls`,&nbsp;or<br>
+2)&nbsp;`value`&nbsp;is&nbsp;the&nbsp;value&nbsp;of&nbsp;one&nbsp;of&nbsp;the&nbsp;`cls`'s&nbsp;members.<br>
+3)&nbsp;`value`&nbsp;is&nbsp;a&nbsp;pseudo-member&nbsp;(flags)</span></dd></dl>
+
+<dl><dt><a name="ComplianceLevel-__getitem__"><strong>__getitem__</strong></a>(name)</dt><dd><span class="code">Return&nbsp;the&nbsp;member&nbsp;matching&nbsp;`name`.</span></dd></dl>
+
+<dl><dt><a name="ComplianceLevel-__iter__"><strong>__iter__</strong></a>()</dt><dd><span class="code">Return&nbsp;members&nbsp;in&nbsp;definition&nbsp;order.</span></dd></dl>
+
+<dl><dt><a name="ComplianceLevel-__len__"><strong>__len__</strong></a>()</dt><dd><span class="code">Return&nbsp;the&nbsp;number&nbsp;of&nbsp;members&nbsp;(no&nbsp;aliases)</span></dd></dl>
+
+<hr>
+Readonly properties inherited from <a href="enum.html#EnumType">enum.EnumType</a>:<br>
+<dl><dt><strong>__members__</strong></dt>
+<dd><span class="code">Returns&nbsp;a&nbsp;mapping&nbsp;of&nbsp;member&nbsp;name-&gt;value.<br>
+&nbsp;<br>
+This&nbsp;mapping&nbsp;lists&nbsp;all&nbsp;enum&nbsp;members,&nbsp;including&nbsp;aliases.&nbsp;Note&nbsp;that&nbsp;this<br>
+is&nbsp;a&nbsp;read-only&nbsp;view&nbsp;of&nbsp;the&nbsp;internal&nbsp;mapping.</span></dd>
+</dl>
+</td></tr></table> <p>
+<table class="section">
+<tr class="decor title-decor heading-text">
+<td class="section-title" colspan=3>&nbsp;<br><a name="ValidationResult">class <strong>ValidationResult</strong></a>(<a href="builtins.html#object">builtins.object</a>)</td></tr>
+
+<tr><td class="decor title-decor" rowspan=2><span class="code">&nbsp;&nbsp;&nbsp;</span></td>
+<td class="decor title-decor" colspan=2><span class="code"><a href="#ValidationResult">ValidationResult</a>(<br>
+&nbsp;&nbsp;&nbsp;&nbsp;is_compliant:&nbsp;bool,<br>
+&nbsp;&nbsp;&nbsp;&nbsp;compliance_score:&nbsp;float,<br>
+&nbsp;&nbsp;&nbsp;&nbsp;violations:&nbsp;List[Dict[str,&nbsp;Any]],<br>
+&nbsp;&nbsp;&nbsp;&nbsp;recommendations:&nbsp;List[str],<br>
+&nbsp;&nbsp;&nbsp;&nbsp;ats_vendor_scores:&nbsp;Dict[validation.ats_compliance.<a href="#ATSVendor">ATSVendor</a>,&nbsp;float],<br>
+&nbsp;&nbsp;&nbsp;&nbsp;parsing_confidence:&nbsp;float,<br>
+&nbsp;&nbsp;&nbsp;&nbsp;is_valid:&nbsp;Optional[bool]&nbsp;=&nbsp;None,<br>
+&nbsp;&nbsp;&nbsp;&nbsp;confidence_score:&nbsp;Optional[float]&nbsp;=&nbsp;None,<br>
+&nbsp;&nbsp;&nbsp;&nbsp;validation_issues:&nbsp;Optional[List[ForwardRef('ValidationIssue')]]&nbsp;=&nbsp;None,<br>
+&nbsp;&nbsp;&nbsp;&nbsp;vendor:&nbsp;Optional[validation.ats_compliance.<a href="#ATSVendor">ATSVendor</a>]&nbsp;=&nbsp;None,<br>
+&nbsp;&nbsp;&nbsp;&nbsp;compliance_level:&nbsp;Optional[validation.ats_compliance.<a href="#ComplianceLevel">ComplianceLevel</a>]&nbsp;=&nbsp;None<br>
+)&nbsp;-&amp;gt;&nbsp;None<br>
+&nbsp;<br>
+Result&nbsp;of&nbsp;ATS&nbsp;compliance&nbsp;validation.<br>&nbsp;</span></td></tr>
+<tr><td>&nbsp;</td>
+<td class="singlecolumn">Methods defined here:<br>
+<dl><dt><a name="ValidationResult-__eq__"><strong>__eq__</strong></a>(self, other)</dt><dd><span class="code">Return&nbsp;self==value.</span></dd></dl>
+
+<dl><dt><a name="ValidationResult-__init__"><strong>__init__</strong></a>(
+    self,
+    is_compliant: bool,
+    compliance_score: float,
+    violations: List[Dict[str, Any]],
+    recommendations: List[str],
+    ats_vendor_scores: Dict[validation.ats_compliance.ATSVendor, float],
+    parsing_confidence: float,
+    is_valid: Optional[bool] = None,
+    confidence_score: Optional[float] = None,
+    validation_issues: Optional[List[ForwardRef('ValidationIssue')]] = None,
+    vendor: Optional[validation.ats_compliance.ATSVendor] = None,
+    compliance_level: Optional[validation.ats_compliance.ComplianceLevel] = None
+) -&gt; None</dt><dd><span class="code">Initialize&nbsp;self.&nbsp;&nbsp;See&nbsp;help(type(self))&nbsp;for&nbsp;accurate&nbsp;signature.</span></dd></dl>
+
+<dl><dt><a name="ValidationResult-__replace__"><strong>__replace__</strong></a> = _replace(self, /, **changes)<span class="grey"><span class="heading-text"> from <a href="dataclasses.html">dataclasses</a></span></span></dt></dl>
+
+<dl><dt><a name="ValidationResult-__repr__"><strong>__repr__</strong></a>(self)</dt><dd><span class="code">Return&nbsp;repr(self).</span></dd></dl>
+
+<hr>
+Data descriptors defined here:<br>
+<dl><dt><strong>__dict__</strong></dt>
+<dd><span class="code">dictionary&nbsp;for&nbsp;instance&nbsp;variables</span></dd>
+</dl>
+<dl><dt><strong>__weakref__</strong></dt>
+<dd><span class="code">list&nbsp;of&nbsp;weak&nbsp;references&nbsp;to&nbsp;the&nbsp;object</span></dd>
+</dl>
+<hr>
+Data and other attributes defined here:<br>
+<dl><dt><strong>__annotations__</strong> = {'ats_vendor_scores': typing.Dict[validation.ats_compliance.ATSVendor, float], 'compliance_level': typing.Optional[validation.ats_compliance.ComplianceLevel], 'compliance_score': &lt;class 'float'&gt;, 'confidence_score': typing.Optional[float], 'is_compliant': &lt;class 'bool'&gt;, 'is_valid': typing.Optional[bool], 'parsing_confidence': &lt;class 'float'&gt;, 'recommendations': typing.List[str], 'validation_issues': typing.Optional[typing.List[ForwardRef('ValidationIssue')]], 'vendor': typing.Optional[validation.ats_compliance.ATSVendor], ...}</dl>
+
+<dl><dt><strong>__dataclass_fields__</strong> = {'ats_vendor_scores': Field(name='ats_vendor_scores',type=typing.Dict[...appingproxy({}),kw_only=False,_field_type=_FIELD), 'compliance_level': Field(name='compliance_level',type=typing.Option...appingproxy({}),kw_only=False,_field_type=_FIELD), 'compliance_score': Field(name='compliance_score',type=&lt;class 'float...appingproxy({}),kw_only=False,_field_type=_FIELD), 'confidence_score': Field(name='confidence_score',type=typing.Option...appingproxy({}),kw_only=False,_field_type=_FIELD), 'is_compliant': Field(name='is_compliant',type=&lt;class 'bool'&gt;,de...appingproxy({}),kw_only=False,_field_type=_FIELD), 'is_valid': Field(name='is_valid',type=typing.Optional[bool]...appingproxy({}),kw_only=False,_field_type=_FIELD), 'parsing_confidence': Field(name='parsing_confidence',type=&lt;class 'flo...appingproxy({}),kw_only=False,_field_type=_FIELD), 'recommendations': Field(name='recommendations',type=typing.List[st...appingproxy({}),kw_only=False,_field_type=_FIELD), 'validation_issues': Field(name='validation_issues',type=typing.Optio...appingproxy({}),kw_only=False,_field_type=_FIELD), 'vendor': Field(name='vendor',type=typing.Optional[validat...appingproxy({}),kw_only=False,_field_type=_FIELD), ...}</dl>
+
+<dl><dt><strong>__dataclass_params__</strong> = _DataclassParams(init=True,repr=True,eq=True,ord...rue,kw_only=False,slots=False,weakref_slot=False)</dl>
+
+<dl><dt><strong>__hash__</strong> = None</dl>
+
+<dl><dt><strong>__match_args__</strong> = ('is_compliant', 'compliance_score', 'violations', 'recommendations', 'ats_vendor_scores', 'parsing_confidence', 'is_valid', 'confidence_score', 'validation_issues', 'vendor', 'compliance_level')</dl>
+
+<dl><dt><strong>compliance_level</strong> = None</dl>
+
+<dl><dt><strong>confidence_score</strong> = None</dl>
+
+<dl><dt><strong>is_valid</strong> = None</dl>
+
+<dl><dt><strong>validation_issues</strong> = None</dl>
+
+<dl><dt><strong>vendor</strong> = None</dl>
+
+</td></tr></table></td></tr></table><p>
+<table class="section">
+<tr class="decor functions-decor heading-text">
+<td class="section-title" colspan=3>&nbsp;<br><strong class="bigsection">Functions</strong></td></tr>
+
+<tr><td class="decor functions-decor"><span class="code">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span></td><td>&nbsp;</td>
+<td class="singlecolumn"><dl><dt>async <a name="-get_ats_validator"><strong>get_ats_validator</strong></a>() -&gt; validation.ats_compliance.ATSComplianceValidator</dt><dd><span class="code">Get&nbsp;configured&nbsp;ATS&nbsp;compliance&nbsp;validator&nbsp;instance.</span></dd></dl>
+</td></tr></table><p>
+<table class="section">
+<tr class="decor data-decor heading-text">
+<td class="section-title" colspan=3>&nbsp;<br><strong class="bigsection">Data</strong></td></tr>
+
+<tr><td class="decor data-decor"><span class="code">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span></td><td>&nbsp;</td>
+<td class="singlecolumn"><strong>__all__</strong> = ['ATSComplianceValidator', 'ATSVendor', 'ComplianceLevel', 'ValidationResult', 'get_ats_validator']</td></tr></table>
+</body></html>

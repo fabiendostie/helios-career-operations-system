@@ -16,7 +16,7 @@ risk_summary:
   totals: { critical: 0, high: 0, medium: 0, low: 1 }
   recommendations:
     must_fix: []
-    monitor: 
+    monitor:
       - "Windows terminal interaction limitation in one test case"
 
 quality_score: 95

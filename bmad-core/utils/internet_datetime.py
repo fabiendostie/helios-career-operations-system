@@ -6,10 +6,10 @@ current date from internet sources to ensure accuracy across all system componen
 
 Usage:
     from bmad_core.utils import get_current_datetime, get_current_date
-    
+
     # Get current datetime with internet verification
     current_dt = get_current_datetime()
-    
+
     # Get current date string
     current_date = get_current_date()
 """
@@ -27,7 +27,7 @@ logger = logging.getLogger(__name__)
 
 class InternetDateTimeService:
     """Service for fetching accurate current date/time from internet sources."""
-    
+
     # Multiple reliable time sources for redundancy
     TIME_SOURCES = [
         {
@@ -37,7 +37,7 @@ class InternetDateTimeService:
         },
         {
             "name": "WorldTimeAPI UTC",
-            "url": "http://worldtimeapi.org/api/timezone/UTC", 
+            "url": "http://worldtimeapi.org/api/timezone/UTC",
             "parser": "_parse_worldtime_api"
         },
         {
@@ -51,19 +51,19 @@ class InternetDateTimeService:
             "parser": "_parse_http_date_header"
         }
     ]
-    
+
     def __init__(self, timeout: int = 5):
         """Initialize the service with timeout settings."""
         self.timeout = timeout
         self._fallback_offset = None  # Offset from local time when internet fails
-        
+
     async def get_current_datetime(self) -> datetime:
         """
         Get current UTC datetime from internet sources.
-        
+
         Returns:
             datetime: Current UTC datetime
-            
+
         Raises:
             Exception: If all internet sources fail and no fallback available
         """
@@ -79,18 +79,18 @@ class InternetDateTimeService:
             except Exception as e:
                 logger.warning(f"Failed to fetch time from {source['name']}: {e}")
                 continue
-                
+
         # If all internet sources fail, use fallback with stored offset
         if self._fallback_offset is not None:
             fallback_dt = datetime.now(timezone.utc) + self._fallback_offset
             logger.warning(f"Using fallback time calculation: {fallback_dt}")
             return fallback_dt
-            
+
         # Last resort: use system time with warning
         system_dt = datetime.now(timezone.utc)
         logger.error(f"All time sources failed, using system time: {system_dt}")
         return system_dt
-        
+
     async def _fetch_from_source(self, source: dict) -> Optional[datetime]:
         """Fetch datetime from a specific source."""
         async with aiohttp.ClientSession(timeout=aiohttp.ClientTimeout(total=self.timeout)) as session:
@@ -99,7 +99,7 @@ class InternetDateTimeService:
                     parser_method = getattr(self, source["parser"])
                     return await parser_method(response)
         return None
-        
+
     async def _parse_worldtime_api(self, response) -> Optional[datetime]:
         """Parse WorldTimeAPI response."""
         data = await response.json()
@@ -108,15 +108,15 @@ class InternetDateTimeService:
             # Parse ISO format: 2025-09-07T22:30:45.123456+00:00
             return datetime.fromisoformat(datetime_str.replace('Z', '+00:00'))
         return None
-        
+
     async def _parse_timeapi(self, response) -> Optional[datetime]:
-        """Parse TimeAPI response.""" 
+        """Parse TimeAPI response."""
         data = await response.json()
         datetime_str = data.get("dateTime")
         if datetime_str:
             return datetime.fromisoformat(datetime_str.replace('Z', '+00:00'))
         return None
-        
+
     async def _parse_http_date_header(self, response) -> Optional[datetime]:
         """Parse HTTP Date header from any web server."""
         date_header = response.headers.get('Date')
@@ -125,10 +125,10 @@ class InternetDateTimeService:
             from email.utils import parsedate_to_datetime
             return parsedate_to_datetime(date_header)
         return None
-        
+
     def _update_fallback_offset(self, internet_time: datetime):
         """Update the fallback offset based on successful internet fetch."""
-        local_time = datetime.now(timezone.utc) 
+        local_time = datetime.now(timezone.utc)
         self._fallback_offset = internet_time - local_time
         logger.debug(f"Updated fallback offset: {self._fallback_offset}")
 
@@ -140,10 +140,10 @@ _service = InternetDateTimeService()
 async def get_current_datetime() -> datetime:
     """
     Get the current UTC datetime from internet sources.
-    
+
     This function ensures all system components use the accurate current date
     by fetching from reliable internet time sources.
-    
+
     Returns:
         datetime: Current UTC datetime
     """
@@ -153,7 +153,7 @@ async def get_current_datetime() -> datetime:
 def get_current_datetime_sync() -> datetime:
     """
     Synchronous version of get_current_datetime.
-    
+
     Returns:
         datetime: Current UTC datetime
     """
@@ -175,10 +175,10 @@ def get_current_datetime_sync() -> datetime:
 async def get_current_date(format_str: str = "%Y-%m-%d") -> str:
     """
     Get the current date as a formatted string.
-    
+
     Args:
         format_str: Date format string (default: YYYY-MM-DD)
-        
+
     Returns:
         str: Formatted current date
     """
@@ -189,10 +189,10 @@ async def get_current_date(format_str: str = "%Y-%m-%d") -> str:
 def get_current_date_sync(format_str: str = "%Y-%m-%d") -> str:
     """
     Synchronous version of get_current_date.
-    
+
     Args:
         format_str: Date format string (default: YYYY-MM-DD)
-        
+
     Returns:
         str: Formatted current date
     """
@@ -203,7 +203,7 @@ def get_current_date_sync(format_str: str = "%Y-%m-%d") -> str:
 async def format_date_for_filename() -> str:
     """
     Get current date formatted for safe filename usage.
-    
+
     Returns:
         str: Date in YYYYMMDD_HHMMSS format
     """
@@ -214,7 +214,7 @@ async def format_date_for_filename() -> str:
 def format_date_for_filename_sync() -> str:
     """
     Synchronous version of format_date_for_filename.
-    
+
     Returns:
         str: Date in YYYYMMDD_HHMMSS format
     """

@@ -286,7 +286,7 @@ curl -f http://localhost:8000/health || exit 1
 
 # Step 2: Restore Strategist
 export HELIOS_STRATEGIST_ENABLED=true
-docker-compose up -d strategist  
+docker-compose up -d strategist
 sleep 30
 curl -f http://localhost:8001/health || exit 1
 
@@ -309,7 +309,7 @@ echo "✅ Core services restored successfully"
 check_service_health() {
     local service_name=$1
     local health_url=$2
-    
+
     echo "Checking $service_name health..."
     if curl -f -s $health_url > /dev/null 2>&1; then
         echo "✅ $service_name: HEALTHY"
@@ -322,7 +322,7 @@ check_service_health() {
 
 # Check all services
 check_service_health "Profile Ingestor" "http://localhost:8080/health"
-check_service_health "Orchestrator" "http://localhost:8000/health" 
+check_service_health "Orchestrator" "http://localhost:8000/health"
 check_service_health "Strategist" "http://localhost:8001/health"
 check_service_health "Analyst" "http://localhost:8002/health"
 ```
@@ -332,18 +332,18 @@ check_service_health "Analyst" "http://localhost:8002/health"
 # Verify rollback success
 verify_rollback() {
     echo "🔍 Verifying rollback success..."
-    
+
     # Check service versions
     python -c "import services.orchestrator.src.main as orch; print(f'Orchestrator: {orch.__version__}')"
     python -c "import services.strategist.src.main as strat; print(f'Strategist: {strat.__version__}')"
-    
+
     # Check functionality
     cd services/profile-ingestor
     python -m pytest --tb=no -q | grep "passed"
-    
+
     # Check data integrity
     python scripts/verification/check_data_integrity.py
-    
+
     echo "✅ Rollback verification complete"
 }
 ```
@@ -358,11 +358,11 @@ emergency_rollback:
   subject: "🚨 Helios Service Emergency Rollback"
   message: |
     We've detected issues with the Helios system and have initiated an emergency rollback.
-    
+
     Current Status:
     - Profile Ingestor: ✅ Available (safe mode)
     - Advanced Features: ⏸️ Temporarily disabled
-    
+
     Expected Resolution: Within 30 minutes
     We'll notify you when all services are restored.
 
@@ -370,11 +370,11 @@ planned_rollback:
   subject: "🔄 Helios Service Rollback - Planned Maintenance"
   message: |
     We're rolling back recent changes to ensure optimal performance.
-    
+
     Services Affected:
     - Career Path Generation (Strategist)
     - Market Analysis (Analyst)
-    
+
     Core functionality remains available.
     Estimated completion: 15 minutes
 ```
@@ -385,16 +385,16 @@ rollback_alert:
   channels: ["#helios-alerts", "#engineering"]
   message: |
     🚨 HELIOS ROLLBACK INITIATED
-    
+
     Trigger: {rollback_trigger}
     Services Affected: {affected_services}
     Rollback Initiated By: {operator}
-    
+
     Actions Taken:
     - Services stopped
     - Fallback mode enabled
     - Data integrity verified
-    
+
     Next Steps:
     - Monitor service health
     - Investigate root cause
@@ -410,18 +410,18 @@ rollback_alert:
 # Collect rollback diagnostics
 collect_rollback_diagnostics() {
     echo "📊 Collecting rollback diagnostics..."
-    
+
     # Service logs
     docker-compose logs orchestrator > logs/rollback_orchestrator.log
     docker-compose logs strategist > logs/rollback_strategist.log
     docker-compose logs analyst > logs/rollback_analyst.log
-    
+
     # System metrics
     python scripts/diagnostics/collect_metrics.py --rollback-mode
-    
+
     # Error analysis
     python scripts/diagnostics/analyze_errors.py --since-rollback
-    
+
     echo "✅ Diagnostics collected in logs/"
 }
 ```
@@ -431,16 +431,16 @@ collect_rollback_diagnostics() {
 # Plan service restoration
 plan_restoration() {
     echo "📋 Planning service restoration..."
-    
+
     # Analyze failure cause
     python scripts/analysis/analyze_failure.py
-    
+
     # Generate restoration plan
     python scripts/planning/generate_restoration_plan.py
-    
+
     # Test restoration in staging
     ./scripts/testing/test_restoration_plan.sh
-    
+
     echo "✅ Restoration plan generated"
 }
 ```
@@ -476,15 +476,15 @@ echo "✅ Rollback drill completed successfully"
 # Measure rollback performance
 measure_rollback_time() {
     local start_time=$(date +%s)
-    
+
     # Execute rollback
     ./scripts/rollback/emergency_rollback.sh
-    
+
     local end_time=$(date +%s)
     local duration=$((end_time - start_time))
-    
+
     echo "⏱️  Rollback completed in $duration seconds"
-    
+
     # Record metrics
     echo "$duration" >> metrics/rollback_times.log
 }
@@ -496,7 +496,7 @@ measure_rollback_time() {
 
 ### 8.1 Service-Level Success
 - [ ] Service starts successfully
-- [ ] All imports functional  
+- [ ] All imports functional
 - [ ] Health checks pass
 - [ ] Core functionality available
 - [ ] Performance within 90% of baseline

@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>components.ingestion - profile-ingestor</title>
+    <style>
+        body { font-family: Arial, sans-serif; margin: 40px; background: #f8f9fa; }
+        .container { max-width: 1200px; margin: 0 auto; background: white; padding: 30px; border-radius: 8px; box-shadow: 0 2px 10px rgba(0,0,0,0.1); }
+        .header { background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; padding: 20px; border-radius: 5px; margin-bottom: 30px; }
+        .section { margin: 20px 0; padding: 20px; border-left: 4px solid #667eea; background: #f8f9ff; }
+        .docstring { background: #fff; padding: 15px; border-radius: 5px; border: 1px solid #e0e0e0; margin: 10px 0; white-space: pre-wrap; }
+        .nav { margin-bottom: 20px; }
+        .nav a { color: #667eea; text-decoration: none; margin-right: 20px; }
+        .nav a:hover { text-decoration: underline; }
+        h1, h2, h3 { color: #333; }
+        .module-path { color: #666; font-style: italic; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>components.ingestion</h1>
+            <p class="module-path">Service: profile-ingestor • Path: components\ingestion.py</p>
+        </div>
+
+        <div class="nav">
+            <a href="../index.html">← Back to API Index</a>
+            <a href="../profile-ingestor/index.html">← profile-ingestor Overview</a>
+        </div>
+
+        <div class="section">
+            <h2>Module Description</h2>
+            <div class="docstring">File ingestion and language detection components.</div>
+        </div>
+
+        <div class="section">
+            <h2>Classes</h2>
+
+            <h3>FileHandler</h3>
+            <div class="docstring">Abstract base class for file handlers using Strategy pattern.</div>
+
+            <h3>PDFHandler</h3>
+            <div class="docstring">Handle PDF file text extraction.</div>
+
+            <h3>DOCXHandler</h3>
+            <div class="docstring">Handle DOCX file text extraction.</div>
+
+            <h3>MarkdownHandler</h3>
+            <div class="docstring">Handle Markdown file text extraction.</div>
+
+            <h3>TextHandler</h3>
+            <div class="docstring">Handle plain text file extraction.</div>
+
+            <h3>YAMLHandler</h3>
+            <div class="docstring">Handle YAML file text extraction.</div>
+
+            <h3>JSONHandler</h3>
+            <div class="docstring">Handle JSON file text extraction.</div>
+
+            <h3>LanguageDetector</h3>
+            <div class="docstring">Detect language of text content.</div>
+
+            <h3>IngestionEngine</h3>
+            <div class="docstring">Main engine for file ingestion and processing.</div>
+        </div>
+        <div class="section">
+            <h2>Functions</h2>
+
+            <h3>extract_text()</h3>
+            <div class="docstring">Extract text from JSON file by flattening structure.</div>
+
+            <h3>_extract_text_from_ast()</h3>
+            <div class="docstring">Recursively extract text from markdown AST.</div>
+
+            <h3>_yaml_to_text()</h3>
+            <div class="docstring">Convert YAML data structure to readable text.</div>
+
+            <h3>_json_to_text()</h3>
+            <div class="docstring">Flatten JSON structure to readable text.</div>
+
+            <h3>detect_language()</h3>
+            <div class="docstring">Detect language of text content.
+
+Args:
+    text: Input text to analyze
+
+Returns:
+    'en' for English, 'fr' for French, 'en' as default</div>
+
+            <h3>ingest_files()</h3>
+            <div class="docstring">Read all supported files from directory and detect languages.
+
+Args:
+    directory_path: Path to directory containing resume files
+
+Returns:
+    List of Document objects with content and metadata</div>
+
+            <h3>_read_file()</h3>
+            <div class="docstring">Read and process a single file using appropriate handler.
+
+Args:
+    file_path: Path to the file to process
+
+Returns:
+    Document object or None if processing failed</div>
+        </div>
+    </div>
+</body>
+</html>

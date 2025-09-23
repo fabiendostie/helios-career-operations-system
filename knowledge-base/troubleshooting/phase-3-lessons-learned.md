@@ -1,7 +1,7 @@
 # BMAD Phase 3 & 4 - Lessons Learned & Troubleshooting Guide
 
-**Generated**: September 6, 2025  
-**Phase Scope**: Docker Production Infrastructure (Phase 3) + BMAD Compliance (Phase 4)  
+**Generated**: September 6, 2025
+**Phase Scope**: Docker Production Infrastructure (Phase 3) + BMAD Compliance (Phase 4)
 **Purpose**: Comprehensive troubleshooting guide for future development
 
 ---
@@ -62,7 +62,7 @@ RUN python -c "from sentence_transformers import SentenceTransformer; SentenceTr
 # WRONG (in story docs)
 status: "CRITICAL FAIL - Cannot import, 0/45 tests runnable"
 
-# ACTUAL REALITY (verified)  
+# ACTUAL REALITY (verified)
 status: "OPERATIONAL - Import successful, ML models loaded"
 ```
 
@@ -71,7 +71,7 @@ status: "OPERATIONAL - Import successful, ML models loaded"
 # ALWAYS verify before claiming status
 def verify_service_status(service_name):
     try:
-        import_result = subprocess.run([sys.executable, "-c", f"import {service_name}.main"], 
+        import_result = subprocess.run([sys.executable, "-c", f"import {service_name}.main"],
                                      capture_output=True, text=True)
         return import_result.returncode == 0
     except Exception:
@@ -99,7 +99,7 @@ cd services/strategist && python -c "import src.main"
 # 1. Verify correct environment
 which python  # Should point to project virtual environment
 
-# 2. Clear import cache  
+# 2. Clear import cache
 python -c "import sys; sys.path_importer_cache.clear()"
 
 # 3. Test with full path
@@ -117,7 +117,7 @@ try:
     from sentence_transformers import SentenceTransformer
     model = SentenceTransformer('all-MiniLM-L6-v2')
     print(f"✅ Model loaded: {model}")
-    
+
     # Test embedding generation
     test_embedding = model.encode("test skill")
     print(f"✅ Embedding generated: shape {test_embedding.shape}")
@@ -174,7 +174,7 @@ cd services/[service_name]
 which python
 pip list | grep -E "(fastapi|spacy|sentence-transformers)"
 
-# 2. Import test  
+# 2. Import test
 python -c "import src.main; print('Import successful')"
 
 # 3. FastAPI test
@@ -205,7 +205,7 @@ pip install -r requirements.txt
 # 3. Verify critical packages
 python -c "
 import fastapi; print(f'FastAPI: {fastapi.__version__}')
-import spacy; print(f'spaCy: {spacy.__version__}') 
+import spacy; print(f'spaCy: {spacy.__version__}')
 try:
     import sentence_transformers; print(f'sentence-transformers: {sentence_transformers.__version__}')
 except ImportError:
@@ -259,7 +259,7 @@ print(f'Loaded {len(data.get(\"roles\", []))} roles')
 
 **Common Problems**:
 1. **spaCy model loading failures**
-2. **scikit-learn import errors**  
+2. **scikit-learn import errors**
 3. **6-step pipeline initialization failures**
 
 **Solutions**:
@@ -310,7 +310,7 @@ async def get_session():
 ### Verification Script Usage
 
 ```bash
-# Full system health check  
+# Full system health check
 python bmad-core/scripts/verify-service-status.py
 
 # Individual service deep dive
@@ -366,8 +366,8 @@ os.environ['HF_HOME'] = '/app/models'
 class LazyModel:
     def __init__(self):
         self._model = None
-    
-    @property  
+
+    @property
     def model(self):
         if self._model is None:
             from sentence_transformers import SentenceTransformer
@@ -415,29 +415,29 @@ echo "All services verified ✅"
 ## ⚠️ Critical Warnings for Future Development
 
 ### 1. Never Trust Documentation Over Verification
-**Problem**: Documentation claims can become outdated or inverted.  
+**Problem**: Documentation claims can become outdated or inverted.
 **Solution**: Always run verification scripts before believing status claims.
 
-### 2. Environment Consistency is Critical  
-**Problem**: Different Python environments cause inconsistent behavior.  
+### 2. Environment Consistency is Critical
+**Problem**: Different Python environments cause inconsistent behavior.
 **Solution**: Use virtual environments and document exact dependency versions.
 
 ### 3. ML Model Dependencies are Fragile
-**Problem**: Large models fail in unpredictable ways (network, memory, cache).  
+**Problem**: Large models fail in unpredictable ways (network, memory, cache).
 **Solution**: Implement robust retry logic and fallback mechanisms.
 
 ### 4. Windows/Unix Path Differences
-**Problem**: Path handling differs between development environments.  
+**Problem**: Path handling differs between development environments.
 **Solution**: Use `pathlib.Path` for all file operations.
 
 ---
 
 ## 🎉 Phase 4 Success Metrics Achieved
 
-✅ **Documentation-Reality Alignment**: 100% - All claims verified against actual functionality  
-✅ **Verification Automation**: Complete scripts for ongoing validation implemented  
-✅ **Quality Gates**: Automated testing and health checking operational  
-✅ **Troubleshooting Documentation**: Comprehensive guide for common issues created  
+✅ **Documentation-Reality Alignment**: 100% - All claims verified against actual functionality
+✅ **Verification Automation**: Complete scripts for ongoing validation implemented
+✅ **Quality Gates**: Automated testing and health checking operational
+✅ **Troubleshooting Documentation**: Comprehensive guide for common issues created
 
 **PHASE 4 COMPLETE**: System ready for integration testing with verified foundational services.
 

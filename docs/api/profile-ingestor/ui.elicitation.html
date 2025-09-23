@@ -1,69 +1,100 @@
 <!DOCTYPE html>
-<html lang="en">
+<html>
 <head>
-<meta charset="utf-8">
-<title>Python: module ui.elicitation</title>
-</head><body>
+    <title>ui.elicitation - profile-ingestor</title>
+    <style>
+        body { font-family: Arial, sans-serif; margin: 40px; background: #f8f9fa; }
+        .container { max-width: 1200px; margin: 0 auto; background: white; padding: 30px; border-radius: 8px; box-shadow: 0 2px 10px rgba(0,0,0,0.1); }
+        .header { background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; padding: 20px; border-radius: 5px; margin-bottom: 30px; }
+        .section { margin: 20px 0; padding: 20px; border-left: 4px solid #667eea; background: #f8f9ff; }
+        .docstring { background: #fff; padding: 15px; border-radius: 5px; border: 1px solid #e0e0e0; margin: 10px 0; white-space: pre-wrap; }
+        .nav { margin-bottom: 20px; }
+        .nav a { color: #667eea; text-decoration: none; margin-right: 20px; }
+        .nav a:hover { text-decoration: underline; }
+        h1, h2, h3 { color: #333; }
+        .module-path { color: #666; font-style: italic; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>ui.elicitation</h1>
+            <p class="module-path">Service: profile-ingestor • Path: ui\elicitation.py</p>
+        </div>
 
-<table class="heading">
-<tr class="heading-text decor">
-<td class="title">&nbsp;<br><strong class="title"><a href="ui.html" class="white">ui</a>.elicitation</strong></td>
-<td class="extra"><a href=".">index</a><br><a href="file:c%3A%5Cusers%5Cfabie%5Cdocuments%5Cprompt_engineering%5Cjob%20seeking%5Chelios-career-operations-system%5Cservices%5Cprofile-ingestor%5Csrc%5Cui%5Celicitation.py">c:\users\fabie\documents\prompt_engineering\job seeking\helios-career-operations-system\services\profile-ingestor\src\ui\elicitation.py</a></td></tr></table>
-    <p><span class="code">Interactive&nbsp;elicitation&nbsp;UI&nbsp;for&nbsp;gathering&nbsp;additional&nbsp;qualitative&nbsp;data.</span></p>
-<p>
-<table class="section">
-<tr class="decor pkg-content-decor heading-text">
-<td class="section-title" colspan=3>&nbsp;<br><strong class="bigsection">Modules</strong></td></tr>
-    
-<tr><td class="decor pkg-content-decor"><span class="code">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span></td><td>&nbsp;</td>
-<td class="singlecolumn"><table><tr><td class="multicolumn"><a href="logging.html">logging</a><br>
-</td><td class="multicolumn"><a href="pickle.html">pickle</a><br>
-</td><td class="multicolumn"><a href="questionary.html">questionary</a><br>
-</td><td class="multicolumn"></td></tr></table></td></tr></table><p>
-<table class="section">
-<tr class="decor index-decor heading-text">
-<td class="section-title" colspan=3>&nbsp;<br><strong class="bigsection">Classes</strong></td></tr>
-    
-<tr><td class="decor index-decor"><span class="code">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span></td><td>&nbsp;</td>
-<td class="singlecolumn"><dl>
-<dt class="heading-text"><a href="builtins.html#object">builtins.object</a>
-</dt><dd>
-<dl>
-<dt class="heading-text"><a href="ui.elicitation.html#ElicitationUI">ElicitationUI</a>
-</dt></dl>
-</dd>
-</dl>
- <p>
-<table class="section">
-<tr class="decor title-decor heading-text">
-<td class="section-title" colspan=3>&nbsp;<br><a name="ElicitationUI">class <strong>ElicitationUI</strong></a>(<a href="builtins.html#object">builtins.object</a>)</td></tr>
-    
-<tr><td class="decor title-decor" rowspan=2><span class="code">&nbsp;&nbsp;&nbsp;</span></td>
-<td class="decor title-decor" colspan=2><span class="code">Interactive&nbsp;UI&nbsp;for&nbsp;gathering&nbsp;additional&nbsp;career&nbsp;information.<br>&nbsp;</span></td></tr>
-<tr><td>&nbsp;</td>
-<td class="singlecolumn">Methods defined here:<br>
-<dl><dt><a name="ElicitationUI-__init__"><strong>__init__</strong></a>(self)</dt><dd><span class="code">Initialize&nbsp;elicitation&nbsp;UI.</span></dd></dl>
+        <div class="nav">
+            <a href="../index.html">← Back to API Index</a>
+            <a href="../profile-ingestor/index.html">← profile-ingestor Overview</a>
+        </div>
 
-<dl><dt><a name="ElicitationUI-conduct_interview"><strong>conduct_interview</strong></a>(self, existing_data: Dict[str, Any]) -&gt; Dict[str, Any]</dt><dd><span class="code">Conduct&nbsp;the&nbsp;full&nbsp;elicitation&nbsp;interview.</span></dd></dl>
+        <div class="section">
+            <h2>Module Description</h2>
+            <div class="docstring">Interactive elicitation UI for gathering additional qualitative data.</div>
+        </div>
 
-<dl><dt><a name="ElicitationUI-gather_additional_info"><strong>gather_additional_info</strong></a>(self, data: Dict[str, Any]) -&gt; Dict[str, Any]</dt><dd><span class="code">Legacy&nbsp;method&nbsp;-&nbsp;redirect&nbsp;to&nbsp;new&nbsp;interview&nbsp;system.</span></dd></dl>
+        <div class="section">
+            <h2>Classes</h2>
 
-<hr>
-Data descriptors defined here:<br>
-<dl><dt><strong>__dict__</strong></dt>
-<dd><span class="code">dictionary&nbsp;for&nbsp;instance&nbsp;variables</span></dd>
-</dl>
-<dl><dt><strong>__weakref__</strong></dt>
-<dd><span class="code">list&nbsp;of&nbsp;weak&nbsp;references&nbsp;to&nbsp;the&nbsp;object</span></dd>
-</dl>
-</td></tr></table></td></tr></table><p>
-<table class="section">
-<tr class="decor data-decor heading-text">
-<td class="section-title" colspan=3>&nbsp;<br><strong class="bigsection">Data</strong></td></tr>
-    
-<tr><td class="decor data-decor"><span class="code">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span></td><td>&nbsp;</td>
-<td class="singlecolumn"><strong>Dict</strong> = typing.Dict<br>
-<strong>List</strong> = typing.List<br>
-<strong>Optional</strong> = typing.Optional<br>
-<strong>logger</strong> = &lt;Logger ui.elicitation (WARNING)&gt;</td></tr></table>
-</body></html>
+            <h3>ElicitationUI</h3>
+            <div class="docstring">Interactive UI for gathering additional career information.</div>
+        </div>
+        <div class="section">
+            <h2>Functions</h2>
+
+            <h3>__init__()</h3>
+            <div class="docstring">Initialize elicitation UI.</div>
+
+            <h3>conduct_interview()</h3>
+            <div class="docstring">Conduct the full elicitation interview.</div>
+
+            <h3>_show_welcome_message()</h3>
+            <div class="docstring">Display welcome message and instructions.</div>
+
+            <h3>_elicit_transversal_projects()</h3>
+            <div class="docstring">Gather information about side projects and initiatives.</div>
+
+            <h3>_get_project_details()</h3>
+            <div class="docstring">Get details for a single project.</div>
+
+            <h3>_display_captured_project()</h3>
+            <div class="docstring">Display what was captured for a project.</div>
+
+            <h3>_elicit_aspirations()</h3>
+            <div class="docstring">Gather career goals and aspirations.</div>
+
+            <h3>_suggest_roles_from_data()</h3>
+            <div class="docstring">Generate role suggestions based on parsed work experience.</div>
+
+            <h3>_elicit_motivators()</h3>
+            <div class="docstring">Identify what drives the user professionally.</div>
+
+            <h3>_elicit_qualities()</h3>
+            <div class="docstring">Capture personal qualities and soft skills.</div>
+
+            <h3>_add_custom_qualities()</h3>
+            <div class="docstring">Add custom personal qualities.</div>
+
+            <h3>_get_multiline_input()</h3>
+            <div class="docstring">Get multi-line text input from user.</div>
+
+            <h3>_get_list_input()</h3>
+            <div class="docstring">Get a list of items from user.</div>
+
+            <h3>_show_completion_summary()</h3>
+            <div class="docstring">Display a summary of what was captured.</div>
+
+            <h3>_save_progress()</h3>
+            <div class="docstring">Save interview progress for recovery.</div>
+
+            <h3>_load_progress()</h3>
+            <div class="docstring">Load previous interview progress if available.</div>
+
+            <h3>_cleanup_progress()</h3>
+            <div class="docstring">Remove progress file after successful completion.</div>
+
+            <h3>gather_additional_info()</h3>
+            <div class="docstring">Legacy method - redirect to new interview system.</div>
+        </div>
+    </div>
+</body>
+</html>

@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>core.session_manager - orchestrator</title>
+    <style>
+        body { font-family: Arial, sans-serif; margin: 40px; background: #f8f9fa; }
+        .container { max-width: 1200px; margin: 0 auto; background: white; padding: 30px; border-radius: 8px; box-shadow: 0 2px 10px rgba(0,0,0,0.1); }
+        .header { background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; padding: 20px; border-radius: 5px; margin-bottom: 30px; }
+        .section { margin: 20px 0; padding: 20px; border-left: 4px solid #667eea; background: #f8f9ff; }
+        .docstring { background: #fff; padding: 15px; border-radius: 5px; border: 1px solid #e0e0e0; margin: 10px 0; white-space: pre-wrap; }
+        .nav { margin-bottom: 20px; }
+        .nav a { color: #667eea; text-decoration: none; margin-right: 20px; }
+        .nav a:hover { text-decoration: underline; }
+        h1, h2, h3 { color: #333; }
+        .module-path { color: #666; font-style: italic; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>core.session_manager</h1>
+            <p class="module-path">Service: orchestrator • Path: core\session_manager.py</p>
+        </div>
+
+        <div class="nav">
+            <a href="../index.html">← Back to API Index</a>
+            <a href="../orchestrator/index.html">← orchestrator Overview</a>
+        </div>
+
+        <div class="section">
+            <h2>Module Description</h2>
+            <div class="docstring">Session management service layer.</div>
+        </div>
+
+        <div class="section">
+            <h2>Classes</h2>
+
+            <h3>SessionManager</h3>
+            <div class="docstring">High-level session management operations.</div>
+        </div>
+        <div class="section">
+            <h2>Functions</h2>
+
+            <h3>__init__()</h3>
+            <div class="docstring">Initialize with session repository.
+
+Args:
+    repository: Session database repository</div>
+
+            <h3>async create_session()</h3>
+            <div class="docstring">Create a new session.
+
+Args:
+    session_data: Session creation data
+
+Returns:
+    Created session response</div>
+
+            <h3>async get_session()</h3>
+            <div class="docstring">Get session by ID.
+
+Args:
+    session_id: Session identifier
+
+Returns:
+    Session response or None if not found</div>
+
+            <h3>async update_session()</h3>
+            <div class="docstring">Update session data.
+
+Args:
+    session_id: Session identifier
+    updates: Fields to update
+
+Returns:
+    Updated session or None if not found</div>
+
+            <h3>async delete_session()</h3>
+            <div class="docstring">Delete session.
+
+Args:
+    session_id: Session identifier
+
+Returns:
+    True if deleted, False if not found</div>
+
+            <h3>async list_sessions()</h3>
+            <div class="docstring">List sessions with optional filtering.
+
+Args:
+    user_id: Filter by user ID
+    state: Filter by session state
+    limit: Maximum results
+    offset: Results to skip
+
+Returns:
+    List of session summaries</div>
+
+            <h3>async add_command_to_history()</h3>
+            <div class="docstring">Add command to session history.
+
+Args:
+    session_id: Session identifier
+    command: Command data to add
+
+Returns:
+    Updated session or None if not found</div>
+
+            <h3>async update_career_database()</h3>
+            <div class="docstring">Update master career database for session.
+
+Args:
+    session_id: Session identifier
+    career_data: Career database data
+
+Returns:
+    Updated session or None if not found</div>
+
+            <h3>async transition_state()</h3>
+            <div class="docstring">Transition session to new state and optionally new step.
+
+Args:
+    session_id: Session identifier
+    new_state: New session state
+    new_step: Optional new current step
+
+Returns:
+    Updated session or None if not found</div>
+
+            <h3>async extend_session()</h3>
+            <div class="docstring">Extend session expiration time.
+
+Args:
+    session_id: Session identifier
+    minutes: Minutes to extend (default from settings)
+
+Returns:
+    Updated session or None if not found</div>
+
+            <h3>async cleanup_expired_sessions()</h3>
+            <div class="docstring">Clean up expired sessions.
+
+Returns:
+    Number of sessions cleaned up</div>
+
+            <h3>async _db_session_to_response()</h3>
+            <div class="docstring">Convert database session to response model.
+
+Args:
+    db_session: Database session object
+
+Returns:
+    Session response model</div>
+
+            <h3>async _db_session_to_summary()</h3>
+            <div class="docstring">Convert database session to summary model.
+
+Args:
+    db_session: Database session object
+
+Returns:
+    Session summary model</div>
+        </div>
+    </div>
+</body>
+</html>

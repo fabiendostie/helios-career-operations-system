@@ -1,0 +1,192 @@
+#!/bin/bash
+#
+# Enhanced Post-Commit Hook for BMAD Automation
+# Automatically updates BMAD tracking, generates reports, and maintains documentation
+#
+
+set -e
+
+# Colors for output
+RED='\033[0;31m'
+GREEN='\033[0;32m'
+YELLOW='\033[1;33m'
+BLUE='\033[0;34m'
+NC='\033[0m' # No Color
+
+# Project root directory
+PROJECT_ROOT="$(git rev-parse --show-toplevel)"
+
+# Function to log with timestamp
+log_message() {
+    echo "[$(date '+%Y-%m-%d %H:%M:%S')] POST-COMMIT-BMAD: $1" >> "$PROJECT_ROOT/.git/hooks.log"
+}
+
+# Function to check if Python is available
+check_python() {
+    # Check Windows Python locations first
+    if [ -f "/c/Users/fabie/AppData/Local/Programs/Python/Python313/python.exe" ]; then
+        echo "/c/Users/fabie/AppData/Local/Programs/Python/Python313/python.exe"
+    elif command -v python3 &> /dev/null; then
+        echo "python3"
+    elif command -v python &> /dev/null; then
+        echo "python"
+    elif [ -f "/c/Python313/python.exe" ]; then
+        echo "/c/Python313/python.exe"
+    else
+        return 1
+    fi
+}
+
+echo -e "${BLUE}🤖 BMAD Post-Commit Automation${NC}"
+echo -e "${BLUE}==============================${NC}"
+
+log_message "Starting BMAD post-commit automation"
+
+# Get the current commit hash
+COMMIT_HASH=$(git rev-parse HEAD)
+COMMIT_MESSAGE=$(git log -1 --pretty=%B)
+
+echo -e "${BLUE}📊 Processing commit: ${COMMIT_HASH:0:8}${NC}"
+
+# Get Python command
+PYTHON_CMD=$(check_python)
+if [ $? -ne 0 ]; then
+    echo -e "${YELLOW}⚠️ Python not found, skipping Python-based automation${NC}"
+    log_message "Python not found, skipping Python-based automation"
+    exit 0
+fi
+
+cd "$PROJECT_ROOT"
+
+# Step 1: Update BMAD progress based on commit
+echo -e "${BLUE}📈 Step 1: Analyzing commit for BMAD progress updates...${NC}"
+SERVICES_CHANGED=$(git diff-tree --no-commit-id --name-only -r $COMMIT_HASH | grep "^services/" | cut -d'/' -f2 | sort -u)
+
+if [ ! -z "$SERVICES_CHANGED" ]; then
+    echo -e "${GREEN}✅ Detected changes in services: $(echo $SERVICES_CHANGED | tr '\n' ' ')${NC}"
+    log_message "Services changed in commit: $SERVICES_CHANGED"
+
+    # Update progress tracking for changed services
+    if [ -f "scripts/automation/auto_progress_tracker.py" ]; then
+        $PYTHON_CMD scripts/automation/auto_progress_tracker.py --commit=$COMMIT_HASH
+        log_message "Progress tracking updated for commit $COMMIT_HASH"
+    fi
+
+    # Check if this completes any phase
+    PHASE_COMPLETED=$(echo "$COMMIT_MESSAGE" | grep -i "phase.*complete" || true)
+    if [ ! -z "$PHASE_COMPLETED" ]; then
+        echo -e "${GREEN}🎉 Phase completion detected!${NC}"
+        log_message "Phase completion detected in commit message"
+
+        # Generate phase completion report
+        if [ -f "bmad-progress/generate_phase_report.py" ]; then
+            $PYTHON_CMD bmad-progress/generate_phase_report.py --commit=$COMMIT_HASH
+        fi
+    fi
+else
+    echo -e "${BLUE}ℹ️ No service changes detected${NC}"
+    log_message "No service changes detected in commit"
+fi
+
+# Step 2: Update epic and story tracking
+echo -e "${BLUE}📋 Step 2: Updating epic and story tracking...${NC}"
+EPIC_CHANGES=$(git diff-tree --no-commit-id --name-only -r $COMMIT_HASH | grep -E "(epic|story|backlog)" | wc -l)
+
+if [ "$EPIC_CHANGES" -gt 0 ]; then
+    echo -e "${GREEN}✅ Epic/story documentation updated${NC}"
+    log_message "Epic/story documentation updated in commit"
+
+    # Validate BMAD documentation consistency
+    if [ -f "scripts/bmad/validate_documentation.py" ]; then
+        $PYTHON_CMD scripts/bmad/validate_documentation.py --commit=$COMMIT_HASH
+        log_message "BMAD documentation validation completed"
+    fi
+fi
+
+# Step 3: Generate automatic README updates
+echo -e "${BLUE}📄 Step 3: Checking if README needs regeneration...${NC}"
+README_CHANGED=$(git diff-tree --no-commit-id --name-only -r $COMMIT_HASH | grep "README.md" | wc -l)
+
+if [ "$README_CHANGED" -eq 0 ] && [ ! -z "$SERVICES_CHANGED" ]; then
+    echo -e "${YELLOW}📝 Services changed but README not updated, auto-generating...${NC}"
+
+    if [ -f "scripts/automation/auto_documentation_generator.py" ]; then
+        $PYTHON_CMD scripts/automation/auto_documentation_generator.py
+
+        # If README was updated, create a follow-up commit
+        if [ -n "$(git status --porcelain README.md 2>/dev/null)" ]; then
+            git add README.md CHANGELOG.md 2>/dev/null || true
+            git commit -m "docs: auto-update README and changelog after service changes
+
+🤖 Generated with [Claude Code](https://claude.ai/code)
+
+Co-Authored-By: Claude <noreply@anthropic.com>" 2>/dev/null || true
+            echo -e "${GREEN}✅ README auto-updated in follow-up commit${NC}"
+            log_message "README auto-updated in follow-up commit"
+        fi
+    fi
+fi
+
+# Step 4: Security analysis (run original post-commit hook)
+echo -e "${BLUE}🔍 Step 4: Running security analysis...${NC}"
+SECURITY_HOOK="$PROJECT_ROOT/.githooks/post-commit"
+if [ -f "$SECURITY_HOOK" ] && [ "$SECURITY_HOOK" != "$0" ]; then
+    bash "$SECURITY_HOOK" 2>/dev/null || echo -e "${YELLOW}⚠️ Security analysis completed with warnings${NC}"
+    log_message "Security analysis completed"
+fi
+
+# Step 5: Generate test coverage reports for changed services
+echo -e "${BLUE}🧪 Step 5: Updating test coverage for changed services...${NC}"
+if [ ! -z "$SERVICES_CHANGED" ]; then
+    for service in $SERVICES_CHANGED; do
+        SERVICE_PATH="$PROJECT_ROOT/services/$service"
+        if [ -d "$SERVICE_PATH" ] && [ -f "$SERVICE_PATH/requirements.txt" ]; then
+            echo -e "${BLUE}   Checking coverage for $service...${NC}"
+
+            # Run tests and update coverage if pytest is available
+            if command -v pytest &> /dev/null; then
+                cd "$SERVICE_PATH"
+                if pytest --cov=. --cov-report=json:coverage.json 2>/dev/null; then
+                    echo -e "${GREEN}   ✅ Coverage updated for $service${NC}"
+                    log_message "Test coverage updated for $service"
+                else
+                    echo -e "${YELLOW}   ⚠️ Coverage check failed for $service${NC}"
+                    log_message "Test coverage check failed for $service"
+                fi
+                cd "$PROJECT_ROOT"
+            fi
+        fi
+    done
+fi
+
+# Step 6: Update BMAD agent status
+echo -e "${BLUE}🎯 Step 6: Updating BMAD agent status...${NC}"
+if [ -f "bmad-core/scripts/update_agent_status.py" ]; then
+    $PYTHON_CMD bmad-core/scripts/update_agent_status.py --commit=$COMMIT_HASH
+    log_message "BMAD agent status updated"
+else
+    echo -e "${YELLOW}⚠️ BMAD agent status updater not found${NC}"
+fi
+
+# Step 7: Generate completion summary
+echo -e "${BLUE}📊 Step 7: Generating BMAD automation summary...${NC}"
+
+# Load current progress
+PROGRESS_FILE="$PROJECT_ROOT/bmad-progress/progress-log.json"
+if [ -f "$PROGRESS_FILE" ]; then
+    CURRENT_PROGRESS=$(python3 -c "import json; data=json.load(open('$PROGRESS_FILE')); print(f\"{data.get('overall_progress', 0)}%\")" 2>/dev/null || echo "Unknown")
+    CURRENT_PHASE=$(python3 -c "import json; data=json.load(open('$PROGRESS_FILE')); print(data.get('current_phase', 'Unknown'))" 2>/dev/null || echo "Unknown")
+
+    echo -e "${GREEN}✅ BMAD Post-Commit Automation Complete${NC}"
+    echo -e "${BLUE}   Current Progress: $CURRENT_PROGRESS${NC}"
+    echo -e "${BLUE}   Current Phase: $CURRENT_PHASE${NC}"
+    echo -e "${BLUE}   Commit: ${COMMIT_HASH:0:8}${NC}"
+
+    log_message "BMAD post-commit automation completed - Progress: $CURRENT_PROGRESS, Phase: $CURRENT_PHASE"
+else
+    echo -e "${YELLOW}⚠️ Could not read progress data${NC}"
+fi
+
+echo -e "${BLUE}==============================${NC}"
+
+exit 0

@@ -22,7 +22,7 @@ logger = get_logger("main")
 
 def create_app() -> FastAPI:
     """Create and configure the FastAPI application."""
-    
+
     app = FastAPI(
         title=settings.app_name,
         description="AI-powered Career Operations System - Central orchestration service",
@@ -31,7 +31,7 @@ def create_app() -> FastAPI:
         docs_url=settings.docs_url,
         redoc_url=settings.redoc_url,
     )
-    
+
     # Configure CORS
     app.add_middleware(
         CORSMiddleware,
@@ -40,14 +40,14 @@ def create_app() -> FastAPI:
         allow_methods=["*"],
         allow_headers=["*"],
     )
-    
+
     # Add correlation ID and logging middleware
     @app.middleware("http")
     async def add_correlation_id(request: Request, call_next):
         """Add correlation ID to all requests for tracing and logging."""
         correlation_id = request.headers.get("X-Correlation-ID", str(uuid.uuid4()))
         correlation_id_var.set(correlation_id)
-        
+
         # Log incoming request
         logger.info(
             "Incoming request",
@@ -57,12 +57,12 @@ def create_app() -> FastAPI:
                 "client": request.client.host if request.client else "unknown"
             }
         )
-        
+
         # Process request
         start_time = time.time()
         response = await call_next(request)
         process_time = time.time() - start_time
-        
+
         # Log response
         logger.info(
             "Request completed",
@@ -73,11 +73,11 @@ def create_app() -> FastAPI:
                 "process_time": round(process_time, 4)
             }
         )
-        
+
         # Add correlation ID to response headers
         response.headers["X-Correlation-ID"] = correlation_id
         return response
-    
+
     # Root endpoint - basic health check
     @app.get("/", tags=["root"])
     async def read_root():
@@ -88,13 +88,13 @@ def create_app() -> FastAPI:
             "status": "operational",
             "message": "HELIOS Orchestrator is running"
         }
-    
+
     # Include API routers
     app.include_router(health.router, prefix="/health", tags=["health"])
     app.include_router(sessions.router, prefix="/sessions", tags=["sessions"])
     app.include_router(commands.router, prefix="/commands", tags=["commands"])
     app.include_router(pipeline.router, tags=["pipeline"])
-    
+
     # Application lifecycle events
     @app.on_event("startup")
     async def startup_event():
@@ -102,26 +102,26 @@ def create_app() -> FastAPI:
         logger.info("Initializing database...")
         await db_manager.initialize()
         logger.info("Database initialized successfully")
-        
+
         logger.info("Starting background tasks...")
         await background_tasks.start()
         logger.info("Background tasks started successfully")
-    
+
     @app.on_event("shutdown")
     async def shutdown_event():
         """Stop background tasks and close all connections on shutdown."""
         logger.info("Stopping background tasks...")
         await background_tasks.stop()
         logger.info("Background tasks stopped")
-        
+
         logger.info("Closing Profile Ingestor client...")
         await close_profile_ingestor_client()
         logger.info("Profile Ingestor client closed")
-        
+
         logger.info("Closing database connections...")
         await db_manager.close()
         logger.info("Database connections closed")
-    
+
     return app
 
 

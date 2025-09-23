@@ -83,7 +83,7 @@ python tests/test_pipeline.py --smoke-test
 #### Data Recovery
 ```sql
 -- Restore user profiles from backup
-COPY user_profiles FROM '/backup/profile-ingestor/latest/master_career_database.json' 
+COPY user_profiles FROM '/backup/profile-ingestor/latest/master_career_database.json'
 WITH (FORMAT json);
 ```
 
@@ -140,11 +140,11 @@ def restore_sessions(backup_file):
     """Restore user sessions after rollback"""
     with open(backup_file) as f:
         sessions = json.load(f)
-    
+
     r = redis.Redis(host='localhost', port=6379)
     for session in sessions:
         r.hset(f"session:{session['id']}", mapping=session)
-        
+
     # Update database
     engine = create_engine('sqlite:///sessions.db')
     # ... restoration logic
@@ -283,15 +283,15 @@ flags:
   profile_ingestor:
     new_nlp_pipeline: false
     enhanced_validation: false
-    
+
   orchestrator:
     new_command_parser: false
     async_processing: true
-    
+
   strategist:
     ml_v2_models: false
     expanded_taxonomy: false
-    
+
   analyst:
     advanced_ner: false
     market_api_v2: false
@@ -303,14 +303,14 @@ flags:
 class FeatureFlagManager:
     def __init__(self):
         self.flags = self.load_flags()
-    
+
     def is_enabled(self, feature: str) -> bool:
         return self.flags.get(feature, False)
-    
+
     def toggle(self, feature: str, enabled: bool):
         self.flags[feature] = enabled
         self.persist_flags()
-        
+
     def rollback_all(self):
         """Disable all experimental features"""
         for feature in self.flags:
@@ -328,12 +328,12 @@ monitoring:
   error_rates:
     threshold: 10%
     window: 5m
-    
+
   response_times:
     p50: 200ms
     p95: 1000ms
     p99: 5000ms
-    
+
   service_health:
     cpu_usage: <80%
     memory_usage: <90%
@@ -374,7 +374,7 @@ const notifyUsers = async (rollbackType) => {
     'full': 'System maintenance in progress',
     'complete': 'Service restored successfully'
   };
-  
+
   await broadcastToActiveSessions(message[rollbackType]);
 };
 ```
@@ -396,16 +396,16 @@ const notifyUsers = async (rollbackType) => {
 # Test each service rollback
 for service in profile-ingestor orchestrator strategist analyst; do
   echo "Testing rollback for $service"
-  
+
   # Deploy canary version
   ./deploy_canary.sh $service
-  
+
   # Inject failure
   ./inject_failure.sh $service
-  
+
   # Trigger rollback
   ./rollback.sh $service
-  
+
   # Validate recovery
   ./validate_service.sh $service
 done

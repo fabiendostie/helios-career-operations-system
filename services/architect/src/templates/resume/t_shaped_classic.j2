@@ -10,21 +10,21 @@
     <!-- T-Shaped Top Bar: Impact Summary -->
     <section class="impact-summary">
         <h1>{{ candidate_name }}</h1>
-        
+
         <div class="contact-info">
             <span>{{ email }}</span>
             {% if phone %} | <span>{{ phone }}</span>{% endif %}
             {% if location %} | <span>{{ location }}</span>{% endif %}
             {% if linkedin %} | <span>{{ linkedin }}</span>{% endif %}
         </div>
-        
+
         <!-- Dynamic Impact Summary using T-shaped formula -->
         <p class="summary">
-            {{ adjective }} {{ target_role_title }} with {{ years_experience }} years of experience 
-            specializing in {{ core_competency_1 }}, {{ core_competency_2 }}, and {{ core_technology }}. 
+            {{ adjective }} {{ target_role_title }} with {{ years_experience }} years of experience
+            specializing in {{ core_competency_1 }}, {{ core_competency_2 }}, and {{ core_technology }}.
             Proven ability to {{ top_quantified_achievement }} by leveraging expertise in {{ skill_area }}.
         </p>
-        
+
         <!-- Core Skills (Top 8 keywords for ATS) -->
         <div class="core-skills">
             <strong>Core Competencies:</strong>
@@ -37,7 +37,7 @@
     <!-- T-Shaped Vertical Bar: Experience Log -->
     <section class="experience-log">
         <h2>Professional Experience</h2>
-        
+
         {% for job in work_experience %}
         <div class="job-entry">
             <div class="job-header">
@@ -45,13 +45,13 @@
                 <span class="company">{{ job.company_name | default('Company') }}</span>
                 <span class="duration">{{ job.start_date | format_duration(job.end_date) }}</span>
             </div>
-            
+
             <ul class="accomplishments">
                 {% for accomplishment in job.accomplishments %}
                 <li>{{ accomplishment }}</li>
                 {% endfor %}
             </ul>
-            
+
             <!-- Skills used in this role for context -->
             {% if job.skills_used %}
             <div class="skills-used">
@@ -76,7 +76,7 @@
         {% endfor %}
     </section>
     {% endif %}
-    
+
     {% if technical_skills %}
     <section class="technical-skills">
         <h2>Technical Skills</h2>
@@ -87,7 +87,7 @@
         {% endfor %}
     </section>
     {% endif %}
-    
+
     {% if career_data.certifications %}
     <section class="certifications">
         <h2>Certifications</h2>

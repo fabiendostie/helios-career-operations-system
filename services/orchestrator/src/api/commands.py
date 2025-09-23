@@ -39,26 +39,26 @@ async def execute_command(
     command_router: CommandRouter = Depends(get_command_router)
 ):
     """Execute a command.
-    
+
     Args:
         request: Command request to execute
         session_manager: Session manager dependency
         command_router: Command router dependency
-        
+
     Returns:
         Command response
-        
+
     Raises:
         HTTPException: If command validation or execution fails
     """
     try:
         logger.info(f"Executing command {request.command} for session {request.session_id}")
-        
+
         response = await command_router.route_command(request, session_manager)
-        
+
         logger.info(f"Command {request.command} executed successfully")
         return response
-        
+
     except CommandValidationError as e:
         logger.error(f"Command validation failed: {str(e)}")
         raise HTTPException(
@@ -100,13 +100,13 @@ async def start_session(
     command_router: CommandRouter = Depends(get_command_router)
 ):
     """Start a new session (convenience endpoint for /start command).
-    
+
     Args:
         user_id: Optional user identifier
         initial_data: Optional initial session data
         session_manager: Session manager dependency
         command_router: Command router dependency
-        
+
     Returns:
         Command response with new session ID
     """
@@ -119,9 +119,9 @@ async def start_session(
                 "initial_data": initial_data or {}
             }
         )
-        
+
         return await execute_command(request, session_manager, command_router)
-        
+
     except HTTPException:
         raise
     except Exception as e:
@@ -139,12 +139,12 @@ async def get_help(
     command_router: CommandRouter = Depends(get_command_router)
 ):
     """Get command help information.
-    
+
     Args:
         session_id: Session ID (defaults to help-session)
         session_manager: Session manager dependency
         command_router: Command router dependency
-        
+
     Returns:
         Help information response
     """
@@ -154,9 +154,9 @@ async def get_help(
             session_id=session_id,
             parameters={}
         )
-        
+
         return await execute_command(request, session_manager, command_router)
-        
+
     except HTTPException:
         raise
     except Exception as e:
@@ -176,14 +176,14 @@ async def get_session_status(
     command_router: CommandRouter = Depends(get_command_router)
 ):
     """Get session status (convenience endpoint for /status command).
-    
+
     Args:
         session_id: Session identifier
         include_history: Include command history in response
         include_details: Include detailed session information
         session_manager: Session manager dependency
         command_router: Command router dependency
-        
+
     Returns:
         Session status response
     """
@@ -196,9 +196,9 @@ async def get_session_status(
                 "include_details": include_details
             }
         )
-        
+
         return await execute_command(request, session_manager, command_router)
-        
+
     except HTTPException:
         raise
     except Exception as e:
@@ -212,14 +212,14 @@ async def get_session_status(
 @router.get("/commands", response_model=Dict[str, str])
 async def list_commands():
     """List all available commands.
-    
+
     Returns:
         Dictionary of available commands and their descriptions
     """
     return {
         "/start": "Initialize a new session",
         "/ingest": "Process resume/profile documents",
-        "/discover": "Analyze career profile and opportunities", 
+        "/discover": "Analyze career profile and opportunities",
         "/analyze": "Perform detailed career analysis",
         "/build": "Generate career documents",
         "/status": "Get current session status",

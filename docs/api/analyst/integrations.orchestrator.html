@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>integrations.orchestrator - analyst</title>
+    <style>
+        body { font-family: Arial, sans-serif; margin: 40px; background: #f8f9fa; }
+        .container { max-width: 1200px; margin: 0 auto; background: white; padding: 30px; border-radius: 8px; box-shadow: 0 2px 10px rgba(0,0,0,0.1); }
+        .header { background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; padding: 20px; border-radius: 5px; margin-bottom: 30px; }
+        .section { margin: 20px 0; padding: 20px; border-left: 4px solid #667eea; background: #f8f9ff; }
+        .docstring { background: #fff; padding: 15px; border-radius: 5px; border: 1px solid #e0e0e0; margin: 10px 0; white-space: pre-wrap; }
+        .nav { margin-bottom: 20px; }
+        .nav a { color: #667eea; text-decoration: none; margin-right: 20px; }
+        .nav a:hover { text-decoration: underline; }
+        h1, h2, h3 { color: #333; }
+        .module-path { color: #666; font-style: italic; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>integrations.orchestrator</h1>
+            <p class="module-path">Service: analyst • Path: integrations\orchestrator.py</p>
+        </div>
+
+        <div class="nav">
+            <a href="../index.html">← Back to API Index</a>
+            <a href="../analyst/index.html">← analyst Overview</a>
+        </div>
+
+        <div class="section">
+            <h2>Module Description</h2>
+            <div class="docstring">Orchestrator service integration client for the Analyst service.</div>
+        </div>
+
+        <div class="section">
+            <h2>Classes</h2>
+
+            <h3>OrchestratorError</h3>
+            <div class="docstring">Custom exception for orchestrator communication errors.</div>
+
+            <h3>OrchestratorClient</h3>
+            <div class="docstring">HTTP client for communication with the Orchestrator service.</div>
+
+            <h3>AsyncOrchestratorIntegration</h3>
+            <div class="docstring">Async orchestrator integration with error handling and retry logic.</div>
+        </div>
+        <div class="section">
+            <h2>Functions</h2>
+
+            <h3>__init__()</h3>
+            <div class="docstring">Initialize integration.
+
+Args:
+    max_retries: Maximum number of retry attempts
+    retry_delay: Delay between retries in seconds</div>
+
+            <h3>async __aenter__()</h3>
+            <div class="docstring">Async context manager entry.</div>
+
+            <h3>async __aexit__()</h3>
+            <div class="docstring">Async context manager exit.</div>
+
+            <h3>async _ensure_session()</h3>
+            <div class="docstring">Ensure HTTP session is created.</div>
+
+            <h3>async close()</h3>
+            <div class="docstring">Close the HTTP session.</div>
+
+            <h3>async _make_request()</h3>
+            <div class="docstring">Make HTTP request to orchestrator.
+
+Args:
+    method: HTTP method
+    endpoint: API endpoint
+    correlation_id: Request correlation ID
+    **kwargs: Additional request parameters
+
+Returns:
+    Response JSON data
+
+Raises:
+    OrchestratorError: If request fails</div>
+
+            <h3>async register_analysis_request()</h3>
+            <div class="docstring">Register analysis request with orchestrator.
+
+Args:
+    user_id: User identifier
+    master_career_data: Career data from profile ingestor
+    correlation_id: Request correlation ID
+
+Returns:
+    Analysis request ID</div>
+
+            <h3>async update_analysis_progress()</h3>
+            <div class="docstring">Update analysis progress with orchestrator.
+
+Args:
+    operation_id: Operation identifier
+    progress: Progress update data
+    correlation_id: Request correlation ID</div>
+
+            <h3>async complete_analysis()</h3>
+            <div class="docstring">Mark analysis as complete and send results.
+
+Args:
+    operation_id: Operation identifier
+    analysis_result: Complete analysis results
+    correlation_id: Request correlation ID</div>
+
+            <h3>async report_analysis_error()</h3>
+            <div class="docstring">Report analysis error to orchestrator.
+
+Args:
+    operation_id: Operation identifier
+    error_message: Error description
+    error_details: Additional error details
+    correlation_id: Request correlation ID</div>
+
+            <h3>async get_session_context()</h3>
+            <div class="docstring">Get session context for user.
+
+Args:
+    user_id: User identifier
+    correlation_id: Request correlation ID
+
+Returns:
+    Session context data</div>
+
+            <h3>async health_check()</h3>
+            <div class="docstring">Check orchestrator service health.
+
+Returns:
+    Health check response</div>
+
+            <h3>async _retry_operation()</h3>
+            <div class="docstring">Retry operation with exponential backoff.
+
+Args:
+    operation: Function to retry
+    *args: Operation arguments
+    **kwargs: Operation keyword arguments
+
+Returns:
+    Operation result</div>
+
+            <h3>async execute_analysis_with_orchestrator()</h3>
+            <div class="docstring">Execute analysis with full orchestrator integration.
+
+Args:
+    user_id: User identifier
+    master_career_data: Career data from profile ingestor
+    analysis_function: Analysis function to execute
+    correlation_id: Request correlation ID
+
+Returns:
+    Analysis results</div>
+
+            <h3>async _execute_analysis_with_progress()</h3>
+            <div class="docstring">Execute analysis function with progress reporting.
+
+Args:
+    analysis_function: Analysis function to execute
+    master_career_data: Career data input
+    operation_id: Operation identifier
+    correlation_id: Request correlation ID
+
+Returns:
+    Analysis results</div>
+
+            <h3>async check_orchestrator_connectivity()</h3>
+            <div class="docstring">Check if orchestrator is accessible.
+
+Returns:
+    True if orchestrator is healthy, False otherwise</div>
+        </div>
+    </div>
+</body>
+</html>

@@ -1,7 +1,7 @@
 [
   {
     "role_title": "Senior Software Engineer",
-    "company_name": "TechCorp Inc", 
+    "company_name": "TechCorp Inc",
     "level": "senior",
     "location": "San Francisco, CA",
     "year": 2025,
@@ -16,7 +16,7 @@
   {
     "role_title": "ML Engineer",
     "company_name": "DataFlow Systems",
-    "level": "mid", 
+    "level": "mid",
     "location": "Remote",
     "year": 2025,
     "base_salary_usd": 140000,
@@ -38,7 +38,7 @@
     "bonus_usd": 20000,
     "total_comp_usd": 205000,
     "years_experience": 7,
-    "company_size": "50-100", 
+    "company_size": "50-100",
     "industry": "Cloud Services"
   },
   {
@@ -59,7 +59,7 @@
     "role_title": "Full Stack Developer",
     "company_name": "WebWorks Agency",
     "level": "mid",
-    "location": "Remote", 
+    "location": "Remote",
     "year": 2025,
     "base_salary_usd": 115000,
     "stock_grant_usd": 5000,

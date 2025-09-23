@@ -38,7 +38,7 @@
 ## User Interface & Interaction
 - **Questionary 2.1.0** - Beautiful interactive command line prompts
   - Conflict resolution workflows
-  - Data elicitation interviews  
+  - Data elicitation interviews
   - User confirmation dialogs
 - **Rich** - Rich text and beautiful formatting for terminal output
 - **Click** - Command-line interface creation toolkit

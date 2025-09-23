@@ -1,8 +1,9 @@
-"""Market analysis engine with job matching and compensation analysis."""
+"""Market analysis engine with job matching and compensation analysis - 2025 Enhanced."""
 
 import logging
 import json
 import time
+import asyncio
 from pathlib import Path
 from typing import Dict, List, Any, Tuple
 from collections import Counter, defaultdict
@@ -18,18 +19,27 @@ from src.models.market_data import (
     RemotePolicy,
 )
 from src.models.ner_entities import ResumeDeconstruction, EntityType
+from src.core.realtime_market_data import (
+    get_realtime_market_analysis,
+    RealTimeJob,
+    RealTimeCompensation
+)
 
 
 logger = logging.getLogger(__name__)
 
 
 class MarketAnalyzer:
-    """Market analysis engine for job matching and compensation analysis."""
+    """Market analysis engine for job matching and compensation analysis - 2025 Enhanced."""
 
-    def __init__(self):
+    def __init__(self, use_realtime_data: bool = True):
         """Initialize market analyzer with data and models."""
         self.market_jobs: List[MarketJob] = []
         self.compensation_data: List[CompensationData] = []
+        self.realtime_jobs: List[RealTimeJob] = []
+        self.realtime_compensation: List[RealTimeCompensation] = []
+
+        self.use_realtime_data = use_realtime_data
         self.tfidf_vectorizer = TfidfVectorizer(
             stop_words="english", max_features=5000, ngram_range=(1, 2)
         )
@@ -64,6 +74,111 @@ class MarketAnalyzer:
         except Exception as e:
             logger.error(f"Failed to load market data: {str(e)}")
             raise
+
+    async def _fetch_realtime_market_data(
+        self, candidate_skills: List[str], target_roles: List[str] = None, location: str = None
+    ) -> None:
+        """
+        Fetch real-time market data from 2025 sources.
+        Integrates LinkedIn Economic Graph, JobsPikr, and Levels.fyi data.
+        """
+        if not self.use_realtime_data:
+            logger.info("Real-time data fetching disabled, using static data only")
+            return
+
+        try:
+            logger.info("Fetching real-time market data from 2025 sources...")
+
+            # Determine target roles if not provided
+            if not target_roles:
+                # Infer target roles from candidate skills
+                target_roles = self._infer_target_roles_from_skills(candidate_skills)
+
+            # Fetch comprehensive real-time data
+            realtime_data = await get_realtime_market_analysis(
+                candidate_skills=candidate_skills,
+                target_roles=target_roles,
+                location=location
+            )
+
+            # Convert real-time data to internal format
+            self.realtime_jobs = [
+                self._convert_realtime_job_to_market_job(job_data)
+                for job_data in realtime_data.get("jobs", [])
+            ]
+
+            self.realtime_compensation = [
+                self._convert_realtime_compensation(comp_data)
+                for comp_data in realtime_data.get("compensation", [])
+            ]
+
+            # Store market trends for enhanced analysis
+            self.market_trends_2025 = realtime_data.get("market_trends", {})
+
+            logger.info(
+                f"Fetched {len(self.realtime_jobs)} real-time jobs and "
+                f"{len(self.realtime_compensation)} compensation records"
+            )
+
+        except Exception as e:
+            logger.error(f"Failed to fetch real-time market data: {str(e)}")
+            # Fallback to static data
+            logger.warning("Falling back to static market data")
+
+    def _infer_target_roles_from_skills(self, skills: List[str]) -> List[str]:
+        """Infer likely target roles based on candidate skills."""
+        skill_to_roles = {
+            "python": ["Software Engineer", "Data Scientist", "ML Engineer"],
+            "machine learning": ["ML Engineer", "Data Scientist", "AI Engineer"],
+            "data science": ["Data Scientist", "Data Analyst", "AI Researcher"],
+            "ai": ["AI Engineer", "ML Engineer", "AI Researcher"],
+            "nlp": ["NLP Engineer", "AI Engineer", "Data Scientist"],
+            "deep learning": ["Deep Learning Engineer", "AI Researcher", "ML Engineer"],
+            "cloud": ["Cloud Engineer", "DevOps Engineer", "Software Engineer"],
+            "aws": ["Cloud Engineer", "DevOps Engineer", "Software Engineer"],
+            "docker": ["DevOps Engineer", "Software Engineer", "Platform Engineer"],
+            "kubernetes": ["DevOps Engineer", "Platform Engineer", "Site Reliability Engineer"]
+        }
+
+        target_roles = set()
+        for skill in skills:
+            skill_lower = skill.lower()
+            for keyword, roles in skill_to_roles.items():
+                if keyword in skill_lower:
+                    target_roles.update(roles)
+
+        return list(target_roles)[:5]  # Limit to top 5 inferred roles
+
+    def _convert_realtime_job_to_market_job(self, job_data: Dict[str, Any]) -> MarketJob:
+        """Convert real-time job data to MarketJob format."""
+        return MarketJob(
+            job_id=job_data.get("job_id", ""),
+            role_title=job_data.get("title", ""),
+            company=job_data.get("company", ""),
+            location=job_data.get("location", ""),
+            full_description_text=job_data.get("description", ""),
+            required_skills=job_data.get("required_skills", []),
+            preferred_skills=job_data.get("preferred_skills", []),
+            remote_policy=RemotePolicy(job_data.get("remote_policy", "unknown")),
+            salary_range_min=job_data.get("salary_min"),
+            salary_range_max=job_data.get("salary_max"),
+            source_url=job_data.get("url", ""),
+            posting_date=job_data.get("posted_date", ""),
+            seniority_level=job_data.get("seniority_level", "mid")
+        )
+
+    def _convert_realtime_compensation(self, comp_data: Dict[str, Any]) -> CompensationData:
+        """Convert real-time compensation data to CompensationData format."""
+        return CompensationData(
+            role_title=comp_data.get("role_title", ""),
+            level=comp_data.get("level", ""),
+            location=comp_data.get("location", ""),
+            base_salary_usd=comp_data.get("base_salary", 0),
+            total_comp_usd=comp_data.get("total_compensation", 0),
+            years_experience=comp_data.get("years_experience", 0),
+            company=comp_data.get("company", ""),
+            data_source=comp_data.get("source", "realtime")
+        )
 
     def extract_candidate_skills(
         self, resume_deconstruction: ResumeDeconstruction
@@ -108,11 +223,18 @@ class MarketAnalyzer:
             if skill.lower() not in [m.lower() for m in matched_skills]
         ]
 
-        # Calculate similarity score
-        if not job_skills_norm:
+        # Calculate similarity score with NaN protection
+        if not job_skills_norm or len(job_skills_norm) == 0:
             similarity = 0.0
         else:
             similarity = len(matched_skills) / len(job_skills_norm)
+
+        # Handle potential NaN
+        if not (similarity == similarity):  # NaN check
+            similarity = 0.0
+
+        # Ensure similarity is between 0 and 1
+        similarity = max(0.0, min(1.0, similarity))
 
         return similarity, matched_skills, missing_skills
 
@@ -169,11 +291,18 @@ class MarketAnalyzer:
         if not relevant_comp:
             return {"message": "No compensation data found for matched roles"}
 
-        # Calculate statistics
-        salaries = [comp.base_salary_usd for comp in relevant_comp]
+        # Calculate statistics with error handling
+        salaries = [comp.base_salary_usd for comp in relevant_comp if comp.base_salary_usd and comp.base_salary_usd > 0]
         total_comps = [
-            comp.total_comp_usd or comp.base_salary_usd for comp in relevant_comp
+            (comp.total_comp_usd or comp.base_salary_usd) for comp in relevant_comp
+            if (comp.total_comp_usd or comp.base_salary_usd) and (comp.total_comp_usd or comp.base_salary_usd) > 0
         ]
+
+        # Ensure we have valid data
+        if not salaries:
+            return {"error": "No valid salary data found for matched roles"}
+        if not total_comps:
+            total_comps = salaries
 
         # Group by level
         level_analysis = defaultdict(list)
@@ -328,52 +457,135 @@ class MarketAnalyzer:
 
         return recommendations
 
-    def analyze_market(
-        self, resume_deconstruction: ResumeDeconstruction
+    async def analyze_market(
+        self, resume_deconstruction: ResumeDeconstruction, location: str = None
     ) -> MarketAnalysisResult:
-        """Perform complete market analysis."""
+        """Perform complete market analysis with 2025 real-time data."""
         start_time = time.time()
 
-        # Find job matches
-        job_matches = self.find_job_matches(resume_deconstruction)
+        # Extract candidate skills
+        candidate_skills = self.extract_candidate_skills(resume_deconstruction)
 
-        # Perform analysis components
-        compensation_analysis = self.analyze_compensation(job_matches)
-        skill_demand_analysis = self.analyze_skill_demand(job_matches)
-        location_analysis = self.analyze_locations(job_matches)
-
-        # Generate market insights
-        market_insights = {
-            "total_job_matches": len(job_matches),
-            "average_similarity_score": np.mean(
-                [m.similarity_score for m in job_matches]
+        # Fetch real-time market data first
+        if self.use_realtime_data:
+            await self._fetch_realtime_market_data(
+                candidate_skills=candidate_skills, location=location
             )
-            if job_matches
-            else 0.0,
-            "top_match_score": job_matches[0].similarity_score if job_matches else 0.0,
-            "analysis_timestamp": time.time(),
-        }
 
-        # Generate recommendations
-        analysis_components = {
-            "skill_demand": skill_demand_analysis,
-            "compensation": compensation_analysis,
-            "location": location_analysis,
-        }
-        recommendations = self.generate_recommendations(analysis_components)
+        # Combine static and real-time jobs for analysis
+        all_jobs = self.market_jobs + self.realtime_jobs
+        all_compensation = self.compensation_data + self.realtime_compensation
 
-        processing_time = time.time() - start_time
+        # Update internal data for analysis methods
+        original_market_jobs = self.market_jobs
+        original_compensation_data = self.compensation_data
 
-        return MarketAnalysisResult(
-            job_matches=job_matches,
-            market_insights=market_insights,
-            compensation_analysis=compensation_analysis,
-            skill_demand_analysis=skill_demand_analysis,
-            location_analysis=location_analysis,
-            recommendations=recommendations,
-            processing_metadata={
-                "processing_time_seconds": processing_time,
-                "jobs_database_size": len(self.market_jobs),
-                "compensation_records": len(self.compensation_data),
-            },
-        )
+        try:
+            # Temporarily update data for analysis
+            self.market_jobs = all_jobs
+            self.compensation_data = all_compensation
+
+            # Find job matches
+            job_matches = self.find_job_matches(resume_deconstruction)
+
+            # Perform analysis components
+            compensation_analysis = self.analyze_compensation(job_matches)
+            skill_demand_analysis = self.analyze_skill_demand(job_matches)
+            location_analysis = self.analyze_locations(job_matches)
+
+            # Enhanced market insights with 2025 data
+            market_insights = {
+                "total_job_matches": len(job_matches),
+                "average_similarity_score": np.mean(
+                    [m.similarity_score for m in job_matches]
+                )
+                if job_matches
+                else 0.0,
+                "top_match_score": job_matches[0].similarity_score if job_matches else 0.0,
+                "analysis_timestamp": time.time(),
+                "realtime_data_included": self.use_realtime_data,
+                "static_jobs": len(original_market_jobs),
+                "realtime_jobs": len(self.realtime_jobs),
+                "static_compensation": len(original_compensation_data),
+                "realtime_compensation": len(self.realtime_compensation),
+            }
+
+            # Add 2025 market trends if available
+            if hasattr(self, "market_trends_2025"):
+                market_insights["market_trends_2025"] = self.market_trends_2025
+
+            # Generate enhanced recommendations
+            analysis_components = {
+                "skill_demand": skill_demand_analysis,
+                "compensation": compensation_analysis,
+                "location": location_analysis,
+            }
+            recommendations = self.generate_recommendations(analysis_components)
+
+            # Add 2025-specific recommendations
+            recommendations.extend(self._generate_2025_recommendations(candidate_skills))
+
+            processing_time = time.time() - start_time
+
+            return MarketAnalysisResult(
+                job_matches=job_matches,
+                market_insights=market_insights,
+                compensation_analysis=compensation_analysis,
+                skill_demand_analysis=skill_demand_analysis,
+                location_analysis=location_analysis,
+                recommendations=recommendations,
+                processing_metadata={
+                    "processing_time_seconds": processing_time,
+                    "jobs_database_size": len(all_jobs),
+                    "compensation_records": len(all_compensation),
+                    "data_sources": ["static", "realtime"] if self.use_realtime_data else ["static"],
+                    "analysis_enhanced_2025": True,
+                },
+            )
+
+        finally:
+            # Restore original data
+            self.market_jobs = original_market_jobs
+            self.compensation_data = original_compensation_data
+
+    def _generate_2025_recommendations(self, candidate_skills: List[str]) -> List[str]:
+        """Generate 2025-specific market recommendations."""
+        recommendations = []
+
+        # Check for trending skills from 2025 market data
+        if hasattr(self, "market_trends_2025"):
+            trending_skills = self.market_trends_2025.get("trending_skills", [])
+            candidate_skills_lower = [skill.lower() for skill in candidate_skills]
+
+            # Identify missing trending skills
+            missing_trending = []
+            for trend in trending_skills[:5]:  # Top 5 trending skills
+                skill_name = trend.get("skill", "").lower()
+                if not any(skill_name in cs for cs in candidate_skills_lower):
+                    missing_trending.append(trend)
+
+            if missing_trending:
+                top_missing = missing_trending[0]
+                recommendations.append(
+                    f"Consider developing {top_missing.get('skill')} skills - "
+                    f"trending with {top_missing.get('growth')} growth in 2025"
+                )
+
+            # Salary trend recommendations
+            salary_trends = self.market_trends_2025.get("salary_trends", {})
+            ai_premium = salary_trends.get("ai_premium", 0)
+            if ai_premium > 10:  # Significant AI premium
+                recommendations.append(
+                    f"AI/ML skills command a {ai_premium}% salary premium in 2025 - "
+                    "consider highlighting AI-related experience"
+                )
+
+            # Remote work recommendations
+            remote_growth = salary_trends.get("remote_availability", 0)
+            if remote_growth > 50:
+                recommendations.append(
+                    f"Remote opportunities available in {remote_growth}% of roles - "
+                    "consider expanding geographic search"
+                )
+
+        return recommendations

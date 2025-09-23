@@ -185,11 +185,11 @@ body {
     body {
         padding: 0.5in; /* Reduced margins for print */
     }
-    
+
     .job-entry {
         page-break-inside: avoid;
     }
-    
+
     h1, h2, h3 {
         page-break-after: avoid;
     }

@@ -55,32 +55,32 @@ from .schemas import ResumeData
 
 class ParsingService:
     """Handles resume parsing with multilingual support."""
-    
+
     def __init__(self, language_models: Dict[str, spacy.Language]) -> None:
         """Initialize parser with language models.
-        
+
         Args:
             language_models: Dictionary mapping language codes to spaCy models
         """
         self._models = language_models
         self._logger = logging.getLogger(__name__)
-    
+
     def extract_entities(self, text: str, language: str) -> List[Dict[str, str]]:
         """Extract named entities from text using appropriate language model.
-        
+
         Args:
             text: Input text to parse
             language: Language code ('en' or 'fr')
-            
+
         Returns:
             List of extracted entities with labels
-            
+
         Raises:
             ValueError: If language not supported
         """
         if language not in self._models:
             raise ValueError(f"Unsupported language: {language}")
-            
+
         doc = self._models[language](text)
         return [{"text": ent.text, "label": ent.label_} for ent in doc.ents]
 ```

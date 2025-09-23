@@ -24,15 +24,15 @@ integration:
   service_location: "services/profile-ingestor/"
   api_endpoint: "/api/v1/ingest"
   health_check: "/health"
-  
+
   input_formats:
     - "directory_path"
     - "file_uploads"
-    
+
   output_format:
     type: "json"
     schema: "master_career_database"
-    
+
 commands:
   - command: "/ingest"
     description: "Process resume files and extract career data"
@@ -43,17 +43,17 @@ commands:
       - name: "languages"
         type: "array"
         default: ["en", "fr"]
-        
+
 dependencies:
   python_version: ">=3.11"
   packages:
     - "spacy>=4.0.2"
-    - "questionary>=2.1.0" 
+    - "questionary>=2.1.0"
     - "pypdf>=4.5.1"
     - "python-docx>=1.2.0"
     - "PyYAML>=6.1.0"
     - "mistune>=3.1.0"
-    
+
   models:
     - "en_core_web_sm"
     - "fr_core_news_sm"
@@ -62,10 +62,10 @@ performance:
   max_files_per_batch: 50
   processing_time_avg: "2.5s per file"
   memory_usage: "256MB typical"
-  
+
 monitoring:
   logs: "services/profile-ingestor/logs/"
   metrics:
     - "files_processed_total"
-    - "processing_time_seconds" 
+    - "processing_time_seconds"
     - "conflicts_resolved_total"

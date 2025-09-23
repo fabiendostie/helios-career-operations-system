@@ -71,7 +71,7 @@ class JobRole(BaseModel):
     growth_trajectory: List[str] = []  # Potential career progression paths
     median_salary_range: Optional[Dict[str, int]] = None  # {"min": 50000, "max": 80000}
     remote_work_compatibility: float = 0.5  # 0.0 to 1.0 scale
-    
+
 
 @dataclass
 class RoleTaxonomyStats:
@@ -81,7 +81,7 @@ class RoleTaxonomyStats:
     roles_by_experience: Dict[str, int]
     roles_by_riasec: Dict[str, int]
     unique_skills: int
-    
+
 
 class RoleSearchFilter(BaseModel):
     """Filters for searching the role taxonomy."""

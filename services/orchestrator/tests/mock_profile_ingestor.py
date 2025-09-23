@@ -47,13 +47,13 @@ mock_processing_delays: Dict[str, float] = {}
 
 def create_mock_profile_ingestor_app() -> FastAPI:
     """Create mock Profile Ingestor FastAPI application."""
-    
+
     app = FastAPI(
         title="Mock Profile Ingestor Service",
         description="Mock service for testing HELIOS Orchestrator integration",
         version="1.0.0-test"
     )
-    
+
     @app.get("/health")
     async def health_check():
         """Mock health check endpoint."""
@@ -63,16 +63,16 @@ def create_mock_profile_ingestor_app() -> FastAPI:
             "version": "1.0.0-test",
             "timestamp": datetime.now(timezone.utc).isoformat()
         }
-    
+
     @app.post("/api/ingest", response_model=MockIngestionResponse)
     async def mock_ingest(request: MockIngestionRequest):
         """Mock ingestion endpoint with realistic behavior."""
-        
+
         # Simulate processing delay
         processing_delay = mock_processing_delays.get(request.session_id, 0.1)
         if processing_delay > 0:
             await asyncio.sleep(processing_delay)
-        
+
         # Generate mock Master Career Database based on input
         if request.text_content:
             mock_data = generate_mock_career_data_from_text(request.text_content)
@@ -83,19 +83,19 @@ def create_mock_profile_ingestor_app() -> FastAPI:
                 status_code=status.HTTP_400_BAD_REQUEST,
                 detail="No input provided for ingestion"
             )
-        
+
         # Simulate different success/failure scenarios based on session_id
         success = not request.session_id.endswith("-fail")
         errors = []
         warnings = []
-        
+
         if request.session_id.endswith("-fail"):
             errors = ["Simulated processing failure for testing"]
             success = False
             mock_data = {}
         elif request.session_id.endswith("-warn"):
             warnings = ["Simulated warning: Some data could not be extracted"]
-        
+
         # Store session data
         mock_sessions[request.session_id] = {
             "master_career_database": mock_data,
@@ -108,7 +108,7 @@ def create_mock_profile_ingestor_app() -> FastAPI:
                 "processing_time_ms": processing_delay * 1000
             }
         }
-        
+
         return MockIngestionResponse(
             success=success,
             session_id=request.session_id,
@@ -117,19 +117,19 @@ def create_mock_profile_ingestor_app() -> FastAPI:
             errors=errors,
             warnings=warnings
         )
-    
+
     @app.get("/api/progress/{session_id}", response_model=MockProgressResponse)
     async def get_progress(session_id: str):
         """Mock progress tracking endpoint."""
-        
+
         if session_id not in mock_sessions:
             raise HTTPException(
                 status_code=status.HTTP_404_NOT_FOUND,
                 detail="Session not found"
             )
-        
+
         session_data = mock_sessions[session_id]
-        
+
         return MockProgressResponse(
             session_id=session_id,
             status=session_data["status"],
@@ -137,30 +137,30 @@ def create_mock_profile_ingestor_app() -> FastAPI:
             current_step="parsing" if session_data["status"] == "processing" else "completed",
             estimated_completion=None if session_data["status"] == "completed" else "30 seconds"
         )
-    
+
     @app.post("/api/cancel/{session_id}")
     async def cancel_ingestion(session_id: str):
         """Mock cancellation endpoint."""
-        
+
         if session_id in mock_sessions:
             mock_sessions[session_id]["status"] = "cancelled"
             return {"message": f"Ingestion cancelled for session {session_id}"}
-        
+
         raise HTTPException(
             status_code=status.HTTP_404_NOT_FOUND,
             detail="Session not found"
         )
-    
+
     return app
 
 
 def generate_mock_career_data_from_text(text_content: str) -> Dict[str, Any]:
     """Generate realistic mock career data from text input."""
-    
+
     # Extract mock skills based on common keywords
     all_skills = ["Python", "FastAPI", "JavaScript", "React", "SQL", "Docker", "AWS", "Git"]
     detected_skills = [skill for skill in all_skills if skill.lower() in text_content.lower()]
-    
+
     return {
         "work_experience": [
             {
@@ -204,10 +204,10 @@ def generate_mock_career_data_from_text(text_content: str) -> Dict[str, Any]:
 
 def generate_mock_career_data_from_files(file_paths: list[str]) -> Dict[str, Any]:
     """Generate mock career data based on file paths."""
-    
+
     # Determine skills based on file extensions and names
     detected_skills = []
-    
+
     for path in file_paths:
         if ".py" in path.lower():
             detected_skills.extend(["Python", "FastAPI", "Django"])
@@ -217,10 +217,10 @@ def generate_mock_career_data_from_files(file_paths: list[str]) -> Dict[str, Any
             detected_skills.extend(["SQL", "Database Design"])
         elif "resume" in path.lower() or "cv" in path.lower():
             detected_skills.extend(["Professional Writing", "Communication"])
-    
+
     # Remove duplicates
     detected_skills = list(set(detected_skills))
-    
+
     return {
         "work_experience": [
             {

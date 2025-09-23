@@ -50,12 +50,12 @@ class ElicitationUI:
             "personal_qualities": []
         }
         self.questions = self._load_question_bank()
-    
+
     def conduct_interview(self, existing_data: Dict) -> Dict:
         """Conduct the full elicitation interview"""
-        
+
         self._show_welcome_message()
-        
+
         # Interview sections
         sections = [
             ("Transversal Projects", self._elicit_transversal_projects),
@@ -63,29 +63,29 @@ class ElicitationUI:
             ("Core Motivators", self._elicit_motivators),
             ("Personal Qualities", self._elicit_qualities)
         ]
-        
+
         with Progress(
             SpinnerColumn(),
             TextColumn("[progress.description]{task.description}"),
             console=self.console,
         ) as progress:
-            
+
             main_task = progress.add_task(
-                "[cyan]Interview Progress", 
+                "[cyan]Interview Progress",
                 total=len(sections)
             )
-            
+
             for section_name, elicitation_func in sections:
                 progress.update(
-                    main_task, 
+                    main_task,
                     description=f"Section: {section_name}"
                 )
-                
+
                 elicitation_func(existing_data)
                 progress.advance(main_task)
-        
+
         self._show_completion_summary()
-        
+
         return self.elicited_data
 ```
 
@@ -94,23 +94,23 @@ class ElicitationUI:
 ```python
 def _elicit_transversal_projects(self, existing_data: Dict):
     """Gather information about side projects and initiatives"""
-    
+
     self.console.print(Panel.fit(
         "[bold]Let's talk about projects outside your main work[/bold]\n"
         "These could be open source, personal projects, volunteering, etc.",
         title="🚀 Transversal Projects"
     ))
-    
+
     add_more = True
     while add_more:
         project = self._get_project_details()
-        
+
         if project:
             self.elicited_data["transversal_projects"].append(project)
-            
+
             # Show what was captured
             self._display_captured_project(project)
-        
+
         add_more = questionary.confirm(
             "Would you like to add another project?",
             default=False
@@ -118,35 +118,35 @@ def _elicit_transversal_projects(self, existing_data: Dict):
 
 def _get_project_details(self) -> Optional[Dict]:
     """Get details for a single project"""
-    
+
     # Project name
     name = questionary.text(
         "Project name:",
         validate=lambda x: len(x) > 0
     ).ask()
-    
+
     if not name:
         return None
-    
+
     # Project description
     description = self._get_multiline_input(
         "Describe the project (what it does, your role, impact):"
     )
-    
+
     # Technologies/Skills
     skills_raw = questionary.text(
         "Key skills/technologies used (comma-separated):",
         default=""
     ).ask()
-    
+
     skills = [s.strip() for s in skills_raw.split(",") if s.strip()]
-    
+
     # Link (optional)
     link = questionary.text(
         "Project link (GitHub, website, etc.) - optional:",
         default=""
     ).ask()
-    
+
     return {
         "name": name,
         "description": description,
@@ -160,13 +160,13 @@ def _get_project_details(self) -> Optional[Dict]:
 ```python
 def _elicit_aspirations(self, existing_data: Dict):
     """Gather career goals and aspirations"""
-    
+
     self.console.print(Panel.fit(
         "[bold]Let's explore your professional aspirations[/bold]\n"
         "Understanding where you want to go helps shape your narrative",
         title="🎯 Professional Aspirations"
     ))
-    
+
     # Target roles
     target_roles = self._get_list_input(
         "What roles are you targeting?",
@@ -174,7 +174,7 @@ def _elicit_aspirations(self, existing_data: Dict):
         min_items=1,
         suggestions=self._suggest_roles_from_data(existing_data)
     )
-    
+
     # Industries of interest
     industries = self._get_list_input(
         "Which industries interest you?",
@@ -182,14 +182,14 @@ def _elicit_aspirations(self, existing_data: Dict):
         min_items=1,
         suggestions=["Technology", "Finance", "Healthcare", "Education", "Consulting"]
     )
-    
+
     # Technologies to learn
     tech_to_learn = self._get_list_input(
         "What technologies/skills do you want to learn?",
         "Enter technology/skill (or press Enter to finish):",
         min_items=0
     )
-    
+
     self.elicited_data["professional_aspirations"] = {
         "target_roles": target_roles,
         "industries_of_interest": industries,
@@ -199,7 +199,7 @@ def _elicit_aspirations(self, existing_data: Dict):
 def _suggest_roles_from_data(self, existing_data: Dict) -> List[str]:
     """Generate role suggestions based on parsed work experience"""
     suggestions = []
-    
+
     if "work_experience" in existing_data:
         for exp in existing_data["work_experience"]:
             if "role" in exp:
@@ -211,7 +211,7 @@ def _suggest_roles_from_data(self, existing_data: Dict) -> List[str]:
                 elif "Junior" in role:
                     suggestions.append(role.replace("Junior", ""))
                     suggestions.append(role.replace("Junior", "Senior"))
-    
+
     return list(set(suggestions))  # Remove duplicates
 ```
 
@@ -220,13 +220,13 @@ def _suggest_roles_from_data(self, existing_data: Dict) -> List[str]:
 ```python
 def _elicit_motivators(self, existing_data: Dict):
     """Identify what drives the user professionally"""
-    
+
     self.console.print(Panel.fit(
         "[bold]What motivates you in your work?[/bold]\n"
         "Understanding your drivers helps align opportunities",
         title="💡 Core Motivators"
     ))
-    
+
     # Predefined motivator categories with examples
     motivator_prompts = [
         {
@@ -255,7 +255,7 @@ def _elicit_motivators(self, existing_data: Dict):
             "examples": ["Industry leadership", "Thought leadership", "Awards"]
         }
     ]
-    
+
     for motivator_info in motivator_prompts:
         response = questionary.text(
             f"{motivator_info['prompt']}\n"
@@ -263,7 +263,7 @@ def _elicit_motivators(self, existing_data: Dict):
             "Your response (or skip):",
             default=""
         ).ask()
-        
+
         if response:
             self.elicited_data["core_motivators"].append({
                 "category": motivator_info["category"],
@@ -276,43 +276,43 @@ def _elicit_motivators(self, existing_data: Dict):
 ```python
 def _elicit_qualities(self, existing_data: Dict):
     """Capture personal qualities and soft skills"""
-    
+
     self.console.print(Panel.fit(
         "[bold]Let's identify your key personal qualities[/bold]\n"
         "These differentiate you beyond technical skills",
         title="⭐ Personal Qualities"
     ))
-    
+
     # Guide user with examples
     quality_categories = [
         "Leadership", "Communication", "Problem-solving",
         "Creativity", "Adaptability", "Attention to detail",
         "Empathy", "Strategic thinking", "Resilience"
     ]
-    
+
     selected_qualities = questionary.checkbox(
         "Select qualities that best describe you:",
         choices=quality_categories
     ).ask()
-    
+
     # Get evidence for each selected quality
     for quality in selected_qualities:
         evidence = questionary.text(
             f"Brief example demonstrating your {quality}:",
             validate=lambda x: len(x) > 10
         ).ask()
-        
+
         self.elicited_data["personal_qualities"].append({
             "trait": quality,
             "evidence": evidence
         })
-    
+
     # Allow custom qualities
     add_custom = questionary.confirm(
         "Would you like to add other qualities?",
         default=False
     ).ask()
-    
+
     if add_custom:
         self._add_custom_qualities()
 ```
@@ -324,10 +324,10 @@ def _get_multiline_input(self, prompt: str) -> str:
     """Get multi-line text input from user"""
     self.console.print(f"[bold]{prompt}[/bold]")
     self.console.print("[dim]Type your response. Press Enter twice to finish.[/dim]")
-    
+
     lines = []
     consecutive_empty = 0
-    
+
     while consecutive_empty < 2:
         line = input()
         if line:
@@ -337,31 +337,31 @@ def _get_multiline_input(self, prompt: str) -> str:
             consecutive_empty += 1
             if consecutive_empty == 1:
                 lines.append("")  # Preserve single line breaks
-    
+
     # Remove trailing empty lines
     while lines and not lines[-1]:
         lines.pop()
-    
+
     return "\n".join(lines)
 
 def _get_list_input(
-    self, 
-    intro: str, 
-    prompt: str, 
+    self,
+    intro: str,
+    prompt: str,
     min_items: int = 0,
     suggestions: List[str] = None
 ) -> List[str]:
     """Get a list of items from user"""
-    
+
     self.console.print(f"[bold]{intro}[/bold]")
-    
+
     if suggestions:
         self.console.print("[dim]Suggestions:", ", ".join(suggestions[:5]), "[/dim]")
-    
+
     items = []
     while True:
         item = questionary.text(prompt, default="").ask()
-        
+
         if not item:
             if len(items) >= min_items:
                 break
@@ -370,7 +370,7 @@ def _get_list_input(
         else:
             items.append(item)
             self.console.print(f"[green]✓ Added: {item}[/green]")
-    
+
     return items
 ```
 
@@ -380,7 +380,7 @@ def _get_list_input(
 def _save_progress(self):
     """Save interview progress for recovery"""
     import pickle
-    
+
     progress_file = Path(".interview_progress.pkl")
     with open(progress_file, "wb") as f:
         pickle.dump(self.elicited_data, f)
@@ -388,17 +388,17 @@ def _save_progress(self):
 def _load_progress(self) -> Optional[Dict]:
     """Load previous interview progress if available"""
     progress_file = Path(".interview_progress.pkl")
-    
+
     if progress_file.exists():
         resume = questionary.confirm(
             "Previous interview session found. Resume from where you left off?",
             default=True
         ).ask()
-        
+
         if resume:
             with open(progress_file, "rb") as f:
                 return pickle.load(f)
-    
+
     return None
 ```
 
@@ -455,7 +455,7 @@ Claude Sonnet 4 (claude-sonnet-4-20250514)
 
 ### Change Log
 - **Enhanced ElicitationUI**: Complete rewrite with Rich console formatting, progress tracking, and structured interview flow
-- **Progress Management**: Added automatic save/resume functionality for interrupted sessions  
+- **Progress Management**: Added automatic save/resume functionality for interrupted sessions
 - **Smart Suggestions**: Role suggestions generated from existing work experience data
 - **Comprehensive Testing**: 27 unit tests covering all functionality including edge cases
 - **Code Quality**: Formatted with Black and passes Ruff linting

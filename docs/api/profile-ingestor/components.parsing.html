@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>components.parsing - profile-ingestor</title>
+    <style>
+        body { font-family: Arial, sans-serif; margin: 40px; background: #f8f9fa; }
+        .container { max-width: 1200px; margin: 0 auto; background: white; padding: 30px; border-radius: 8px; box-shadow: 0 2px 10px rgba(0,0,0,0.1); }
+        .header { background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; padding: 20px; border-radius: 5px; margin-bottom: 30px; }
+        .section { margin: 20px 0; padding: 20px; border-left: 4px solid #667eea; background: #f8f9ff; }
+        .docstring { background: #fff; padding: 15px; border-radius: 5px; border: 1px solid #e0e0e0; margin: 10px 0; white-space: pre-wrap; }
+        .nav { margin-bottom: 20px; }
+        .nav a { color: #667eea; text-decoration: none; margin-right: 20px; }
+        .nav a:hover { text-decoration: underline; }
+        h1, h2, h3 { color: #333; }
+        .module-path { color: #666; font-style: italic; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>components.parsing</h1>
+            <p class="module-path">Service: profile-ingestor • Path: components\parsing.py</p>
+        </div>
+
+        <div class="nav">
+            <a href="../index.html">← Back to API Index</a>
+            <a href="../profile-ingestor/index.html">← profile-ingestor Overview</a>
+        </div>
+
+        <div class="section">
+            <h2>Module Description</h2>
+            <div class="docstring">NLP parsing service for extracting structured data from documents.</div>
+        </div>
+
+        <div class="section">
+            <h2>Classes</h2>
+
+            <h3>ParsedData</h3>
+            <div class="docstring">Container for parsed document data.</div>
+
+            <h3>Conflict</h3>
+            <div class="docstring">Represents a conflict between parsed data from different documents.</div>
+
+            <h3>ParsingService</h3>
+            <div class="docstring">Singleton service for NLP parsing using spaCy models.</div>
+
+            <h3>ConflictDetector</h3>
+            <div class="docstring">Detects conflicts between parsed documents.</div>
+        </div>
+        <div class="section">
+            <h2>Functions</h2>
+
+            <h3>__new__()</h3>
+            <div class="docstring">Ensure singleton pattern.</div>
+
+            <h3>__init__()</h3>
+            <div class="docstring">Initialize the parsing service with spaCy models.</div>
+
+            <h3>_load_models()</h3>
+            <div class="docstring">Load spaCy language models once at startup.</div>
+
+            <h3>_setup_matchers()</h3>
+            <div class="docstring">Setup pattern matchers for both languages.</div>
+
+            <h3>_add_english_patterns()</h3>
+            <div class="docstring">Add English-specific patterns.</div>
+
+            <h3>_add_french_patterns()</h3>
+            <div class="docstring">Add French-specific patterns.</div>
+
+            <h3>parse_document()</h3>
+            <div class="docstring">Parse document using appropriate language model.</div>
+
+            <h3>_detect_language()</h3>
+            <div class="docstring">Detect if text is English or French.</div>
+
+            <h3>_create_empty_parsed_data()</h3>
+            <div class="docstring">Create empty parsed data when NLP models are not available.</div>
+
+            <h3>_extract_work_experience()</h3>
+            <div class="docstring">Extract job roles, companies, dates, and descriptions.</div>
+
+            <h3>_extract_skills()</h3>
+            <div class="docstring">Extract technical and soft skills with deduplication.</div>
+
+            <h3>_extract_projects()</h3>
+            <div class="docstring">Extract project names, descriptions, and outcomes.</div>
+
+            <h3>_extract_education()</h3>
+            <div class="docstring">Extract education information.</div>
+
+            <h3>_extract_contact()</h3>
+            <div class="docstring">Extract contact information.</div>
+
+            <h3>find_conflicts()</h3>
+            <div class="docstring">Identify conflicting information across documents.</div>
+
+            <h3>_find_work_experience_conflicts()</h3>
+            <div class="docstring">Find conflicts in work experience data.</div>
+
+            <h3>_find_project_conflicts()</h3>
+            <div class="docstring">Find conflicts in project data.</div>
+
+            <h3>_find_skill_conflicts()</h3>
+            <div class="docstring">Find skill duplicates and variations.</div>
+        </div>
+    </div>
+</body>
+</html>

@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>resume_extractor.ui.conflict_resolver - profile-ingestor</title>
+    <style>
+        body { font-family: Arial, sans-serif; margin: 40px; background: #f8f9fa; }
+        .container { max-width: 1200px; margin: 0 auto; background: white; padding: 30px; border-radius: 8px; box-shadow: 0 2px 10px rgba(0,0,0,0.1); }
+        .header { background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; padding: 20px; border-radius: 5px; margin-bottom: 30px; }
+        .section { margin: 20px 0; padding: 20px; border-left: 4px solid #667eea; background: #f8f9ff; }
+        .docstring { background: #fff; padding: 15px; border-radius: 5px; border: 1px solid #e0e0e0; margin: 10px 0; white-space: pre-wrap; }
+        .nav { margin-bottom: 20px; }
+        .nav a { color: #667eea; text-decoration: none; margin-right: 20px; }
+        .nav a:hover { text-decoration: underline; }
+        h1, h2, h3 { color: #333; }
+        .module-path { color: #666; font-style: italic; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>resume_extractor.ui.conflict_resolver</h1>
+            <p class="module-path">Service: profile-ingestor • Path: resume_extractor\ui\conflict_resolver.py</p>
+        </div>
+
+        <div class="nav">
+            <a href="../index.html">← Back to API Index</a>
+            <a href="../profile-ingestor/index.html">← profile-ingestor Overview</a>
+        </div>
+
+        <div class="section">
+            <h2>Module Description</h2>
+            <div class="docstring">Interactive conflict resolution UI using questionary and Rich.</div>
+        </div>
+
+        <div class="section">
+            <h2>Classes</h2>
+
+            <h3>Variation</h3>
+            <div class="docstring">Represents a variation of conflicting data.</div>
+
+            <h3>Conflict</h3>
+            <div class="docstring">Represents a data conflict to be resolved.</div>
+
+            <h3>ResolutionHistory</h3>
+            <div class="docstring">Manages undo/redo functionality for conflict resolutions.</div>
+
+            <h3>ConflictResolverUI</h3>
+            <div class="docstring">Interactive UI for resolving data conflicts with Rich formatting.</div>
+        </div>
+        <div class="section">
+            <h2>Functions</h2>
+
+            <h3>__init__()</h3>
+            <div class="docstring">Initialize conflict resolver.</div>
+
+            <h3>add_resolution()</h3>
+            <div class="docstring">Add a resolution to history.</div>
+
+            <h3>undo()</h3>
+            <div class="docstring">Undo last resolution.</div>
+
+            <h3>redo()</h3>
+            <div class="docstring">Redo previously undone resolution.</div>
+
+            <h3>can_undo()</h3>
+            <div class="docstring">Check if undo is possible.</div>
+
+            <h3>can_redo()</h3>
+            <div class="docstring">Check if redo is possible.</div>
+
+            <h3>resolve_conflicts()</h3>
+            <div class="docstring">Resolve conflicts through interactive prompts.
+
+Args:
+    conflicts: List of Conflict objects to resolve
+    batch_options: Optional batch resolution settings
+
+Returns:
+    Dictionary mapping conflict entity_ids to resolved values</div>
+
+            <h3>_resolve_single_conflict()</h3>
+            <div class="docstring">Resolve a single conflict with user interaction.</div>
+
+            <h3>_display_conflict_details()</h3>
+            <div class="docstring">Show conflict in a clear, formatted manner using Rich.</div>
+
+            <h3>_prepare_choices()</h3>
+            <div class="docstring">Format variations as questionary choices.</div>
+
+            <h3>_select_default()</h3>
+            <div class="docstring">Intelligently select the best default option.</div>
+
+            <h3>_has_recent_date()</h3>
+            <div class="docstring">Check if content contains recent dates.</div>
+
+            <h3>_handle_custom_entry()</h3>
+            <div class="docstring">Allow user to enter custom resolution.</div>
+
+            <h3>_display_progress()</h3>
+            <div class="docstring">Show resolution progress.</div>
+
+            <h3>_offer_undo()</h3>
+            <div class="docstring">Offer undo option to user.</div>
+
+            <h3>_get_most_detailed_variation()</h3>
+            <div class="docstring">Get the variation with most detail.</div>
+
+            <h3>_get_most_recent_variation()</h3>
+            <div class="docstring">Get the variation with most recent information.</div>
+
+            <h3>resolve_conflicts_legacy()</h3>
+            <div class="docstring">Legacy method for backward compatibility.
+Converts old conflict format to new Conflict objects.</div>
+
+            <h3>_apply_resolution()</h3>
+            <div class="docstring">Apply resolved value to the data structure.</div>
+        </div>
+    </div>
+</body>
+</html>

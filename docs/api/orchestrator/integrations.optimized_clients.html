@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>integrations.optimized_clients - orchestrator</title>
+    <style>
+        body { font-family: Arial, sans-serif; margin: 40px; background: #f8f9fa; }
+        .container { max-width: 1200px; margin: 0 auto; background: white; padding: 30px; border-radius: 8px; box-shadow: 0 2px 10px rgba(0,0,0,0.1); }
+        .header { background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; padding: 20px; border-radius: 5px; margin-bottom: 30px; }
+        .section { margin: 20px 0; padding: 20px; border-left: 4px solid #667eea; background: #f8f9ff; }
+        .docstring { background: #fff; padding: 15px; border-radius: 5px; border: 1px solid #e0e0e0; margin: 10px 0; white-space: pre-wrap; }
+        .nav { margin-bottom: 20px; }
+        .nav a { color: #667eea; text-decoration: none; margin-right: 20px; }
+        .nav a:hover { text-decoration: underline; }
+        h1, h2, h3 { color: #333; }
+        .module-path { color: #666; font-style: italic; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>integrations.optimized_clients</h1>
+            <p class="module-path">Service: orchestrator • Path: integrations\optimized_clients.py</p>
+        </div>
+
+        <div class="nav">
+            <a href="../index.html">← Back to API Index</a>
+            <a href="../orchestrator/index.html">← orchestrator Overview</a>
+        </div>
+
+        <div class="section">
+            <h2>Module Description</h2>
+            <div class="docstring">Optimized HTTP clients using connection pooling for all service integrations.</div>
+        </div>
+
+        <div class="section">
+            <h2>Classes</h2>
+
+            <h3>OptimizedServiceClient</h3>
+            <div class="docstring">Base class for optimized service clients with connection pooling.</div>
+
+            <h3>OptimizedProfileIngestorClient</h3>
+            <div class="docstring">Optimized client for Profile Ingestor service.</div>
+
+            <h3>OptimizedStrategistClient</h3>
+            <div class="docstring">Optimized client for Strategist service.</div>
+
+            <h3>OptimizedAnalystClient</h3>
+            <div class="docstring">Optimized client for Analyst service.</div>
+
+            <h3>OptimizedClientManager</h3>
+            <div class="docstring">Manager for all optimized service clients.</div>
+        </div>
+        <div class="section">
+            <h2>Functions</h2>
+
+            <h3>get_optimized_client_manager()</h3>
+            <div class="docstring">Get global optimized client manager instance.</div>
+
+            <h3>__init__()</h3>
+            <div class="docstring">Initialize client manager.</div>
+
+            <h3>async initialize()</h3>
+            <div class="docstring">Initialize the client and create connection pool.</div>
+
+            <h3>async _make_request()</h3>
+            <div class="docstring">Make HTTP request using connection pool.</div>
+
+            <h3>async health_check()</h3>
+            <div class="docstring">Perform health check on the service.</div>
+
+            <h3>async ingest_resume()</h3>
+            <div class="docstring">Ingest resume using optimized connection.</div>
+
+            <h3>async generate_career_paths()</h3>
+            <div class="docstring">Generate career paths using optimized connection.</div>
+
+            <h3>async analyze_market_position()</h3>
+            <div class="docstring">Analyze market position using optimized connection.</div>
+
+            <h3>async analyze_resume()</h3>
+            <div class="docstring">Analyze resume for ATS optimization using optimized connection.</div>
+
+            <h3>async initialize_all()</h3>
+            <div class="docstring">Initialize all service clients.</div>
+
+            <h3>async health_check_all()</h3>
+            <div class="docstring">Perform health checks on all services.</div>
+
+            <h3>async get_performance_metrics()</h3>
+            <div class="docstring">Get comprehensive performance metrics for all clients.</div>
+
+            <h3>async cleanup()</h3>
+            <div class="docstring">Cleanup all client resources.</div>
+        </div>
+    </div>
+</body>
+</html>

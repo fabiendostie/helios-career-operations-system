@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>core.command_router - orchestrator</title>
+    <style>
+        body { font-family: Arial, sans-serif; margin: 40px; background: #f8f9fa; }
+        .container { max-width: 1200px; margin: 0 auto; background: white; padding: 30px; border-radius: 8px; box-shadow: 0 2px 10px rgba(0,0,0,0.1); }
+        .header { background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; padding: 20px; border-radius: 5px; margin-bottom: 30px; }
+        .section { margin: 20px 0; padding: 20px; border-left: 4px solid #667eea; background: #f8f9ff; }
+        .docstring { background: #fff; padding: 15px; border-radius: 5px; border: 1px solid #e0e0e0; margin: 10px 0; white-space: pre-wrap; }
+        .nav { margin-bottom: 20px; }
+        .nav a { color: #667eea; text-decoration: none; margin-right: 20px; }
+        .nav a:hover { text-decoration: underline; }
+        h1, h2, h3 { color: #333; }
+        .module-path { color: #666; font-style: italic; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>core.command_router</h1>
+            <p class="module-path">Service: orchestrator • Path: core\command_router.py</p>
+        </div>
+
+        <div class="nav">
+            <a href="../index.html">← Back to API Index</a>
+            <a href="../orchestrator/index.html">← orchestrator Overview</a>
+        </div>
+
+        <div class="section">
+            <h2>Module Description</h2>
+            <div class="docstring">Command routing and execution system.</div>
+        </div>
+
+        <div class="section">
+            <h2>Classes</h2>
+
+            <h3>CommandRouter</h3>
+            <div class="docstring">Routes and executes commands with proper validation and error handling.</div>
+        </div>
+        <div class="section">
+            <h2>Functions</h2>
+
+            <h3>__init__()</h3>
+            <div class="docstring">Initialize command router with handlers.</div>
+
+            <h3>async route_command()</h3>
+            <div class="docstring">Route and execute a command request.
+
+Args:
+    request: Command request to execute
+    session_manager: Session manager instance
+
+Returns:
+    Command response
+
+Raises:
+    CommandValidationError: If command validation fails
+    CommandExecutionError: If command execution fails</div>
+
+            <h3>async _validate_command()</h3>
+            <div class="docstring">Validate command request.
+
+Args:
+    request: Command request to validate
+    session_manager: Session manager instance
+
+Raises:
+    CommandValidationError: If validation fails</div>
+
+            <h3>async _validate_command_parameters()</h3>
+            <div class="docstring">Validate command-specific parameters.
+
+Args:
+    request: Command request to validate
+
+Raises:
+    ValueError: If parameters are invalid</div>
+
+            <h3>async _add_to_history()</h3>
+            <div class="docstring">Add command execution to session history.
+
+Args:
+    request: Original command request
+    response: Command response
+    session_manager: Session manager instance</div>
+
+            <h3>async _handle_start()</h3>
+            <div class="docstring">Handle /start command - initialize new session.</div>
+
+            <h3>async _handle_ingest()</h3>
+            <div class="docstring">Handle /ingest command - integrate with Profile Ingestor service.</div>
+
+            <h3>async _handle_discover()</h3>
+            <div class="docstring">Handle /discover command - career discovery analysis.</div>
+
+            <h3>async _handle_analyze()</h3>
+            <div class="docstring">Handle /analyze command - career analysis.</div>
+
+            <h3>async _handle_build()</h3>
+            <div class="docstring">Handle /build command - document building.</div>
+
+            <h3>async _handle_status()</h3>
+            <div class="docstring">Handle /status command - get session status.</div>
+
+            <h3>async _handle_help()</h3>
+            <div class="docstring">Handle /help command - provide command help.</div>
+        </div>
+    </div>
+</body>
+</html>

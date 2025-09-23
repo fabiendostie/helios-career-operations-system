@@ -19,7 +19,7 @@ class TransitionDifficulty(str, Enum):
 class SkillGapPriority(str, Enum):
     """Priority levels for skill gaps."""
     CRITICAL = "critical"
-    HIGH = "high" 
+    HIGH = "high"
     MEDIUM = "medium"
     LOW = "low"
     OPTIONAL = "optional"
@@ -52,29 +52,29 @@ class CareerTargetProfile(BaseModel):
     ctp_id: str
     user_id: str
     role: JobRole
-    
+
     # Fit scoring results
     fit_score: float  # Overall fit score (0-1)
-    skill_match_score: float  # Skill alignment (0-1) 
+    skill_match_score: float  # Skill alignment (0-1)
     aspiration_score: float  # Aspiration alignment (0-1)
     confidence_level: float  # Confidence in recommendation (0-1)
-    
+
     # Skill gap analysis
     skill_gaps: List[SkillGap]
     existing_strengths: List[str]  # User's relevant existing skills
     skill_overlap_percentage: float
-    
+
     # Career transition analysis
     transition_difficulty: TransitionDifficulty
     transition_roadmap: List[TransitionStep]
     estimated_transition_time: str  # e.g., "6-12 months"
-    
+
     # Additional insights
     explanation: str  # Why this role is recommended
     key_selling_points: List[str]  # Strengths for this transition
     potential_challenges: List[str]  # Challenges to be aware of
     next_steps: List[str]  # Immediate action items
-    
+
     # Metadata
     generation_timestamp: float
     model_version: str = "1.0.0"
@@ -89,7 +89,7 @@ class CareerPathRequest(BaseModel):
     preferred_industries: Optional[List[str]] = None
     salary_requirements: Optional[Dict[str, int]] = None  # {"min": 80000, "max": 150000}
     location_preferences: Optional[Dict[str, Any]] = None
-    
+
 
 class CareerPathResponse(BaseModel):
     """Response containing generated career path recommendations."""

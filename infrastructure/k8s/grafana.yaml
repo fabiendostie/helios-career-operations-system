@@ -11,34 +11,34 @@ data:
   grafana.ini: |
     [analytics]
     check_for_updates = true
-    
+
     [grafana_net]
     url = https://grafana.net
-    
+
     [log]
     mode = console
-    
+
     [paths]
     data = /var/lib/grafana/
     logs = /var/log/grafana
     plugins = /var/lib/grafana/plugins
     provisioning = /etc/grafana/provisioning
-    
+
     [server]
     domain = grafana.helios.local
     http_port = 3000
     root_url = http://grafana.helios.local/
-    
+
     [security]
     admin_user = admin
     admin_password = $__env{GRAFANA_ADMIN_PASSWORD}
-    
+
     [users]
     allow_sign_up = false
-    
+
     [auth.anonymous]
     enabled = false
-    
+
     [smtp]
     enabled = true
     host = smtp.gmail.com:587
@@ -46,7 +46,7 @@ data:
     password = $__env{GRAFANA_SMTP_PASSWORD}
     from_address = grafana@yourdomain.com
     from_name = HELIOS Grafana
-    
+
 ---
 apiVersion: v1
 kind: ConfigMap
@@ -70,7 +70,7 @@ data:
         httpMethod: POST
         manageAlerts: true
         alertmanagerUid: alertmanager
-        
+
     - name: AlertManager
       type: alertmanager
       uid: alertmanager

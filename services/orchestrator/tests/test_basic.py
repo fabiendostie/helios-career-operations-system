@@ -20,14 +20,14 @@ def test_string_operations():
 
 class TestBasicClass:
     """Test basic class functionality."""
-    
+
     def test_instance_creation(self):
         """Test creating class instances."""
         test_dict = {"key": "value"}
         assert test_dict["key"] == "value"
-    
+
     def test_list_operations(self):
-        """Test list operations.""" 
+        """Test list operations."""
         test_list = [1, 2, 3]
         test_list.append(4)
         assert len(test_list) == 4

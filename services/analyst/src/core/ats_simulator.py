@@ -66,12 +66,27 @@ class ATSSimulator:
     ) -> CriteriaScore:
         """Calculate keyword match score using cosine similarity (40% weight)."""
         try:
+            # Validate inputs
+            if not resume_text or not resume_text.strip():
+                resume_text = "No resume content available"
+            if not job_description or not job_description.strip():
+                job_description = "No job description available"
+
             # Prepare texts
-            texts = [resume_text, job_description]
+            texts = [resume_text.strip(), job_description.strip()]
             tfidf_matrix = self.tfidf_vectorizer.fit_transform(texts)
 
-            # Calculate cosine similarity
+            # Calculate cosine similarity with NaN protection
             similarity = cosine_similarity(tfidf_matrix[0:1], tfidf_matrix[1:2])[0][0]
+
+            # Handle potential NaN or infinity
+            if not (similarity == similarity):  # NaN check
+                similarity = 0.0
+            if similarity == float('inf') or similarity == float('-inf'):
+                similarity = 0.0
+
+            # Ensure similarity is between 0 and 1
+            similarity = max(0.0, min(1.0, similarity))
 
             # Get top matching keywords
             feature_names = self.tfidf_vectorizer.get_feature_names_out()

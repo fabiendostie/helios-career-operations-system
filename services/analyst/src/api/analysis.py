@@ -28,9 +28,9 @@ class AnalysisPipeline:
     """Complete 6-step analysis pipeline."""
 
     def __init__(self):
-        """Initialize all analysis components."""
+        """Initialize all analysis components with 2025 enhancements."""
         self.resume_deconstructor = ResumeDeconstructor()
-        self.market_analyzer = MarketAnalyzer()
+        self.market_analyzer = MarketAnalyzer(use_realtime_data=True)  # Enable real-time data
         self.ats_simulator = ATSSimulator()
         self.skill_recalibrator = SkillRecalibrator()
         self.career_inferencer = CareerInferencer()
@@ -57,9 +57,9 @@ class AnalysisPipeline:
                 "processing_time": resume_deconstruction.processing_time_seconds,
             }
 
-            # Step 2: Market Analysis
-            logger.info("Starting Step 2: Market Analysis")
-            market_analysis = self.market_analyzer.analyze_market(resume_deconstruction)
+            # Step 2: Market Analysis (Enhanced with Real-time Data)
+            logger.info("Starting Step 2: Market Analysis (Real-time 2025 Data)")
+            market_analysis = await self.market_analyzer.analyze_market(resume_deconstruction)
             pipeline_results["market_analysis"] = {
                 "status": "completed",
                 "jobs_matched": len(market_analysis.job_matches),
@@ -68,6 +68,12 @@ class AnalysisPipeline:
                 else 0.0,
                 "processing_time": market_analysis.processing_metadata.get(
                     "processing_time_seconds", 0.0
+                ),
+                "realtime_data_included": market_analysis.processing_metadata.get(
+                    "analysis_enhanced_2025", False
+                ),
+                "data_sources": market_analysis.processing_metadata.get(
+                    "data_sources", ["static"]
                 ),
             }
 

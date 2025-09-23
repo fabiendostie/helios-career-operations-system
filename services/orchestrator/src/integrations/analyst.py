@@ -10,12 +10,12 @@ logger = logging.getLogger(__name__)
 
 class AnalystClient:
     """HTTP client for communicating with ANALYST service."""
-    
+
     def __init__(self):
         """Initialize analyst client."""
         self.base_url = getattr(settings, 'analyst_url', 'http://localhost:8003')
         self.timeout = aiohttp.ClientTimeout(total=60)  # Longer timeout for analysis
-    
+
     async def analyze_market_position(
         self,
         profile_data: Dict[str, Any],
@@ -23,21 +23,21 @@ class AnalystClient:
         session_id: str
     ) -> Dict[str, Any]:
         """Analyze market position based on profile and career paths.
-        
+
         Args:
             profile_data: Master career database from Profile Ingestor
             career_paths: Career paths from Strategist
             session_id: Session identifier
-            
+
         Returns:
             Market analysis results
         """
         logger.info(f"Analyzing market position for session {session_id}")
-        
+
         try:
             async with aiohttp.ClientSession(timeout=self.timeout) as session:
                 url = f"{self.base_url}/api/v1/analyze"
-                
+
                 payload = {
                     "profile_data": profile_data,
                     "career_paths": career_paths,
@@ -50,7 +50,7 @@ class AnalystClient:
                         "geographic_scope": "national"
                     }
                 }
-                
+
                 async with session.post(url, json=payload) as response:
                     if response.status == 200:
                         result = await response.json()
@@ -67,7 +67,7 @@ class AnalystClient:
                             "success": False,
                             "error": f"API error {response.status}: {error_text}"
                         }
-                        
+
         except aiohttp.ClientError as e:
             logger.error(f"HTTP client error calling Analyst: {str(e)}")
             return {
@@ -80,27 +80,27 @@ class AnalystClient:
                 "success": False,
                 "error": f"Unexpected error: {str(e)}"
             }
-    
+
     async def analyze_resume(
         self,
         profile_data: Dict[str, Any],
         session_id: str
     ) -> Dict[str, Any]:
         """Analyze resume for ATS optimization.
-        
+
         Args:
             profile_data: Master career database from Profile Ingestor
             session_id: Session identifier
-            
+
         Returns:
             Resume analysis results
         """
         logger.info(f"Analyzing resume for session {session_id}")
-        
+
         try:
             async with aiohttp.ClientSession(timeout=self.timeout) as session:
                 url = f"{self.base_url}/api/v1/analyze/resume"
-                
+
                 payload = {
                     "profile_data": profile_data,
                     "session_id": session_id,
@@ -110,7 +110,7 @@ class AnalystClient:
                         "format_analysis": True
                     }
                 }
-                
+
                 async with session.post(url, json=payload) as response:
                     if response.status == 200:
                         result = await response.json()
@@ -128,24 +128,24 @@ class AnalystClient:
                             "success": False,
                             "error": f"API error {response.status}: {error_text}"
                         }
-                        
+
         except Exception as e:
             logger.error(f"Error analyzing resume: {str(e)}")
             return {
                 "success": False,
                 "error": f"Error: {str(e)}"
             }
-    
+
     async def health_check(self) -> Dict[str, Any]:
         """Check health of Analyst service.
-        
+
         Returns:
             Health check results
         """
         try:
             async with aiohttp.ClientSession(timeout=self.timeout) as session:
                 url = f"{self.base_url}/health"
-                
+
                 async with session.get(url) as response:
                     if response.status == 200:
                         result = await response.json()
@@ -160,7 +160,7 @@ class AnalystClient:
                             "service": "analyst",
                             "error": f"HTTP {response.status}"
                         }
-                        
+
         except Exception as e:
             logger.error(f"Health check failed for Analyst: {str(e)}")
             return {
@@ -168,17 +168,17 @@ class AnalystClient:
                 "service": "analyst",
                 "error": str(e)
             }
-    
+
     async def get_service_info(self) -> Dict[str, Any]:
         """Get service information.
-        
+
         Returns:
             Service information
         """
         try:
             async with aiohttp.ClientSession(timeout=self.timeout) as session:
                 url = f"{self.base_url}/"
-                
+
                 async with session.get(url) as response:
                     if response.status == 200:
                         return await response.json()
@@ -187,7 +187,7 @@ class AnalystClient:
                             "error": f"HTTP {response.status}",
                             "service": "analyst"
                         }
-                        
+
         except Exception as e:
             return {
                 "error": str(e),

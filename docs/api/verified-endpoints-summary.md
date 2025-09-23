@@ -1,7 +1,7 @@
 # Helios Career Operations System - Verified API Endpoints
 
-**Generated**: September 6, 2025  
-**Source**: Live service introspection  
+**Generated**: September 6, 2025
+**Source**: Live service introspection
 **Status**: ✅ VERIFIED - All endpoints extracted from running services
 
 ---
@@ -15,13 +15,13 @@ The Helios Career Operations System exposes REST APIs through multiple microserv
 ---
 
 ## Orchestrator Service (Port 8000)
-**Status**: ✅ OPERATIONAL  
+**Status**: ✅ OPERATIONAL
 **Base URL**: `http://localhost:8000`
 
 ### Health & Status Endpoints
 - `GET /` - Root endpoint
 - `GET /health/` - Basic health check
-- `GET /health/detailed` - Detailed system health  
+- `GET /health/detailed` - Detailed system health
 - `GET /health/ready` - Readiness probe
 - `GET /health/live` - Liveness probe
 
@@ -56,7 +56,7 @@ The Helios Career Operations System exposes REST APIs through multiple microserv
 ---
 
 ## Strategist Service (Port 8002)
-**Status**: ✅ OPERATIONAL  
+**Status**: ✅ OPERATIONAL
 **Base URL**: `http://localhost:8002`
 
 ### Health Endpoints
@@ -73,13 +73,13 @@ The Helios Career Operations System exposes REST APIs through multiple microserv
 
 ### OpenAPI Documentation
 - `GET /openapi.json` - OpenAPI specification
-- `GET /docs` - Swagger UI  
+- `GET /docs` - Swagger UI
 - `GET /redoc` - ReDoc documentation
 
 ---
 
 ## Analyst Service (Port 8003)
-**Status**: ✅ OPERATIONAL  
+**Status**: ✅ OPERATIONAL
 **Base URL**: `http://localhost:8003`
 
 ### Health Endpoints
@@ -99,7 +99,7 @@ The Helios Career Operations System exposes REST APIs through multiple microserv
 ---
 
 ## Profile Ingestor Service (Port 8001)
-**Status**: ✅ COMPLETED  
+**Status**: ✅ COMPLETED
 **Implementation**: Command-line interface, no REST API
 
 The Profile Ingestor service operates as a command-line tool for resume processing and does not expose HTTP endpoints. It processes files directly and outputs Master Career Database JSON.
@@ -113,7 +113,7 @@ python -m src.resume_extractor.main /path/to/resume/directory
 ---
 
 ## Architect Service (Port 8004)
-**Status**: ⏸️ PENDING IMPLEMENTATION  
+**Status**: ⏸️ PENDING IMPLEMENTATION
 **Planned Endpoints**:
 - `GET /health` - Health check
 - `POST /documents/generate` - Generate documents (resume, cover letter)
@@ -122,8 +122,8 @@ python -m src.resume_extractor.main /path/to/resume/directory
 
 ---
 
-## Editor Service (Port 8005)  
-**Status**: ⏸️ PENDING IMPLEMENTATION  
+## Editor Service (Port 8005)
+**Status**: ⏸️ PENDING IMPLEMENTATION
 **Planned Endpoints**:
 - `GET /health` - Health check
 - `POST /text/optimize` - Optimize text content
@@ -158,12 +158,12 @@ Authorization: Bearer <token>  # When auth is implemented
 ```json
 {
   "status": "healthy|unhealthy",
-  "service": "service_name", 
+  "service": "service_name",
   "version": "1.0.0",
   "timestamp": "ISO8601",
   "components": {
     "database": "healthy|unhealthy",
-    "ml_models": "healthy|unhealthy", 
+    "ml_models": "healthy|unhealthy",
     "external_services": "healthy|unhealthy"
   }
 }
@@ -203,7 +203,7 @@ All services implement standard error responses:
 ### Live API Documentation
 Each service provides interactive documentation:
 - **Orchestrator**: http://localhost:8000/docs
-- **Strategist**: http://localhost:8002/docs  
+- **Strategist**: http://localhost:8002/docs
 - **Analyst**: http://localhost:8003/docs
 
 ### Service Health Monitoring
@@ -213,7 +213,7 @@ python bmad-core/scripts/health-check-all.py
 
 # Individual service health
 curl http://localhost:8000/health
-curl http://localhost:8002/health  
+curl http://localhost:8002/health
 curl http://localhost:8003/health
 ```
 
@@ -224,7 +224,7 @@ curl -X POST http://localhost:8000/sessions/ \
   -H "Content-Type: application/json" \
   -d '{"user_id": "test_user"}'
 
-# Generate career paths  
+# Generate career paths
 curl -X POST http://localhost:8002/career-paths/discover \
   -H "Content-Type: application/json" \
   -d '{"profile_data": { /* Master Career Database JSON */ }}'
@@ -239,12 +239,12 @@ curl -X POST http://localhost:8003/analysis/analyze \
 
 ## Verification Status
 
-✅ **Endpoints Verified**: All listed endpoints extracted from live services  
-✅ **Documentation Accuracy**: 100% - No phantom endpoints included  
-✅ **Service Health**: All operational services respond correctly  
-✅ **Integration Ready**: Core services ready for integration testing  
+✅ **Endpoints Verified**: All listed endpoints extracted from live services
+✅ **Documentation Accuracy**: 100% - No phantom endpoints included
+✅ **Service Health**: All operational services respond correctly
+✅ **Integration Ready**: Core services ready for integration testing
 
-**Last Verified**: September 6, 2025 21:32 UTC  
+**Last Verified**: September 6, 2025 21:32 UTC
 **Verification Method**: Live service introspection using FastAPI route discovery
 
 ---

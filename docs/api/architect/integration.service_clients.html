@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>integration.service_clients - architect</title>
+    <style>
+        body { font-family: Arial, sans-serif; margin: 40px; background: #f8f9fa; }
+        .container { max-width: 1200px; margin: 0 auto; background: white; padding: 30px; border-radius: 8px; box-shadow: 0 2px 10px rgba(0,0,0,0.1); }
+        .header { background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; padding: 20px; border-radius: 5px; margin-bottom: 30px; }
+        .section { margin: 20px 0; padding: 20px; border-left: 4px solid #667eea; background: #f8f9ff; }
+        .docstring { background: #fff; padding: 15px; border-radius: 5px; border: 1px solid #e0e0e0; margin: 10px 0; white-space: pre-wrap; }
+        .nav { margin-bottom: 20px; }
+        .nav a { color: #667eea; text-decoration: none; margin-right: 20px; }
+        .nav a:hover { text-decoration: underline; }
+        h1, h2, h3 { color: #333; }
+        .module-path { color: #666; font-style: italic; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>integration.service_clients</h1>
+            <p class="module-path">Service: architect • Path: integration\service_clients.py</p>
+        </div>
+
+        <div class="nav">
+            <a href="../index.html">← Back to API Index</a>
+            <a href="../architect/index.html">← architect Overview</a>
+        </div>
+
+        <div class="section">
+            <h2>Module Description</h2>
+            <div class="docstring">Service Clients for Helios Integration
+
+HTTP clients for communicating with other Helios services:
+- Orchestrator: Session management and coordination
+- ANALYST: Market analysis and resume optimization
+- STRATEGIST: Career path and skill adjacency insights</div>
+        </div>
+
+        <div class="section">
+            <h2>Classes</h2>
+
+            <h3>ServiceClient</h3>
+            <div class="docstring">Base class for Helios service clients.</div>
+
+            <h3>OrchestratorClient</h3>
+            <div class="docstring">Client for communicating with the Orchestrator service.</div>
+
+            <h3>AnalystClient</h3>
+            <div class="docstring">Client for communicating with the ANALYST service.</div>
+
+            <h3>StrategistClient</h3>
+            <div class="docstring">Client for communicating with the STRATEGIST service.</div>
+
+            <h3>ServiceClientsManager</h3>
+            <div class="docstring">Manager for all service clients with health monitoring.</div>
+        </div>
+        <div class="section">
+            <h2>Functions</h2>
+
+            <h3>async get_service_clients()</h3>
+            <div class="docstring">Get service clients manager instance.</div>
+
+            <h3>async _get_client()</h3>
+            <div class="docstring">Get or create HTTP client with connection pooling.</div>
+
+            <h3>async close()</h3>
+            <div class="docstring">Close HTTP client and cleanup resources.</div>
+
+            <h3>async _make_request()</h3>
+            <div class="docstring">Make HTTP request with error handling and logging.</div>
+
+            <h3>async health_check()</h3>
+            <div class="docstring">Check service health with caching.</div>
+
+            <h3>async get_session()</h3>
+            <div class="docstring">Get session information from Orchestrator.</div>
+
+            <h3>async update_session_status()</h3>
+            <div class="docstring">Update session status in Orchestrator.</div>
+
+            <h3>async register_document_completion()</h3>
+            <div class="docstring">Register completed document with Orchestrator.</div>
+
+            <h3>async get_recommendations()</h3>
+            <div class="docstring">Get optimization recommendations from ANALYST.</div>
+
+            <h3>async request_analysis()</h3>
+            <div class="docstring">Request new analysis from ANALYST service.</div>
+
+            <h3>async get_insights()</h3>
+            <div class="docstring">Get career strategy insights from STRATEGIST.</div>
+
+            <h3>async request_strategy_analysis()</h3>
+            <div class="docstring">Request new strategy analysis from STRATEGIST service.</div>
+
+            <h3>async health_check_all()</h3>
+            <div class="docstring">Perform health check on all integrated services.</div>
+
+            <h3>async close_all()</h3>
+            <div class="docstring">Close all service clients.</div>
+        </div>
+    </div>
+</body>
+</html>

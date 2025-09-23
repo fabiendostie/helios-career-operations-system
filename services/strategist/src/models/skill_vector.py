@@ -23,7 +23,7 @@ class CandidateProfile(BaseModel):
     aggregated_vector: List[float]
     vector_dimension: int
     generation_timestamp: float
-    
+
 
 @dataclass
 class SkillEmbedding:
@@ -31,7 +31,7 @@ class SkillEmbedding:
     text: str
     embedding: np.ndarray
     metadata: Dict[str, Any]
-    
+
     def to_vector(self) -> SkillVector:
         """Convert to SkillVector model."""
         return SkillVector(

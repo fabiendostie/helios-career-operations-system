@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>api.pipeline - orchestrator</title>
+    <style>
+        body { font-family: Arial, sans-serif; margin: 40px; background: #f8f9fa; }
+        .container { max-width: 1200px; margin: 0 auto; background: white; padding: 30px; border-radius: 8px; box-shadow: 0 2px 10px rgba(0,0,0,0.1); }
+        .header { background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; padding: 20px; border-radius: 5px; margin-bottom: 30px; }
+        .section { margin: 20px 0; padding: 20px; border-left: 4px solid #667eea; background: #f8f9ff; }
+        .docstring { background: #fff; padding: 15px; border-radius: 5px; border: 1px solid #e0e0e0; margin: 10px 0; white-space: pre-wrap; }
+        .nav { margin-bottom: 20px; }
+        .nav a { color: #667eea; text-decoration: none; margin-right: 20px; }
+        .nav a:hover { text-decoration: underline; }
+        h1, h2, h3 { color: #333; }
+        .module-path { color: #666; font-style: italic; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>api.pipeline</h1>
+            <p class="module-path">Service: orchestrator • Path: api\pipeline.py</p>
+        </div>
+
+        <div class="nav">
+            <a href="../index.html">← Back to API Index</a>
+            <a href="../orchestrator/index.html">← orchestrator Overview</a>
+        </div>
+
+        <div class="section">
+            <h2>Module Description</h2>
+            <div class="docstring">Pipeline orchestration API endpoints.</div>
+        </div>
+
+        <div class="section">
+            <h2>Functions</h2>
+
+            <h3>async get_service_coordinator()</h3>
+            <div class="docstring">Get service coordinator instance.</div>
+
+            <h3>async execute_pipeline()</h3>
+            <div class="docstring">Execute the complete Profile Ingestor → Strategist → Analyst pipeline.
+
+Args:
+    resume_path: Path to resume file (optional)
+    career_data: Direct career data input (optional)
+    background_tasks: FastAPI background tasks
+    coordinator: Service coordinator
+
+Returns:
+    Pipeline execution results</div>
+
+            <h3>async execute_pipeline_async()</h3>
+            <div class="docstring">Execute pipeline asynchronously in background.
+
+Args:
+    resume_path: Path to resume file (optional)
+    career_data: Direct career data input (optional)
+    background_tasks: FastAPI background tasks
+    coordinator: Service coordinator
+
+Returns:
+    Session ID for tracking pipeline execution</div>
+
+            <h3>async get_pipeline_status()</h3>
+            <div class="docstring">Get pipeline execution status.
+
+Args:
+    session_id: Session identifier
+    coordinator: Service coordinator
+
+Returns:
+    Pipeline status information</div>
+
+            <h3>async pipeline_health_check()</h3>
+            <div class="docstring">Check health of all pipeline services.
+
+Args:
+    coordinator: Service coordinator
+
+Returns:
+    Health status of all services</div>
+
+            <h3>async _execute_pipeline_background()</h3>
+            <div class="docstring">Execute pipeline in background task.
+
+Args:
+    coordinator: Service coordinator
+    session_id: Session identifier
+    resume_path: Path to resume file (optional)
+    career_data: Direct career data input (optional)</div>
+        </div>
+    </div>
+</body>
+</html>

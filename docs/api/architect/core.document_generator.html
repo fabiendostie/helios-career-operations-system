@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>core.document_generator - architect</title>
+    <style>
+        body { font-family: Arial, sans-serif; margin: 40px; background: #f8f9fa; }
+        .container { max-width: 1200px; margin: 0 auto; background: white; padding: 30px; border-radius: 8px; box-shadow: 0 2px 10px rgba(0,0,0,0.1); }
+        .header { background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; padding: 20px; border-radius: 5px; margin-bottom: 30px; }
+        .section { margin: 20px 0; padding: 20px; border-left: 4px solid #667eea; background: #f8f9ff; }
+        .docstring { background: #fff; padding: 15px; border-radius: 5px; border: 1px solid #e0e0e0; margin: 10px 0; white-space: pre-wrap; }
+        .nav { margin-bottom: 20px; }
+        .nav a { color: #667eea; text-decoration: none; margin-right: 20px; }
+        .nav a:hover { text-decoration: underline; }
+        h1, h2, h3 { color: #333; }
+        .module-path { color: #666; font-style: italic; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>core.document_generator</h1>
+            <p class="module-path">Service: architect • Path: core\document_generator.py</p>
+        </div>
+
+        <div class="nav">
+            <a href="../index.html">← Back to API Index</a>
+            <a href="../architect/index.html">← architect Overview</a>
+        </div>
+
+        <div class="section">
+            <h2>Module Description</h2>
+            <div class="docstring">Multi-format document generation with memory optimization.</div>
+        </div>
+
+        <div class="section">
+            <h2>Classes</h2>
+
+            <h3>DocumentGenerationError</h3>
+            <div class="docstring">Raised when document generation fails.</div>
+
+            <h3>MemoryEfficientPDFGenerator</h3>
+            <div class="docstring">PDF generation with memory optimization.</div>
+
+            <h3>DOCXGenerator</h3>
+            <div class="docstring">DOCX document generation for legacy ATS compatibility.</div>
+
+            <h3>DocumentGenerator</h3>
+            <div class="docstring">High-level document generation interface supporting multiple formats.</div>
+        </div>
+        <div class="section">
+            <h2>Functions</h2>
+
+            <h3>async monitor_memory_usage()</h3>
+            <div class="docstring">Monitor memory usage and trigger cleanup if needed.</div>
+
+            <h3>async memory_managed_pdf_conversion()</h3>
+            <div class="docstring">Context manager for memory-efficient PDF conversion.</div>
+
+            <h3>async _generate_reportlab_pdf_from_html()</h3>
+            <div class="docstring">Generate PDF using ReportLab as a fallback when WeasyPrint is not available.</div>
+
+            <h3>async _generate_minimal_pdf()</h3>
+            <div class="docstring">Generate PDF with minimal memory usage.</div>
+
+            <h3>_simplify_html_content()</h3>
+            <div class="docstring">Simplify HTML content to reduce memory usage.</div>
+
+            <h3>async generate_docx_from_data()</h3>
+            <div class="docstring">Generate DOCX document directly from career data.</div>
+
+            <h3>_add_header_section()</h3>
+            <div class="docstring">Add header with name and contact information.</div>
+
+            <h3>_add_impact_summary()</h3>
+            <div class="docstring">Add T-shaped impact summary.</div>
+
+            <h3>_add_experience_section()</h3>
+            <div class="docstring">Add professional experience section.</div>
+
+            <h3>_add_education_section()</h3>
+            <div class="docstring">Add education section.</div>
+
+            <h3>_add_skills_section()</h3>
+            <div class="docstring">Add technical skills section.</div>
+
+            <h3>_calculate_years_experience()</h3>
+            <div class="docstring">Calculate years of experience.</div>
+
+            <h3>_extract_core_skills()</h3>
+            <div class="docstring">Extract core skills from skills inventory.</div>
+
+            <h3>async generate_document()</h3>
+            <div class="docstring">Generate document in specified format.
+
+Args:
+    template_name: Name of template to use
+    career_data: Career data from Master Career Database
+    output_format: Target format (pdf, html, markdown, docx)
+    job_requirements: Optional job requirements for customization
+    customizations: Optional template customizations
+    document_type: Type of document (resume, cover_letter)
+
+Returns:
+    Dictionary with document content and metadata</div>
+
+            <h3>_html_to_markdown()</h3>
+            <div class="docstring">Convert HTML to Markdown (simplified conversion).</div>
+
+            <h3>async validate_output_format()</h3>
+            <div class="docstring">Validate if output format is supported.</div>
+
+            <h3>async get_template_info()</h3>
+            <div class="docstring">Get information about a specific template.</div>
+
+            <h3>async list_available_templates()</h3>
+            <div class="docstring">List all available templates, optionally filtered by document type.</div>
+        </div>
+    </div>
+</body>
+</html>

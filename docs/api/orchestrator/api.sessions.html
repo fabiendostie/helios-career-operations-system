@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>api.sessions - orchestrator</title>
+    <style>
+        body { font-family: Arial, sans-serif; margin: 40px; background: #f8f9fa; }
+        .container { max-width: 1200px; margin: 0 auto; background: white; padding: 30px; border-radius: 8px; box-shadow: 0 2px 10px rgba(0,0,0,0.1); }
+        .header { background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; padding: 20px; border-radius: 5px; margin-bottom: 30px; }
+        .section { margin: 20px 0; padding: 20px; border-left: 4px solid #667eea; background: #f8f9ff; }
+        .docstring { background: #fff; padding: 15px; border-radius: 5px; border: 1px solid #e0e0e0; margin: 10px 0; white-space: pre-wrap; }
+        .nav { margin-bottom: 20px; }
+        .nav a { color: #667eea; text-decoration: none; margin-right: 20px; }
+        .nav a:hover { text-decoration: underline; }
+        h1, h2, h3 { color: #333; }
+        .module-path { color: #666; font-style: italic; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>api.sessions</h1>
+            <p class="module-path">Service: orchestrator • Path: api\sessions.py</p>
+        </div>
+
+        <div class="nav">
+            <a href="../index.html">← Back to API Index</a>
+            <a href="../orchestrator/index.html">← orchestrator Overview</a>
+        </div>
+
+        <div class="section">
+            <h2>Module Description</h2>
+            <div class="docstring">Session management API endpoints.</div>
+        </div>
+
+        <div class="section">
+            <h2>Functions</h2>
+
+            <h3>async get_session_manager()</h3>
+            <div class="docstring">Dependency to get session manager.</div>
+
+            <h3>async create_session()</h3>
+            <div class="docstring">Create a new session.
+
+Args:
+    session_data: Session creation data
+    manager: Session manager dependency
+
+Returns:
+    Created session</div>
+
+            <h3>async list_sessions()</h3>
+            <div class="docstring">List sessions with optional filtering.
+
+Args:
+    user_id: Optional user ID filter
+    state: Optional state filter
+    limit: Maximum results
+    offset: Results to skip
+    manager: Session manager dependency
+
+Returns:
+    List of session summaries</div>
+
+            <h3>async get_session()</h3>
+            <div class="docstring">Get session by ID.
+
+Args:
+    session_id: Session identifier
+    manager: Session manager dependency
+
+Returns:
+    Session details
+
+Raises:
+    HTTPException: If session not found</div>
+
+            <h3>async update_session()</h3>
+            <div class="docstring">Update session data.
+
+Args:
+    session_id: Session identifier
+    updates: Fields to update
+    manager: Session manager dependency
+
+Returns:
+    Updated session
+
+Raises:
+    HTTPException: If session not found</div>
+
+            <h3>async delete_session()</h3>
+            <div class="docstring">Delete session.
+
+Args:
+    session_id: Session identifier
+    manager: Session manager dependency
+
+Raises:
+    HTTPException: If session not found</div>
+
+            <h3>async extend_session()</h3>
+            <div class="docstring">Extend session expiration time.
+
+Args:
+    session_id: Session identifier
+    minutes: Minutes to extend (default from settings)
+    manager: Session manager dependency
+
+Returns:
+    Updated session
+
+Raises:
+    HTTPException: If session not found</div>
+
+            <h3>async transition_session_state()</h3>
+            <div class="docstring">Transition session to new state.
+
+Args:
+    session_id: Session identifier
+    new_state: New session state
+    manager: Session manager dependency
+
+Returns:
+    Updated session
+
+Raises:
+    HTTPException: If session not found</div>
+
+            <h3>async cleanup_expired_sessions()</h3>
+            <div class="docstring">Clean up expired sessions.
+
+Args:
+    manager: Session manager dependency
+
+Returns:
+    Cleanup results</div>
+        </div>
+    </div>
+</body>
+</html>

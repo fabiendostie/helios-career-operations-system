@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>core.schema_validator - orchestrator</title>
+    <style>
+        body { font-family: Arial, sans-serif; margin: 40px; background: #f8f9fa; }
+        .container { max-width: 1200px; margin: 0 auto; background: white; padding: 30px; border-radius: 8px; box-shadow: 0 2px 10px rgba(0,0,0,0.1); }
+        .header { background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; padding: 20px; border-radius: 5px; margin-bottom: 30px; }
+        .section { margin: 20px 0; padding: 20px; border-left: 4px solid #667eea; background: #f8f9ff; }
+        .docstring { background: #fff; padding: 15px; border-radius: 5px; border: 1px solid #e0e0e0; margin: 10px 0; white-space: pre-wrap; }
+        .nav { margin-bottom: 20px; }
+        .nav a { color: #667eea; text-decoration: none; margin-right: 20px; }
+        .nav a:hover { text-decoration: underline; }
+        h1, h2, h3 { color: #333; }
+        .module-path { color: #666; font-style: italic; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>core.schema_validator</h1>
+            <p class="module-path">Service: orchestrator • Path: core\schema_validator.py</p>
+        </div>
+
+        <div class="nav">
+            <a href="../index.html">← Back to API Index</a>
+            <a href="../orchestrator/index.html">← orchestrator Overview</a>
+        </div>
+
+        <div class="section">
+            <h2>Module Description</h2>
+            <div class="docstring">Master Career Database schema validation and data flow verification.</div>
+        </div>
+
+        <div class="section">
+            <h2>Classes</h2>
+
+            <h3>WorkExperienceEntry</h3>
+            <div class="docstring">Schema for work experience entry.</div>
+
+            <h3>ProjectEntry</h3>
+            <div class="docstring">Schema for project entry.</div>
+
+            <h3>SkillInventory</h3>
+            <div class="docstring">Schema for skills inventory.</div>
+
+            <h3>StrategicMetadata</h3>
+            <div class="docstring">Schema for strategic metadata.</div>
+
+            <h3>HolisticProfile</h3>
+            <div class="docstring">Schema for holistic profile.</div>
+
+            <h3>MasterCareerDatabase</h3>
+            <div class="docstring">Complete Master Career Database schema.</div>
+
+            <h3>SchemaValidator</h3>
+            <div class="docstring">Validates Master Career Database schema and data flow.</div>
+        </div>
+        <div class="section">
+            <h2>Functions</h2>
+
+            <h3>__init__()</h3>
+            <div class="docstring">Initialize schema validator.</div>
+
+            <h3>validate_master_career_database()</h3>
+            <div class="docstring">Validate Master Career Database against schema.
+
+Args:
+    data: Data to validate
+    strict: Whether to enforce strict validation
+
+Returns:
+    Tuple of (is_valid, errors, warnings)</div>
+
+            <h3>_validate_work_experience()</h3>
+            <div class="docstring">Validate work experience entries.</div>
+
+            <h3>_validate_projects()</h3>
+            <div class="docstring">Validate project entries.</div>
+
+            <h3>_validate_skills_inventory()</h3>
+            <div class="docstring">Validate skills inventory.</div>
+
+            <h3>_validate_strategic_metadata()</h3>
+            <div class="docstring">Validate strategic metadata.</div>
+
+            <h3>_validate_holistic_profile()</h3>
+            <div class="docstring">Validate holistic profile.</div>
+
+            <h3>_check_data_completeness()</h3>
+            <div class="docstring">Check overall data completeness.</div>
+
+            <h3>validate_pipeline_data_flow()</h3>
+            <div class="docstring">Validate complete pipeline data flow.
+
+Args:
+    profile_data: Data from Profile Ingestor
+    strategy_results: Data from Strategist
+    analysis_results: Data from Analyst
+
+Returns:
+    Tuple of (is_valid, errors)</div>
+
+            <h3>generate_schema_report()</h3>
+            <div class="docstring">Generate comprehensive schema compliance report.
+
+Args:
+    data: Data to analyze
+
+Returns:
+    Schema compliance report</div>
+
+            <h3>_generate_recommendations()</h3>
+            <div class="docstring">Generate recommendations for improving data quality.</div>
+        </div>
+    </div>
+</body>
+</html>

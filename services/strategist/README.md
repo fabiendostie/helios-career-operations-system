@@ -283,7 +283,7 @@ Structured logging with correlation IDs:
 
 1. **Import Error for sentence-transformers**
    - Solution: Install with `pip install sentence-transformers`
-   
+
 2. **Redis Connection Failed**
    - Solution: Service works without Redis but slower
    - To disable: Set `REDIS_ENABLED=false`
@@ -309,6 +309,6 @@ For issues or questions:
 
 ---
 
-**Version**: 1.0.0  
-**Status**: Production Ready  
+**Version**: 1.0.0
+**Status**: Production Ready
 **Last Updated**: 2025-01-05

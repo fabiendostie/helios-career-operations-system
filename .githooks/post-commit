@@ -1,0 +1,122 @@
+#!/bin/bash
+#
+# Git Post-Commit Hook for Automated Security Logging
+# Automatically analyzes commits for security-related changes and logs them
+#
+# To enable this hook:
+# 1. Make this file executable: chmod +x .githooks/post-commit
+# 2. Configure git to use this hooks directory: git config core.hooksPath .githooks
+#
+
+set -e
+
+# Colors for output
+RED='\033[0;31m'
+GREEN='\033[0;32m'
+YELLOW='\033[1;33m'
+BLUE='\033[0;34m'
+NC='\033[0m' # No Color
+
+# Project root directory
+PROJECT_ROOT="$(git rev-parse --show-toplevel)"
+
+# Security logger script
+SECURITY_LOGGER="$PROJECT_ROOT/scripts/security/auto_security_logger.py"
+
+# Log file for hook execution
+HOOK_LOG="$PROJECT_ROOT/.git/hooks.log"
+
+# Function to log with timestamp
+log_message() {
+    echo "[$(date '+%Y-%m-%d %H:%M:%S')] POST-COMMIT: $1" >> "$HOOK_LOG"
+}
+
+# Function to check if Python is available
+check_python() {
+    if command -v python3 &> /dev/null; then
+        echo "python3"
+    elif command -v python &> /dev/null; then
+        echo "python"
+    else
+        return 1
+    fi
+}
+
+# Main execution
+main() {
+    log_message "Starting automated security analysis"
+
+    # Get the current commit hash
+    COMMIT_HASH=$(git rev-parse HEAD)
+
+    echo -e "${BLUE}🔍 Analyzing commit for security changes...${NC}"
+    echo -e "   Commit: ${COMMIT_HASH:0:8}"
+
+    # Check if Python is available
+    PYTHON_CMD=$(check_python)
+    if [ $? -ne 0 ]; then
+        echo -e "${YELLOW}⚠️  Python not found, skipping security analysis${NC}"
+        log_message "Python not found, skipping security analysis"
+        exit 0
+    fi
+
+    # Check if security logger exists
+    if [ ! -f "$SECURITY_LOGGER" ]; then
+        echo -e "${YELLOW}⚠️  Security logger not found: $SECURITY_LOGGER${NC}"
+        log_message "Security logger not found: $SECURITY_LOGGER"
+        exit 0
+    fi
+
+    # Run the security analysis
+    cd "$PROJECT_ROOT"
+
+    # Capture output and error status
+    OUTPUT_FILE=$(mktemp)
+    ERROR_FILE=$(mktemp)
+
+    if $PYTHON_CMD "$SECURITY_LOGGER" "$COMMIT_HASH" > "$OUTPUT_FILE" 2> "$ERROR_FILE"; then
+        # Read the output
+        OUTPUT=$(cat "$OUTPUT_FILE")
+
+        if echo "$OUTPUT" | grep -q "Security-related commit detected"; then
+            echo -e "${GREEN}✅ Security-related changes detected and logged${NC}"
+            log_message "Security changes detected and logged for commit $COMMIT_HASH"
+
+            # Show summary to user
+            echo "$OUTPUT" | grep -E "(Score:|Severity:|Files:)" || true
+
+        elif echo "$OUTPUT" | grep -q "No significant security changes"; then
+            # Only show this in verbose mode or if explicitly requested
+            if [ "${SECURITY_HOOK_VERBOSE:-0}" = "1" ]; then
+                echo -e "${BLUE}ℹ️  No significant security changes detected${NC}"
+            fi
+            log_message "No security changes detected for commit $COMMIT_HASH"
+        else
+            echo -e "${YELLOW}⚠️  Security analysis completed with unexpected output${NC}"
+            log_message "Unexpected output from security analysis: $OUTPUT"
+        fi
+    else
+        # Error occurred
+        ERROR_OUTPUT=$(cat "$ERROR_FILE")
+        echo -e "${RED}❌ Security analysis failed${NC}"
+        echo -e "${RED}Error: $ERROR_OUTPUT${NC}"
+        log_message "Security analysis failed: $ERROR_OUTPUT"
+    fi
+
+    # Cleanup
+    rm -f "$OUTPUT_FILE" "$ERROR_FILE"
+
+    log_message "Completed automated security analysis"
+}
+
+# Only run if not in a rebase/merge
+if [ -f "$PROJECT_ROOT/.git/MERGE_HEAD" ] || [ -f "$PROJECT_ROOT/.git/rebase-apply" ] || [ -f "$PROJECT_ROOT/.git/rebase-merge" ]; then
+    log_message "Skipping security analysis during merge/rebase"
+    exit 0
+fi
+
+# Run the main function
+main
+
+# Exit successfully (don't fail the commit even if analysis fails)
+exit 0

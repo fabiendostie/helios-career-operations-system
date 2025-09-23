@@ -1,21 +1,21 @@
-# FastAPI and web framework
-fastapi==0.104.1
-uvicorn[standard]==0.24.0
-pydantic==2.5.0
-pydantic-settings==2.1.0
+# FastAPI and web framework (Latest 2025 versions)
+fastapi[standard]==0.115.4  # Latest FastAPI with Python 3.13 support
+uvicorn[standard]==0.32.1   # Latest uvicorn compatible with FastAPI
+pydantic==2.11.9            # Latest Pydantic v2 (2025 release)
+pydantic-settings==2.10.1   # Latest pydantic-settings (2025 release)
 
-# AI & Machine Learning
-spacy==3.7.5
-sentence-transformers==2.2.2
-scikit-learn==1.3.2
-numpy==1.26.2
+# AI & Machine Learning (Latest 2025 versions)
+spacy==3.8.2               # Latest spaCy with Python 3.13 support
+sentence-transformers==3.3.1  # Latest sentence-transformers for embeddings
+scikit-learn==1.7.2        # Latest scikit-learn (Sep 2025) with Python 3.14 support
+numpy==2.1.3               # Latest NumPy 2.x with performance improvements
 
-# HTTP client for service communication
-aiohttp==3.9.1
-httpx==0.25.2
+# HTTP client for service communication (Latest 2025 versions)
+aiohttp==3.12.15           # Latest aiohttp (July 2025) with Python 3.13 support
+httpx==0.28.1              # Latest httpx compatible with Python 3.13
 
-# Database and caching
-redis==5.0.1
+# Database and caching (Latest 2025 versions)
+redis==6.4.0               # Latest redis-py supporting Redis 8.0 GA
 asyncpg==0.29.0
 
 # Utilities

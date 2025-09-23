@@ -110,7 +110,7 @@ No refactoring was required during this review. The code demonstrates excellent 
 All items handled or noted for future consideration:
 
 - [✓] Project structure matches specification exactly
-- [✓] All dependencies properly configured with appropriate version constraints  
+- [✓] All dependencies properly configured with appropriate version constraints
 - [✓] spaCy models successfully integrated (using sm models due to Windows compatibility)
 - [✓] Comprehensive CLI argument parsing with validation
 - [✓] Pipeline architecture properly implemented with component separation

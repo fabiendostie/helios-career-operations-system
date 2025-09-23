@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>utils.logging_config - orchestrator</title>
+    <style>
+        body { font-family: Arial, sans-serif; margin: 40px; background: #f8f9fa; }
+        .container { max-width: 1200px; margin: 0 auto; background: white; padding: 30px; border-radius: 8px; box-shadow: 0 2px 10px rgba(0,0,0,0.1); }
+        .header { background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; padding: 20px; border-radius: 5px; margin-bottom: 30px; }
+        .section { margin: 20px 0; padding: 20px; border-left: 4px solid #667eea; background: #f8f9ff; }
+        .docstring { background: #fff; padding: 15px; border-radius: 5px; border: 1px solid #e0e0e0; margin: 10px 0; white-space: pre-wrap; }
+        .nav { margin-bottom: 20px; }
+        .nav a { color: #667eea; text-decoration: none; margin-right: 20px; }
+        .nav a:hover { text-decoration: underline; }
+        h1, h2, h3 { color: #333; }
+        .module-path { color: #666; font-style: italic; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>utils.logging_config</h1>
+            <p class="module-path">Service: orchestrator • Path: utils\logging_config.py</p>
+        </div>
+
+        <div class="nav">
+            <a href="../index.html">← Back to API Index</a>
+            <a href="../orchestrator/index.html">← orchestrator Overview</a>
+        </div>
+
+        <div class="section">
+            <h2>Module Description</h2>
+            <div class="docstring">Centralized logging configuration with correlation ID support.</div>
+        </div>
+
+        <div class="section">
+            <h2>Classes</h2>
+
+            <h3>CorrelationFilter</h3>
+            <div class="docstring">Add correlation ID to log records.</div>
+
+            <h3>StructuredFormatter</h3>
+            <div class="docstring">JSON formatter for structured logging.</div>
+        </div>
+        <div class="section">
+            <h2>Functions</h2>
+
+            <h3>setup_logging()</h3>
+            <div class="docstring">Configure application logging.</div>
+
+            <h3>get_logger()</h3>
+            <div class="docstring">Get a configured logger instance.</div>
+
+            <h3>filter()</h3>
+            <div class="docstring">Add correlation_id to the log record.</div>
+
+            <h3>add_fields()</h3>
+            <div class="docstring">Add custom fields to log record.</div>
+        </div>
+    </div>
+</body>
+</html>

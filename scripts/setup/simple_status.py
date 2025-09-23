@@ -26,17 +26,17 @@ def load_config(project_root):
 def main():
     project_root = Path.cwd()
     config = load_config(project_root)
-    
+
     print("\n" + "="*60)
     print("HELIOS CAREER OPERATIONS SYSTEM - STATUS")
     print("="*60)
-    
+
     if config:
         project_info = config.get('project', {})
         print(f"Project: {project_info.get('name', 'Unknown')}")
         print(f"Version: {project_info.get('version', 'Unknown')}")
         print(f"Status: {datetime.now().strftime('%Y-%m-%d %H:%M:%S')}")
-        
+
         # Agent Status
         print(f"\nAGENT STATUS:")
         agents = config.get('agents', {})
@@ -44,7 +44,7 @@ def main():
             status = agent_config.get('status', 'unknown')
             name = agent_config.get('name', agent_name)
             print(f"  {name}: {status.upper()}")
-            
+
         # Story Status
         stories = config.get('stories', {})
         completed = stories.get('completed', [])
@@ -52,14 +52,14 @@ def main():
         print(f"\nSTORY STATUS:")
         print(f"  Completed: {len(completed)}")
         print(f"  Pending: {len(pending)}")
-        
+
         print(f"\nNEXT STEPS:")
         print(f"  1. Run: npm run install:bmad")
         print(f"  2. Run: python scripts/setup/bmad_init.py")
         print(f"  3. Check: knowledge-base/agent-knowledge/")
     else:
         print("ERROR: Could not load configuration")
-    
+
     print("="*60)
 
 if __name__ == "__main__":

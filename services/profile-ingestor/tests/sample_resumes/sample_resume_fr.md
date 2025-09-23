@@ -1,7 +1,7 @@
 # Marie Dubois
 ## Ingénieure Logiciel Senior
 
-**Email:** marie.dubois@email.com  
+**Email:** marie.dubois@email.com
 **Téléphone:** +33 1 23 45 67 89
 
 ## Expérience Professionnelle
@@ -19,15 +19,15 @@
 
 ## Formation
 
-**Master en Informatique**  
+**Master en Informatique**
 École Centrale Paris | 2015-2017
 
-**Licence en Mathématiques Appliquées**  
+**Licence en Mathématiques Appliquées**
 Université Pierre et Marie Curie | 2012-2015
 
 ## Compétences
 
-**Langages de programmation:** Java, JavaScript, Python, TypeScript  
-**Frameworks:** Spring Boot, Vue.js, React, Node.js  
-**Bases de données:** PostgreSQL, MongoDB, Oracle  
+**Langages de programmation:** Java, JavaScript, Python, TypeScript
+**Frameworks:** Spring Boot, Vue.js, React, Node.js
+**Bases de données:** PostgreSQL, MongoDB, Oracle
 **Outils:** Docker, Jenkins, Git, Maven, Kubernetes

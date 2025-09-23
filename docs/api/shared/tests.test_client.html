@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>tests.test_client - shared</title>
+    <style>
+        body { font-family: Arial, sans-serif; margin: 40px; background: #f8f9fa; }
+        .container { max-width: 1200px; margin: 0 auto; background: white; padding: 30px; border-radius: 8px; box-shadow: 0 2px 10px rgba(0,0,0,0.1); }
+        .header { background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; padding: 20px; border-radius: 5px; margin-bottom: 30px; }
+        .section { margin: 20px 0; padding: 20px; border-left: 4px solid #667eea; background: #f8f9ff; }
+        .docstring { background: #fff; padding: 15px; border-radius: 5px; border: 1px solid #e0e0e0; margin: 10px 0; white-space: pre-wrap; }
+        .nav { margin-bottom: 20px; }
+        .nav a { color: #667eea; text-decoration: none; margin-right: 20px; }
+        .nav a:hover { text-decoration: underline; }
+        h1, h2, h3 { color: #333; }
+        .module-path { color: #666; font-style: italic; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>tests.test_client</h1>
+            <p class="module-path">Service: shared • Path: tests\test_client.py</p>
+        </div>
+
+        <div class="nav">
+            <a href="../index.html">← Back to API Index</a>
+            <a href="../shared/index.html">← shared Overview</a>
+        </div>
+
+        <div class="section">
+            <h2>Module Description</h2>
+            <div class="docstring">Tests for the main ResilientLLMClient implementation.</div>
+        </div>
+
+        <div class="section">
+            <h2>Classes</h2>
+
+            <h3>TestResilientLLMClient</h3>
+            <div class="docstring">Test ResilientLLMClient class.</div>
+        </div>
+        <div class="section">
+            <h2>Functions</h2>
+
+            <h3>test_initialization_success()</h3>
+            <div class="docstring">Test successful client initialization.</div>
+
+            <h3>test_initialization_no_providers()</h3>
+            <div class="docstring">Test initialization fails with no providers.</div>
+
+            <h3>async test_successful_generation_primary_provider()</h3>
+            <div class="docstring">Test successful generation using primary provider.</div>
+
+            <h3>async test_cache_hit()</h3>
+            <div class="docstring">Test returning cached response.</div>
+
+            <h3>async test_fallback_to_secondary_provider()</h3>
+            <div class="docstring">Test fallback when primary provider fails.</div>
+
+            <h3>async test_all_providers_fail()</h3>
+            <div class="docstring">Test behavior when all providers fail.</div>
+
+            <h3>async test_circuit_breaker_prevents_calls()</h3>
+            <div class="docstring">Test circuit breaker prevents calls to failing provider.</div>
+
+            <h3>async test_disable_cache()</h3>
+            <div class="docstring">Test generation with caching disabled.</div>
+
+            <h3>async test_custom_provider_preference()</h3>
+            <div class="docstring">Test generation with custom provider preference.</div>
+
+            <h3>test_get_status()</h3>
+            <div class="docstring">Test getting client status.</div>
+
+            <h3>test_reset_circuit_breakers()</h3>
+            <div class="docstring">Test resetting circuit breakers.</div>
+
+            <h3>async test_clear_cache()</h3>
+            <div class="docstring">Test clearing cache.</div>
+
+            <h3>async test_context_manager()</h3>
+            <div class="docstring">Test using client as async context manager.</div>
+
+            <h3>test_provider_order_with_preference()</h3>
+            <div class="docstring">Test provider ordering with custom preference.</div>
+        </div>
+    </div>
+</body>
+</html>

@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>api.career_paths - strategist</title>
+    <style>
+        body { font-family: Arial, sans-serif; margin: 40px; background: #f8f9fa; }
+        .container { max-width: 1200px; margin: 0 auto; background: white; padding: 30px; border-radius: 8px; box-shadow: 0 2px 10px rgba(0,0,0,0.1); }
+        .header { background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; padding: 20px; border-radius: 5px; margin-bottom: 30px; }
+        .section { margin: 20px 0; padding: 20px; border-left: 4px solid #667eea; background: #f8f9ff; }
+        .docstring { background: #fff; padding: 15px; border-radius: 5px; border: 1px solid #e0e0e0; margin: 10px 0; white-space: pre-wrap; }
+        .nav { margin-bottom: 20px; }
+        .nav a { color: #667eea; text-decoration: none; margin-right: 20px; }
+        .nav a:hover { text-decoration: underline; }
+        h1, h2, h3 { color: #333; }
+        .module-path { color: #666; font-style: italic; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>api.career_paths</h1>
+            <p class="module-path">Service: strategist • Path: api\career_paths.py</p>
+        </div>
+
+        <div class="nav">
+            <a href="../index.html">← Back to API Index</a>
+            <a href="../strategist/index.html">← strategist Overview</a>
+        </div>
+
+        <div class="section">
+            <h2>Module Description</h2>
+            <div class="docstring">Career path generation API endpoints.</div>
+        </div>
+
+        <div class="section">
+            <h2>Functions</h2>
+
+            <h3>async get_career_generator()</h3>
+            <div class="docstring">Dependency to get initialized career generator.</div>
+
+            <h3>async initialize_career_generator()</h3>
+            <div class="docstring">Initialize the career generator (called during app startup).</div>
+
+            <h3>async generate_career_paths()</h3>
+            <div class="docstring">Generate career path recommendations for a user.
+
+This is the main endpoint that the Orchestrator calls for the /discover command.</div>
+
+            <h3>async discover_command_handler()</h3>
+            <div class="docstring">Handle /discover command from HELIOS Orchestrator.
+
+This endpoint matches the expected interface from the Orchestrator service.</div>
+
+            <h3>async service_status()</h3>
+            <div class="docstring">Get STRATEGIST service status and statistics.</div>
+        </div>
+    </div>
+</body>
+</html>

@@ -24,7 +24,7 @@ def app():
     return create_app()
 
 
-@pytest.fixture  
+@pytest.fixture
 def client(app):
     """Create test client."""
     if not FASTAPI_AVAILABLE:
@@ -49,7 +49,7 @@ def mock_settings():
 
 @pytest.fixture
 def mock_database():
-    """Mock database session for testing.""" 
+    """Mock database session for testing."""
     mock_session = AsyncMock()
     return mock_session
 
@@ -75,7 +75,7 @@ def sample_command():
     """Sample command for testing."""
     return {
         "command": "/start",
-        "session_id": "test-session-123", 
+        "session_id": "test-session-123",
         "parameters": {},
         "timestamp": "2024-01-01T00:00:00Z"
     }

@@ -1,0 +1,183 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>intelligence.data_ingestion - architect</title>
+    <style>
+        body { font-family: Arial, sans-serif; margin: 40px; background: #f8f9fa; }
+        .container { max-width: 1200px; margin: 0 auto; background: white; padding: 30px; border-radius: 8px; box-shadow: 0 2px 10px rgba(0,0,0,0.1); }
+        .header { background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; padding: 20px; border-radius: 5px; margin-bottom: 30px; }
+        .section { margin: 20px 0; padding: 20px; border-left: 4px solid #667eea; background: #f8f9ff; }
+        .docstring { background: #fff; padding: 15px; border-radius: 5px; border: 1px solid #e0e0e0; margin: 10px 0; white-space: pre-wrap; }
+        .nav { margin-bottom: 20px; }
+        .nav a { color: #667eea; text-decoration: none; margin-right: 20px; }
+        .nav a:hover { text-decoration: underline; }
+        h1, h2, h3 { color: #333; }
+        .module-path { color: #666; font-style: italic; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>intelligence.data_ingestion</h1>
+            <p class="module-path">Service: architect • Path: intelligence\data_ingestion.py</p>
+        </div>
+
+        <div class="nav">
+            <a href="../index.html">← Back to API Index</a>
+            <a href="../architect/index.html">← architect Overview</a>
+        </div>
+
+        <div class="section">
+            <h2>Module Description</h2>
+            <div class="docstring">Advanced Data Ingestion System for Dynamic Research Engine
+
+This module implements sophisticated data gathering from authoritative sources
+using Playwright for dynamic content scraping and requests for API integration.
+
+Key Features:
+- Playwright-based scraping for JavaScript-heavy sites
+- Rate limiting and respectful crawling
+- Comprehensive error handling and retry logic
+- Data quality validation
+- Structured output for downstream NLP processing
+
+Example:
+    >>> from data_ingestion import AdvancedDataIngester
+    >>> ingester = AdvancedDataIngester()
+    >>> await ingester.initialize()
+    >>> content = await ingester.scrape_dynamic_content("https://mckinsey.com/insights")
+    >>> api_data = await ingester.fetch_bls_data(["LNS14000000"])</div>
+        </div>
+
+        <div class="section">
+            <h2>Classes</h2>
+
+            <h3>DataIngestionError</h3>
+            <div class="docstring">Custom exception for data ingestion failures</div>
+
+            <h3>AdvancedDataIngester</h3>
+            <div class="docstring">Production-grade data ingestion system for research intelligence gathering.
+
+This class handles both web scraping and API data collection from multiple
+authoritative sources with proper rate limiting, error handling, and content validation.
+
+Attributes:
+    playwright: Playwright browser instance for dynamic content scraping
+    session: aiohttp session for API requests
+    rate_limiter: Dictionary tracking last request times per domain
+    content_cache: Simple in-memory cache to avoid duplicate requests</div>
+        </div>
+        <div class="section">
+            <h2>Functions</h2>
+
+            <h3>async get_data_ingester()</h3>
+            <div class="docstring">Get initialized data ingester instance.
+
+Returns:
+    Initialized AdvancedDataIngester instance</div>
+
+            <h3>__init__()</h3>
+            <div class="docstring">Initialize the advanced data ingester.
+
+Args:
+    cache_ttl_seconds: Time-to-live for cached content in seconds (default: 1 hour)</div>
+
+            <h3>async initialize()</h3>
+            <div class="docstring">Initialize Playwright browser and aiohttp session.
+
+This method must be called before using any scraping functionality.
+It sets up the browser with optimized settings for content extraction.</div>
+
+            <h3>async cleanup()</h3>
+            <div class="docstring">Clean up resources (browser, session)</div>
+
+            <h3>async _respect_rate_limit()</h3>
+            <div class="docstring">Implement respectful rate limiting per domain.
+
+Args:
+    domain: Domain to rate limit
+    delay: Minimum delay between requests in seconds</div>
+
+            <h3>_generate_cache_key()</h3>
+            <div class="docstring">Generate cache key for URL</div>
+
+            <h3>_is_cache_valid()</h3>
+            <div class="docstring">Check if cached content is still valid</div>
+
+            <h3>async scrape_dynamic_content()</h3>
+            <div class="docstring">Scrape content from JavaScript-heavy websites using Playwright.
+
+This method handles dynamic content loading, waits for complete page rendering,
+and extracts both text content and structured data.
+
+Args:
+    url: Target URL to scrape
+    wait_for_selector: Optional CSS selector to wait for before extraction
+
+Returns:
+    Dict containing:
+        - raw_html: Complete page HTML
+        - text_content: Extracted text content
+        - title: Page title
+        - meta_description: Meta description if available
+        - links: List of internal links
+        - timestamp: Scraping timestamp
+
+Raises:
+    DataIngestionError: If scraping fails after retries</div>
+
+            <h3>async fetch_bls_data()</h3>
+            <div class="docstring">Fetch economic data from U.S. Bureau of Labor Statistics API.
+
+This method retrieves time series data for unemployment rates, job openings,
+and other economic indicators crucial for job market analysis.
+
+Args:
+    series_ids: List of BLS series identifiers (e.g., ["LNS14000000"])
+    api_key: Optional BLS API key for higher rate limits
+
+Returns:
+    Dict containing:
+        - series_data: Time series data by series ID
+        - metadata: API response metadata
+        - timestamp: Request timestamp
+
+Raises:
+    DataIngestionError: If API request fails</div>
+
+            <h3>async scrape_reddit_discussions()</h3>
+            <div class="docstring">Scrape Reddit discussions for hiring manager sentiment analysis.
+
+This method extracts post titles, content, and top comments from recruiting
+subreddits to analyze sentiment and trending topics.
+
+Args:
+    subreddit_url: Reddit subreddit URL
+    limit: Maximum number of posts to scrape
+
+Returns:
+    Dict containing:
+        - posts: List of post data with titles, content, comments
+        - metadata: Extraction metadata
+
+Raises:
+    DataIngestionError: If Reddit scraping fails</div>
+
+            <h3>async fetch_from_source()</h3>
+            <div class="docstring">Fetch data from a configured data source.
+
+This method routes to appropriate ingestion method based on source configuration
+and handles source-specific requirements like rate limiting and content extraction.
+
+Args:
+    source: Configured DataSource object
+
+Returns:
+    Dict containing extracted data and metadata
+
+Raises:
+    DataIngestionError: If data fetching fails</div>
+        </div>
+    </div>
+</body>
+</html>

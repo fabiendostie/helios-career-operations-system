@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>core.redis_cache - strategist</title>
+    <style>
+        body { font-family: Arial, sans-serif; margin: 40px; background: #f8f9fa; }
+        .container { max-width: 1200px; margin: 0 auto; background: white; padding: 30px; border-radius: 8px; box-shadow: 0 2px 10px rgba(0,0,0,0.1); }
+        .header { background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; padding: 20px; border-radius: 5px; margin-bottom: 30px; }
+        .section { margin: 20px 0; padding: 20px; border-left: 4px solid #667eea; background: #f8f9ff; }
+        .docstring { background: #fff; padding: 15px; border-radius: 5px; border: 1px solid #e0e0e0; margin: 10px 0; white-space: pre-wrap; }
+        .nav { margin-bottom: 20px; }
+        .nav a { color: #667eea; text-decoration: none; margin-right: 20px; }
+        .nav a:hover { text-decoration: underline; }
+        h1, h2, h3 { color: #333; }
+        .module-path { color: #666; font-style: italic; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>core.redis_cache</h1>
+            <p class="module-path">Service: strategist • Path: core\redis_cache.py</p>
+        </div>
+
+        <div class="nav">
+            <a href="../index.html">← Back to API Index</a>
+            <a href="../strategist/index.html">← strategist Overview</a>
+        </div>
+
+        <div class="section">
+            <h2>Module Description</h2>
+            <div class="docstring">Redis-based caching for vector embeddings and role data in multi-instance deployments.</div>
+        </div>
+
+        <div class="section">
+            <h2>Classes</h2>
+
+            <h3>RedisVectorCache</h3>
+            <div class="docstring">Redis-based cache for skill vectors and role embeddings.</div>
+
+            <h3>CacheManager</h3>
+            <div class="docstring">Manages caching strategy with fallback to local cache.</div>
+        </div>
+        <div class="section">
+            <h2>Functions</h2>
+
+            <h3>__init__()</h3>
+            <div class="docstring">Initialize cache manager.
+
+Args:
+    redis_url: Redis connection URL (None for default)
+    enable_redis: Whether to attempt Redis connection</div>
+
+            <h3>async connect()</h3>
+            <div class="docstring">Establish connection to Redis server.</div>
+
+            <h3>async disconnect()</h3>
+            <div class="docstring">Close Redis connection.</div>
+
+            <h3>_make_key()</h3>
+            <div class="docstring">Generate a cache key with namespace and identifier.</div>
+
+            <h3>async get_vector()</h3>
+            <div class="docstring">Get vector from cache (Redis first, then local).</div>
+
+            <h3>async set_vector()</h3>
+            <div class="docstring">Set vector in cache (both Redis and local).</div>
+
+            <h3>async get_role_vectors()</h3>
+            <div class="docstring">Get multiple role vectors from cache.
+
+Args:
+    role_ids: List of role IDs to retrieve
+
+Returns:
+    Dictionary mapping role_id to vector for found items</div>
+
+            <h3>async set_role_vectors()</h3>
+            <div class="docstring">Cache multiple role vectors.
+
+Args:
+    role_vectors: Dictionary mapping role_id to vector
+
+Returns:
+    Number of vectors successfully cached</div>
+
+            <h3>async get_candidate_profile()</h3>
+            <div class="docstring">Get cached candidate profile.
+
+Args:
+    user_id: User identifier
+
+Returns:
+    Candidate profile dictionary if found, None otherwise</div>
+
+            <h3>async set_candidate_profile()</h3>
+            <div class="docstring">Cache a candidate profile.
+
+Args:
+    user_id: User identifier
+    profile: Candidate profile dictionary
+
+Returns:
+    True if successfully cached, False otherwise</div>
+
+            <h3>async get_career_recommendations()</h3>
+            <div class="docstring">Get cached career recommendations for a user.
+
+Args:
+    user_id: User identifier
+
+Returns:
+    Career recommendations if found and still valid, None otherwise</div>
+
+            <h3>async set_career_recommendations()</h3>
+            <div class="docstring">Cache career recommendations.
+
+Args:
+    user_id: User identifier
+    recommendations: Career recommendations dictionary
+
+Returns:
+    True if successfully cached, False otherwise</div>
+
+            <h3>async invalidate_user_cache()</h3>
+            <div class="docstring">Invalidate all cached data for a user.
+
+Args:
+    user_id: User identifier
+
+Returns:
+    Number of keys deleted</div>
+
+            <h3>async get_stats()</h3>
+            <div class="docstring">Get cache statistics.
+
+Returns:
+    Dictionary with cache statistics</div>
+
+            <h3>async flush_namespace()</h3>
+            <div class="docstring">Flush all keys in a specific namespace.
+
+Args:
+    namespace: The namespace to flush (e.g., "vector", "role_vector")
+
+Returns:
+    Number of keys deleted</div>
+
+            <h3>async initialize()</h3>
+            <div class="docstring">Initialize cache connections.</div>
+
+            <h3>async shutdown()</h3>
+            <div class="docstring">Shutdown cache connections.</div>
+
+            <h3>get_local_cache_stats()</h3>
+            <div class="docstring">Get local cache statistics.</div>
+
+            <h3>async get_full_stats()</h3>
+            <div class="docstring">Get comprehensive cache statistics.</div>
+        </div>
+    </div>
+</body>
+</html>

@@ -17,7 +17,7 @@ from .ats_compliance import (
 
 __all__ = [
     'ATSComplianceValidator',
-    'ATSVendor', 
+    'ATSVendor',
     'ComplianceLevel',
     'ValidationResult',
     'get_ats_validator'

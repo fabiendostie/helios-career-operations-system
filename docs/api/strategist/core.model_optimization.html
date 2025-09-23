@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>core.model_optimization - strategist</title>
+    <style>
+        body { font-family: Arial, sans-serif; margin: 40px; background: #f8f9fa; }
+        .container { max-width: 1200px; margin: 0 auto; background: white; padding: 30px; border-radius: 8px; box-shadow: 0 2px 10px rgba(0,0,0,0.1); }
+        .header { background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; padding: 20px; border-radius: 5px; margin-bottom: 30px; }
+        .section { margin: 20px 0; padding: 20px; border-left: 4px solid #667eea; background: #f8f9ff; }
+        .docstring { background: #fff; padding: 15px; border-radius: 5px; border: 1px solid #e0e0e0; margin: 10px 0; white-space: pre-wrap; }
+        .nav { margin-bottom: 20px; }
+        .nav a { color: #667eea; text-decoration: none; margin-right: 20px; }
+        .nav a:hover { text-decoration: underline; }
+        h1, h2, h3 { color: #333; }
+        .module-path { color: #666; font-style: italic; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>core.model_optimization</h1>
+            <p class="module-path">Service: strategist • Path: core\model_optimization.py</p>
+        </div>
+
+        <div class="nav">
+            <a href="../index.html">← Back to API Index</a>
+            <a href="../strategist/index.html">← strategist Overview</a>
+        </div>
+
+        <div class="section">
+            <h2>Module Description</h2>
+            <div class="docstring">ML Model optimization for large transformer models (2.8GB+).</div>
+        </div>
+
+        <div class="section">
+            <h2>Classes</h2>
+
+            <h3>ModelMetrics</h3>
+            <div class="docstring">Container for model performance metrics.</div>
+
+            <h3>ModelPool</h3>
+            <div class="docstring">Thread-safe model pool for efficient model reuse.</div>
+
+            <h3>EmbeddingCache</h3>
+            <div class="docstring">High-performance embedding cache with memory management.</div>
+
+            <h3>OptimizedModelManager</h3>
+            <div class="docstring">Optimized manager for large ML models with advanced caching and pooling.</div>
+        </div>
+        <div class="section">
+            <h2>Functions</h2>
+
+            <h3>get_optimized_model_manager()</h3>
+            <div class="docstring">Get global optimized model manager instance.</div>
+
+            <h3>async optimized_model_context()</h3>
+            <div class="docstring">Context manager for optimized model operations.</div>
+
+            <h3>__init__()</h3>
+            <div class="docstring">Initialize optimized model manager.
+
+Args:
+    max_models_in_pool: Maximum models in memory pool
+    max_cache_size_mb: Maximum embedding cache size in MB
+    enable_gpu: Whether to use GPU acceleration if available
+    model_load_timeout: Timeout for model loading in seconds</div>
+
+            <h3>get_model()</h3>
+            <div class="docstring">Get model from pool (thread-safe).</div>
+
+            <h3>add_model()</h3>
+            <div class="docstring">Add model to pool with LRU eviction.</div>
+
+            <h3>_evict_oldest_model()</h3>
+            <div class="docstring">Evict the least recently used model.</div>
+
+            <h3>get_loading_lock()</h3>
+            <div class="docstring">Get or create loading lock for model.</div>
+
+            <h3>clear_all()</h3>
+            <div class="docstring">Clear all models from pool.</div>
+
+            <h3>get()</h3>
+            <div class="docstring">Get embedding from cache.</div>
+
+            <h3>set()</h3>
+            <div class="docstring">Set embedding in cache with automatic eviction.</div>
+
+            <h3>_estimate_cache_size_mb()</h3>
+            <div class="docstring">Estimate current cache size in MB.</div>
+
+            <h3>_evict_old_entries()</h3>
+            <div class="docstring">Evict old entries to free up space.</div>
+
+            <h3>get_hit_rate()</h3>
+            <div class="docstring">Get cache hit rate.</div>
+
+            <h3>get_stats()</h3>
+            <div class="docstring">Get cache statistics.</div>
+
+            <h3>async load_model_optimized()</h3>
+            <div class="docstring">Load model with optimizations and caching.</div>
+
+            <h3>_load_model_sync()</h3>
+            <div class="docstring">Synchronous model loading with optimizations.</div>
+
+            <h3>async generate_embeddings_optimized()</h3>
+            <div class="docstring">Generate embeddings with caching and batching optimizations.</div>
+
+            <h3>get_memory_usage()</h3>
+            <div class="docstring">Get current memory usage statistics.</div>
+
+            <h3>get_performance_metrics()</h3>
+            <div class="docstring">Get comprehensive performance metrics.</div>
+
+            <h3>async cleanup()</h3>
+            <div class="docstring">Clean up resources.</div>
+        </div>
+    </div>
+</body>
+</html>

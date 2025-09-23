@@ -253,17 +253,17 @@ def generate_role_variations(base_role: str, industry: str, template: Dict) -> L
     """Generate variations of a base role with different seniority levels and specializations."""
     roles = []
     role_id_counter = 0
-    
+
     # Get industry-specific data
     seniority_levels = template["seniority_levels"]
     specializations = template.get("specializations", [""])
     riasec_patterns = template["riasec_patterns"]
-    
+
     # Generate combinations
     for seniority in seniority_levels:
         for specialization in specializations[:3]:  # Limit specializations to keep database manageable
             role_id_counter += 1
-            
+
             # Build role title
             title_parts = []
             if seniority and seniority not in ["", "Associate"]:
@@ -272,7 +272,7 @@ def generate_role_variations(base_role: str, industry: str, template: Dict) -> L
                 title_parts.append(specialization)
             title_parts.append(base_role)
             title = " ".join(title_parts).strip()
-            
+
             # Determine experience level
             exp_level_map = {
                 "Junior": "Entry Level",
@@ -290,7 +290,7 @@ def generate_role_variations(base_role: str, industry: str, template: Dict) -> L
                 "Chief": "Executive (12+ years)"
             }
             experience_level = exp_level_map.get(seniority, "Mid Level (3-7 years)")
-            
+
             # Determine RIASEC codes based on role type
             if "Manager" in title or "Director" in title or "Lead" in title:
                 riasec_codes = riasec_patterns.get("management", ["Enterprising", "Social"])
@@ -300,7 +300,7 @@ def generate_role_variations(base_role: str, industry: str, template: Dict) -> L
                 riasec_codes = riasec_patterns.get("creative", ["Artistic", "Social"])
             else:
                 riasec_codes = list(riasec_patterns.values())[0]
-            
+
             # Determine career anchors
             if "Manager" in title or "Director" in title:
                 career_anchors = CAREER_ANCHOR_MAPPING["management_roles"]
@@ -310,11 +310,11 @@ def generate_role_variations(base_role: str, industry: str, template: Dict) -> L
                 career_anchors = CAREER_ANCHOR_MAPPING["creative_roles"]
             else:
                 career_anchors = CAREER_ANCHOR_MAPPING["stable_roles"]
-            
+
             # Select relevant skills
             skills_required = []
             skills_preferred = []
-            
+
             if "technical" in base_role.lower() or "engineer" in base_role.lower():
                 skills_required.extend(SKILL_CATEGORIES["technical"][:6])
                 skills_preferred.extend(SKILL_CATEGORIES["technical"][6:10])
@@ -330,7 +330,7 @@ def generate_role_variations(base_role: str, industry: str, template: Dict) -> L
             else:
                 skills_required.extend(SKILL_CATEGORIES["communication"][:6])
                 skills_preferred.extend(SKILL_CATEGORIES["communication"][6:10])
-            
+
             # Calculate salary range based on seniority
             salary_multipliers = {
                 "Entry Level": (50000, 70000),
@@ -340,7 +340,7 @@ def generate_role_variations(base_role: str, industry: str, template: Dict) -> L
                 "Executive (12+ years)": (150000, 250000)
             }
             salary_range = salary_multipliers.get(experience_level, (70000, 110000))
-            
+
             # Adjust salary for industry
             industry_multipliers = {
                 "Technology": 1.2,
@@ -356,7 +356,7 @@ def generate_role_variations(base_role: str, industry: str, template: Dict) -> L
                 "min": int(salary_range[0] * multiplier),
                 "max": int(salary_range[1] * multiplier)
             }
-            
+
             # Create role dictionary
             role = {
                 "role_id": f"{industry.lower()}_{role_id_counter:04d}",
@@ -373,16 +373,16 @@ def generate_role_variations(base_role: str, industry: str, template: Dict) -> L
                 "median_salary_range": salary_range,
                 "remote_work_compatibility": calculate_remote_compatibility(base_role, industry)
             }
-            
+
             roles.append(role)
-            
+
             # Stop if we have enough variations
             if len(roles) >= 10:  # Limit variations per base role
                 break
-        
+
         if len(roles) >= 10:
             break
-    
+
     return roles
 
 
@@ -397,7 +397,7 @@ def get_growth_path(current_title: str, seniority: str) -> List[str]:
         "Director": ["Senior Director", "VP", "SVP", "C-Level"],
         "VP": ["SVP", "EVP", "C-Level"]
     }
-    
+
     return growth_paths.get(seniority, ["Senior Role", "Management", "Executive"])[:3]
 
 
@@ -407,14 +407,14 @@ def calculate_remote_compatibility(role: str, industry: str) -> float:
         "software", "developer", "data", "analyst", "designer", "writer",
         "marketing", "consultant", "architect", "engineer"
     ]
-    
+
     remote_unfriendly_roles = [
         "nurse", "physician", "surgeon", "manufacturing", "plant",
         "laboratory", "retail", "chef", "mechanic"
     ]
-    
+
     role_lower = role.lower()
-    
+
     # Check role compatibility
     if any(keyword in role_lower for keyword in remote_friendly_roles):
         base_score = 0.8
@@ -422,7 +422,7 @@ def calculate_remote_compatibility(role: str, industry: str) -> float:
         base_score = 0.2
     else:
         base_score = 0.5
-    
+
     # Adjust for industry
     industry_adjustments = {
         "Technology": 0.2,
@@ -433,10 +433,10 @@ def calculate_remote_compatibility(role: str, industry: str) -> float:
         "Manufacturing": -0.4,
         "Education": 0.0
     }
-    
+
     adjustment = industry_adjustments.get(industry, 0)
     final_score = max(0.0, min(1.0, base_score + adjustment))
-    
+
     return round(final_score, 2)
 
 
@@ -444,31 +444,31 @@ def generate_full_taxonomy() -> Dict[str, Any]:
     """Generate the complete role taxonomy database."""
     all_roles = []
     role_counter = 0
-    
+
     print("Generating comprehensive role taxonomy...")
-    
+
     for industry, template in ROLE_TEMPLATES.items():
         print(f"  Processing {industry}...")
         industry_roles = []
-        
+
         for base_role in template["base_roles"]:
             role_variations = generate_role_variations(base_role, industry, template)
             industry_roles.extend(role_variations)
-            
+
             # Limit total roles per industry
             if len(industry_roles) >= 200:
                 break
-        
+
         # Update role IDs to be globally unique
         for i, role in enumerate(industry_roles):
             role_counter += 1
             role["role_id"] = f"role_{role_counter:05d}"
-        
+
         all_roles.extend(industry_roles)
         print(f"    Generated {len(industry_roles)} roles for {industry}")
-    
+
     print(f"\nTotal roles generated: {len(all_roles)}")
-    
+
     # Create taxonomy structure
     taxonomy = {
         "roles": all_roles,
@@ -480,7 +480,7 @@ def generate_full_taxonomy() -> Dict[str, Any]:
             "notes": "Production-scale role taxonomy with 2000+ roles across all major industries"
         }
     }
-    
+
     return taxonomy
 
 
@@ -488,38 +488,38 @@ def save_taxonomy(taxonomy: Dict[str, Any], output_path: Path):
     """Save taxonomy to YAML file."""
     with open(output_path, 'w', encoding='utf-8') as f:
         yaml.dump(taxonomy, f, default_flow_style=False, sort_keys=False, width=120)
-    
+
     print(f"Taxonomy saved to {output_path}")
 
 
 def create_taxonomy_summary(taxonomy: Dict[str, Any]) -> Dict[str, Any]:
     """Create a summary of the generated taxonomy."""
     roles = taxonomy["roles"]
-    
+
     # Collect statistics
     industries = {}
     experience_levels = {}
     riasec_distribution = {}
     salary_ranges = []
-    
+
     for role in roles:
         # Industry stats
         for industry in role["industry_categories"]:
             industries[industry] = industries.get(industry, 0) + 1
-        
+
         # Experience level stats
         exp_level = role["experience_level"]
         experience_levels[exp_level] = experience_levels.get(exp_level, 0) + 1
-        
+
         # RIASEC stats
         for riasec in role["associated_riasec_codes"]:
             riasec_distribution[riasec] = riasec_distribution.get(riasec, 0) + 1
-        
+
         # Salary stats
         if role.get("median_salary_range"):
             salary_ranges.append(role["median_salary_range"]["min"])
             salary_ranges.append(role["median_salary_range"]["max"])
-    
+
     summary = {
         "total_roles": len(roles),
         "industries": industries,
@@ -531,11 +531,11 @@ def create_taxonomy_summary(taxonomy: Dict[str, Any]) -> Dict[str, Any]:
             "average": sum(salary_ranges) // len(salary_ranges) if salary_ranges else 0
         },
         "unique_skills": len(set(
-            skill for role in roles 
+            skill for role in roles
             for skill in role["required_skill_keywords"] + role["preferred_skill_keywords"]
         ))
     }
-    
+
     return summary
 
 
@@ -544,7 +544,7 @@ def main():
     # Define output path
     output_dir = Path(__file__).parent.parent / "src" / "data"
     output_dir.mkdir(parents=True, exist_ok=True)
-    
+
     # Backup existing taxonomy
     existing_taxonomy = output_dir / "role_taxonomy.yaml"
     if existing_taxonomy.exists():
@@ -552,36 +552,36 @@ def main():
         print(f"Backing up existing taxonomy to {backup_path}")
         import shutil
         shutil.copy2(existing_taxonomy, backup_path)
-    
+
     # Generate new taxonomy
     taxonomy = generate_full_taxonomy()
-    
+
     # Save full taxonomy
     output_path = output_dir / "role_taxonomy_production.yaml"
     save_taxonomy(taxonomy, output_path)
-    
+
     # Generate and save summary
     summary = create_taxonomy_summary(taxonomy)
     summary_path = output_dir / "taxonomy_summary.json"
     with open(summary_path, 'w') as f:
         json.dump(summary, f, indent=2)
     print(f"Summary saved to {summary_path}")
-    
+
     # Print summary
     print("\n=== Taxonomy Summary ===")
     print(f"Total Roles: {summary['total_roles']}")
     print(f"Industries: {len(summary['industries'])}")
     print(f"Unique Skills: {summary['unique_skills']}")
     print(f"Salary Range: ${summary['salary_statistics']['min']:,} - ${summary['salary_statistics']['max']:,}")
-    
+
     print("\nIndustry Distribution:")
     for industry, count in sorted(summary['industries'].items(), key=lambda x: x[1], reverse=True):
         print(f"  {industry}: {count} roles")
-    
+
     print("\nExperience Level Distribution:")
     for level, count in sorted(summary['experience_levels'].items(), key=lambda x: x[1], reverse=True):
         print(f"  {level}: {count} roles")
-    
+
     print("\n✅ Production taxonomy generation complete!")
 
 

@@ -15,7 +15,7 @@
     "benefits": ["Health Insurance", "401k", "Remote Work", "Stock Options"]
   },
   {
-    "job_id": "job_002", 
+    "job_id": "job_002",
     "role_title": "ML Engineer",
     "company_name": "DataFlow Systems",
     "location": "Remote",
@@ -31,7 +31,7 @@
   },
   {
     "job_id": "job_003",
-    "role_title": "DevOps Engineer", 
+    "role_title": "DevOps Engineer",
     "company_name": "CloudFirst Solutions",
     "location": "Austin, TX",
     "remote_policy": "onsite",
@@ -48,7 +48,7 @@
     "job_id": "job_004",
     "role_title": "Product Manager",
     "company_name": "InnovateNow",
-    "location": "New York, NY", 
+    "location": "New York, NY",
     "remote_policy": "hybrid",
     "post_date": "2025-01-02",
     "required_skills": ["Product Strategy", "Agile", "Stakeholder Management", "Analytics"],
@@ -64,7 +64,7 @@
     "role_title": "Full Stack Developer",
     "company_name": "WebWorks Agency",
     "location": "Remote",
-    "remote_policy": "remote", 
+    "remote_policy": "remote",
     "post_date": "2024-12-30",
     "required_skills": ["JavaScript", "React", "Node.js", "MongoDB", "Git"],
     "preferred_skills": ["TypeScript", "GraphQL", "Docker"],

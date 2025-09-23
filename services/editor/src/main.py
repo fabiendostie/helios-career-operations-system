@@ -1,43 +1,39 @@
 """FastAPI application entry point for the Editor service."""
 
 import logging
-from collections.abc import AsyncGenerator
 from contextlib import asynccontextmanager
+from typing import AsyncGenerator
 
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 
-from .api.editing import router as editing_router
-from .api.health import router as health_router
-from .core.config import settings
+from src.api.optimization import router as optimization_router
+from src.api.health import router as health_router
+from src.core.config import settings
 
 logger = logging.getLogger(__name__)
 
 
 @asynccontextmanager
-async def lifespan(app: FastAPI) -> AsyncGenerator[None]:
+async def lifespan(app: FastAPI) -> AsyncGenerator[None, None]:
     """Application lifespan management."""
     # Startup
-    logger.info("Starting Editor service...")
+    logging.info("Starting Editor service...")
 
-    # Initialize ML models and resources
-    try:
-        # TODO: Pre-load spaCy models, LanguageTool, etc.
-        logger.info("Initialized NLP models and grammar checker")
-    except Exception as e:
-        logger.error(f"Failed to initialize models: {e}")
+    # Initialize text optimization components
+    # TODO: Pre-load optimization models, dictionaries, etc.
 
     yield
 
     # Shutdown
-    logger.info("Shutting down Editor service...")
+    logging.info("Shutting down Editor service...")
 
 
 def create_app() -> FastAPI:
     """Create and configure the FastAPI application."""
     app = FastAPI(
         title="Helios Editor Service",
-        description="Granular text optimization and collaborative editing agent",
+        description="Advanced text optimization engine for 2025 standards",
         version="1.0.0",
         lifespan=lifespan,
     )
@@ -53,7 +49,7 @@ def create_app() -> FastAPI:
 
     # Include routers
     app.include_router(health_router, prefix="/health", tags=["health"])
-    app.include_router(editing_router, tags=["editing"])
+    app.include_router(optimization_router, prefix="/optimization", tags=["optimization"])
 
     return app
 
@@ -65,7 +61,7 @@ if __name__ == "__main__":
     import uvicorn
 
     uvicorn.run(
-        "main:app",
+        "src.main:app",
         host=settings.HOST,
         port=settings.PORT,
         reload=settings.DEBUG,

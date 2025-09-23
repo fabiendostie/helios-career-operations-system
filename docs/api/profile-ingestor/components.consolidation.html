@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>components.consolidation - profile-ingestor</title>
+    <style>
+        body { font-family: Arial, sans-serif; margin: 40px; background: #f8f9fa; }
+        .container { max-width: 1200px; margin: 0 auto; background: white; padding: 30px; border-radius: 8px; box-shadow: 0 2px 10px rgba(0,0,0,0.1); }
+        .header { background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; padding: 20px; border-radius: 5px; margin-bottom: 30px; }
+        .section { margin: 20px 0; padding: 20px; border-left: 4px solid #667eea; background: #f8f9ff; }
+        .docstring { background: #fff; padding: 15px; border-radius: 5px; border: 1px solid #e0e0e0; margin: 10px 0; white-space: pre-wrap; }
+        .nav { margin-bottom: 20px; }
+        .nav a { color: #667eea; text-decoration: none; margin-right: 20px; }
+        .nav a:hover { text-decoration: underline; }
+        h1, h2, h3 { color: #333; }
+        .module-path { color: #666; font-style: italic; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>components.consolidation</h1>
+            <p class="module-path">Service: profile-ingestor • Path: components\consolidation.py</p>
+        </div>
+
+        <div class="nav">
+            <a href="../index.html">← Back to API Index</a>
+            <a href="../profile-ingestor/index.html">← profile-ingestor Overview</a>
+        </div>
+
+        <div class="section">
+            <h2>Module Description</h2>
+            <div class="docstring">Data consolidation engine and skill mapping functionality.</div>
+        </div>
+
+        <div class="section">
+            <h2>Classes</h2>
+
+            <h3>SkillEntry</h3>
+            <div class="docstring">Represents a skill entry from a document source.</div>
+
+            <h3>SkillInventoryEntry</h3>
+            <div class="docstring">Represents a consolidated skill entry with evidence and metadata.</div>
+
+            <h3>ParsedData</h3>
+            <div class="docstring">Represents parsed data from a single document.</div>
+
+            <h3>ConsolidatedData</h3>
+            <div class="docstring">Represents the consolidated data structure.</div>
+
+            <h3>SkillMapper</h3>
+            <div class="docstring">Handles bilingual skill mapping and consolidation with fuzzy matching.</div>
+
+            <h3>ConsolidationEngine</h3>
+            <div class="docstring">Consolidates data from multiple parsed documents.</div>
+        </div>
+        <div class="section">
+            <h2>Functions</h2>
+
+            <h3>to_dict()</h3>
+            <div class="docstring">Convert to dictionary format for JSON serialization.</div>
+
+            <h3>_determine_proficiency()</h3>
+            <div class="docstring">Determine proficiency based on evidence and indicators.</div>
+
+            <h3>__init__()</h3>
+            <div class="docstring">Initialize consolidation engine.</div>
+
+            <h3>_load_mappings()</h3>
+            <div class="docstring">Load bilingual skill mappings from JSON.</div>
+
+            <h3>_build_canonical_index()</h3>
+            <div class="docstring">Build reverse index for faster lookups.</div>
+
+            <h3>map_skills()</h3>
+            <div class="docstring">Map and consolidate skills from multiple sources.</div>
+
+            <h3>_find_canonical_skill()</h3>
+            <div class="docstring">Find canonical skill name using exact and fuzzy matching.</div>
+
+            <h3>_fuzzy_match()</h3>
+            <div class="docstring">Use fuzzy string matching for approximate matches.</div>
+
+            <h3>_assign_categories()</h3>
+            <div class="docstring">Organize skills into categories.</div>
+
+            <h3>add_skill_mapping()</h3>
+            <div class="docstring">Add new skill mapping at runtime.</div>
+
+            <h3>learn_from_user_input()</h3>
+            <div class="docstring">Learn new mappings from user corrections.</div>
+
+            <h3>_rebuild_index()</h3>
+            <div class="docstring">Rebuild the canonical skills index after updates.</div>
+
+            <h3>consolidate()</h3>
+            <div class="docstring">Consolidate parsed data and identify conflicts.
+Legacy method for backward compatibility.</div>
+
+            <h3>consolidate_with_resolution()</h3>
+            <div class="docstring">Merge data with interactive conflict resolution.
+
+Args:
+    parsed_data_list: List of ParsedData objects
+    auto_resolve: If True, automatically resolve conflicts using smart defaults
+
+Returns:
+    ConsolidatedData object with resolved conflicts</div>
+
+            <h3>_detect_conflicts()</h3>
+            <div class="docstring">Detect conflicts across all parsed data.</div>
+
+            <h3>_auto_resolve_conflicts()</h3>
+            <div class="docstring">Automatically resolve conflicts using smart defaults.</div>
+
+            <h3>_apply_resolutions()</h3>
+            <div class="docstring">Apply conflict resolutions and merge data.</div>
+
+            <h3>_simple_merge()</h3>
+            <div class="docstring">Simple merge when no conflicts exist.</div>
+
+            <h3>_initialize_base_structure()</h3>
+            <div class="docstring">Initialize consolidated structure with base document.</div>
+
+            <h3>_extract_personal_info()</h3>
+            <div class="docstring">Extract personal information from document.</div>
+
+            <h3>_merge_document()</h3>
+            <div class="docstring">Merge new document into consolidated data and track conflicts.</div>
+
+            <h3>_consolidate_skills()</h3>
+            <div class="docstring">Consolidate skills using bilingual mapping.</div>
+
+            <h3>consolidate_skills()</h3>
+            <div class="docstring">Extract and map all skills from parsed data.</div>
+
+            <h3>_infer_category()</h3>
+            <div class="docstring">Infer category for a skill based on patterns.</div>
+
+            <h3>_categorize_inventory()</h3>
+            <div class="docstring">Organize skill inventory by categories.</div>
+        </div>
+    </div>
+</body>
+</html>

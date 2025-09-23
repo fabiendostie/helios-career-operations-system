@@ -4,7 +4,7 @@
 # Timezone Configuration
 timezone:
   primary: "America/Montreal"
-  display_name: "Montreal, Quebec, Canada" 
+  display_name: "Montreal, Quebec, Canada"
   abbreviation_preference: "EDT/EST"
 
 # Document Generation Standards
@@ -13,12 +13,12 @@ documentation:
   include_timezone: true
   include_location: true
   location_text: "Montreal, Quebec, Canada"
-  
+
 # Internet Time Sources (in priority order)
 time_sources:
   primary:
     - name: "WorldTimeAPI Montreal"
-      url: "http://worldtimeapi.org/api/timezone/America/Montreal" 
+      url: "http://worldtimeapi.org/api/timezone/America/Montreal"
       timeout: 5
   fallback:
     - name: "WorldTimeAPI UTC"
@@ -31,11 +31,11 @@ time_sources:
 # System-wide Standards
 standards:
   log_format: "%Y-%m-%d %H:%M:%S.%f %Z"
-  filename_format: "%Y%m%d_%H%M%S"  
+  filename_format: "%Y%m%d_%H%M%S"
   report_format: "full_with_location"
   audit_format: "[%Y-%m-%d %H:%M:%S %Z] AUDIT:"
-  
-# Service-specific overrides  
+
+# Service-specific overrides
 services:
   profile-ingestor:
     output_timestamp_format: "full"
@@ -44,7 +44,7 @@ services:
     session_timestamp_format: "iso"
     log_timestamp_format: "full"
   strategist:
-    career_path_timestamp: "full" 
+    career_path_timestamp: "full"
   analyst:
     analysis_timestamp: "full"
   architect:

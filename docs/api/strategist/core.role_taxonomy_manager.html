@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>core.role_taxonomy_manager - strategist</title>
+    <style>
+        body { font-family: Arial, sans-serif; margin: 40px; background: #f8f9fa; }
+        .container { max-width: 1200px; margin: 0 auto; background: white; padding: 30px; border-radius: 8px; box-shadow: 0 2px 10px rgba(0,0,0,0.1); }
+        .header { background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; padding: 20px; border-radius: 5px; margin-bottom: 30px; }
+        .section { margin: 20px 0; padding: 20px; border-left: 4px solid #667eea; background: #f8f9ff; }
+        .docstring { background: #fff; padding: 15px; border-radius: 5px; border: 1px solid #e0e0e0; margin: 10px 0; white-space: pre-wrap; }
+        .nav { margin-bottom: 20px; }
+        .nav a { color: #667eea; text-decoration: none; margin-right: 20px; }
+        .nav a:hover { text-decoration: underline; }
+        h1, h2, h3 { color: #333; }
+        .module-path { color: #666; font-style: italic; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>core.role_taxonomy_manager</h1>
+            <p class="module-path">Service: strategist • Path: core\role_taxonomy_manager.py</p>
+        </div>
+
+        <div class="nav">
+            <a href="../index.html">← Back to API Index</a>
+            <a href="../strategist/index.html">← strategist Overview</a>
+        </div>
+
+        <div class="section">
+            <h2>Module Description</h2>
+            <div class="docstring">Role taxonomy database manager for loading and querying job roles.</div>
+        </div>
+
+        <div class="section">
+            <h2>Classes</h2>
+
+            <h3>RoleTaxonomyManager</h3>
+            <div class="docstring">Manages the role taxonomy database and provides search/query capabilities.</div>
+        </div>
+        <div class="section">
+            <h2>Functions</h2>
+
+            <h3>__init__()</h3>
+            <div class="docstring">Initialize the role taxonomy manager.
+
+Args:
+    taxonomy_file_path: Optional custom path to taxonomy file
+    use_production: Whether to use production (2000+ roles) or MVP (17 roles) database</div>
+
+            <h3>async load_taxonomy()</h3>
+            <div class="docstring">Load the role taxonomy from YAML file.</div>
+
+            <h3>_generate_stats()</h3>
+            <div class="docstring">Generate statistics about the loaded taxonomy.</div>
+
+            <h3>get_role_by_id()</h3>
+            <div class="docstring">Get a specific role by its ID.</div>
+
+            <h3>get_all_roles()</h3>
+            <div class="docstring">Get all roles in the taxonomy.</div>
+
+            <h3>search_roles()</h3>
+            <div class="docstring">Search roles using provided filters.</div>
+
+            <h3>_role_matches_filter()</h3>
+            <div class="docstring">Check if a role matches the search filter criteria.</div>
+
+            <h3>get_roles_by_skill_keywords()</h3>
+            <div class="docstring">Find roles that match given skill keywords.</div>
+
+            <h3>get_roles_by_riasec()</h3>
+            <div class="docstring">Find roles that match RIASEC personality types.</div>
+
+            <h3>get_roles_by_career_anchors()</h3>
+            <div class="docstring">Find roles that match career anchor preferences.</div>
+
+            <h3>async generate_role_vectors()</h3>
+            <div class="docstring">Generate skill vectors for all roles using the skill vectorizer.</div>
+
+            <h3>get_statistics()</h3>
+            <div class="docstring">Get taxonomy statistics.</div>
+
+            <h3>is_loaded()</h3>
+            <div class="docstring">Check if taxonomy is loaded.</div>
+        </div>
+    </div>
+</body>
+</html>

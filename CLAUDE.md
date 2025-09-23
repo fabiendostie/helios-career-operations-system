@@ -12,7 +12,7 @@ The system follows a **microservices architecture with AI agent orchestration**:
 1. **HELIOS Orchestrator** - Main controller maintaining session state
 2. **PROFILE_INGESTOR** - Deep conversational profiling (Story 1.1 - COMPLETED)
 3. **STRATEGIST** - Career path generation using skill adjacency modeling
-4. **ANALYST** - Market correlation & resume optimization 
+4. **ANALYST** - Market correlation & resume optimization
 5. **ARCHITECT** - Document generation with ATS compliance
 6. **EDITOR** - Granular text optimization
 
@@ -135,7 +135,7 @@ ls docs/02-architecture/
 
 The Profile Ingestor produces a Master Career Database JSON with:
 - `work_experience[]` - Job roles with accomplishments and metrics
-- `projects[]` - Project descriptions and outcomes  
+- `projects[]` - Project descriptions and outcomes
 - `skills_inventory{}` - Categorized skills with evidence pointers
 - `strategic_metadata{}` - Job title variations, core competencies
 - `holistic_profile{}` - Transversal projects, aspirations, motivators

@@ -12,7 +12,7 @@ data:
     global:
       smtp_smarthost: 'smtp.gmail.com:587'
       smtp_from: 'helios-alerts@yourdomain.com'
-      
+
     route:
       group_by: ['alertname', 'cluster', 'service']
       group_wait: 30s
@@ -30,7 +30,7 @@ data:
       - match:
           alertname: HighMemoryUsage
         receiver: 'helios-performance'
-    
+
     receivers:
     - name: 'helios-team'
       email_configs:
@@ -56,7 +56,7 @@ data:
           Service: {{ .Labels.service }}
           Severity: {{ .Labels.severity }}
           {{ end }}
-    
+
     - name: 'helios-critical'
       email_configs:
       - to: 'oncall@yourdomain.com'
@@ -80,7 +80,7 @@ data:
           {{ .Annotations.description }}
           Service: {{ .Labels.service }}
           {{ end }}
-    
+
     - name: 'helios-performance'
       slack_configs:
       - api_url: 'YOUR_SLACK_WEBHOOK_URL'
@@ -116,7 +116,7 @@ data:
         annotations:
           summary: "HELIOS service {{ $labels.job }} is down"
           description: "Service {{ $labels.job }} on {{ $labels.instance }} has been down for more than 2 minutes."
-          
+
       - alert: ServiceHighErrorRate
         expr: |
           (
@@ -131,7 +131,7 @@ data:
           summary: "High error rate on {{ $labels.job }}"
           description: "Error rate is {{ $value }}% for service {{ $labels.job }}"
           current_value: "{{ $value }}%"
-          
+
       - alert: ServiceHighLatency
         expr: |
           histogram_quantile(0.95, rate(http_request_duration_seconds_bucket{job=~"helios-.*"}[5m])) > 2
@@ -143,7 +143,7 @@ data:
           summary: "High request latency on {{ $labels.job }}"
           description: "95th percentile latency is {{ $value }}s for service {{ $labels.job }}"
           current_value: "{{ $value }}s"
-    
+
     - name: helios.resources
       rules:
       # CPU Usage
@@ -160,7 +160,7 @@ data:
           summary: "High CPU usage on {{ $labels.container }}"
           description: "CPU usage is {{ $value }}% for container {{ $labels.container }} in pod {{ $labels.pod }}"
           current_value: "{{ $value }}%"
-          
+
       # Memory Usage
       - alert: HighMemoryUsage
         expr: |
@@ -176,7 +176,7 @@ data:
           summary: "High memory usage on {{ $labels.container }}"
           description: "Memory usage is {{ $value }}% for container {{ $labels.container }} in pod {{ $labels.pod }}"
           current_value: "{{ $value }}%"
-          
+
       # Disk Usage
       - alert: HighDiskUsage
         expr: |
@@ -191,7 +191,7 @@ data:
           summary: "High disk usage on {{ $labels.instance }}"
           description: "Disk usage is {{ $value }}% on {{ $labels.instance }}"
           current_value: "{{ $value }}%"
-    
+
     - name: helios.database
       rules:
       # PostgreSQL
@@ -204,7 +204,7 @@ data:
         annotations:
           summary: "PostgreSQL is down"
           description: "PostgreSQL database is not responding"
-          
+
       - alert: PostgreSQLTooManyConnections
         expr: |
           (
@@ -219,7 +219,7 @@ data:
           summary: "PostgreSQL too many connections"
           description: "PostgreSQL has {{ $value }}% connections in use"
           current_value: "{{ $value }}%"
-          
+
       # Redis
       - alert: RedisDown
         expr: redis_up{job="redis"} == 0
@@ -230,7 +230,7 @@ data:
         annotations:
           summary: "Redis is down"
           description: "Redis cache is not responding"
-          
+
       - alert: RedisHighMemoryUsage
         expr: |
           (
@@ -245,7 +245,7 @@ data:
           summary: "Redis high memory usage"
           description: "Redis memory usage is {{ $value }}%"
           current_value: "{{ $value }}%"
-    
+
     - name: helios.kubernetes
       rules:
       # Pod Restarts
@@ -259,7 +259,7 @@ data:
         annotations:
           summary: "Pod {{ $labels.pod }} is restarting"
           description: "Pod {{ $labels.pod }} in namespace {{ $labels.namespace }} has restarted {{ $value }} times in the last 15 minutes"
-          
+
       # Pod Not Ready
       - alert: PodNotReady
         expr: |
@@ -271,7 +271,7 @@ data:
         annotations:
           summary: "Pod {{ $labels.pod }} not ready"
           description: "Pod {{ $labels.pod }} in namespace {{ $labels.namespace }} has been not ready for more than 5 minutes"
-          
+
       # HPA at Max Replicas
       - alert: HPAMaxReplicas
         expr: |
@@ -282,7 +282,7 @@ data:
         annotations:
           summary: "HPA {{ $labels.hpa }} at maximum replicas"
           description: "HPA {{ $labels.hpa }} has been at maximum replicas ({{ $value }}) for more than 10 minutes"
-          
+
     - name: helios.business
       rules:
       # ML Model Performance
@@ -297,7 +297,7 @@ data:
           summary: "ML model inference latency is high"
           description: "95th percentile ML inference latency is {{ $value }}s"
           current_value: "{{ $value }}s"
-          
+
       # Queue Depth
       - alert: HighQueueDepth
         expr: |

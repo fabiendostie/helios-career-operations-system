@@ -11,7 +11,7 @@
   "work_experience": [
     {
       "position_en": "Principal Software Architect",
-      "position_fr": "Architecte Logiciel Principal", 
+      "position_fr": "Architecte Logiciel Principal",
       "company": "TechGlobal Inc.",
       "location": "Montréal, QC",
       "duration": "2020 - Present",
@@ -31,7 +31,7 @@
       "position_en": "Senior Developer",
       "position_fr": "Développeur Senior",
       "company": "Innovation Labs",
-      "location": "Toronto, ON", 
+      "location": "Toronto, ON",
       "duration": "2017 - 2020",
       "responsibilities_en": [
         "Developed REST APIs and frontend applications for financial services",
@@ -39,7 +39,7 @@
         "Led migration from monolithic to microservices architecture"
       ],
       "responsabilites_fr": [
-        "Développement d'APIs REST et applications frontend pour services financiers", 
+        "Développement d'APIs REST et applications frontend pour services financiers",
         "Implémentation de mesures de sécurité atteignant conformité SOC 2",
         "Direction de migration d'architecture monolithique vers microservices"
       ],
@@ -65,7 +65,7 @@
     },
     {
       "degree_en": "Bachelor of Software Engineering",
-      "diplome_fr": "Baccalauréat en Génie Logiciel", 
+      "diplome_fr": "Baccalauréat en Génie Logiciel",
       "institution": "École de Technologie Supérieure",
       "location": "Montréal, QC",
       "year": 2015
@@ -83,7 +83,7 @@
   },
   "projects": [
     {
-      "name": "E-commerce Platform Modernization", 
+      "name": "E-commerce Platform Modernization",
       "description_en": "Led complete rewrite of legacy e-commerce system using microservices architecture",
       "description_fr": "Direction de la réécriture complète d'un système e-commerce legacy utilisant architecture microservices",
       "impact": "Improved system performance by 60% and reduced downtime by 80%",

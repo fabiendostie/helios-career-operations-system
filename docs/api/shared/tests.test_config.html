@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>tests.test_config - shared</title>
+    <style>
+        body { font-family: Arial, sans-serif; margin: 40px; background: #f8f9fa; }
+        .container { max-width: 1200px; margin: 0 auto; background: white; padding: 30px; border-radius: 8px; box-shadow: 0 2px 10px rgba(0,0,0,0.1); }
+        .header { background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; padding: 20px; border-radius: 5px; margin-bottom: 30px; }
+        .section { margin: 20px 0; padding: 20px; border-left: 4px solid #667eea; background: #f8f9ff; }
+        .docstring { background: #fff; padding: 15px; border-radius: 5px; border: 1px solid #e0e0e0; margin: 10px 0; white-space: pre-wrap; }
+        .nav { margin-bottom: 20px; }
+        .nav a { color: #667eea; text-decoration: none; margin-right: 20px; }
+        .nav a:hover { text-decoration: underline; }
+        h1, h2, h3 { color: #333; }
+        .module-path { color: #666; font-style: italic; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>tests.test_config</h1>
+            <p class="module-path">Service: shared • Path: tests\test_config.py</p>
+        </div>
+
+        <div class="nav">
+            <a href="../index.html">← Back to API Index</a>
+            <a href="../shared/index.html">← shared Overview</a>
+        </div>
+
+        <div class="section">
+            <h2>Module Description</h2>
+            <div class="docstring">Tests for LLM client configuration.</div>
+        </div>
+
+        <div class="section">
+            <h2>Classes</h2>
+
+            <h3>TestProviderConfig</h3>
+            <div class="docstring">Test ProviderConfig class.</div>
+
+            <h3>TestLLMConfig</h3>
+            <div class="docstring">Test LLMConfig class.</div>
+
+            <h3>TestCacheConfig</h3>
+            <div class="docstring">Test CacheConfig class.</div>
+
+            <h3>TestRetryConfig</h3>
+            <div class="docstring">Test RetryConfig class.</div>
+
+            <h3>TestCircuitBreakerConfig</h3>
+            <div class="docstring">Test CircuitBreakerConfig class.</div>
+        </div>
+        <div class="section">
+            <h2>Functions</h2>
+
+            <h3>test_provider_config_creation()</h3>
+            <div class="docstring">Test creating a provider configuration.</div>
+
+            <h3>test_basic_config_creation()</h3>
+            <div class="docstring">Test creating a basic LLM configuration.</div>
+
+            <h3>test_get_provider()</h3>
+            <div class="docstring">Test getting a provider by name.</div>
+
+            <h3>test_validate_valid_config()</h3>
+            <div class="docstring">Test validating a valid configuration.</div>
+
+            <h3>test_validate_no_providers()</h3>
+            <div class="docstring">Test validation fails with no providers.</div>
+
+            <h3>test_validate_missing_primary_provider()</h3>
+            <div class="docstring">Test validation fails with missing primary provider.</div>
+
+            <h3>test_validate_missing_fallback_provider()</h3>
+            <div class="docstring">Test validation fails with missing fallback provider.</div>
+
+            <h3>test_from_env()</h3>
+            <div class="docstring">Test creating configuration from environment variables.</div>
+
+            <h3>test_from_env_azure()</h3>
+            <div class="docstring">Test creating Azure OpenAI configuration from environment.</div>
+
+            <h3>test_from_env_no_providers()</h3>
+            <div class="docstring">Test handling no providers in environment.</div>
+
+            <h3>test_default_cache_config()</h3>
+            <div class="docstring">Test default cache configuration.</div>
+
+            <h3>test_default_retry_config()</h3>
+            <div class="docstring">Test default retry configuration.</div>
+
+            <h3>test_default_circuit_breaker_config()</h3>
+            <div class="docstring">Test default circuit breaker configuration.</div>
+        </div>
+    </div>
+</body>
+</html>

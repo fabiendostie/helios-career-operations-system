@@ -8,8 +8,8 @@ from pathlib import Path
 from unittest.mock import mock_open, patch
 
 from resume_extractor.components.consolidation import (
-    SkillMapper, 
-    SkillEntry, 
+    SkillMapper,
+    SkillEntry,
     SkillInventoryEntry
 )
 
@@ -21,7 +21,7 @@ def sample_skill_map():
         "skill_mappings": {
             "Project Management": [
                 "Gestion de projet",
-                "Chef de projet", 
+                "Chef de projet",
                 "Project Manager",
                 "PM"
             ],
@@ -76,7 +76,7 @@ class TestSkillMapper:
         invalid_file = tmp_path / "invalid.json"
         with open(invalid_file, 'w') as f:
             f.write("invalid json content")
-        
+
         mapper = SkillMapper(mapping_file=invalid_file)
         assert mapper.skill_mappings == {}
 
@@ -102,7 +102,7 @@ class TestSkillMapper:
         """Test case-insensitive skill matching."""
         result = skill_mapper._find_canonical_skill("PROJECT MANAGEMENT")
         assert result == "Project Management"
-        
+
         result = skill_mapper._find_canonical_skill("gestion DE projet")
         assert result == "Project Management"
 
@@ -136,14 +136,14 @@ class TestSkillMapper:
             SkillEntry("programmation python", "doc2", "Programming"),
             SkillEntry("Gestion de projet", "doc3", "Management")
         ]
-        
+
         result = skill_mapper.map_skills(skills)
-        
+
         # Should consolidate Python and programmation python
         assert "Python" in result
         assert "Project Management" in result
         assert len(result) == 2
-        
+
         # Check evidence pointers
         python_entry = result["Python"]
         assert len(python_entry.evidence_pointers) == 2
@@ -156,10 +156,10 @@ class TestSkillMapper:
             SkillEntry("Python", "doc1", "Programming Languages"),
             SkillEntry("python", "doc2", "Technical Skills")
         ]
-        
+
         result = skill_mapper.map_skills(skills)
         python_entry = result["Python"]
-        
+
         assert "Programming Languages" in python_entry.categories
         assert "Technical Skills" in python_entry.categories
         assert len(python_entry.categories) == 2
@@ -170,7 +170,7 @@ class TestSkillMapper:
         beginner_entry = SkillInventoryEntry("Skill1", ["doc1"], set(), [])
         intermediate_entry = SkillInventoryEntry("Skill2", ["doc1", "doc2", "doc3"], set(), [])
         expert_entry = SkillInventoryEntry("Skill3", ["doc1", "doc2", "doc3", "doc4", "doc5"], set(), [])
-        
+
         assert beginner_entry._determine_proficiency() == "beginner"
         assert intermediate_entry._determine_proficiency() == "intermediate"
         assert expert_entry._determine_proficiency() == "expert"
@@ -183,9 +183,9 @@ class TestSkillMapper:
             categories={"Programming", "Technical"},
             proficiency_indicators=[]
         )
-        
+
         result = entry.to_dict()
-        
+
         assert result["skill"] == "Python"
         assert result["evidence_pointers"] == ["doc1", "doc2", "doc3"]
         assert set(result["categories"]) == {"Programming", "Technical"}
@@ -194,22 +194,22 @@ class TestSkillMapper:
     def test_add_skill_mapping(self, skill_mapper):
         """Test adding new skill mappings at runtime."""
         skill_mapper.add_skill_mapping("Data Science", ["science des données", "DS"])
-        
+
         # Should now map the new variations
         result = skill_mapper._find_canonical_skill("science des données")
         assert result == "Data Science"
-        
+
         result = skill_mapper._find_canonical_skill("DS")
         assert result == "Data Science"
 
     def test_learn_from_user_input(self, skill_mapper):
         """Test learning from user corrections."""
         skill_mapper.learn_from_user_input("ML", "Machine Learning")
-        
+
         # Should now map ML to Machine Learning
         result = skill_mapper._find_canonical_skill("ML")
         assert result == "Machine Learning"
-        
+
         # Should be case insensitive
         result = skill_mapper._find_canonical_skill("ml")
         assert result == "Machine Learning"
@@ -218,7 +218,7 @@ class TestSkillMapper:
         """Test category assignment for programming languages."""
         skills = ["Python", "Java", "JavaScript", "C++", "TypeScript"]
         categorized = skill_mapper._assign_categories(skills)
-        
+
         assert "Python" in categorized["Programming Languages"]
         assert "Java" in categorized["Programming Languages"]
         assert "JavaScript" in categorized["Programming Languages"]
@@ -227,7 +227,7 @@ class TestSkillMapper:
         """Test category assignment for frameworks."""
         skills = ["React", "Django", "TensorFlow", "Angular"]
         categorized = skill_mapper._assign_categories(skills)
-        
+
         assert "React" in categorized["Frameworks & Libraries"]
         assert "Django" in categorized["Frameworks & Libraries"]
 
@@ -235,7 +235,7 @@ class TestSkillMapper:
         """Test category assignment for databases."""
         skills = ["MySQL", "PostgreSQL", "MongoDB", "SQL"]
         categorized = skill_mapper._assign_categories(skills)
-        
+
         assert "MySQL" in categorized["Databases"]
         assert "PostgreSQL" in categorized["Databases"]
 
@@ -243,7 +243,7 @@ class TestSkillMapper:
         """Test category assignment for cloud technologies."""
         skills = ["AWS", "Docker", "Kubernetes", "DevOps"]
         categorized = skill_mapper._assign_categories(skills)
-        
+
         assert "AWS" in categorized["Cloud & DevOps"]
         assert "Docker" in categorized["Cloud & DevOps"]
 
@@ -251,7 +251,7 @@ class TestSkillMapper:
         """Test category assignment for soft skills."""
         skills = ["Leadership", "Communication", "Team Management"]
         categorized = skill_mapper._assign_categories(skills)
-        
+
         assert "Leadership" in categorized["Soft Skills"]
         assert "Communication" in categorized["Soft Skills"]
 
@@ -259,7 +259,7 @@ class TestSkillMapper:
         """Test category assignment falls back to Other."""
         skills = ["Unknown Skill", "Random Technology"]
         categorized = skill_mapper._assign_categories(skills)
-        
+
         assert "Unknown Skill" in categorized["Other"]
         assert "Random Technology" in categorized["Other"]
 
@@ -272,18 +272,18 @@ class TestSkillMapper:
             SkillEntry("Python", "doc4", None),
             SkillEntry("programmation python", "doc5", None)
         ]
-        
+
         result = skill_mapper.map_skills(skills)
-        
+
         # Should consolidate to 2 unique skills
         assert len(result) == 2
         assert "Project Management" in result
         assert "Python" in result
-        
+
         # Project Management should have 3 evidence pointers
         pm_entry = result["Project Management"]
         assert len(pm_entry.evidence_pointers) == 3
-        
+
         # Python should have 2 evidence pointers
         python_entry = result["Python"]
         assert len(python_entry.evidence_pointers) == 2
@@ -300,9 +300,9 @@ class TestSkillMapper:
             SkillEntry("   ", "doc2", None),
             SkillEntry("Python", "doc3", None)
         ]
-        
+
         result = skill_mapper.map_skills(skills)
-        
+
         # Should handle empty/whitespace skills gracefully
         assert "Python" in result
         # Empty skills should still create entries (normalized to empty string)
@@ -315,8 +315,8 @@ class TestSkillMapper:
             SkillEntry("C#", "doc2", None),
             SkillEntry(".NET", "doc3", None)
         ]
-        
+
         result = skill_mapper.map_skills(skills)
-        
+
         # Should handle special characters without errors
         assert len(result) == 3

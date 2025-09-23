@@ -11,7 +11,7 @@ system_prompt: |
 architecture:
   pattern: "Scheduled Batch Processing"
   rationale: "Prioritizes simplicity, reliability, and cost-effectiveness over instantaneous real-time processing, aligning with the 'current but not immediate' data freshness requirement. Avoids the complexity of a full event-driven microservices architecture."
-  
+
   data_processing_paradigm: "Simplified Kappa Architecture"
   rationale: "Utilizes a single, unified stream processing pipeline for both new and historical data. This eliminates the dual-maintenance burden and potential for inconsistencies found in Lambda architectures, adhering to the KISS principle."
 
