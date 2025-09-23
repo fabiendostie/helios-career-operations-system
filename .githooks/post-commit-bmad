@@ -23,10 +23,15 @@ log_message() {
 
 # Function to check if Python is available
 check_python() {
-    if command -v python3 &> /dev/null; then
+    # Check Windows Python locations first
+    if [ -f "/c/Users/fabie/AppData/Local/Programs/Python/Python313/python.exe" ]; then
+        echo "/c/Users/fabie/AppData/Local/Programs/Python/Python313/python.exe"
+    elif command -v python3 &> /dev/null; then
         echo "python3"
     elif command -v python &> /dev/null; then
         echo "python"
+    elif [ -f "/c/Python313/python.exe" ]; then
+        echo "/c/Python313/python.exe"
     else
         return 1
     fi
