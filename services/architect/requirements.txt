@@ -1,17 +1,17 @@
-# FastAPI and web framework
-fastapi==0.104.1
-uvicorn[standard]==0.24.0
-pydantic==2.5.0
-pydantic-settings==2.1.0
+# FastAPI and web framework (Latest 2025 versions)
+fastapi[standard]==0.115.4  # Latest FastAPI with Python 3.13 support
+uvicorn[standard]==0.32.1   # Latest uvicorn compatible with FastAPI
+pydantic==2.11.9            # Latest Pydantic v2 (2025 release)
+pydantic-settings==2.10.1   # Latest pydantic-settings (2025 release)
 
 # Document generation
-jinja2==3.1.2
-markdown==3.5.1
-reportlab==4.0.7
+jinja2==3.1.4               # Latest Jinja2 for template rendering
+markdown==3.7               # Latest markdown processor
+reportlab==4.2.5            # Latest reportlab for PDF generation
 
 # HTTP client for service communication
-aiohttp==3.9.1
-httpx==0.25.2
+aiohttp==3.12.15            # Latest aiohttp (July 2025 release) with Python 3.13 support
+httpx==0.28.1               # Latest httpx compatible with Python 3.13
 
 # Database and caching
 redis==5.0.1

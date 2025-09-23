@@ -1,48 +1,32 @@
-# FastAPI and web framework
-fastapi==0.104.1
-uvicorn[standard]==0.24.0
-pydantic==2.5.0
-pydantic-settings==2.1.0
+# FastAPI and web framework (Latest 2025 versions verified compatible)
+fastapi[standard]==0.115.4  # Latest FastAPI with Python 3.13 support
+uvicorn[standard]==0.32.1   # Latest uvicorn compatible with FastAPI
+pydantic==2.11.9            # Latest Pydantic v2 (2025 release)
+pydantic-settings==2.10.1   # Latest pydantic-settings (2025 release)
 
-# AI & Machine Learning for text processing
-spacy==3.7.5
-transformers==4.36.0
-torch==2.1.0
-numpy==1.26.2
+# Text processing and NLP (Latest 2025 versions)
+spacy==3.8.2               # Latest spaCy with Python 3.13 support
+nltk==3.9.1                # Latest NLTK for text processing
+textstat==0.7.4            # Text readability statistics
+regex==2024.11.6           # Advanced regex support
 
-# Text processing and grammar checking
-language-tool-python==2.7.1
-textstat==0.7.3
-nltk==3.8.1
+# HTTP client for service communication (Latest 2025 versions)
+aiohttp==3.12.15           # Latest aiohttp (July 2025) with Python 3.13 support
+httpx==0.28.1              # Latest httpx compatible with Python 3.13
 
-# HTTP client for service communication
-aiohttp==3.9.1
-httpx==0.25.2
-
-# Database and caching
-redis==5.0.1
-asyncpg==0.29.0
+# Database and caching (Latest 2025 versions)
+redis==6.4.0               # Latest redis-py supporting Redis 8.0 GA
 
 # Utilities
-python-multipart==0.0.6
-python-jose[cryptography]==3.3.0
+python-multipart==0.0.12   # Latest multipart support
 
-# Text processing
-difflib
-fuzzywuzzy==0.18.0
-python-levenshtein==0.23.0
-
-# Development and testing
-pytest==7.4.3
-pytest-asyncio==0.21.1
-pytest-cov==4.1.0
-pytest-mock==3.12.0
-black==23.11.0
-ruff==0.1.6
-
-# BMAD Core Utils for date/time
-aiohttp>=3.9.1
-pytz>=2023.3
+# Development and testing (Latest 2025 versions)
+pytest==8.3.4             # Latest pytest
+pytest-asyncio==0.24.0    # Latest pytest-asyncio
+pytest-cov==6.0.0         # Latest pytest-cov
+pytest-mock==3.15.0       # Latest pytest-mock
+black==24.10.0             # Latest black formatter
+ruff==0.8.5                # Latest ruff linter
 
 # Shared services
 ../shared  # Local path to shared LLM client

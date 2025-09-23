@@ -77,43 +77,60 @@ class ResumeDeconstructor:
                     )
                     self.nlp_models["fr"] = spacy.blank("fr")
 
-            # Load Sentence-BERT model
-            self.sentence_model = SentenceTransformer("all-MiniLM-L6-v2")
+            # Load Sentence-BERT model with fallback
+            try:
+                self.sentence_model = SentenceTransformer("all-MiniLM-L6-v2")
+                logger.info("Sentence-BERT model loaded successfully")
+            except Exception as e:
+                logger.warning(f"Failed to load Sentence-BERT model: {str(e)}")
+                logger.warning("Resume semantic embeddings will be unavailable")
+                self.sentence_model = None
 
             logger.info("NLP models loaded successfully")
 
         except Exception as e:
             logger.error(f"Failed to load NLP models: {str(e)}")
-            raise
+            logger.warning("Service starting in degraded mode - limited NLP functionality")
+            # Don't raise - allow service to start in degraded mode
 
     def _setup_matchers(self) -> None:
         """Setup spaCy matchers for professional entities."""
-        self.matcher = Matcher(self.nlp_models["en"].vocab)
+        try:
+            if "en" in self.nlp_models and self.nlp_models["en"]:
+                self.matcher = Matcher(self.nlp_models["en"].vocab)
+            else:
+                logger.warning("English model not available - pattern matching disabled")
+                self.matcher = None
+                return
 
-        # Action verb patterns
-        action_patterns = [
-            [{"POS": "VERB", "TAG": {"IN": ["VBD", "VBN"]}}],
-            [{"LEMMA": {"IN": self._get_high_impact_verbs()}}],
-        ]
-        self.matcher.add("ACTION_VERB", action_patterns)
+            # Action verb patterns
+            action_patterns = [
+                [{"POS": "VERB", "TAG": {"IN": ["VBD", "VBN"]}}],
+                [{"LEMMA": {"IN": self._get_high_impact_verbs()}}],
+            ]
+            self.matcher.add("ACTION_VERB", action_patterns)
 
-        # Metric patterns (numbers with units/percentages)
-        metric_patterns = [
-            [
-                {"LIKE_NUM": True},
-                {
-                    "TEXT": {
-                        "REGEX": r"%|percent|seconds?|minutes?|hours?|days?|weeks?|months?|years?"
-                    }
-                },
-            ],
-            [{"TEXT": {"REGEX": r"\$"}}, {"LIKE_NUM": True}],
-            [
-                {"LIKE_NUM": True},
-                {"TEXT": {"REGEX": r"[KMB]|thousand|million|billion"}},
-            ],
-        ]
-        self.matcher.add("METRIC", metric_patterns)
+            # Metric patterns (numbers with units/percentages)
+            metric_patterns = [
+                [
+                    {"LIKE_NUM": True},
+                    {
+                        "TEXT": {
+                            "REGEX": r"%|percent|seconds?|minutes?|hours?|days?|weeks?|months?|years?"
+                        }
+                    },
+                ],
+                [{"TEXT": {"REGEX": r"\$"}}, {"LIKE_NUM": True}],
+                [
+                    {"LIKE_NUM": True},
+                    {"TEXT": {"REGEX": r"[KMB]|thousand|million|billion"}},
+                ],
+            ]
+            self.matcher.add("METRIC", metric_patterns)
+
+        except Exception as e:
+            logger.error(f"Failed to setup matchers: {str(e)}")
+            self.matcher = None
 
     def _get_high_impact_verbs(self) -> List[str]:
         """Get list of high-impact action verbs."""
@@ -201,25 +218,26 @@ class ResumeDeconstructor:
                     )
                 )
 
-        # Extract using custom patterns
-        matches = self.matcher(doc)
-        for match_id, start, end in matches:
-            span = doc[start:end]
-            label_name = nlp.vocab.strings[match_id]
+        # Extract using custom patterns (if matcher is available)
+        if self.matcher:
+            matches = self.matcher(doc)
+            for match_id, start, end in matches:
+                span = doc[start:end]
+                label_name = nlp.vocab.strings[match_id]
 
-            if label_name in EntityType.__members__:
-                entities.append(
-                    ExtractedEntity(
-                        text=span.text,
-                        label=EntityType(label_name),
-                        start=span.start_char,
-                        end=span.end_char,
-                        confidence=0.9,  # Higher confidence for pattern matches
-                        context=self._get_entity_context(
-                            text, span.start_char, span.end_char
-                        ),
+                if label_name in EntityType.__members__:
+                    entities.append(
+                        ExtractedEntity(
+                            text=span.text,
+                            label=EntityType(label_name),
+                            start=span.start_char,
+                            end=span.end_char,
+                            confidence=0.9,  # Higher confidence for pattern matches
+                            context=self._get_entity_context(
+                                text, span.start_char, span.end_char
+                            ),
+                        )
                     )
-                )
 
         # Extract skills using custom logic
         skill_entities = self._extract_skills(text, doc)
